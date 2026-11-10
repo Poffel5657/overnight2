@@ -51,7 +51,7 @@ Neue Klassen dürfen sich Spieler wünschen. Sie docken an dasselbe Gerüst an (
 
 ## Berufe: dein Platz im Dorf
 
-Man hat immer **2 Hauptberufe aktiv** aus etwa 6. Die ersten beiden wählt man frei. Weitere schaltet man über Quests beim Lehrer frei und wechselt dann **frei im Dorf**, bevor man aufbricht. **Der Fortschritt bleibt immer erhalten.** Auf einer Expedition kann also jeder zwei Dinge, und wer lange spielt, lernt mit der Zeit alles. Handel lohnt sich trotzdem, weil Stufen Zeit brauchen und man draußen nur mit seinen zwei aktiven Berufen sammelt.
+Jeder lernt **2 Hauptberufe** aus etwa 6, mehr nicht. So ist jeder in etwas anderem gut und braucht die anderen. Wer wechseln will, **verlernt** einen Beruf beim Lehrer im Dorf, und **der Fortschritt darin ist weg**. Die Wahl soll etwas bedeuten. (Anders als bei Klassen, dort bleibt alles.)
 
 | Sammeln | Herstellen |
 |---|---|

@@ -13,9 +13,9 @@ Jede Klasse hat an Tag 0 etwa 8 Fähigkeiten für die Leiste, freigeschaltet üb
 
 Klassenlehrer stehen in Kindle (Warden Ama für Warden, Brother Tallow für Mender, der Stranger für Drifter, eine Linsenschleiferin für Flarecaster). Die erste Klasse wählt man in der Einstiegsquest. Ab Stufe 10 gibt es bei jedem Lehrer eine kurze Klassenquest, die seine Klasse freischaltet. Gewechselt wird im Dorf.
 
-## Berufe (2 aktiv aus 6, Stufe 1–50 zum Start)
+## Berufe (2 aus 6, Stufe 1–50 zum Start)
 
-Die ersten zwei sind frei wählbar, weitere schaltet je eine Berufsquest beim Lehrer frei. Gewechselt wird im Dorf, der Fortschritt bleibt.
+Zwei frei wählbar. Verlernen beim Lehrer im Dorf löscht den Fortschritt in diesem Beruf, danach darf man einen anderen lernen.
 
 | Beruf | Tag-0-Inhalt |
 |---|---|
