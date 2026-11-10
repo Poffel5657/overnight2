@@ -27,11 +27,45 @@ Siehe `STORY.md`. Kurz: Ein Dorf auf einer Lichtung in einem endlosen Nebel. Jed
 - **CRT:** Scanlines, Glühen, leichte Wölbung als Shader über dem Bild, mit `CRT: OFF` abschaltbar. Die Oberfläche besteht aus Terminal-Fenstern in VT323 und Bernstein (`[ INVENTORY ]`, `[ SKILLS ]`, `[ QUESTS ]`). Systemzeilen sind kurz, groß geschrieben und wundern sich nie.
 - **Nebel:** Der Rand der Welt ist sichtbarer, wabernder Nebel und kein schwarzer Abgrund. Wo er zurückweicht, sieht man das Neue.
 
+## Kern: Licht und Expeditionen
+
+Overnight 2 ist kein Klon eines bestehenden MMOs. Der Kern kommt aus der Welt selbst:
+
+- **Das Dorf ist sicher, der Grey nicht.** Kindle ist die Basis: Handwerk, Handel, Kapelle, Gemeinschaft. Draußen sieht man nur so weit, wie das eigene Licht reicht.
+- **Licht ist die wichtigste Ressource.** Laterne und Brennstoff bestimmen Sichtweite und wie lange man draußen bleiben kann. Nebelwesen sind im Dunkeln stärker und weichen im Licht zurück. Geht das Licht aus, wird es gefährlich, aber nie grausam.
+- **Expeditionen:** Hinter der festen Welt liegt ein Streifen Grey, den der Nightwright **jede Nacht neu würfelt**, mit Funden, Wracks, Fremden, Gefahren und manchmal einem Ort, der danach fest bleibt. Das ist ein täglicher Grund, reinzuschauen.
+- **Funde bauen das Dorf aus.** Spenden von Funden und Rohstoffen schalten Gebäude und Ausbauten frei (Werkstatt, Wachturm, Gasthaus …), die allen neue Möglichkeiten geben.
+
+## Fähigkeiten
+
+Eigene Fähigkeiten, die aus der Welt kommen, keine Standardliste. Jede steigt durch Benutzen, mit langer Kurve.
+
+| Fähigkeit | Worum es geht |
+|---|---|
+| **Warding** | Kämpfen und Abwehr gegen Nebelwesen. Schaltet neue Kampftechniken für die Leiste frei. |
+| **Kindling** | Licht und Feuer: Laternen füllen, Fackeln und Signalfeuer bauen, Brennstoff herstellen, das Leuchtfeuer füttern. |
+| **Wayfinding** | Wie weit man in den Grey kommt, was man dort entdeckt, Wegmarken setzen, die anderen helfen. |
+| **Salvage** | Treibgut und Wracks aus dem Nebel zerlegen, Erz und Holz am Rand der Welt gewinnen. |
+| **Tinkering** | Aus Geborgenem Werkzeuge, Ausrüstung, Laternen und Vorrichtungen bauen. |
+| **Foraging** | Essen, Kräuter und Pilze sammeln und daraus Mahlzeiten und Tränke machen. |
+
+Neue Fähigkeiten dürfen sich Spieler wünschen.
+
+## Kampf
+
+Eine Mischung aus Klick-Bewegung und Tab-Target-MMO, **nicht** Kampf über das Inventar.
+
+- **Bewegung mit der Maus** (Klick zum Laufen), am Handy per Tippen.
+- **Ziel wählen:** Klick auf einen Gegner oder `Tab` wechselt zum nächsten Gegner. Das Ziel bekommt einen Rahmen und einen Lebensbalken.
+- **Fähigkeitenleiste 1–9:** Angriffe, Techniken, Licht-Fähigkeiten, Essen, Tränke. Jede Taste ist frei belegbar, auch mit eigenen Tastenkürzeln. Am Handy gibt es eine Knopfleiste. Fähigkeiten haben Abklingzeiten, eine globale Abklingzeit hält das Tempo ruhig.
+- **Der Server rechnet im Takt** (300–600 ms), damit alle Spieler dasselbe sehen und nicht geschummelt wird.
+- **Gegner kündigen an:** Starke Angriffe markieren vorher den Boden, und man weicht aus. Licht schwächt Nebelwesen oder blendet sie, Dunkelheit stärkt sie.
+- **Rollen ohne feste Klassen:** Die Ausrüstung und welche Fähigkeiten man auf die Leiste legt, bestimmen, ob man eher austeilt, schützt oder Licht für die Gruppe hält.
+
 ## Spielregeln, die bleiben
 
-- **Tick-basiert:** Die Welt läuft in Takten von 600 ms. Man klickt, die Figur läuft und handelt im Takt. Das ist ruhig, gut auf dem Handy und leicht auf dem Server zu rechnen.
-- **Klicken zum Handeln:** Linksklick führt die Standardaktion aus, Rechtsklick (am Handy langes Drücken) öffnet das Menü mit allen Aktionen.
-- **Milde Niederlagen:** Man wacht am Lagerfeuer im Dorf auf und behält alles.
+- **Handeln mit der Maus:** Linksklick führt die Standardaktion aus, Rechtsklick (am Handy langes Drücken) öffnet ein Menü mit allen Aktionen.
+- **Milde Niederlagen:** Man wacht am Lagerfeuer im Dorf auf. Auf einer Expedition verliert man höchstens einen Teil der ungesicherten Funde.
 - **Der Server rechnet alles.** Der Browser zeigt nur an und schickt Absichten.
 - Am PC mit Maus und Tastatur, am Handy mit Touch spielbar.
 

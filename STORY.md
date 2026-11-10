@@ -20,21 +20,25 @@ Jede Nacht weicht der Grey ein Stück zurück, und am Morgen steht dort etwas, d
 
 | Ort | Stufe | Kurz |
 |---|---|---|
-| **Kindle** | Dorf | Leuchtfeuer, Kapelle, Lagerfeuer (Aufwachpunkt), Bank („the Strongbox“), Markt, Schmiede, Ausrufer, Anschlagbrett |
-| **Fernmeadow** | 1–10 | Wiesen und Bach rund ums Dorf. Hühner, Krähen, Nebelratten. Angeln (Bach), erste Bäume. |
+| **Kindle** | Dorf | Leuchtfeuer, Kapelle, Lagerfeuer (Aufwachpunkt), Lager, Markt, Werkstatt, Ausrufer, Anschlagbrett |
+| **Fernmeadow** | 1–10 | Wiesen und Bach rund ums Dorf. Krähen, Nebelratten, erste Greylinge. Kräuter, Treibholz, erste Signalfeuer. |
 | **Hushwood** | 10–25 | Stiller Wald im Norden, in dem man die eigenen Schritte nicht hört. Wölfe, Moosgeister, Holzfällerlager. |
-| **Copperdeep** | 15–35 | Offene Mine im Osten, halb verschüttet, Erze in Stufen. Steinkäfer, ein verlassener Vorarbeiter. |
+| **Copperdeep** | 15–35 | Offene Mine im Osten, halb verschüttet, Erz und Schrott zum Bergen. Steinkäfer, ein verlassener Vorarbeiter. |
 | **Sinkmarsh** | 25–40 | Sumpf im Süden mit versunkenen Ruinen, die älter sind als das Dorf. Irrlichter, Moorkröten. |
 | **The Drowned Chapel** | Dungeon, 35+ | Unter den Ruinen liegt eine zweite, ältere Kapelle. Boss: **the Lamplighter**, eine verlöschende Gestalt, die das falsche Licht bewacht. |
 
-Hinter jedem Gebiet liegt der Grey.
+Hinter allen Gebieten liegt **the Drift**: der Rand des Grey, den der Nightwright jede Nacht neu mischt. Was man dort findet, ist morgen fort, außer man bringt es heim, oder der Nightwright beschließt, dass ein Ort bleibt.
+
+## Licht
+
+Im Grey sieht man nur so weit, wie das eigene Licht reicht. Laternen, Fackeln und Signalfeuer sind deshalb wertvoller als Gold. Nebelwesen (**Greylings** und Schlimmeres) meiden Licht und werden im Dunkeln stark. Die Bewohner sagen „keep your wick trimmed“ statt „pass auf dich auf“.
 
 ## Figuren in Kindle (Auswahl)
 
 - **Warden Ama** hütet das Leuchtfeuer. Sie ist trocken und praktisch und zählt jedes Holzscheit. Bei ihr laufen Gemeinschaftsaufgaben und Weltprobleme zusammen.
 - **Brother Tallow**, Priester der Kapelle. Er nimmt Gebete und Spenden an und verkündet, was erhört wurde. Er glaubt fest an den Nightwright und ist ein bisschen enttäuscht, dass der nie antwortet, außer durch Taten.
 - **Pell the Crier**, der Ausrufer am Markt. Er erzählt jeden Morgen, was letzte Nacht geschah, laut und mit Übertreibung.
-- **Old Rook**, Schmied. Er bringt Bergbau und Schmieden bei und mag niemanden, außer gutem Eisen.
+- **Old Rook**, Tüftler in der Werkstatt. Er bringt Salvage und Tinkering bei und mag niemanden, außer gutem Messing.
 - **Fen**, ein Kind, das immer in den Nebel will. Bei ihm gibt es Quests und Gefallen.
 - **The Stranger**, ein Fremder, der an Tag 0 schon da ist und nicht sagt, woher. (Faden des ersten Bogens.)
 
