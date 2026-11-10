@@ -188,7 +188,7 @@ export function createUI(handlers) {
     const el = $('target');
     if (!mob) { el.hidden = true; return; }
     el.hidden = false;
-    $('target-name').textContent = `[ ${mob.name.toUpperCase()} ]`;
+    $('target-name').textContent = `[ ${mob.name.toUpperCase()}${mob.level ? ` LV ${mob.level}` : ''} ]`;
     $('target-fill').style.width = `${(mob.hp / Math.max(1, mob.maxHp)) * 100}%`;
     $('target-text').textContent = `${mob.hp}/${mob.maxHp}`;
     $('target-note').textContent = note || '';

@@ -2,6 +2,8 @@
 // andere Höhlen, andere Wracks, andere Gefahren. Wer etwas findet, bringt es besser heim, bevor es Mitternacht wird.
 // Der Generator ist rein (gleiches Datum = gleiche Karte), damit Server und Browser dasselbe sehen.
 
+import { ARRIVE } from './kindle.js';
+
 const W = 48;
 const H = 48;
 
@@ -68,11 +70,12 @@ export function driftFor(date) {
     return open.splice(i, 1)[0];
   };
   const objects = [
-    { type: 'door', to: 'kindle', tx: 28, ty: 7, x: start.x, y: start.y + 3, name: 'the way home', look: 'rift' },
+    { type: 'door', to: 'kindle', tx: ARRIVE.rift.x, ty: ARRIVE.rift.y, x: start.x, y: start.y + 3, name: 'the way home', look: 'rift' },
     { type: 'signal', x: start.x + 2, y: start.y - 2, light: 5, name: 'a signal fire' },
   ];
   const nodeTypes = ['brass_wreck', 'brass_wreck', 'rusted_cart', 'emberroot_patch', 'leaning_post', 'wild_hive'];
   for (const node of nodeTypes) if (open.length) objects.push({ type: 'node', node, ...take() });
+  for (let i = 0; i < 2 && open.length; i++) objects.push({ type: 'chest', chest: 'drift', name: 'a chest in the fog', ...take() });
   const mobs = [];
   for (let i = 0; i < 9 && open.length; i++) mobs.push({ type: 'greyling', ...take() });
   return {
@@ -85,7 +88,7 @@ export function driftFor(date) {
     tiles: grid.map((r) => r.join('')),
     heights: hgt.map((r) => r.join('')),
     start: { x: start.x, y: start.y },
-    deathTo: { region: 'kindle', x: 30, y: 36 },
+    deathTo: { region: 'kindle', ...ARRIVE.respawn },
     safeRadius: 0,
     objects,
     npcs: [],

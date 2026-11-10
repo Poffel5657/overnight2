@@ -10,7 +10,7 @@ import { SLOTS } from '../content/items.js';
 
 const ID = /^[a-z0-9_]{1,24}$/;
 const BAR_ID = /^(item:)?[a-z0-9_]{1,24}$/;
-const ACTIONS = new Set(['attack', 'talk', 'examine', 'refill', 'light', 'rest', 'gather', 'use', 'read', 'feed', 'pray', 'enter']);
+const ACTIONS = new Set(['attack', 'talk', 'examine', 'refill', 'light', 'rest', 'gather', 'use', 'read', 'feed', 'pray', 'enter', 'open', 'search']);
 const OPTION = /^[a-z0-9-]{1,32}$/;
 const KINDS = new Set(['npc', 'mob', 'object']);
 const MAX_COORD = 1024;
@@ -74,7 +74,7 @@ export function applyIntent(world, pid, m) {
 }
 
 function metaOf(e) {
-  return { id: e.id, kind: e.kind, sprite: e.sprite, name: e.name, maxHp: e.maxHp ?? 0, type: e.type ?? null };
+  return { id: e.id, kind: e.kind, sprite: e.sprite, name: e.name, maxHp: e.maxHp ?? 0, type: e.type ?? null, level: e.def?.level ?? null };
 }
 
 function allEntities(world) {

@@ -109,8 +109,14 @@ const tallow = (() => {
   return {
     start: {
       text: 'Brother Tallow, of the Chapel. The Nightwright listens here. Mostly, anyway.',
-      options: [...t.options, ...f.options, ...a.options, { text: 'I want to pray.', to: 'pray' }, { text: 'Does it ever answer?', to: 'answer' }, BYE],
+      options: [
+        { text: 'You look worried.', to: 'op_offer', if: { quest: { older_prayer: 'none' }, classLevel: 22 }, do: [{ start: 'older_prayer' }] },
+        { text: 'I found a tablet in the ruins.', to: 'op_done', if: { quest: { older_prayer: 1 }, has: { prayer_tablet: 1 } }, do: [{ take: { prayer_tablet: 1 } }, { advance: 'older_prayer' }] },
+        ...t.options, ...f.options, ...a.options, { text: 'I want to pray.', to: 'pray' }, { text: 'Does it ever answer?', to: 'answer' }, BYE,
+      ],
     },
+    op_offer: { text: 'People say there is an older chapel under the Sinkmarsh ruins. Older than ours. Built for someone else. There is a shrine in the ruins; if there is a prayer left on it, I would like to read it.', options: [{ text: 'I will look.' }] },
+    op_done: { text: '"To the one who holds the lamp." Not the Nightwright, then. The stairs under the ruins, they will let you down now. Take a light. Take two.', options: [{ text: 'I will be careful.' }] },
     pray: { text: 'Kneel, say what the world is missing, and be patient. (Praying opens soon. The altar is still being carved.)', options: [BYE] },
     answer: { text: 'Every morning. Not in words. In forests and doors and the odd surprised goose.', options: [BYE] },
     ...f.pages, ...a.pages, ...t.pages,
@@ -182,8 +188,42 @@ const stranger = (() => {
   };
 })();
 
+const haskel = {
+  start: {
+    text: 'Haskel. I cut wood. Or I would, if the wood stopped biting.',
+    options: [
+      { text: 'What is biting?', to: 'h_offer', if: { quest: { wolves_woodline: 'none' }, classLevel: 8 }, do: [{ start: 'wolves_woodline' }] },
+      { text: 'What is biting?', to: 'h_early', if: { quest: { wolves_woodline: 'none' }, below: 8 } },
+      { text: 'The woodline is quiet.', to: 'h_done', if: { quest: { wolves_woodline: 1 } }, do: [{ advance: 'wolves_woodline' }] },
+      { text: 'Why is it so quiet in here?', to: 'h_quiet' },
+      BYE,
+    ],
+  },
+  h_offer: { text: 'Wolves. Grey ones, quiet ones. Six of them sit between me and the good trees. Make it zero.', options: [{ text: 'Six wolves.' }] },
+  h_early: { text: 'You? No offence, but they would use you as a toothpick. Come back with a few more levels on you.', options: [{ text: 'Fair.' }] },
+  h_done: { text: 'Quiet. Properly quiet, not Hushwood quiet. Here, salve from my sister. She says it fixes anything but manners.', options: [{ text: 'Thanks, Haskel.' }] },
+  h_quiet: { text: 'Hushwood eats sound. Shout in here and nobody hears it, not even you. Handy for wolves. Less handy for me.', options: [BYE] },
+};
+
+const brack = {
+  start: {
+    text: 'Brack, foreman of Copperdeep. Which is to say, foreman of a hole and some very rude beetles.',
+    options: [
+      { text: 'Need a hand?', to: 'b_offer', if: { quest: { singing_seam: 'none' }, classLevel: 14 }, do: [{ start: 'singing_seam' }] },
+      { text: 'Need a hand?', to: 'b_early', if: { quest: { singing_seam: 'none' }, below: 14 } },
+      { text: 'Five beetles, cleared.', to: 'b_done', if: { quest: { singing_seam: 1 } }, do: [{ advance: 'singing_seam' }] },
+      { text: 'What is down there?', to: 'b_deep' },
+      BYE,
+    ],
+  },
+  b_offer: { text: 'There is a seam that sings. Glimmer, I think. Five stone beetles sit on it like it owes them money. Shift them.', options: [{ text: 'Shifting beetles.' }] },
+  b_early: { text: 'Those beetles have shells like doors. Come back when you hit harder than a door.', options: [{ text: 'Understood.' }] },
+  b_done: { text: 'Listen. Hear it? The seam is singing again. Have some glimmer. Do not tell Rook I gave it away.', options: [{ text: 'Thanks, Brack.' }] },
+  b_deep: { text: 'Brass, glimmer, the odd worm. Further in, the Grey. We do not dig that way.', options: [BYE] },
+};
+
 export const TALK = {
-  ama, tallow, rook, fen, wren, stranger,
+  ama, tallow, rook, fen, wren, stranger, haskel, brack,
   pell: {
     start: { text: 'HEAR YE! Last night the world began! That is all! It was a very big night!', options: [{ text: 'Anything else?', to: 'more' }, BYE] },
     more: { text: 'Tomorrow I will have more to shout. I can feel it in my bell.', options: [BYE] },
@@ -211,6 +251,8 @@ export const EXAMINE = {
   still: 'A copper still that smells of bitterleaf. Alchemists brew here.',
   lampbench: 'A bench covered in glass dust. Lampwrights work here.',
   node: 'Something worth a closer look, for someone who knows how.',
+  chest: 'An old chest. It might still have something in it.',
+  shrine: 'A small shrine, half sunk in the marsh. Candles, long out.',
   depleted: 'Picked clean. Come back later.',
   door: 'A way somewhere else.',
   brazier: 'A brazier. Its light keeps the Grey, and the things in it, at a polite distance.',

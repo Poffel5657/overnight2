@@ -263,6 +263,7 @@ export function loadInto(p, raw) {
       done: Array.isArray(d.done) ? d.done.filter((x) => typeof x === 'string' && x.length < 32).slice(0, 10) : [],
       donated: clampInt(d.donated, 0, 1e6, 0),
       prayed: !!d.prayed,
+      chests: Array.isArray(d.chests) ? d.chests.filter((x) => typeof x === 'string' && x.length < 48).slice(0, 50) : [],
     };
   }
   p.maxHp = maxHpOf(p);

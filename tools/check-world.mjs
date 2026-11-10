@@ -19,6 +19,7 @@ import { PROFESSIONS } from '../content/professions.js';
 import { SHOPS } from '../content/shops.js';
 import { FAVOURS, FAVOURS_PER_DAY, BEACON_FUEL } from '../content/dailies.js';
 import { BALLOT } from '../content/ballot.js';
+import { CHESTS } from '../content/chests.js';
 import { CHRONICLE } from '../content/chronicle.js';
 import { createWorld, walkable } from '../shared/sim.js';
 import { findPath } from '../shared/path.js';
@@ -184,6 +185,18 @@ function checkContent(regions) {
     if (n.extra) add(n.extra[0], `Fundstelle ${nid}`);
   }
   for (const [mid, m] of Object.entries(MOBS)) for (const [i] of m.drops || []) if (mobTypes.has(mid)) add(i, `Beute ${mid}`);
+  for (const r of regions) {
+    for (const o of r.objects) {
+      if (o.type === 'chest') {
+        if (!CHESTS[o.chest]) err(`${r.id}: Truhe '${o.chest}' unbekannt`);
+        else for (const [i] of CHESTS[o.chest].items) add(i, `Truhe ${o.chest}`);
+      }
+      if (o.type === 'shrine') {
+        add(o.gives, `Schrein in ${r.id}`);
+        if (!QUESTS[o.quest]) err(`${r.id}: Schrein gehört zu unbekannter Quest ${o.quest}`);
+      }
+    }
+  }
   for (const [sid, sh] of Object.entries(SHOPS)) for (const i of sh.sells) add(i, `Händler ${sid}`);
   for (const q of Object.values(QUESTS)) for (const i of Object.keys(q.reward?.items || {})) add(i, 'Quest');
   for (const c of Object.values(CLASSES)) add(c.starter, 'Klasse');

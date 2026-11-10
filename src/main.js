@@ -42,6 +42,7 @@ const mirror = {
 // Das aktuelle Gebiet. Bei jedem Wechsel (Tür, Aufwachen in Kindle) wird es neu gebaut.
 let lastSky = -1;
 let greeted = false;
+let lastZone = null;
 let region = null;
 let terrain = null;
 let objects = null;
@@ -820,7 +821,12 @@ function frame(now) {
   }
 
   if (me) {
-    ui.updateStatus(me, region.name);
+    const zone = self && region.zoneAt ? region.zoneAt(self.x, self.y) : region.name;
+    if (zone !== lastZone) {
+      if (lastZone && zone !== 'KINDLE') ui.log(`You enter ${zone[0]}${zone.slice(1).toLowerCase()}.`, 'sys');
+      lastZone = zone;
+    }
+    ui.updateStatus(me, zone);
     ui.updateBar(me, mirror.tick, alpha);
   }
   requestAnimationFrame(frame);

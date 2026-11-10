@@ -38,6 +38,33 @@ export const QUESTS = {
     ],
     reward: { xp: 40, gold: 10, items: { survey_notes: 2 } },
   },
+  wolves_woodline: {
+    name: 'Wolves at the Woodline', giver: 'haskel',
+    text: 'Haskel cannot cut wood if the wood keeps biting back.',
+    steps: [
+      { type: 'kill', mob: 'wolf', n: 6, text: 'Drive off six Hushwood wolves.' },
+      { type: 'talk', npc: 'haskel', text: 'Tell Haskel the woodline is quiet.' },
+    ],
+    reward: { xp: 300, gold: 40, items: { moss_salve: 3 } },
+  },
+  singing_seam: {
+    name: 'The Singing Seam', giver: 'brack',
+    text: 'Brack found a seam that hums. The beetles found it first.',
+    steps: [
+      { type: 'kill', mob: 'stone_beetle', n: 5, text: 'Clear five stone beetles from Copperdeep.' },
+      { type: 'talk', npc: 'brack', text: 'Report to Brack at the mine camp.' },
+    ],
+    reward: { xp: 500, gold: 60, items: { glimmer: 3 } },
+  },
+  older_prayer: {
+    name: 'The Older Prayer', giver: 'tallow',
+    text: 'Tallow has heard there is an older chapel under the Sinkmarsh ruins, built for someone who is not the Nightwright.',
+    steps: [
+      { type: 'have', item: 'prayer_tablet', n: 1, text: 'Search the shrine in the Sinkmarsh ruins for a prayer tablet.' },
+      { type: 'talk', npc: 'tallow', text: 'Bring the tablet to Brother Tallow.' },
+    ],
+    reward: { xp: 600, gold: 50 },
+  },
   trial_warden: {
     name: 'The Warden\'s Trial', giver: 'ama',
     text: 'Ama will teach you to stand in front, if you show you can stand at all.',

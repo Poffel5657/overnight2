@@ -4,6 +4,7 @@
 // Die Welt selbst (Wesen, angezündete Feuer) lebt nur im Speicher: Ist niemand da, darf sie verfallen.
 
 import { regionFor, REGION_IDS, HOME_REGION } from '../content/regions/index.js';
+import { ARRIVE } from '../content/regions/kindle.js';
 import { TICK_MS, createWorld, step, addPlayer, removePlayer, saveFor, drainEvents, travel } from '../shared/sim.js';
 import { parseIntent, applyIntent, welcomeFor, tickFor } from '../shared/protocol.js';
 import { regionDaylight, berlinDate } from '../shared/daylight.js';
@@ -184,7 +185,7 @@ export class RegionRoom {
       // Der Drift wird neu gewürfelt: Wer noch drin ist, wird nach Hause geweht.
       if (world.region.daily) {
         world.events.push({ type: 'log', text: 'The Grey shifts. The Drift folds itself up, and you with it.', cls: 'hurt' });
-        for (const p of world.players.values()) travel(world, p, { region: HOME_REGION, x: 28, y: 7 });
+        for (const p of world.players.values()) travel(world, p, { region: HOME_REGION, ...ARRIVE.rift });
         this.rebuild = true;
       }
     }

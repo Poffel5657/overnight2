@@ -13,7 +13,8 @@ import { ITEMS } from '../content/items.js';
 import { findPath, stepToward, cheb } from './path.js';
 import { tell, emit, float } from './events.js';
 import * as P from './player.js';
-import { openTalk, closeTalk, questEvent, grantXp, checkHave, TALK_RANGE } from './talk.js';
+import { openTalk, closeTalk, questEvent, grantXp, checkHave, conditionHolds, TALK_RANGE } from './talk.js';
+import { CHESTS } from '../content/chests.js';
 import { startGather, tickGather, tickNodes, consume, inVillage } from './trade.js';
 import { onKill, dailyOf } from './community.js';
 import { berlinDate } from './daylight.js';
@@ -199,6 +200,8 @@ export function objectActions(o) {
     case 'beacon': return [['refill', 'Fill lantern'], ['feed', 'Feed'], ['examine', 'Examine']];
     case 'board': return [['read', 'Read'], ['examine', 'Examine']];
     case 'door': return [['enter', o.look === 'stairs' ? 'Climb' : 'Enter'], ['examine', 'Examine']];
+    case 'chest': return [['open', 'Open'], ['examine', 'Examine']];
+    case 'shrine': return [['search', 'Search'], ['examine', 'Examine']];
     case 'altar': return [['pray', 'Pray'], ['examine', 'Examine']];
     case 'signal': return o.lit ? [['examine', 'Examine']] : [['light', 'Light'], ['examine', 'Examine']];
     case 'campfire': return [['rest', 'Rest'], ['examine', 'Examine']];
@@ -470,7 +473,21 @@ function doAction(world, p, goal) {
   } else if (goal.action === 'use' && t.type === 'station') {
     emit(world, { to: p.id, type: 'craft', obj: t.id, station: t.station });
   } else if (goal.action === 'enter' && t.type === 'door') {
+    if (t.needs && !conditionHolds(p, t.needs)) {
+      tell(world, p.id, t.locked || 'The way is shut.', 'sys');
+      return;
+    }
     travel(world, p, { region: t.to, x: t.tx, y: t.ty });
+  } else if (goal.action === 'open' && t.type === 'chest') {
+    openChest(world, p, t);
+  } else if (goal.action === 'search' && t.type === 'shrine') {
+    const st = p.quests[t.quest];
+    if (st && !st.done && st.step === t.step && P.countItem(p, t.gives) === 0) {
+      P.addItem(p, t.gives, 1);
+      tell(world, p.id, `Under the old candles you find ${ITEMS[t.gives].name}.`, 'good');
+    } else {
+      tell(world, p.id, 'Old candles, cold wax, and the feeling of being listened to.', 'sys');
+    }
   } else if (goal.action === 'read' && t.type === 'board') {
     dailyOf(world, p);
     emit(world, { to: p.id, type: 'window', win: 'board' });
@@ -629,6 +646,24 @@ function hitMob(world, p, m, dmg) {
   loot(world, p, m);
 }
 
+// Truhen: einmal am Tag pro Spieler.
+function openChest(world, p, t) {
+  const d = dailyOf(world, p);
+  d.chests = d.chests || [];
+  const key = `${world.region.id}:${t.id}`;
+  if (d.chests.includes(key)) return tell(world, p.id, 'You already emptied this one today.', 'sys');
+  d.chests.push(key);
+  const c = CHESTS[t.chest];
+  const g = roll(world, c.gold[0], c.gold[1]);
+  p.gold += g;
+  tell(world, p.id, `The chest creaks open. +${g} gold.`, 'good');
+  for (const [id, chance, a, b] of c.items) {
+    if (world.rand() >= chance) continue;
+    const n = roll(world, a, b);
+    if (P.addItem(p, id, n) < n) tell(world, p.id, `Inside: ${ITEMS[id].name}${n > 1 ? ` x${n}` : ''}.`, 'good');
+  }
+}
+
 // Beute geht an den, der den letzten Schlag gesetzt hat.
 function loot(world, p, m) {
   const def = m.def;
@@ -685,28 +720,55 @@ function hurtPlayer(world, p, dmg, by) {
   else emit(world, { to: p.id, type: 'respawn' });
 }
 
-// Greylinge suchen sich den nächsten Spieler im Dunkeln, Tiere nur den, der sie geärgert hat.
-// Wer verblasst ist (Fade), wird übersehen, solange er nicht im Licht steht.
+// Im Lichtkreis des Leuchtfeuers (Dorf)? Bestien kommen nicht hinein.
+function villageAt(world, x, y) {
+  const b = world.objects.find((o) => o.type === 'beacon');
+  return !!b && Math.hypot(x + 0.5 - (b.x + b.w / 2), y + 0.5 - (b.y + b.d / 2)) <= world.region.safeRadius;
+}
+
+// Wer ist für dieses Wesen gerade erreichbar? Grau-Wesen meiden helles Licht, Bestien das Dorf,
+// Tiere wehren sich nur. Wer verblasst ist (Fade), wird übersehen, solange er nicht im Licht steht.
+function safeFrom(world, m, p) {
+  if (m.def.ai === 'grey') return staticLightAt(world, p.x, p.y) >= 0.5;
+  if (m.def.ai === 'beast') return villageAt(world, p.x, p.y);
+  return false;
+}
+
 function pickVictim(world, m, aggro) {
-  const isGreyling = m.def.ai !== 'animal';
   const hidden = (p) => p.fadeUntil > world.tick && staticLightAt(world, p.x, p.y) < 0.3;
   if (m.angryAt) {
     const p = world.players.get(m.angryAt);
     const forced = m.tauntUntil > world.tick;
-    if (p && (forced || (!hidden(p) && !(isGreyling && staticLightAt(world, p.x, p.y) >= 0.5)))) return p;
+    if (p && (forced || (!hidden(p) && !safeFrom(world, m, p)))) return p;
     m.angryAt = null;
   }
-  if (!isGreyling) return null;
+  if (m.def.ai === 'animal') return null;
   let best = null;
   let bestD = Infinity;
   for (const p of world.players.values()) {
     const d = cheb(m.x, m.y, p.x, p.y);
-    if (d > aggro || d >= bestD || hidden(p)) continue;
-    if (staticLightAt(world, p.x, p.y) >= 0.5) continue;
+    if (d > aggro || d >= bestD || hidden(p) || safeFrom(world, m, p)) continue;
     best = p;
     bestD = d;
   }
   return best;
+}
+
+// Felder eines angekündigten Angriffs.
+function specialTiles(world, m, p, pattern) {
+  let raw;
+  if (pattern === 'ring') {
+    raw = [];
+    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (dx || dy) raw.push({ x: m.x + dx, y: m.y + dy });
+  } else if (pattern === 'line') {
+    const sx = Math.sign(p.x - m.x), sy = Math.sign(p.y - m.y);
+    raw = [1, 2, 3].map((k) => ({ x: m.x + sx * k, y: m.y + sy * k }));
+  } else if (pattern === 'bigplus') {
+    raw = [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1], [2, 0], [-2, 0], [0, 2], [0, -2]].map(([dx, dy]) => ({ x: p.x + dx, y: p.y + dy }));
+  } else {
+    raw = [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]].map(([dx, dy]) => ({ x: p.x + dx, y: p.y + dy }));
+  }
+  return raw.filter((t) => walkable(world, t.x, t.y));
 }
 
 function updateMob(world, m) {
@@ -723,15 +785,17 @@ function updateMob(world, m) {
     }
     return;
   }
-  const isGreyling = def.ai !== 'animal';
   const occupiedByPlayer = (x, y) => {
     for (const p of world.players.values()) if (p.x === x && p.y === y) return true;
     return false;
   };
-  // Greylinge meiden helles Licht wie eine Wand.
+  // Grau-Wesen meiden helles Licht wie eine Wand, Bestien das Dorf.
   const canWalk = (x, y) => walkable(world, x, y) && !occupiedByPlayer(x, y)
-    && (!isGreyling || staticLightAt(world, x, y) < 0.5);
-  const rooted = world.tick < m.rootUntil;
+    && !(def.ai === 'grey' && staticLightAt(world, x, y) >= 0.5)
+    && !(def.ai === 'beast' && villageAt(world, x, y));
+  // Langsame Wesen gehen nur jeden n-ten Takt, ortsfeste nie.
+  const every = def.moveEvery ?? 1;
+  const rooted = world.tick < m.rootUntil || every === 0 || world.tick % every !== 0;
   const move = (tx, ty, away = false) => {
     if (rooted) return;
     const s = stepToward(canWalk, m.x, m.y, tx, ty, away);
@@ -769,19 +833,21 @@ function updateMob(world, m) {
   }
   if (world.tick < m.nextAttack || world.tick < m.dazzleUntil) return;
   m.attacks++;
-  const lunge = def.lunge;
-  if (lunge && m.attacks % lunge.every === 0) {
-    const tiles = [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]]
-      .map(([dx, dy]) => ({ x: p.x + dx, y: p.y + dy }))
-      .filter((t) => walkable(world, t.x, t.y));
-    const t = { id: world.nextTelegraph++, mob: m.id, victim: p.id, tiles, at: world.tick + lunge.delay, hit: lunge.hit };
+  const sp = def.special;
+  if (sp && m.attacks % sp.every === 0) {
+    const tiles = specialTiles(world, m, p, sp.pattern);
+    const t = { id: world.nextTelegraph++, mob: m.id, victim: p.id, tiles, at: world.tick + sp.delay, hit: sp.hit, name: def.name };
     world.telegraphs.push(t);
     emit(world, { type: 'telegraph', t: { id: t.id, tiles } });
-    tell(world, p.id, lunge.text, 'hurt');
-    m.nextAttack = world.tick + lunge.delay + def.attackEvery;
+    tell(world, p.id, sp.text, 'hurt');
+    m.nextAttack = world.tick + sp.delay + def.attackEvery;
     return;
   }
   m.nextAttack = world.tick + def.attackEvery;
+  if (def.drainOil && p.oil > 0) {
+    p.oil = Math.max(0, p.oil - def.drainOil);
+    tell(world, p.id, `The ${def.name} drinks from your lantern. (-${def.drainOil} oil)`, 'hurt');
+  }
   hurtPlayer(world, p, roll(world, def.hit[0], def.hit[1]), `A ${def.name}`);
 }
 
@@ -813,9 +879,9 @@ function resolveTelegraphs(world) {
     for (const p of world.players.values()) {
       if (!t.tiles.some((tile) => tile.x === p.x && tile.y === p.y)) continue;
       hitAny = true;
-      tell(world, p.id, 'The Greyling lunges and catches you!', 'hurt');
-      hurtPlayer(world, p, roll(world, t.hit[0], t.hit[1]), 'A Greyling');
+      tell(world, p.id, `The ${t.name} strikes where you stand!`, 'hurt');
+      hurtPlayer(world, p, roll(world, t.hit[0], t.hit[1]), `A ${t.name}`);
     }
-    if (!hitAny && world.players.has(t.victim)) tell(world, t.victim, 'You step aside. The Greyling lunges at nothing.', 'good');
+    if (!hitAny && world.players.has(t.victim)) tell(world, t.victim, `You step aside. The ${t.name} strikes at nothing.`, 'good');
   }
 }

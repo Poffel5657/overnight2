@@ -35,6 +35,26 @@ function choose(w, pid, fragment) {
   applyIntent(w, pid, { t: 'say', i });
 }
 
+// Spieler auf ein freies Feld neben eine Figur stellen.
+function besideNpc(w, p, id) {
+  const n = w.npcs.find((x) => x.id === id);
+  for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, -1], [1, -1], [-1, 1]]) {
+    if (S.walkable(w, n.x + dx, n.y + dy)) { p.x = n.x + dx; p.y = n.y + dy; return; }
+  }
+}
+
+// Spieler ins Dorf (an den Startpunkt) stellen.
+function inVillage(w, p) {
+  p.x = w.region.start.x; p.y = w.region.start.y;
+}
+
+// Spieler weit draußen ins Feld stellen.
+function outside(w, p) {
+  const g = w.mobs.find((m) => m.type === 'greyling');
+  p.x = g.home.x; p.y = g.home.y + 1;
+  if (!S.walkable(w, p.x, p.y)) p.y -= 2;
+}
+
 function newcomer(w, pid, cls) {
   const p = S.addPlayer(w, pid, pid);
   talk(w, pid, 'ama');
@@ -179,13 +199,13 @@ test('Angekündigter Angriff trifft nur, wer stehen bleibt', () => {
   const g = w.mobs.find((m) => m.type === 'greyling');
   const p = S.addPlayer(w, 'a', 'A');
   p.x = g.x + 1; p.y = g.y;
-  g.attacks = MOBS.greyling.lunge.every - 1;
+  g.attacks = MOBS.greyling.special.every - 1;
   g.angryAt = 'a';
   run(w, 1);
   assert.equal(w.telegraphs.length, 1, 'Ankündigung liegt');
   const hp = p.hp;
   S.walkTo(w, 'a', p.x + 2, p.y + 1);
-  run(w, MOBS.greyling.lunge.delay + 1);
+  run(w, MOBS.greyling.special.delay + 1);
   assert.equal(w.telegraphs.length, 0);
   assert.ok(p.hp >= hp - MOBS.greyling.hit[1], 'Kein voller Einschlag beim Ausweichen');
 });
@@ -223,7 +243,7 @@ test('Kindling lässt sich von Anfang bis Ende spielen', () => {
     fight(w, 'a', g, ['slash']);
   }
   assert.equal(p.quests.kindling.step, 4);
-  p.x = 27; p.y = 26;
+  besideNpc(w, p, 'ama');
   talk(w, 'a', 'ama');
   choose(w, 'a', 'Three Greylings');
   assert.ok(p.quests.kindling.done);
@@ -236,7 +256,7 @@ test('Kindling lässt sich von Anfang bis Ende spielen', () => {
 test('Weitere Klasse erst ab Stufe 10, dann über die Prüfung, Wechsel nur im Dorf', () => {
   const w = S.createWorld(REGION, 12);
   const p = newcomer(w, 'a', 'warden');
-  p.x = 25; p.y = 22;
+  besideNpc(w, p, 'tallow');
   talk(w, 'a', 'tallow');
   choose(w, 'a', 'Mender');
   assert.equal(p.dialog.page, 'trial_early');
@@ -253,11 +273,11 @@ test('Weitere Klasse erst ab Stufe 10, dann über die Prüfung, Wechsel nur im D
   assert.equal(P.countItem(p, 'bitterleaf'), 0, 'Kräuter abgegeben');
   const staff = p.bag.findIndex((s) => s?.id === 'ember_staff');
   // Draußen geht der Wechsel nicht
-  p.x = 10; p.y = 45;
+  outside(w, p);
   applyIntent(w, 'a', { t: 'use', slot: staff });
   assert.equal(p.cls, 'warden');
   // Im Dorf schon, und die Warden-Stufe bleibt
-  p.x = 28; p.y = 31;
+  inVillage(w, p);
   applyIntent(w, 'a', { t: 'use', slot: staff });
   assert.equal(p.cls, 'mender');
   assert.equal(p.classes.warden.level, UNLOCK_LEVEL);
@@ -285,15 +305,15 @@ test('Leiste: nur bekannte Fähigkeiten, Gegenstände erlaubt', () => {
 test('Höchstens zwei Berufe, Verlernen löscht den Fortschritt', () => {
   const w = S.createWorld(REGION, 14);
   const p = newcomer(w, 'a', 'warden');
-  p.x = 38; p.y = 34;
+  besideNpc(w, p, 'rook');
   talk(w, 'a', 'rook'); choose(w, 'a', 'salvage');
   talk(w, 'a', 'rook'); choose(w, 'a', 'tinkering');
   assert.deepEqual(Object.keys(p.profs).sort(), ['salvage', 'tinkering']);
   p.profs.salvage.level = 7;
-  p.x = 30; p.y = 31;
+  besideNpc(w, p, 'fen');
   talk(w, 'a', 'fen');
   assert.ok(!p.dialog.options.some((i) => TALK.fen.start.options[i].text.includes('cartography')), 'kein dritter Beruf');
-  p.x = 38; p.y = 34;
+  besideNpc(w, p, 'rook');
   talk(w, 'a', 'rook'); choose(w, 'a', 'forget salvage'); choose(w, 'a', 'Forget salvage');
   assert.ok(!p.profs.salvage);
   talk(w, 'a', 'rook'); choose(w, 'a', 'salvage');
@@ -318,7 +338,7 @@ test('Sammeln, Herstellen, Verkaufen, Kaufen', () => {
   applyIntent(w, 'a', { t: 'craft', obj: bench.id, recipe: 't_scrap_hood', n: 1 });
   assert.equal(P.countItem(p, 'scrap_hood'), 1);
   // Bei Marrow verkaufen und Brot kaufen
-  p.x = 21; p.y = 24;
+  besideNpc(w, p, 'marrow');
   const slot = p.bag.findIndex((s) => s?.id === 'scrap_hood');
   const gold = p.gold;
   applyIntent(w, 'a', { t: 'sell', shop: 'marrow', slot, n: 1 });
@@ -511,7 +531,11 @@ test('Tür führt ins andere Gebiet, der Spielstand merkt sich das Ziel', () => 
   const w = S.createWorld(REGION, 30);
   const p = newcomer(w, 'a', 'warden');
   const stairs = w.objects.find((o) => o.type === 'door' && o.to === 'drowned_chapel');
-  p.x = stairs.x + 1; p.y = stairs.y;
+  p.x = stairs.x; p.y = stairs.y - 1;
+  applyIntent(w, 'a', { t: 'act', kind: 'object', id: stairs.id, action: 'enter' });
+  run(w, 5);
+  assert.equal(p.travel, undefined, 'ohne The Older Prayer bleibt der Abstieg zu');
+  p.quests.older_prayer = { done: true };
   applyIntent(w, 'a', { t: 'act', kind: 'object', id: stairs.id, action: 'enter' });
   run(w, 5);
   assert.deepEqual(p.travel, { region: 'drowned_chapel', x: stairs.tx, y: stairs.ty });
@@ -540,4 +564,72 @@ test('Der Drift ist jeden Tag anders, am selben Tag gleich', () => {
   assert.notDeepEqual(regionFor('drift', '2026-11-11').tiles, a.tiles);
   const w = S.createWorld(a, 1);
   assert.ok(w.objects.some((o) => o.type === 'door' && o.to === 'kindle'));
+});
+
+// ---------- Neue Zonen ----------
+
+test('Bestien folgen nicht ins Dorf', () => {
+  const w = S.createWorld(REGION, 40);
+  const p = newcomer(w, 'a', 'warden');
+  const wolf = w.mobs.find((m) => m.type === 'wolf');
+  inVillage(w, p);
+  wolf.x = p.x; wolf.y = p.y - 17; wolf.home = { x: wolf.x, y: wolf.y }; wolf.angryAt = 'a';
+  assert.ok(S.walkable(w, wolf.x, wolf.y));
+  run(w, 40);
+  const beacon = w.objects.find((o) => o.type === 'beacon');
+  const d = Math.hypot(wolf.x + 0.5 - (beacon.x + 1), wolf.y + 0.5 - (beacon.y + 1));
+  assert.ok(d > w.region.safeRadius, 'Wolf bleibt außerhalb des Leuchtfeuers');
+});
+
+test('Irrlichter trinken Lampenöl', () => {
+  const w = S.createWorld(REGION, 41);
+  const p = newcomer(w, 'a', 'warden');
+  p.hp = p.maxHp = 500;
+  const wisp = w.mobs.find((m) => m.type === 'will_o_wisp');
+  p.x = wisp.x + 1; p.y = wisp.y;
+  if (!S.walkable(w, p.x, p.y)) p.x = wisp.x - 1;
+  wisp.angryAt = 'a'; wisp.attacks = 0; wisp.nextAttack = 0;
+  const oil = p.oil;
+  run(w, 3);
+  assert.ok(p.oil <= oil - MOBS.will_o_wisp.drainOil);
+});
+
+test('The Older Prayer: Schrein, Tallow, dann öffnet sich der Abstieg', () => {
+  const w = S.createWorld(REGION, 42);
+  const p = newcomer(w, 'a', 'warden');
+  p.classes.warden.level = 22;
+  besideNpc(w, p, 'tallow');
+  talk(w, 'a', 'tallow');
+  choose(w, 'a', 'You look worried');
+  assert.equal(p.quests.older_prayer.step, 0);
+  const shrine = w.objects.find((o) => o.type === 'shrine');
+  p.x = shrine.x; p.y = shrine.y - 1;
+  if (!S.walkable(w, p.x, p.y)) p.y = shrine.y + 1;
+  applyIntent(w, 'a', { t: 'act', kind: 'object', id: shrine.id, action: 'search' });
+  run(w, 3);
+  assert.equal(p.quests.older_prayer.step, 1, 'Tafel gefunden');
+  besideNpc(w, p, 'tallow');
+  talk(w, 'a', 'tallow');
+  choose(w, 'a', 'I found a tablet');
+  assert.ok(p.quests.older_prayer.done);
+  const stairs = w.objects.find((o) => o.type === 'door' && o.to === 'drowned_chapel');
+  p.x = stairs.x; p.y = stairs.y - 1;
+  applyIntent(w, 'a', { t: 'act', kind: 'object', id: stairs.id, action: 'enter' });
+  run(w, 3);
+  assert.equal(p.travel?.region, 'drowned_chapel');
+});
+
+test('Truhen öffnen sich einmal am Tag pro Spieler', () => {
+  const d = S.createWorld(regionFor('drowned_chapel'), 43);
+  const p = S.addPlayer(d, 'a', 'a', { v: 2, cls: 'warden', classes: { warden: { level: 30, xp: 0 } }, equip: { main: 'scrap_shield' } });
+  const chest = d.objects.find((o) => o.type === 'chest');
+  p.x = chest.x + 1; p.y = chest.y;
+  if (!S.walkable(d, p.x, p.y)) { p.x = chest.x; p.y = chest.y + 1; }
+  applyIntent(d, 'a', { t: 'act', kind: 'object', id: chest.id, action: 'open' });
+  run(d, 2);
+  const gold = p.gold;
+  assert.ok(gold > 0);
+  applyIntent(d, 'a', { t: 'act', kind: 'object', id: chest.id, action: 'open' });
+  run(d, 2);
+  assert.equal(p.gold, gold, 'zweites Mal leer');
 });

@@ -13,8 +13,16 @@ export const ITEMS = {
   brass_staff: { name: 'Brass Ember Staff', slot: 'main', cls: 'mender', power: 2, heal: 5, value: 60, glyph: '|', text: 'The coal sits in a brass cup and hums a little.' },
   cracked_lens: { name: 'Cracked Lens', slot: 'main', cls: 'flarecaster', power: 2, value: 12, glyph: 'o', text: 'Gathers lantern light into a point. The crack makes it angry.' },
   brass_lens: { name: 'Ground Brass Lens', slot: 'main', cls: 'flarecaster', power: 5, value: 60, glyph: 'o', text: 'Wren ground it for a week. It focuses light, and grudges.' },
+  glim_shield: { name: 'Glimsteel Shield', slot: 'main', cls: 'warden', power: 7, defence: 6, value: 140, glyph: ']', text: 'Brass folded around glimmer. It hums when the Grey is near.' },
+  greyglass_shield: { name: 'Greyglass Shield', slot: 'main', cls: 'warden', power: 10, defence: 8, value: 320, glyph: ']', text: 'You can see through it, a little. Things on the other side cannot see you.' },
+  glim_staff: { name: 'Glimsteel Staff', slot: 'main', cls: 'mender', power: 4, heal: 8, value: 140, glyph: '|', text: 'The ember sits in a cage of glimmer and never cools.' },
+  greyglass_staff: { name: 'Greyglass Staff', slot: 'main', cls: 'mender', power: 6, heal: 12, value: 320, glyph: '|', text: 'Light pools in it like water in a cupped hand.' },
+  glim_lens: { name: 'Glimsteel Lens', slot: 'main', cls: 'flarecaster', power: 8, value: 140, glyph: 'o', text: 'Ground so fine it sings when it focuses.' },
+  greyglass_lens: { name: 'Greyglass Lens', slot: 'main', cls: 'flarecaster', power: 12, value: 320, glyph: 'o', text: 'Made from the Grey itself. It hates its relatives.' },
   scrap_shivs: { name: 'Scrap Shivs', slot: 'main', cls: 'drifter', power: 3, value: 12, glyph: 'x', text: 'Two sharp bits of something that used to be useful.' },
   brass_shivs: { name: 'Brass Shivs', slot: 'main', cls: 'drifter', power: 6, value: 60, glyph: 'x', text: 'They do not reflect light. Nobody knows how.' },
+  glim_shivs: { name: 'Glimsteel Shivs', slot: 'main', cls: 'drifter', power: 9, value: 140, glyph: 'x', text: 'Two thin glints, gone before you see them.' },
+  greyglass_shivs: { name: 'Greyglass Shivs', slot: 'main', cls: 'drifter', power: 13, value: 320, glyph: 'x', text: 'They cut the dark itself. The dark complains.' },
 
   // ---------- Rüstung ----------
   scrap_hood: { name: 'Scrap Hood', slot: 'head', defence: 1, value: 6, glyph: '^', text: 'Keeps the drizzle and some of the teeth off.' },
@@ -23,15 +31,28 @@ export const ITEMS = {
   brass_hood: { name: 'Brass Hood', slot: 'head', defence: 2, value: 30, glyph: '^', text: 'A helmet that was a kettle. Still whistles in wind.' },
   brass_coat: { name: 'Brass-Ringed Coat', slot: 'body', defence: 4, value: 50, glyph: 'M', text: 'Rings of brass sewn into leather. Clinks politely.' },
   brass_boots: { name: 'Brass-Toed Boots', slot: 'feet', defence: 2, value: 30, glyph: 'u', text: 'For kicking the Grey, and doors.' },
+  glim_hood: { name: 'Glimsteel Hood', slot: 'head', defence: 3, value: 70, glyph: '^', text: 'A faint glow at the brow. Useful for reading in bed.' },
+  glim_coat: { name: 'Glimsteel Coat', slot: 'body', defence: 5, value: 110, glyph: 'M', text: 'Wolf pelt lined with glimsteel rings. Warm and stubborn.' },
+  glim_boots: { name: 'Glimsteel Boots', slot: 'feet', defence: 3, value: 70, glyph: 'u', text: 'Quiet on stone, loud on Greylings.' },
+  shell_coat: { name: 'Beetle-Shell Coat', slot: 'body', defence: 6, value: 150, glyph: 'M', text: 'Plates from Copperdeep beetles. They were not using them any more.' },
+  greyglass_hood: { name: 'Greyglass Hood', slot: 'head', defence: 4, value: 160, glyph: '^', text: 'Your thoughts echo slightly inside it.' },
+  greyglass_coat: { name: 'Greyglass Coat', slot: 'body', defence: 7, value: 260, glyph: 'M', text: 'Cold to wear, colder to hit.' },
+  greyglass_boots: { name: 'Greyglass Boots', slot: 'feet', defence: 4, value: 160, glyph: 'u', text: 'They leave no footprints. Fen finds this deeply upsetting.' },
 
   // ---------- Laternen ----------
   tin_lantern: { name: 'Tin Lantern', slot: 'lantern', light: 0, burn: 1, value: 4, glyph: 'i', text: 'Everyone in Kindle gets one. Most of them still work.' },
   brass_lantern: { name: 'Brass Lantern', slot: 'lantern', light: 1.5, burn: 0.7, value: 45, glyph: 'i', text: 'Brighter and thriftier. Wren polished the reflector with a map.' },
+  glim_lantern: { name: 'Glimsteel Lantern', slot: 'lantern', light: 2.5, burn: 0.55, value: 120, glyph: 'i', text: 'The glimmer holds some light back for later.' },
+  greyglass_lantern: { name: 'Greyglass Lantern', slot: 'lantern', light: 3.5, burn: 0.4, value: 280, glyph: 'i', text: 'It burns brightest where the Grey is thickest. Nobody likes to think about why.' },
 
   // ---------- Verbrauch ----------
   bread: { name: 'Bread', stack: true, use: { heal: 12 }, value: 3, glyph: 'n', text: 'Kindle bread. Dense enough to stop a door.' },
   lamp_oil: { name: 'Lamp Oil', stack: true, use: { oil: 40 }, value: 4, glyph: '!', text: 'Rendered from tallow. Pours slowly, burns gold.' },
   bitter_tonic: { name: 'Bitter Tonic', stack: true, use: { heal: 25 }, value: 8, glyph: '!', text: 'Tastes like a bad decision. Heals like a good one.' },
+  moss_salve: { name: 'Moss Salve', stack: true, use: { heal: 40 }, value: 16, glyph: '!', text: 'Smells like a forest floor. Works like a miracle.' },
+  dusk_draught: { name: 'Dusk Draught', stack: true, use: { glow: 200, oil: 30 }, value: 24, glyph: '!', text: 'Brewed from nightcaps. You glow, and so does your lantern.' },
+  flare_candle: { name: 'Flare Candle', stack: true, use: { glow: 150, oil: 20 }, value: 18, glyph: '!', text: 'A fat candle with a glimmer wick. Burns white.' },
+  lily_oil: { name: 'Lily Oil', stack: true, use: { oil: 80 }, value: 14, glyph: '!', text: 'Pressed from bog lilies. Burns clean and long.' },
   glow_draught: { name: 'Glow Draught', stack: true, use: { glow: 100, oil: 15 }, value: 14, glyph: '!', text: 'You glow a little. Greylings find this rude.' },
 
   // ---------- Rohstoffe ----------
@@ -43,6 +64,13 @@ export const ITEMS = {
   emberroot: { name: 'Emberroot', stack: true, value: 4, glyph: '"', text: 'A root that is warm to the touch, even in the Grey.' },
   survey_notes: { name: 'Survey Notes', stack: true, value: 5, glyph: '=', text: 'Distances, angles, and a small drawing of a worried goose.' },
   grey_wisp: { name: 'Grey Wisp', stack: true, value: 2, glyph: '~', text: 'What is left of a Greyling. It tries to get back into the fog.' },
+  moss_tuft: { name: 'Moss Tuft', stack: true, value: 4, glyph: '"', text: 'Soft, damp, faintly glowing. From Hushwood.' },
+  nightcap: { name: 'Nightcap', stack: true, value: 6, glyph: 'T', text: 'A mushroom that only opens after dark.' },
+  lily_bulb: { name: 'Lily Bulb', stack: true, value: 8, glyph: 'o', text: 'A bulb from the Sinkmarsh lilies. Oily and pale.' },
+  greyglass: { name: 'Greyglass', stack: true, value: 20, glyph: '*', text: 'Glass made of fog, somehow. Cold and very sharp.' },
+  wolf_pelt: { name: 'Wolf Pelt', stack: true, value: 6, glyph: '&', text: 'Thick grey fur that smells of pine and bad intentions.' },
+  beetle_shell: { name: 'Beetle Shell', stack: true, value: 10, glyph: ')', text: 'A plate of stone-hard shell. Rook wants these.' },
+  prayer_tablet: { name: 'Prayer Tablet', stack: true, value: 0, glyph: '=', text: 'A cracked stone tablet. The prayer on it is not addressed to the Nightwright.' },
   crow_feather: { name: 'Crow Feather', stack: true, value: 1, glyph: '/', text: 'Glossy and judgemental. Fen collects them for quills.' },
 };
 

@@ -18,6 +18,7 @@ const glowMat = new THREE.MeshBasicMaterial({ color: '#ffcf70' });
 const forgeMat = new THREE.MeshBasicMaterial({ color: '#ff8a3a' });
 const emberMat = new THREE.MeshBasicMaterial({ color: '#ff6a2a' });
 const glimmerMat = new THREE.MeshBasicMaterial({ color: '#9fe0ff' });
+const mossGlow = new THREE.MeshBasicMaterial({ color: '#9aff7a' });
 const riftMat = new THREE.MeshBasicMaterial({ color: '#c8e8ff', transparent: true, opacity: 0.75, side: THREE.DoubleSide });
 
 function hash(x, y, s = 0) {
@@ -69,6 +70,38 @@ const LOOKS = {
       g.add(wheel);
     }
     g.add(box(0.5, 0.1, 0.06, '#8a6a3a', 0.45, 0.25, 0).rotateZ(-0.6));
+  },
+  seam(g) {
+    g.add(box(0.8, 0.6, 0.5, '#6a645a', 0, 0.3, 0).rotateY(0.3));
+    for (const [x, y] of [[-0.2, 0.45], [0.15, 0.3], [0.05, 0.55]]) g.add(box(0.14, 0.08, 0.52, '#c8803a', x, y, 0).rotateY(0.3));
+  },
+  vein(g) {
+    g.add(box(0.7, 0.8, 0.6, '#5a5650', 0, 0.4, 0).rotateY(-0.4));
+    for (const [x, y] of [[-0.15, 0.6], [0.2, 0.4], [0, 0.25]]) g.add(box(0.1, 0.1, 0.62, glimmerMat, x, y, 0).rotateY(-0.4));
+  },
+  cache(g) {
+    g.add(box(0.7, 0.4, 0.5, '#3a4040', 0, 0.12, 0).rotateZ(0.2));
+    g.add(box(0.16, 0.16, 0.16, glimmerMat, 0.15, 0.36, 0.05));
+    g.add(box(0.3, 0.05, 0.3, '#2f5a5a', -0.2, 0.02, 0.2));
+  },
+  moss(g) {
+    for (let i = 0; i < 5; i++) {
+      const a = i * 1.3;
+      g.add(new THREE.Mesh(new THREE.SphereGeometry(0.15, 5, 4), mat(i % 2 ? '#4a7a3a' : '#6a9a4a')).translateX(Math.cos(a) * 0.2).translateZ(Math.sin(a) * 0.2).translateY(0.1));
+    }
+    g.add(box(0.08, 0.08, 0.08, mossGlow, 0, 0.25, 0));
+  },
+  shrooms(g) {
+    for (let i = 0; i < 5; i++) {
+      const a = i * 1.25;
+      const x = Math.cos(a) * 0.25, z = Math.sin(a) * 0.25;
+      g.add(box(0.05, 0.18, 0.05, '#d8d0c0', x, 0.09, z));
+      g.add(new THREE.Mesh(new THREE.ConeGeometry(0.11, 0.1, 6), i % 2 ? mat('#6a4a8a') : mossGlow).translateX(x).translateZ(z).translateY(0.22));
+    }
+  },
+  lily(g) {
+    g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.03, 8), mat('#3a6a3a')).translateY(0.03));
+    for (let i = 0; i < 4; i++) g.add(new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.2, 4), mat('#e8e0f0')).translateX(Math.cos(i * 1.6) * 0.08).translateZ(Math.sin(i * 1.6) * 0.08).translateY(0.13));
   },
   herbs(g) {
     for (let i = 0; i < 6; i++) {
@@ -123,6 +156,16 @@ const LOOKS = {
 };
 
 const BUILDERS = {
+  chest(o, g) {
+    g.add(box(0.7, 0.4, 0.45, '#5a3a20', 0, 0.2, 0));
+    g.add(box(0.72, 0.12, 0.47, '#6a4a2a', 0, 0.46, 0));
+    g.add(box(0.1, 0.12, 0.05, '#c8a040', 0, 0.36, 0.24));
+  },
+  shrine(o, g) {
+    g.add(box(0.8, 0.5, 0.5, '#6a6a60', 0, 0.25, 0));
+    g.add(box(0.6, 0.9, 0.12, '#5a5a52', 0, 0.9, -0.15));
+    for (const x of [-0.25, 0, 0.25]) g.add(box(0.06, 0.14, 0.06, '#e8dcc0', x, 0.57, 0.1));
+  },
   door(o, g, ctx) {
     if (o.look === 'stairs') {
       for (let i = 0; i < 4; i++) g.add(box(0.9, 0.12, 0.25, '#6a6660', 0, 0.06 + i * 0.12, 0.35 - i * 0.22));
