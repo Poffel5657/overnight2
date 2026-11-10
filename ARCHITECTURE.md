@@ -38,5 +38,5 @@ Uhrzeit testen: `?hour=16.7` setzt die Berliner Uhrzeit, `?speed=600` lässt die
 ## Look
 
 PS1-Stil: Die Szene wird etwa 240 Pixel hoch gerendert, Eckpunkte springen auf dieses Raster
-(`uSnap` in `render/light.js`, das typische Wackeln), Farben auf 5 Bit pro Kanal mit Dithering
+(`uSnap` in `render/light.js`, das typische Wackeln), Farben auf 5 Bit pro Kanal ohne Dithering
 (`ps1()` im CRT-Shader). Tag und Nacht ändern Nebelfarbe, Sichtweite und Sonne (`setSky`).

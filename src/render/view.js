@@ -11,16 +11,9 @@ const CRT_FRAG = /* glsl */`
   uniform vec2 uSrc;
   uniform float uCrt;
   varying vec2 vUv;
-  // Farben wie auf der PS1: 5 Bit pro Kanal mit geordnetem Dithering.
-  float bayer4(vec2 p) {
-    vec2 q = mod(p, 4.0);
-    int i = int(q.x) + int(q.y) * 4;
-    int m[16] = int[16](0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5);
-    return float(m[i]) / 16.0 - 0.5;
-  }
-  vec3 ps1(vec3 c, vec2 uv) {
-    vec2 sp = floor(uv * uSrc);
-    return floor(c * 31.0 + 0.5 + bayer4(sp) * 0.9) / 31.0;
+  // Farben wie auf der PS1: 5 Bit pro Kanal, ohne Dithering.
+  vec3 ps1(vec3 c) {
+    return floor(c * 31.0 + 0.5) / 31.0;
   }
   vec2 curve(vec2 uv) {
     uv = uv * 2.0 - 1.0;
@@ -31,7 +24,7 @@ const CRT_FRAG = /* glsl */`
   void main() {
     vec2 uv = mix(vUv, curve(vUv), uCrt);
     if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); return; }
-    vec3 c = ps1(texture2D(tScene, uv).rgb, uv);
+    vec3 c = ps1(texture2D(tScene, uv).rgb);
     // Glühen: helle Nachbarn bluten leicht aus
     vec2 px = 1.0 / uSrc;
     vec3 b = vec3(0.0);
