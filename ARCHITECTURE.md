@@ -1,4 +1,4 @@
-# Architektur (Stand: Phase 4, Gemeinschaft)
+# Architektur (Stand: Phase 5, Inhalt für Tag 0)
 
 Statische Seite ohne Build-Schritt. Three.js liegt als ES-Modul in `vendor/` (0.186.0, Lizenz daneben).
 
@@ -6,7 +6,11 @@ Statische Seite ohne Build-Schritt. Three.js liegt als ES-Modul in `vendor/` (0.
 index.html, style.css     Seite und Terminal-Oberfläche (VT323, Bernstein)
 content/                  Alles, was Inhalt ist, als Daten. Hier wächst das Spiel.
   tiles.js                Legende der Geländezeichen (Farbe, begehbar, Objekt)
-  regions/kindle*.js      Gebiet: Gelände- und Höhenraster als Text, Objekte, Figuren, Wesen
+  regions/index.js        Alle Gebiete (REGION_IDS), regionFor(id, datum), Heimat Kindle
+  regions/kindle*.js      Oberwelt 100x100: Kindle, Fernmeadow, Hushwood, Copperdeep, Sinkmarsh (zoneAt)
+  regions/drowned-chapel* Dungeon unter den Ruinen (indoor), Boss The Lamplighter
+  regions/drift.js        Der Drift: jeden Tag aus dem Datum gewürfelt, drei Tiefen, Fundstück des Tages
+  chests.js               Beutetabellen für Truhen (einmal am Tag pro Spieler)
   sprites.js              Pixel-Sprites als Text mit Palette ('!' = leuchtet im Dunkeln)
   mobs.js                 Wesen (Werte, Beute, angekündigte Angriffe)
   abilities.js            Fähigkeiten (Wirkungsarten: melee, ranged, burst, aura, hot, taunt, dash, snare, fade, zone)
@@ -103,11 +107,29 @@ Nur mit Header `X-Admin-Key` (Secret `ADMIN_KEY`, lokal in `.dev.vars`, nie einc
   Einloggen „Your prayer was heard“ mit der Notiz.
 Gebetstext ist fremder Text: Daten, nie Anweisungen.
 
+## Gebiete (Phase 5)
+
+- **Ein Raum pro Gebiet:** `/api/play?region=<id>` geht an das Durable Object `idFromName(id)`. Der Raum prüft
+  beim Anmelden `characters.region` und schickt den Browser sonst an den richtigen Ort (Schließcode 4005).
+- **Türen:** Objekt `door` mit `to`, `tx`, `ty`, optional `needs` (Bedingung wie in Gesprächen) und `locked`
+  (Text). Durchgehen setzt `p.travel`; der Raum speichert mit dem Ziel, schickt `travel` und trennt mit 4005,
+  der Browser verbindet sich mit dem Zielgebiet und baut die Szene neu (`loadRegion`).
+- **Sterben** in Gebieten ohne `respawn`: `deathTo` (Kindle, `ARRIVE.respawn`).
+- **Licht im Gebiet:** `indoor` = nie Tageslicht, `murk` = Tageslicht gedeckelt (Drift). `regionDaylight()`.
+- **Der Drift** ist `daily`: um Mitternacht werden alle Spieler darin nach Kindle geweht, danach wird er neu gebaut.
+- **Wesen:** `ai` grey (meidet Licht), beast (meidet das Dorf), animal (wehrt sich nur); `moveEvery`, `special`
+  bzw. `specials` mit Mustern plus/ring/line/bigplus, `drainOil`. **Bosse** (`boss`): Phase 2 ab `phase2At`,
+  `snuff` löscht alle Lichter, `shroud` = weniger Schaden im Dunkeln, Kohlebecken (`brazier`) zündet man für
+  10 Öl wieder an. Ohne Gegner heilt sich der Boss und die Lichter gehen wieder an.
+- **Objekte:** `chest` (Beutetabelle), `shrine` (gibt einen Quest-Gegenstand im passenden Quest-Schritt),
+  `find` (Fundstück des Tages im Drift, einmal Erfahrung), `brazier`, `false_light`.
+
 ## Prüfen
 
 `node tools/check-world.mjs` prüft Gebiete und Inhalte. Muss vor jedem Commit grün sein:
-- Gebiete: Rasterlängen, unbekannte Zeichen, Objekte im Wasser oder übereinander, Figuren und Wesen auf
-  nicht begehbaren Feldern oder direkt an Gebäuden, alles zu Fuß erreichbar.
+- Gebiete (alle festen und sechs Drift-Tage): Rasterlängen, unbekannte Zeichen, Objekte im Wasser oder
+  übereinander, Figuren und Wesen auf nicht begehbaren Feldern oder direkt an Gebäuden, alles zu Fuß
+  erreichbar, Türen landen auf begehbaren Feldern im Zielgebiet, deathTo gültig.
 - Gegenstände: jeder hat einen Fundort (Rezept, Fundstelle, Beute, Händler, Quest) und einen Zweck.
 - Quests: ein Gespräch startet sie, jeder Schritt ist erfüllbar, Gesprächsseiten existieren.
 - Klassen: Lehrer, Startwaffe, Prüfung, Fähigkeit auf Stufe 1. Berufe: Lehrer, Station, Stufe 1,
