@@ -10,6 +10,7 @@ import { parseIntent, applyIntent, welcomeFor, tickFor } from '../shared/protoco
 import { regionDaylight, berlinDate } from '../shared/daylight.js';
 import { BALLOT } from '../content/ballot.js';
 import { accountForToken } from './auth.js';
+import { CONTENT_SIG } from '../shared/version.js';
 
 export const MAX_PLAYERS = 100;
 
@@ -117,11 +118,28 @@ export class RegionRoom {
     const msg = parseIntent(typeof raw === 'string' ? raw : '');
     if (!msg) return;
     if (msg.t === 'hello') {
-      if (!conn.pid) await this.join(ws, conn, msg.token);
+      if (conn.pid) return;
+      if (msg.sig && msg.sig !== CONTENT_SIG && await this.restartFor(msg.sig)) return;
+      await this.join(ws, conn, msg.token);
       return;
     }
     if (!conn.pid || msg.t === 'ping') return;
     applyIntent(this.world, conn.pid, msg);
+  }
+
+  // Eine Seite mit anderen Inhalten meldet sich: Vielleicht läuft dieser Raum noch mit altem Code.
+  // Einmal pro fremder Prüfsumme neu starten (danach läuft der zuletzt veröffentlichte Code).
+  // Ist danach immer noch etwas anders, ist die Seite veraltet; dann bittet der Browser ums Neuladen.
+  async restartFor(sig) {
+    const tried = await this.ctx.storage.get('restartedFor');
+    if (tried === sig) return false;
+    await this.ctx.storage.put('restartedFor', sig);
+    if (this.world) await this.saveAll().catch(() => {});
+    for (const ws of this.conns.keys()) {
+      try { ws.close(4006, 'Kindle was rebuilt'); } catch { /* schon zu */ }
+    }
+    this.ctx.abort('content changed');
+    return true;
   }
 
   async join(ws, conn, token) {

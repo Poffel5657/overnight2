@@ -7,6 +7,7 @@ import { regionFor, HOME_REGION } from '../content/regions/index.js';
 import { TICK_MS, createWorld, step, addPlayer, removePlayer, saveFor, drainEvents } from '../shared/sim.js';
 import { applyIntent, welcomeFor, tickFor } from '../shared/protocol.js';
 import { regionDaylight, berlinDate } from '../shared/daylight.js';
+import { CONTENT_SIG } from '../shared/version.js';
 
 const LOCAL_SAVE = 'overnight2.offline';
 
@@ -74,7 +75,7 @@ export class NetConnection {
     this.offline = false;
     const url = `${server.replace(/^http/, 'ws')}/api/play?region=${encodeURIComponent(region)}`;
     this.ws = new WebSocket(url);
-    this.ws.addEventListener('open', () => this.ws.send(JSON.stringify({ t: 'hello', token })));
+    this.ws.addEventListener('open', () => this.ws.send(JSON.stringify({ t: 'hello', token, sig: CONTENT_SIG })));
     this.ws.addEventListener('message', (e) => {
       let msg;
       try { msg = JSON.parse(e.data); } catch { return; }

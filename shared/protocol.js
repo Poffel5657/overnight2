@@ -7,6 +7,7 @@ import { handIn, feedBeacon, pray, donate, PRAYER_MAX } from './community.js';
 import { useSlot, unequip, dropSlot, craft, buy, sell } from './trade.js';
 import { stateOf } from './player.js';
 import { SLOTS } from '../content/items.js';
+import { CONTENT_SIG } from './version.js';
 
 const ID = /^[a-z0-9_]{1,24}$/;
 const BAR_ID = /^(item:)?[a-z0-9_]{1,24}$/;
@@ -24,7 +25,8 @@ export function parseIntent(raw) {
   try { m = JSON.parse(raw); } catch { return null; }
   if (!m || typeof m !== 'object') return null;
   switch (m.t) {
-    case 'hello': return typeof m.token === 'string' && m.token.length <= 128 ? { t: 'hello', token: m.token } : null;
+    case 'hello': return typeof m.token === 'string' && m.token.length <= 128
+      ? { t: 'hello', token: m.token, sig: typeof m.sig === 'string' && m.sig.length <= 16 ? m.sig : null } : null;
     case 'walk': return coord(m.x) && coord(m.y) ? { t: 'walk', x: m.x, y: m.y } : null;
     case 'act': return KINDS.has(m.kind) && ID.test(String(m.id)) && ACTIONS.has(m.action) ? { t: 'act', kind: m.kind, id: m.id, action: m.action } : null;
     case 'ability': return BAR_ID.test(String(m.id)) ? { t: 'ability', id: m.id } : null;
@@ -95,6 +97,7 @@ export function welcomeFor(world, pid) {
     telegraphs: world.telegraphs.map((t) => ({ id: t.id, tiles: t.tiles })),
     community: world.community,
     date: world.date,
+    sig: CONTENT_SIG,
   };
 }
 

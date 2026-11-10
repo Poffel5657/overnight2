@@ -22,6 +22,7 @@ import { LocalConnection, NetConnection } from './net.js';
 import { createLogin } from './login.js';
 import { SERVER, OFFLINE } from './config.js';
 import { CHRONICLE } from '../content/chronicle.js';
+import { CONTENT_SIG } from '../shared/version.js';
 
 const canvas = document.getElementById('view');
 const view = createView(canvas);
@@ -253,6 +254,7 @@ function flushEvents(events) {
 
 function onMessage(msg) {
   if (msg.t === 'welcome') {
+    if (msg.sig && msg.sig !== CONTENT_SIG) banner('KINDLE HAS CHANGED. TAP HERE TO RELOAD.');
     loadRegion(msg.region, msg.regionDate);
     rememberRegion(msg.region);
     mirror.you = msg.you;
@@ -355,8 +357,8 @@ function onClosed(msg) {
     login.show('Your name was forgotten by the Beacon. Please sign in again.');
     return;
   }
-  // 4005: Reise in ein anderes Gebiet, gleich neu verbinden.
-  if (msg.code === 4005) {
+  // 4005: Reise in ein anderes Gebiet, 4006: der Server hat sich gerade erneuert. Gleich neu verbinden.
+  if (msg.code === 4005 || msg.code === 4006) {
     connect();
     return;
   }
