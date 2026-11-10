@@ -823,7 +823,7 @@ function frame(now) {
   if (me) {
     const zone = self && region.zoneAt ? region.zoneAt(self.x, self.y) : region.name;
     if (zone !== lastZone) {
-      if (lastZone && zone !== 'KINDLE') ui.log(`You enter ${zone[0]}${zone.slice(1).toLowerCase()}.`, 'sys');
+      if (lastZone && zone !== 'KINDLE') ui.log(`You enter: ${zone}.`, 'sys');
       lastZone = zone;
     }
     ui.updateStatus(me, zone);

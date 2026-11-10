@@ -89,8 +89,9 @@ button:hover, button:focus-visible { color: var(--bright); outline: none; }
 }
 .wtitle button { padding: 0; color: var(--accent); }
 
-.status { top: var(--gap); left: var(--gap); width: 270px; }
-.status-row { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); }
+.status { top: var(--gap); left: var(--gap); width: 320px; }
+.status-row { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); white-space: nowrap; }
+.status-row span { overflow: hidden; text-overflow: ellipsis; }
 
 .bar { display: flex; align-items: center; gap: 6px; margin-top: 3px; }
 .bar-label { width: 30px; color: var(--muted); }

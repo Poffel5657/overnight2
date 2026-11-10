@@ -156,6 +156,14 @@ const LOOKS = {
 };
 
 const BUILDERS = {
+  find(o, g) {
+    // Das Fundstück des Tages: ein schiefer Gegenstand im Nebel, mit einem kalten Schimmer darüber.
+    g.add(box(0.6, 0.5, 0.4, '#6a645a', 0, 0.25, 0).rotateZ(0.4).rotateY(0.6));
+    g.add(box(0.3, 0.6, 0.3, '#8a847a', 0.25, 0.3, -0.1).rotateZ(-0.3));
+    const glint = new THREE.Mesh(new THREE.OctahedronGeometry(0.12, 0), glimmerMat);
+    glint.position.y = 1.1;
+    g.add(glint);
+  },
   chest(o, g) {
     g.add(box(0.7, 0.4, 0.45, '#5a3a20', 0, 0.2, 0));
     g.add(box(0.72, 0.12, 0.47, '#6a4a2a', 0, 0.46, 0));

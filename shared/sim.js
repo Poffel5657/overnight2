@@ -218,6 +218,7 @@ export function objectActions(o) {
     case 'door': return [['enter', o.look === 'stairs' ? 'Climb' : 'Enter'], ['examine', 'Examine']];
     case 'chest': return [['open', 'Open'], ['examine', 'Examine']];
     case 'shrine': return [['search', 'Search'], ['examine', 'Examine']];
+    case 'find': return [['search', 'Look closer'], ['examine', 'Examine']];
     case 'altar': return [['pray', 'Pray'], ['examine', 'Examine']];
     case 'signal':
     case 'brazier': return o.lit ? [['examine', 'Examine']] : [['light', 'Light'], ['examine', 'Examine']];
@@ -260,6 +261,7 @@ export function interact(world, pid, ref, action) {
     else if (target.type === 'signal' && target.lit) text = EXAMINE.signalLit;
     else if (target.type === 'node') text = target.left > 0 ? `${NODES[target.node].name}. ${EXAMINE.node}` : EXAMINE.depleted;
     else if (target.type === 'station') text = EXAMINE[target.station];
+    else if (target.type === 'find') text = `${target.name[0].toUpperCase()}${target.name.slice(1)}. Something about it is worth a closer look.`;
     else text = EXAMINE[target.type];
     tell(world, pid, text || 'Nothing remarkable.', 'sys');
     return;
@@ -498,6 +500,15 @@ function doAction(world, p, goal) {
     travel(world, p, { region: t.to, x: t.tx, y: t.ty });
   } else if (goal.action === 'open' && t.type === 'chest') {
     openChest(world, p, t);
+  } else if (goal.action === 'search' && t.type === 'find') {
+    const d = dailyOf(world, p);
+    d.chests = d.chests || [];
+    tell(world, p.id, t.text, 'sys');
+    if (!d.chests.includes(`find:${world.date}`)) {
+      d.chests.push(`find:${world.date}`);
+      tell(world, p.id, 'You will remember this. Pell would want to hear about it.', 'good');
+      grantXp(world, p, 80 + 10 * P.classLevel(p));
+    }
   } else if (goal.action === 'search' && t.type === 'shrine') {
     const st = p.quests[t.quest];
     if (st && !st.done && st.step === t.step && P.countItem(p, t.gives) === 0) {

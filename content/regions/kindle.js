@@ -103,7 +103,7 @@ export const REGION = {
     {type: 'signal', x: 50, y: 80, light: 5, name: 'a signal fire'},
     {type: 'signal', x: 80, y: 56, light: 5, name: 'a signal fire'},
     {type: 'door', to: 'drowned_chapel', tx: 18, ty: 36, x: 50, y: 93, name: 'stairs into the ruins', look: 'stairs', needs: {quest: {older_prayer: 'done'}}, locked: 'A cold that is not water fills the stairwell. Brother Tallow might know more.'},
-    {type: 'door', to: 'drift', tx: 24, ty: 43, x: 50, y: 3, name: 'a tear in the Grey', look: 'rift'},
+    {type: 'door', to: 'drift', tx: 32, ty: 58, x: 50, y: 3, name: 'a tear in the Grey', look: 'rift'},
   ],
   npcs: [
     {id: 'ama', name: 'Warden Ama', sprite: 'ama', x: 48, y: 47},
