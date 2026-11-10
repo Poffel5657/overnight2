@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" class="crt-on">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Overnight</title>
+  <meta name="description" content="A small browser MMO that grows every night.">
+  <meta name="theme-color" content="#0b0906">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+    { "imports": { "three": "./vendor/three.module.js" } }
+  </script>
+</head>
+<body>
+  <canvas id="view" aria-label="The world"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <!-- Statusfenster oben links -->
+  <section class="window status" aria-label="Status">
+    <h2 class="wtitle">[ OVERNIGHT // DAY 0 ]</h2>
+    <div class="status-row"><span id="st-place">KINDLE</span><span id="st-class">WARDEN LV 1</span></div>
+    <div class="bar hp"><span class="bar-label">HP</span><div class="bar-track"><div class="bar-fill" id="hp-fill"></div></div><span id="hp-text">30/30</span></div>
+    <div class="bar fuel"><span class="bar-label">OIL</span><div class="bar-track"><div class="bar-fill" id="fuel-fill"></div></div><span id="fuel-text">100</span></div>
+  </section>
+
+  <!-- Zielrahmen -->
+  <section class="window target" id="target" hidden aria-live="polite">
+    <h2 class="wtitle" id="target-name">[ TARGET ]</h2>
+    <div class="bar hp"><div class="bar-track"><div class="bar-fill" id="target-fill"></div></div><span id="target-text"></span></div>
+    <div class="target-note" id="target-note"></div>
+  </section>
+
+  <!-- Knöpfe oben rechts -->
+  <div class="topbuttons">
+    <button type="button" id="btn-crt">[ CRT: ON ]</button>
+    <button type="button" id="btn-help">[ ? ]</button>
+  </div>
+
+  <!-- Log unten links -->
+  <section class="window log" id="log-window" aria-label="Log">
+    <h2 class="wtitle"><button type="button" id="btn-log">[ LOG ]</button></h2>
+    <ol id="log" aria-live="polite"></ol>
+  </section>
+
+  <!-- Fähigkeitenleiste -->
+  <nav class="hotbar" id="hotbar" aria-label="Abilities"></nav>
+
+  <!-- Kamera am Handy -->
+  <div class="camera-buttons" aria-label="Camera">
+    <button type="button" id="cam-left" aria-label="Turn camera left">&lt;</button>
+    <button type="button" id="cam-right" aria-label="Turn camera right">&gt;</button>
+  </div>
+
+  <!-- Rechtsklick-Menü, Dialog, Hilfe, Mauszeigertext -->
+  <div class="menu window" id="menu" hidden role="menu"></div>
+  <section class="window dialog" id="dialog" hidden aria-live="polite">
+    <h2 class="wtitle" id="dialog-name"></h2>
+    <p id="dialog-text"></p>
+    <div class="dialog-options" id="dialog-options"></div>
+  </section>
+  <section class="window help" id="help" hidden>
+    <h2 class="wtitle">[ HOW TO PLAY ]</h2>
+    <p>CLICK: walk, talk, attack. RIGHT-CLICK / HOLD: all actions.</p>
+    <p>TAB: next target. 1-9: abilities. ARROWS / Q E / MIDDLE-DRAG: turn camera. WHEEL: zoom.</p>
+    <p>Your lantern burns oil out in the Grey. Fill it at the Beacon.</p>
+    <p>Greylings are bold in the dark. Light makes them shy.</p>
+    <p>PROTOTYPE. Nothing is saved yet.</p>
+    <button type="button" id="btn-help-close">[ OK ]</button>
+  </section>
+  <div class="hovertext" id="hovertext" hidden></div>
+  <div id="floaters" aria-hidden="true"></div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

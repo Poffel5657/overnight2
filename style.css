@@ -1,0 +1,202 @@
+/* Overnight 2: Terminal-Oberfläche über der 3D-Welt. Farben nur über die Tokens hier. */
+
+@font-face {
+  font-family: 'VT323';
+  src: url('fonts/vt323.woff2') format('woff2');
+  font-display: swap;
+}
+
+:root {
+  --bg: #0b0906;
+  --panel: rgba(14, 10, 6, 0.88);
+  --line: #5a3f17;
+  --text: #ffc773;
+  --bright: #ffe2b0;
+  --muted: #b08040;
+  --accent: #ffb347;
+  --danger: #ff6b4a;
+  --good: #a8d86e;
+  --oil: #ffd060;
+  --glow: rgba(255, 170, 60, 0.45);
+  --ui-font: 'VT323', ui-monospace, "DejaVu Sans Mono", Menlo, Consolas, monospace;
+  --gap: 10px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font: 20px/1.2 var(--ui-font);
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: none;
+}
+.crt-on body { text-shadow: 0 0 5px var(--glow); }
+
+#view {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: block;
+  cursor: crosshair;
+}
+
+/* Scanlines auch über der Oberfläche, damit sie zur Welt passt */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  display: none;
+  background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 3px);
+}
+.crt-on .scanlines { display: block; }
+
+button {
+  font: inherit;
+  color: var(--text);
+  background: none;
+  border: 0;
+  padding: 2px 4px;
+  cursor: pointer;
+  text-shadow: inherit;
+}
+button:hover, button:focus-visible { color: var(--bright); outline: none; }
+
+/* ---------- Fenster ---------- */
+
+.window {
+  position: fixed;
+  z-index: 20;
+  background: var(--panel);
+  border: 3px double var(--line);
+  padding: 4px 10px 8px;
+}
+.wtitle {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: normal;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+.wtitle button { padding: 0; color: var(--accent); }
+
+.status { top: var(--gap); left: var(--gap); width: 270px; }
+.status-row { display: flex; justify-content: space-between; color: var(--muted); }
+
+.bar { display: flex; align-items: center; gap: 6px; margin-top: 3px; }
+.bar-label { width: 30px; color: var(--muted); }
+.bar-track { flex: 1; height: 12px; border: 1px solid var(--line); background: #000; }
+.bar-fill { height: 100%; width: 100%; background: var(--good); transition: width 0.2s; }
+.fuel .bar-fill { background: var(--oil); }
+.bar span:last-child { min-width: 48px; text-align: right; }
+
+.target { top: var(--gap); left: 50%; transform: translateX(-50%); width: 260px; }
+.target .bar-fill { background: var(--danger); }
+.target-note { color: var(--muted); font-size: 18px; min-height: 18px; }
+
+.topbuttons { position: fixed; top: var(--gap); right: var(--gap); z-index: 30; display: flex; gap: 4px; background: var(--panel); border: 3px double var(--line); }
+
+.log { left: var(--gap); bottom: var(--gap); width: 380px; max-height: 190px; display: flex; flex-direction: column; }
+.log ol { list-style: none; margin: 0; padding: 0; overflow-y: auto; font-size: 18px; flex: 1; }
+.log li { margin: 0 0 2px; }
+.log li.sys { color: var(--muted); }
+.log li.hurt { color: var(--danger); }
+.log li.good { color: var(--good); }
+.log.collapsed ol { display: none; }
+
+/* ---------- Leiste 1-9 ---------- */
+
+.hotbar {
+  position: fixed;
+  z-index: 25;
+  bottom: var(--gap);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--panel);
+  border: 3px double var(--line);
+}
+.slot {
+  position: relative;
+  width: 64px;
+  height: 56px;
+  border: 1px solid var(--line);
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  overflow: hidden;
+}
+.slot .key { position: absolute; top: 2px; left: 4px; font-size: 16px; color: var(--muted); }
+.slot .glyph { font-size: 26px; color: var(--bright); }
+.slot .name { font-size: 15px; color: var(--muted); }
+.slot.empty .glyph { color: var(--line); }
+.slot .cd { position: absolute; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.72); pointer-events: none; }
+.slot.flash { border-color: var(--bright); }
+.slot.unusable .glyph { color: var(--muted); }
+
+.camera-buttons { position: fixed; right: var(--gap); bottom: 90px; z-index: 25; display: none; flex-direction: column; gap: 6px; }
+.camera-buttons button { width: 48px; height: 48px; background: var(--panel); border: 3px double var(--line); font-size: 26px; }
+
+/* ---------- Menü, Dialog, Hilfe ---------- */
+
+.menu { z-index: 60; min-width: 180px; padding: 2px 0; }
+.menu button { display: block; width: 100%; text-align: left; padding: 3px 12px; }
+.menu button:hover, .menu button:focus-visible { background: rgba(255, 179, 71, 0.15); }
+.menu .verb { color: var(--bright); }
+.menu .noun { color: var(--accent); }
+
+.dialog { left: 50%; bottom: 90px; transform: translateX(-50%); width: min(560px, calc(100vw - 2 * var(--gap))); z-index: 40; }
+.dialog p { margin: 0 0 8px; color: var(--bright); }
+.dialog-options { display: flex; flex-wrap: wrap; gap: 4px 14px; }
+
+.help { left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(520px, calc(100vw - 2 * var(--gap))); z-index: 70; }
+.help p { margin: 0 0 6px; }
+
+.hovertext { position: fixed; z-index: 45; pointer-events: none; font-size: 18px; color: var(--bright); text-shadow: 0 0 4px #000, 0 0 2px #000; }
+
+/* Zahlen über Köpfen */
+#floaters { position: fixed; inset: 0; pointer-events: none; z-index: 15; }
+.floater { position: absolute; transform: translate(-50%, -100%); font-size: 24px; color: var(--danger); text-shadow: 0 0 3px #000, 0 0 2px #000; animation: rise 0.9s ease-out forwards; }
+.floater.heal { color: var(--good); }
+.floater.info { color: var(--bright); font-size: 18px; }
+.overhead { position: absolute; transform: translate(-50%, -100%); width: 36px; height: 5px; border: 1px solid #000; background: #300; }
+.overhead div { height: 100%; background: var(--danger); }
+@keyframes rise { from { opacity: 1; margin-top: 0; } to { opacity: 0; margin-top: -36px; } }
+
+/* ---------- Handy ---------- */
+
+@media (pointer: coarse) {
+  .camera-buttons { display: flex; }
+}
+@media (max-width: 720px) {
+  :root { --gap: 6px; }
+  html, body { font-size: 18px; }
+  .status { width: 200px; padding: 2px 6px 4px; }
+  .wtitle { font-size: 17px; }
+  .target { top: auto; bottom: 150px; width: 200px; }
+  .log { width: calc(100vw - 2 * var(--gap)); max-height: 92px; bottom: 70px; padding: 2px 8px 4px; }
+  .log ol { font-size: 16px; }
+  .slot { width: 38px; height: 50px; }
+  .slot .name { display: none; }
+  .slot .glyph { font-size: 22px; }
+  .hotbar { gap: 2px; padding: 2px; }
+  .dialog { bottom: 140px; }
+  .camera-buttons { bottom: 200px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .floater { animation-duration: 0.01s; }
+}
