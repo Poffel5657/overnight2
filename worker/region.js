@@ -10,6 +10,10 @@ import { skyState } from '../shared/daylight.js';
 import { accountForToken } from './auth.js';
 
 export const MAX_PLAYERS = 100;
+
+// Für die Bestenliste: höchste Klassenstufe und gesammelte Erfahrung über alle Klassen.
+const bestLevel = (save) => Math.max(1, ...Object.values(save.classes || {}).map((c) => c.level));
+const totalXp = (save) => Object.values(save.classes || {}).reduce((s, c) => s + c.xp, 0);
 const HELLO_TIMEOUT_MS = 10000;
 const SAVE_EVERY_TICKS = 100;
 // Token-Bucket pro Verbindung: so viele Nachrichten auf einmal, danach BUCKET_RATE pro Sekunde.
@@ -145,7 +149,7 @@ export class RegionRoom {
       `INSERT INTO characters (account_id, region, data, level, xp, updated_at) VALUES (?, ?, ?, ?, ?, ?)
        ON CONFLICT(account_id) DO UPDATE SET region = excluded.region, data = excluded.data,
        level = excluded.level, xp = excluded.xp, updated_at = excluded.updated_at`,
-    ).bind(accountId, REGION.id, JSON.stringify(save), save.level, save.xp, Date.now());
+    ).bind(accountId, REGION.id, JSON.stringify(save), bestLevel(save), totalXp(save), Date.now());
   }
 
   async leave(ws) {

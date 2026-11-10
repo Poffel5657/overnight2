@@ -6,6 +6,7 @@
 
 export const NODES = {
   scrap_heap: { name: 'Scrap Heap', prof: 'salvage', level: 1, item: 'scrap', yields: 4, xp: 8, respawn: 60, look: 'heap', verb: 'Salvage' },
+  rusted_cart: { name: 'Rusted Cart', prof: 'salvage', level: 4, item: 'scrap', extra: ['brass_bits', 0.3], yields: 4, xp: 13, respawn: 70, look: 'cart', verb: 'Salvage' },
   brass_wreck: { name: 'Brass Wreck', prof: 'salvage', level: 8, item: 'brass_bits', extra: ['glimmer', 0.12], yields: 3, xp: 18, respawn: 90, look: 'wreck', verb: 'Salvage' },
   bitterleaf_patch: { name: 'Bitterleaf', prof: 'foraging', level: 1, item: 'bitterleaf', yields: 4, xp: 8, respawn: 50, look: 'herbs', verb: 'Forage' },
   wild_hive: { name: 'Wild Hive', prof: 'foraging', level: 3, item: 'wax_comb', yields: 3, xp: 12, respawn: 70, look: 'hive', verb: 'Forage' },

@@ -60,6 +60,15 @@ const LOOKS = {
     for (const x of [-0.3, 0, 0.3]) g.add(box(0.06, 0.6, 0.06, '#c8a050', x, 0.4, 0.2));
     g.add(box(0.2, 0.1, 0.2, glimmerMat, 0.25, 0.42, -0.1));
   },
+  cart(g) {
+    g.add(box(0.8, 0.3, 0.5, '#6a4a2a', 0, 0.35, 0).rotateZ(0.12));
+    for (const [x, z] of [[-0.3, 0.28], [0.3, 0.28]]) {
+      const wheel = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.04, 4, 8), mat('#5a5048'));
+      wheel.position.set(x, 0.18, z);
+      g.add(wheel);
+    }
+    g.add(box(0.5, 0.1, 0.06, '#8a6a3a', 0.45, 0.25, 0).rotateZ(-0.6));
+  },
   herbs(g) {
     for (let i = 0; i < 6; i++) {
       const a = i * 1.1;

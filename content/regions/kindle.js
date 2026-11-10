@@ -36,6 +36,8 @@ export const REGION = {
     { type: 'node', node: 'scrap_heap', x: 47, y: 36 },
     { type: 'node', node: 'scrap_heap', x: 38, y: 44 },
     { type: 'node', node: 'scrap_heap', x: 21, y: 47 },
+    { type: 'node', node: 'rusted_cart', x: 42, y: 39 },
+    { type: 'node', node: 'rusted_cart', x: 16, y: 41 },
     { type: 'node', node: 'brass_wreck', x: 47, y: 13 },
     { type: 'node', node: 'brass_wreck', x: 50, y: 21 },
     { type: 'node', node: 'bitterleaf_patch', x: 14, y: 21 },

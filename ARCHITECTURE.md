@@ -1,4 +1,4 @@
-# Architektur (Stand: Phase 2, Server und Konten)
+# Architektur (Stand: Phase 3, Kernsysteme)
 
 Statische Seite ohne Build-Schritt. Three.js liegt als ES-Modul in `vendor/` (0.186.0, Lizenz daneben).
 
@@ -8,19 +8,30 @@ content/                  Alles, was Inhalt ist, als Daten. Hier wächst das Spi
   tiles.js                Legende der Geländezeichen (Farbe, begehbar, Objekt)
   regions/kindle*.js      Gebiet: Gelände- und Höhenraster als Text, Objekte, Figuren, Wesen
   sprites.js              Pixel-Sprites als Text mit Palette ('!' = leuchtet im Dunkeln)
-  mobs.js                 Wesen (Werte, angekündigte Angriffe)
-  abilities.js            Fähigkeiten der Leiste 1-9
-  npcs.js                 Gespräche und Beschreibungen
+  mobs.js                 Wesen (Werte, Beute, angekündigte Angriffe)
+  abilities.js            Fähigkeiten (Wirkungsarten: melee, ranged, burst, aura, hot, taunt, dash, snare, fade, zone)
+  classes.js              Vier Klassen: Lehrer, Startwaffe, Prüfung, Fähigkeiten pro Stufe
+  items.js                Gegenstände (Platz, Klasse der Waffe, Werte, Wirkung, Preis)
+  professions.js          Sechs Berufe, höchstens zwei pro Spieler
+  nodes.js, recipes.js    Fundstellen für Sammelberufe, Rezepte für Herstellberufe
+  quests.js               Quests als Schritte (talk, kill, have, action, flag) mit Belohnung
+  shops.js                Händler
+  npcs.js                 Gespräche mit Bedingungen (if) und Wirkungen (do), Beschreibungen
 shared/                   Reine Spiellogik ohne DOM, läuft auf dem Server und offline im Browser
   sim.js                  Welt eines Gebiets im Takt (300 ms): Spieler, Laufen, Kampf, Licht/Öl, Wesen
   protocol.js             Nachrichten: Absichten prüfen (parseIntent), Takt pro Spieler (tickFor)
   path.js                 Wegfindung (A*, acht Richtungen)
   daylight.js             Tag und Nacht nach der echten Sonne über Berlin
+  player.js               Spieler: Klassen, Beutel, Ausrüstung, Berufe, Leisten, Spielstand (v2, migrate)
+  talk.js                 Gespräche und Quests (Bedingungen, Wirkungen, Fortschritt, Belohnungen)
+  trade.js                Sammeln, Herstellen, Kaufen, Verkaufen, Benutzen, Anlegen, Klassenwechsel
+  events.js               tell/emit/float: Ereignisse an Spieler
 src/                      Browser
   main.js                 Spiegelwelt aus den Server-Nachrichten, Darstellung, Eingabe
   net.js                  NetConnection (WebSocket) und LocalConnection (offline, gleiche Nachrichten)
   login.js, config.js     Anmelden, Server-Adresse (?server=, ?offline=1)
-  ui.js                   Fenster, Leiste, Menü, Dialog, Zahlen
+  ui.js                   Status, Leiste (Belegung, Tasten), Menü, Gespräch, Zahlen, Namen, Markierungen
+  windows.js              Fenster CHAR, BAG, QUESTS, Herstellen, Händler, Tasten
   render/view.js          Renderer, Kamera, CRT-Shader, Nebelwand
   render/light.js         Licht und Nebel als Shader-Zusatz für alle Materialien
   render/terrain.js       Gelände aus dem Raster (Vertex-Farben, flach schattiert)
@@ -53,11 +64,32 @@ Schließcodes: 4001 Anmeldung ungültig, 4002 woanders angemeldet, 4003 zu viele
 Neue Spielstand-Felder: in `saveOf` ergänzen und in `addPlayer` mit Standardwert prüfen (alte Stände
 haben sie nicht).
 
+## Spielsysteme (Phase 3)
+
+- **Klassen:** Die Hauptwaffe in der Hand bestimmt die Klasse (`items.js`: `cls`). Jede Klasse hat eigene
+  Stufe und Erfahrung (`player.classes`), eigene Leiste (`player.bars[klasse]`). Die erste wählt man bei
+  Ama (Quest `kindling`), weitere schaltet die Prüfung des Lehrers frei, sobald eine Klasse Stufe 10 hat.
+  Wechsel nur im Dorf und nicht auf der Flucht (`trade.js: equipFromBag`). Fortschritt geht nie verloren.
+- **Berufe:** höchstens zwei (`MAX_PROFESSIONS`). Lernen und Verlernen (löscht den Fortschritt) beim Lehrer.
+  Sammeln an Fundstellen (Objekt `node`, wird für alle leer und wächst nach), Herstellen an Stationen
+  (Objekt `station`). Klassen brauchen Dinge aus fremden Berufen, so entsteht Handel.
+- **Kampf:** Schaden = Fähigkeit + Waffenkraft (`power: true`) + halbe Klassenstufe. Rüstung zieht Abwehr ab,
+  höchstens die Hälfte. Wer an einem Wesen mitkämpft (`hitters`) und in der Nähe ist, bekommt Erfahrung und
+  Quest-Fortschritt; Beute bekommt, wer den letzten Schlag setzt.
+- **Gespräche:** Der Server führt sie (`talk.js`). Der Browser bekommt Seite und sichtbare Antworten und
+  schickt nur die Nummer. `!`/`?` über Figuren rechnet der Browser mit derselben `conditionHolds`.
+- **Charakterstand:** `stateOf(p)` geht nur bei Änderung mit dem Takt mit (`tickFor`, `known.lastState`).
+
 ## Prüfen
 
-`node tools/check-world.mjs` prüft alle Gebiete: Rasterlängen, unbekannte Zeichen, Objekte im Wasser
-oder übereinander, Figuren und Wesen auf nicht begehbaren Feldern oder direkt an Gebäuden,
-fehlende Sprites, Gespräche und Palettenfarben. Muss vor jedem Commit grün sein.
+`node tools/check-world.mjs` prüft Gebiete und Inhalte. Muss vor jedem Commit grün sein:
+- Gebiete: Rasterlängen, unbekannte Zeichen, Objekte im Wasser oder übereinander, Figuren und Wesen auf
+  nicht begehbaren Feldern oder direkt an Gebäuden, alles zu Fuß erreichbar.
+- Gegenstände: jeder hat einen Fundort (Rezept, Fundstelle, Beute, Händler, Quest) und einen Zweck.
+- Quests: ein Gespräch startet sie, jeder Schritt ist erfüllbar, Gesprächsseiten existieren.
+- Klassen: Lehrer, Startwaffe, Prüfung, Fähigkeit auf Stufe 1. Berufe: Lehrer, Station, Stufe 1,
+  keine Lücke über 6 Stufen zwischen Fundstellen bzw. Rezepten.
+`npm test` (tests/unit) spielt Klassenwahl, Kindling, Prüfungen, Berufe, Herstellen und Handel wie ein Spieler.
 
 Der Boden unter Objekten wird beim Rendern eingeebnet (`buildTerrain(region, objects)`),
 Gebäude haben ein Fundament, Figuren stehen auf dem höchsten Punkt unter ihren Füßen.
