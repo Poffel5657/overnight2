@@ -1,26 +1,36 @@
 // Die Welt eines Gebiets im Takt. Reine Logik ohne DOM und ohne Netzwerk: Sie läuft auf dem Server
 // (Durable Object pro Gebiet) und für den Offline-Modus im Browser. Spieler schicken nur Absichten
-// (walkTo, interact, useAbility, …). step() rechnet einen Takt und gibt Ereignisse zurück:
-// Ereignisse mit `to` gehen nur an diesen Spieler, alle anderen an alle im Gebiet.
+// (walkTo, interact, useAbility, …). step() rechnet einen Takt; Ereignisse sammeln sich in world.events
+// (mit `to` nur für diesen Spieler) und werden nach dem Versenden mit drainEvents() geleert.
+// Spielerdaten: shared/player.js. Gespräche und Quests: shared/talk.js. Gegenstände: shared/trade.js.
 
 import { TILE_TYPES } from '../content/tiles.js';
 import { MOBS } from '../content/mobs.js';
 import { ABILITIES, GCD } from '../content/abilities.js';
 import { EXAMINE } from '../content/npcs.js';
+import { NODES } from '../content/nodes.js';
+import { ITEMS } from '../content/items.js';
 import { findPath, stepToward, cheb } from './path.js';
+import { tell, emit, float } from './events.js';
+import * as P from './player.js';
+import { openTalk, closeTalk, questEvent, grantXp, checkHave, TALK_RANGE } from './talk.js';
+import { startGather, tickGather, tickNodes, consume, inVillage } from './trade.js';
+
+export { saveOf, xpForLevel, MAX_LEVEL } from './player.js';
 
 export const TICK_MS = 300;
 const OIL_PER_TICK = 0.15;
 const SWING_EVERY = 4;
 const OIL_LIGHT_COST = 15;
-export const MAX_LEVEL = 50;
+const SHARE_RANGE = 12;
 
-export function lanternRadius(oil) {
-  return oil > 0 ? 2.4 + 3.4 * (oil / 100) : 1.5;
+// Reichweite der Laterne in Feldern. bonus: aus der Laterne (content/items.js) und Leuchttränken.
+export function lanternRadius(oil, bonus = 0) {
+  return Math.max(1.2, (oil > 0 ? 2.4 + 3.4 * (oil / 100) : 1.5) + bonus);
 }
 
-export function xpForLevel(level) {
-  return Math.round(20 * Math.pow(level - 1, 1.6));
+export function lightBonusOf(p, tick) {
+  return P.lanternBonus(p) + (p.glowUntil > tick ? 1.5 : 0);
 }
 
 function makeRng(seed) {
@@ -42,9 +52,15 @@ function smoothstep(a, b, x) {
 
 // Objekte eines Gebiets mit ihren IDs (o0, o1, …). Auch der Browser nutzt das, damit IDs übereinstimmen.
 export function regionObjects(region) {
-  return region.objects.map((o, i) => ({
-    ...o, id: 'o' + i, w: o.w || 1, d: o.d || 1, lit: o.type !== 'signal',
-  }));
+  return region.objects.map((o, i) => {
+    const obj = { ...o, id: 'o' + i, w: o.w || 1, d: o.d || 1, lit: o.type !== 'signal' };
+    if (o.type === 'node') {
+      obj.name = NODES[o.node].name;
+      obj.left = NODES[o.node].yields;
+      obj.respawnAt = 0;
+    }
+    return obj;
+  });
 }
 
 export function createWorld(region, seed = 1234) {
@@ -87,28 +103,31 @@ export function createWorld(region, seed = 1234) {
       id: 'm' + i, kind: 'mob', type: m.type, def, name: def.name, sprite: def.sprite,
       x: p.x, y: p.y, px: p.x, py: p.y, home: p,
       hp: def.hp, maxHp: def.hp, nextAttack: 0, attacks: 0,
-      scaredUntil: 0, deadUntil: 0, dead: false, angryAt: null, returning: false,
+      scaredUntil: 0, dazzleUntil: 0, rootUntil: 0, deadUntil: 0, dead: false,
+      angryAt: null, tauntUntil: 0, returning: false, hitters: new Set(),
     };
   });
   return world;
 }
 
-// Neuer Spieler im Gebiet. save: gespeicherter Stand (siehe saveOf) oder null für einen Neuling.
+// Neuer Spieler im Gebiet. save: gespeicherter Stand (saveOf) oder null für einen Neuling.
 export function addPlayer(world, id, name, save = null) {
   const r = world.region;
-  const at = save && walkable(world, save.x, save.y) ? save : nearestWalkable(world, r.start.x, r.start.y);
-  const level = clampInt(save?.level, 1, MAX_LEVEL, 1);
-  const maxHp = 30 + (level - 1) * 3;
   const p = {
     id, kind: 'player', name, sprite: 'player',
-    x: at.x, y: at.y, px: at.x, py: at.y,
-    hp: clampInt(save?.hp, 1, maxHp, maxHp), maxHp,
-    oil: Math.min(100, Math.max(0, Number(save?.oil ?? 100) || 0)),
-    xp: clampInt(save?.xp, 0, 1e9, 0), level,
+    x: 0, y: 0, px: 0, py: 0,
+    hp: 30, maxHp: 30, oil: 100, gold: 0,
+    cls: null, classes: {}, bag: [], equip: {}, profs: {}, quests: {}, bars: {},
     path: [], goal: null, target: null, engaged: false,
     gcdUntil: 0, cds: {}, queued: null, braceUntil: 0, nextSwing: 0,
+    glowUntil: 0, fadeUntil: 0, hots: [], dialog: null, gather: null,
     warnedOil: 0,
   };
+  if (save) P.loadInto(p, save);
+  else P.barOf(p);
+  const at = save && walkable(world, save.x, save.y) ? save : nearestWalkable(world, r.start.x, r.start.y);
+  p.x = p.px = at.x;
+  p.y = p.py = at.y;
   world.players.set(id, p);
   return p;
 }
@@ -117,20 +136,12 @@ export function removePlayer(world, id) {
   const p = world.players.get(id);
   if (!p) return null;
   world.players.delete(id);
-  for (const m of world.mobs) if (m.angryAt === id) m.angryAt = null;
+  for (const m of world.mobs) {
+    if (m.angryAt === id) m.angryAt = null;
+    m.hitters.delete(id);
+  }
   world.telegraphs = world.telegraphs.filter((t) => t.victim !== id);
-  return saveOf(p);
-}
-
-// Was vom Spieler gespeichert wird. Bei neuen Feldern hier ergänzen und in addPlayer prüfen.
-export function saveOf(p) {
-  return { v: 1, x: p.x, y: p.y, hp: Math.max(1, p.hp), oil: Math.round(p.oil * 10) / 10, xp: p.xp, level: p.level };
-}
-
-function clampInt(v, lo, hi, dflt) {
-  const n = Number(v);
-  if (!Number.isFinite(n)) return dflt;
-  return Math.min(hi, Math.max(lo, Math.round(n)));
+  return P.saveOf(p);
 }
 
 export function walkable(world, x, y) {
@@ -171,6 +182,8 @@ export function objectActions(o) {
     case 'beacon': return [['refill', 'Fill lantern'], ['examine', 'Examine']];
     case 'signal': return o.lit ? [['examine', 'Examine']] : [['light', 'Light'], ['examine', 'Examine']];
     case 'campfire': return [['rest', 'Rest'], ['examine', 'Examine']];
+    case 'station': return [['use', 'Use'], ['examine', 'Examine']];
+    case 'node': return [['gather', NODES[o.node].verb], ['examine', 'Examine']];
     default: return [['examine', 'Examine']];
   }
 }
@@ -185,15 +198,12 @@ export function findEntity(world, ref) {
 
 // ---------- Absichten der Spieler ----------
 
-function tell(world, to, text, cls = '') {
-  world.events.push({ to, type: 'log', text, cls });
-}
-
 export function walkTo(world, pid, x, y) {
   const p = world.players.get(pid);
   if (!p || !Number.isInteger(x) || !Number.isInteger(y)) return;
   p.goal = null;
   p.engaged = false;
+  p.gather = null;
   const path = findPath(world.w, world.h, (a, b) => walkable(world, a, b), p.x, p.y,
     (a, b) => (a === x && b === y) || (!walkable(world, x, y) && cheb(a, b, x, y) <= 1), x, y);
   p.path = path || [];
@@ -204,9 +214,13 @@ export function interact(world, pid, ref, action) {
   const target = findEntity(world, ref);
   if (!p || !target) return;
   if (action === 'examine') {
-    const text = ref.kind === 'mob' ? target.def.examine
-      : ref.kind === 'object' ? (target.type === 'signal' && target.lit ? EXAMINE.signalLit : EXAMINE[target.type])
-        : `${target.name}.`;
+    let text;
+    if (ref.kind === 'mob') text = target.def.examine;
+    else if (ref.kind === 'npc') text = `${target.name}.`;
+    else if (target.type === 'signal' && target.lit) text = EXAMINE.signalLit;
+    else if (target.type === 'node') text = target.left > 0 ? `${NODES[target.node].name}. ${EXAMINE.node}` : EXAMINE.depleted;
+    else if (target.type === 'station') text = EXAMINE[target.station];
+    else text = EXAMINE[target.type];
     tell(world, pid, text || 'Nothing remarkable.', 'sys');
     return;
   }
@@ -215,9 +229,11 @@ export function interact(world, pid, ref, action) {
     p.target = target.id;
     p.engaged = true;
     p.goal = null;
+    p.gather = null;
     return;
   }
   p.engaged = false;
+  p.gather = null;
   p.goal = { ref, action };
   p.path = [];
 }
@@ -243,27 +259,33 @@ export function cycleTarget(world, pid) {
   p.target = near[(i + 1) % near.length].id;
 }
 
-export function useAbility(world, pid, abilityId) {
+// Fähigkeit oder Gegenstand von der Leiste ('item:bread').
+export function useAbility(world, pid, id) {
   const p = world.players.get(pid);
-  if (!p || !Object.hasOwn(ABILITIES, abilityId)) return;
-  p.queued = abilityId;
+  if (!p || typeof id !== 'string') return;
+  if (id.startsWith('item:')) {
+    consume(world, p, id.slice(5));
+    return;
+  }
+  if (!Object.hasOwn(ABILITIES, id) || !P.knownAbilities(p).includes(id)) return;
+  p.queued = id;
 }
 
-export function dialogAction(world, pid, npcId, action) {
+// Leiste belegen: Fähigkeit der aktiven Klasse, benutzbarer Gegenstand oder leer.
+export function setBar(world, pid, slot, id) {
   const p = world.players.get(pid);
-  const npc = world.npcs.find((n) => n.id === npcId);
-  if (!p || !npc || cheb(npc.x, npc.y, p.x, p.y) > 2) return;
-  if (action === 'refill' && npcId === 'ama') {
-    p.oil = 100;
-    p.warnedOil = 0;
-    tell(world, pid, 'Ama tops up your lantern without being asked twice.', 'good');
-  }
+  if (!p || !Number.isInteger(slot) || slot < 0 || slot >= P.BAR_SIZE) return;
+  const bar = P.barOf(p);
+  if (id === null) { bar[slot] = null; return; }
+  const ok = id.startsWith('item:') ? !!ITEMS[id.slice(5)]?.use : P.knownAbilities(p).includes(id);
+  if (!ok) return;
+  const was = bar.indexOf(id);
+  if (was >= 0) bar[was] = bar[slot];
+  bar[slot] = id;
 }
 
 // ---------- Takt ----------
 
-// Ereignisse sammeln sich in world.events, auch zwischen zwei Takten (Betrachten, Dialog).
-// Wer sie verschickt hat, leert die Liste mit drainEvents().
 export function step(world) {
   world.tick++;
   for (const p of world.players.values()) { p.px = p.x; p.py = p.y; }
@@ -274,6 +296,7 @@ export function step(world) {
   for (const m of world.mobs) updateMob(world, m);
   for (const n of world.npcs) updateNpc(world, n);
   resolveTelegraphs(world);
+  tickNodes(world);
   return world.events;
 }
 
@@ -322,16 +345,18 @@ function updatePlayer(world, p) {
   }
 
   // Im Kampf: an das Ziel heran und automatisch zuschlagen.
+  // Fernkämpfer (Flarecaster) bleiben auf Abstand und schießen automatisch.
   if (p.engaged && target) {
+    const reach = p.cls === 'flarecaster' ? 4 : 1;
     const d = cheb(p.x, p.y, target.x, target.y);
-    if (d <= 1) {
+    if (d <= reach) {
       p.path = [];
       if (world.tick >= p.nextSwing) {
         p.nextSwing = world.tick + SWING_EVERY;
-        hitMob(world, p, target, roll(world, 1, 2) + Math.floor(p.level / 3));
+        hitMob(world, p, target, roll(world, 1, 2) + Math.ceil(P.weaponPower(p) / 2) + Math.floor(P.classLevel(p) / 3));
       }
     } else {
-      p.path = pathFor(world, p, (a, b) => cheb(a, b, target.x, target.y) <= 1 && !(a === target.x && b === target.y), target.x, target.y);
+      p.path = pathFor(world, p, (a, b) => cheb(a, b, target.x, target.y) <= reach && !(a === target.x && b === target.y), target.x, target.y);
     }
   }
 
@@ -340,6 +365,10 @@ function updatePlayer(world, p) {
     if (walkable(world, next.x, next.y)) {
       p.x = next.x;
       p.y = next.y;
+      if (p.dialog) {
+        const n = world.npcs.find((x) => x.id === p.dialog.npc);
+        if (!n || cheb(n.x, n.y, p.x, p.y) > TALK_RANGE) closeTalk(world, p);
+      }
     } else {
       p.path = [];
     }
@@ -355,11 +384,24 @@ function updatePlayer(world, p) {
     }
   }
 
+  // Heilung über Zeit
+  if (p.hots.length && world.tick % 2 === 0) {
+    for (const h of p.hots) {
+      const before = p.hp;
+      p.hp = Math.min(p.maxHp, p.hp + h.heal);
+      if (p.hp > before) float(world, p.id, `+${p.hp - before}`, 'heal');
+      h.left -= 2;
+    }
+    p.hots = p.hots.filter((h) => h.left > 0);
+  }
+
+  tickGather(world, p);
+  // have-Schritte von Quests: egal, wie die Dinge in den Beutel kamen.
+  checkHave(world, p);
+
   // Öl brennt nur draußen und nur, wenn es dunkel ist. Das Leuchtfeuer wärmt das Dorf.
-  const beacon = world.objects.find((o) => o.type === 'beacon');
-  const fromBeacon = Math.hypot(p.x + 0.5 - (beacon.x + beacon.w / 2), p.y + 0.5 - (beacon.y + beacon.d / 2));
-  if (fromBeacon > world.region.safeRadius && world.daylight < 0.5) {
-    p.oil = Math.max(0, p.oil - OIL_PER_TICK);
+  if (!inVillage(world, p) && world.daylight < 0.5) {
+    p.oil = Math.max(0, p.oil - OIL_PER_TICK * P.oilBurn(p));
     if (p.oil <= 25 && p.warnedOil < 1) {
       p.warnedOil = 1;
       tell(world, p.id, 'Your lantern gutters. Oil is running low.', 'hurt');
@@ -374,7 +416,7 @@ function updatePlayer(world, p) {
 function doAction(world, p, goal) {
   const t = findEntity(world, goal.ref);
   if (goal.ref.kind === 'npc') {
-    world.events.push({ to: p.id, type: 'dialog', npc: t.id, page: 'start' });
+    openTalk(world, p, t.id);
     return;
   }
   if (goal.ref.kind !== 'object') return;
@@ -382,6 +424,7 @@ function doAction(world, p, goal) {
     p.oil = 100;
     p.warnedOil = 0;
     tell(world, p.id, 'You fill your lantern from the Beacon. It burns gold again.', 'good');
+    questEvent(world, p, 'action', { action: 'refill' });
   } else if (goal.action === 'light' && t.type === 'signal' && !t.lit) {
     if (p.oil < OIL_LIGHT_COST) {
       tell(world, p.id, `You need ${OIL_LIGHT_COST} oil to light this.`, 'sys');
@@ -390,11 +433,21 @@ function doAction(world, p, goal) {
     p.oil -= OIL_LIGHT_COST;
     t.lit = true;
     refreshLights(world);
-    world.events.push({ type: 'lit', id: t.id });
-    world.events.push({ type: 'log', text: `${p.name} lit a signal fire. The Grey takes a step back.`, cls: 'good' });
+    emit(world, { type: 'lit', id: t.id });
+    emit(world, { type: 'log', text: `${p.name} lit a signal fire. The Grey takes a step back.`, cls: 'good' });
+    questEvent(world, p, 'action', { action: 'light' });
+  } else if (goal.action === 'light' && t.type === 'signal' && t.lit) {
+    // Schon an: zählt trotzdem für Quests, damit niemand auf ein dunkles Feuer warten muss.
+    tell(world, p.id, 'This one is already burning. You warm your hands and feel useful.', 'sys');
+    questEvent(world, p, 'action', { action: 'light' });
   } else if (goal.action === 'rest' && t.type === 'campfire') {
     p.hp = p.maxHp;
     tell(world, p.id, 'You warm your hands. Much better.', 'good');
+    questEvent(world, p, 'action', { action: 'rest' });
+  } else if (goal.action === 'gather' && t.type === 'node') {
+    startGather(world, p, t);
+  } else if (goal.action === 'use' && t.type === 'station') {
+    emit(world, { to: p.id, type: 'craft', obj: t.id, station: t.station });
   }
 }
 
@@ -402,83 +455,166 @@ function roll(world, a, b) {
   return a + Math.floor(world.rand() * (b - a + 1));
 }
 
+function abilityDamage(world, p, a) {
+  return roll(world, a.hit[0], a.hit[1]) + (a.power ? P.weaponPower(p) : 0) + Math.floor(P.classLevel(p) / 2);
+}
+
+function alliesNear(world, p, radius) {
+  return [...world.players.values()].filter((q) => Math.hypot(q.x - p.x, q.y - p.y) <= radius);
+}
+
 function castAbility(world, p, id) {
   const a = ABILITIES[id];
   const target = p.target ? world.mobs.find((m) => m.id === p.target && !m.dead) : null;
-  if (a.kind === 'melee') {
-    if (!target) { tell(world, p.id, 'No target. Click a creature or press TAB.', 'sys'); return false; }
-    if (cheb(p.x, p.y, target.x, target.y) > 1) { tell(world, p.id, 'Too far away.', 'sys'); p.engaged = true; return false; }
-    hitMob(world, p, target, roll(world, a.hit[0], a.hit[1]) + Math.floor(p.level / 2));
-    world.events.push({ type: 'cast', id, by: p.id });
-    return true;
+  if (a.oil && p.oil < a.oil) { tell(world, p.id, 'Not enough oil.', 'sys'); return false; }
+  const needsTarget = ['melee', 'ranged', 'snare', 'zone'].includes(a.kind);
+  if (needsTarget && !target) { tell(world, p.id, 'No target. Click a creature or press TAB.', 'sys'); return false; }
+  const range = a.kind === 'melee' ? 1 : a.range;
+  if (needsTarget && cheb(p.x, p.y, target.x, target.y) > range) {
+    tell(world, p.id, 'Too far away.', 'sys');
+    p.engaged = true;
+    return false;
   }
-  if (a.kind === 'burst') {
-    if (p.oil < a.oil) { tell(world, p.id, 'Not enough oil to flare.', 'sys'); return false; }
-    p.oil -= a.oil;
-    world.events.push({ type: 'cast', id, by: p.id });
-    tell(world, p.id, a.text);
-    for (const m of world.mobs) {
-      if (m.dead || Math.hypot(m.x - p.x, m.y - p.y) > a.radius) continue;
-      m.scaredUntil = world.tick + a.scare;
-      dropTelegraphs(world, (t) => t.mob === m.id);
-      hitMob(world, p, m, roll(world, a.hit[0], a.hit[1]));
+  if (a.oil) p.oil -= a.oil;
+  emit(world, { type: 'cast', id, by: p.id, at: target?.id ?? null });
+  if (a.text) tell(world, p.id, a.text);
+
+  switch (a.kind) {
+    case 'melee':
+    case 'ranged':
+      if (a.dazzle) target.dazzleUntil = world.tick + a.dazzle;
+      hitMob(world, p, target, abilityDamage(world, p, a));
+      break;
+    case 'zone':
+      for (const m of world.mobs) {
+        if (!m.dead && Math.hypot(m.x - target.x, m.y - target.y) <= a.radius) hitMob(world, p, m, abilityDamage(world, p, a));
+      }
+      break;
+    case 'burst':
+      for (const m of world.mobs) {
+        if (m.dead || Math.hypot(m.x - p.x, m.y - p.y) > a.radius) continue;
+        m.scaredUntil = world.tick + a.scare;
+        dropTelegraphs(world, (t) => t.mob === m.id);
+        hitMob(world, p, m, abilityDamage(world, p, a));
+      }
+      break;
+    case 'self':
+      if (a.heal) healPlayer(world, p, a.heal);
+      if (a.brace) p.braceUntil = world.tick + a.brace;
+      break;
+    case 'aura': {
+      const bonus = P.equipped(p, 'main')?.heal ?? 0;
+      for (const q of alliesNear(world, p, a.radius)) {
+        if (a.heal) healPlayer(world, q, a.heal + bonus);
+        if (a.brace) q.braceUntil = Math.max(q.braceUntil, world.tick + a.brace);
+      }
+      break;
     }
-    return true;
-  }
-  if (a.kind === 'self') {
-    if (a.heal) {
-      const before = p.hp;
-      p.hp = Math.min(p.maxHp, p.hp + a.heal);
-      world.events.push({ type: 'float', ent: p.id, text: `+${p.hp - before}`, cls: 'heal' });
+    case 'hot': {
+      const bonus = Math.ceil((P.equipped(p, 'main')?.heal ?? 0) / 2);
+      for (const q of alliesNear(world, p, a.radius)) q.hots.push({ heal: a.heal + bonus, left: a.ticks });
+      break;
     }
-    if (a.brace) p.braceUntil = world.tick + a.brace;
-    world.events.push({ type: 'cast', id, by: p.id });
-    tell(world, p.id, a.text);
-    return true;
+    case 'taunt':
+      for (const m of world.mobs) {
+        if (m.dead || Math.hypot(m.x - p.x, m.y - p.y) > a.radius) continue;
+        m.angryAt = p.id;
+        m.tauntUntil = world.tick + 12;
+        m.hitters.add(p.id);
+      }
+      break;
+    case 'dash': {
+      const from = target || { x: p.x, y: p.y + 1 };
+      for (let i = 0; i < a.dist; i++) {
+        const s = stepToward((x, y) => walkable(world, x, y), p.x, p.y, from.x, from.y, true);
+        if (s) { p.x = s.x; p.y = s.y; }
+      }
+      p.path = [];
+      p.engaged = false;
+      break;
+    }
+    case 'snare':
+      target.rootUntil = world.tick + a.root;
+      target.hitters.add(p.id);
+      break;
+    case 'fade':
+      p.fadeUntil = world.tick + a.ticks;
+      for (const m of world.mobs) if (m.angryAt === p.id && m.tauntUntil <= world.tick) m.angryAt = null;
+      p.engaged = false;
+      break;
+    default:
+      return false;
   }
-  return false;
+  return true;
+}
+
+function healPlayer(world, q, n) {
+  const before = q.hp;
+  q.hp = Math.min(q.maxHp, q.hp + n);
+  if (q.hp > before) float(world, q.id, `+${q.hp - before}`, 'heal');
 }
 
 function dropTelegraphs(world, match) {
   world.telegraphs = world.telegraphs.filter((t) => {
     if (!match(t)) return true;
-    world.events.push({ type: 'telegraphEnd', id: t.id });
+    emit(world, { type: 'telegraphEnd', id: t.id });
     return false;
   });
 }
 
 function hitMob(world, p, m, dmg) {
   m.hp -= dmg;
+  m.hitters.add(p.id);
   if (!m.angryAt) m.angryAt = p.id;
-  world.events.push({ type: 'float', ent: m.id, text: String(dmg) });
+  float(world, m.id, String(dmg));
   if (m.hp > 0) return;
   m.dead = true;
   m.hp = 0;
   m.angryAt = null;
   m.deadUntil = world.tick + m.def.respawn;
   dropTelegraphs(world, (t) => t.mob === m.id);
-  world.events.push({ type: 'death', ent: m.id });
-  tell(world, p.id, m.type === 'greyling' ? 'The Greyling comes apart into fog.' : `The ${m.name} gives up.`, 'good');
-  gainXp(world, p, m.def.xp);
+  emit(world, { type: 'death', ent: m.id });
+  // Alle, die mitgekämpft haben und in der Nähe sind, bekommen Erfahrung und Quest-Fortschritt.
+  for (const pid of m.hitters) {
+    const q = world.players.get(pid);
+    if (!q || cheb(q.x, q.y, m.x, m.y) > SHARE_RANGE) continue;
+    tell(world, q.id, m.type === 'greyling' ? 'The Greyling comes apart into fog.' : `The ${m.name} gives up.`, 'good');
+    grantXp(world, q, m.def.xp);
+    questEvent(world, q, 'kill', { mob: m.type });
+  }
+  m.hitters.clear();
+  loot(world, p, m);
 }
 
-function gainXp(world, p, n) {
-  if (p.level >= MAX_LEVEL) return;
-  p.xp += n;
-  world.events.push({ to: p.id, type: 'float', ent: p.id, text: `+${n} XP`, cls: 'info' });
-  while (p.level < MAX_LEVEL && p.xp >= xpForLevel(p.level + 1)) {
-    p.level++;
-    p.maxHp += 3;
-    p.hp = p.maxHp;
-    tell(world, p.id, `Warden level ${p.level}. You feel steadier.`, 'good');
+// Beute geht an den, der den letzten Schlag gesetzt hat.
+function loot(world, p, m) {
+  const def = m.def;
+  if (def.gold) {
+    const g = roll(world, def.gold[0], def.gold[1]);
+    if (g > 0) {
+      p.gold += g;
+      float(world, p.id, `+${g} gold`, 'info', p.id);
+    }
   }
+  for (const [id, chance, a, b] of def.drops || []) {
+    if (world.rand() >= chance) continue;
+    const n = roll(world, a, b);
+    const lost = P.addItem(p, id, n);
+    if (lost < n) tell(world, p.id, `Loot: ${ITEMS[id].name}${n - lost > 1 ? ` x${n - lost}` : ''}.`, 'good');
+    if (lost) tell(world, p.id, 'Your bag is full.', 'hurt');
+  }
+  // have-Schritte prüfen (z. B. grey wisps für Wrens Prüfung)
+  checkHave(world, p);
 }
 
 function hurtPlayer(world, p, dmg, by) {
+  // Rüstung fängt höchstens die Hälfte eines Schlags ab.
+  dmg = Math.max(Math.ceil(dmg / 2), dmg - P.defenceOf(p));
   if (world.tick < p.braceUntil) dmg = Math.ceil(dmg / 2);
   if (p.oil <= 0) dmg = Math.ceil(dmg * 1.5);
   p.hp -= dmg;
-  world.events.push({ type: 'float', ent: p.id, text: String(dmg) });
+  float(world, p.id, String(dmg));
+  p.gather = null;
   if (p.hp > 0) return;
   // Milde Niederlage: am Lagerfeuer aufwachen, alles behalten.
   const r = nearestWalkable(world, world.region.respawn.x, world.region.respawn.y);
@@ -490,18 +626,26 @@ function hurtPlayer(world, p, dmg, by) {
   p.goal = null;
   p.target = null;
   p.engaged = false;
+  p.hots = [];
+  closeTalk(world, p);
   dropTelegraphs(world, (t) => t.victim === p.id);
-  for (const m of world.mobs) if (m.angryAt === p.id) m.angryAt = null;
-  world.events.push({ to: p.id, type: 'respawn' });
+  for (const m of world.mobs) {
+    if (m.angryAt === p.id) m.angryAt = null;
+    m.hitters.delete(p.id);
+  }
+  emit(world, { to: p.id, type: 'respawn' });
   tell(world, p.id, `${by} got the better of you. You wake by the campfire. Someone has tucked you in.`, 'hurt');
 }
 
 // Greylinge suchen sich den nächsten Spieler im Dunkeln, Tiere nur den, der sie geärgert hat.
+// Wer verblasst ist (Fade), wird übersehen, solange er nicht im Licht steht.
 function pickVictim(world, m, aggro) {
   const isGreyling = m.def.ai !== 'animal';
+  const hidden = (p) => p.fadeUntil > world.tick && staticLightAt(world, p.x, p.y) < 0.3;
   if (m.angryAt) {
     const p = world.players.get(m.angryAt);
-    if (p && !(isGreyling && staticLightAt(world, p.x, p.y) >= 0.5)) return p;
+    const forced = m.tauntUntil > world.tick;
+    if (p && (forced || (!hidden(p) && !(isGreyling && staticLightAt(world, p.x, p.y) >= 0.5)))) return p;
     m.angryAt = null;
   }
   if (!isGreyling) return null;
@@ -509,7 +653,7 @@ function pickVictim(world, m, aggro) {
   let bestD = Infinity;
   for (const p of world.players.values()) {
     const d = cheb(m.x, m.y, p.x, p.y);
-    if (d > aggro || d >= bestD) continue;
+    if (d > aggro || d >= bestD || hidden(p)) continue;
     if (staticLightAt(world, p.x, p.y) >= 0.5) continue;
     best = p;
     bestD = d;
@@ -527,6 +671,7 @@ function updateMob(world, m) {
       m.y = m.py = m.home.y;
       m.angryAt = null;
       m.returning = false;
+      m.hitters.clear();
     }
     return;
   }
@@ -538,16 +683,19 @@ function updateMob(world, m) {
   // Greylinge meiden helles Licht wie eine Wand.
   const canWalk = (x, y) => walkable(world, x, y) && !occupiedByPlayer(x, y)
     && (!isGreyling || staticLightAt(world, x, y) < 0.5);
+  const rooted = world.tick < m.rootUntil;
   const move = (tx, ty, away = false) => {
+    if (rooted) return;
     const s = stepToward(canWalk, m.x, m.y, tx, ty, away);
     if (s) { m.x = s.x; m.y = s.y; }
   };
 
-  if (cheb(m.x, m.y, m.home.x, m.home.y) > def.leash) m.returning = true;
+  if (cheb(m.x, m.y, m.home.x, m.home.y) > def.leash && m.tauntUntil <= world.tick) m.returning = true;
   if (m.returning) {
     m.angryAt = null;
+    m.hitters.clear();
     move(m.home.x, m.home.y);
-    if (cheb(m.x, m.y, m.home.x, m.home.y) <= 1) {
+    if (cheb(m.x, m.y, m.home.x, m.home.y) <= 1 || rooted) {
       m.returning = false;
       m.hp = m.maxHp;
     }
@@ -571,7 +719,7 @@ function updateMob(world, m) {
     move(p.x, p.y);
     return;
   }
-  if (world.tick < m.nextAttack) return;
+  if (world.tick < m.nextAttack || world.tick < m.dazzleUntil) return;
   m.attacks++;
   const lunge = def.lunge;
   if (lunge && m.attacks % lunge.every === 0) {
@@ -580,7 +728,7 @@ function updateMob(world, m) {
       .filter((t) => walkable(world, t.x, t.y));
     const t = { id: world.nextTelegraph++, mob: m.id, victim: p.id, tiles, at: world.tick + lunge.delay, hit: lunge.hit };
     world.telegraphs.push(t);
-    world.events.push({ type: 'telegraph', t: { id: t.id, tiles } });
+    emit(world, { type: 'telegraph', t: { id: t.id, tiles } });
     tell(world, p.id, lunge.text, 'hurt');
     m.nextAttack = world.tick + lunge.delay + def.attackEvery;
     return;
@@ -591,6 +739,8 @@ function updateMob(world, m) {
 
 function updateNpc(world, n) {
   if (!n.wander || world.rand() > 0.06) return;
+  // Wer gerade mit jemandem redet, bleibt stehen.
+  for (const p of world.players.values()) if (p.dialog?.npc === n.id) return;
   const tx = n.home.x + roll(world, -n.wander, n.wander);
   const ty = n.home.y + roll(world, -n.wander, n.wander);
   const free = (x, y) => {
@@ -608,9 +758,9 @@ function resolveTelegraphs(world) {
   if (!due.length) return;
   world.telegraphs = world.telegraphs.filter((t) => t.at > world.tick);
   for (const t of due) {
-    world.events.push({ type: 'telegraphEnd', id: t.id });
+    emit(world, { type: 'telegraphEnd', id: t.id });
     const m = world.mobs.find((x) => x.id === t.mob);
-    if (!m || m.dead || world.tick < m.scaredUntil) continue;
+    if (!m || m.dead || world.tick < m.scaredUntil || world.tick < m.dazzleUntil) continue;
     let hitAny = false;
     for (const p of world.players.values()) {
       if (!t.tiles.some((tile) => tile.x === p.x && tile.y === p.y)) continue;
