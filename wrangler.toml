@@ -10,8 +10,8 @@ ALLOWED_ORIGINS = "https://poffel5657.github.io,http://127.0.0.1:4180,http://loc
 [[d1_databases]]
 binding = "DB"
 database_name = "overnight2"
-# Wird beim ersten Deploy durch die echte ID ersetzt (wrangler d1 create overnight2).
-database_id = "00000000-0000-0000-0000-000000000000"
+# Angelegt am 2026-11-10 (wrangler d1 create overnight2).
+database_id = "d0ae0d79-49f3-4552-a5d3-beef6f82944f"
 migrations_dir = "migrations"
 
 # Ein Raum pro Gebiet, mit SQLite-Speicher (im kostenlosen Plan nur so möglich).
