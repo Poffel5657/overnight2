@@ -132,8 +132,10 @@ export class RegionRoom {
   // Ist danach immer noch etwas anders, ist die Seite veraltet; dann bittet der Browser ums Neuladen.
   async restartFor(sig) {
     const tried = await this.ctx.storage.get('restartedFor');
-    if (tried === sig) return false;
-    await this.ctx.storage.put('restartedFor', sig);
+    const at = (await this.ctx.storage.get('restartedAt')) || 0;
+    // Bremse: höchstens ein Neustart pro Minute, egal was die Seiten melden.
+    if (tried === sig || Date.now() - at < 60000) return false;
+    await this.ctx.storage.put({ restartedFor: sig, restartedAt: Date.now() });
     if (this.world) await this.saveAll().catch(() => {});
     for (const ws of this.conns.keys()) {
       try { ws.close(4006, 'Kindle was rebuilt'); } catch { /* schon zu */ }
