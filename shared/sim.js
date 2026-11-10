@@ -61,6 +61,8 @@ export function createWorld(region, seed = 1234) {
     telegraphs: [],
     nextTelegraph: 1,
     lights: [],
+    // Tageslicht 0 bis 1, setzt der Browser (später der Server) nach der echten Uhrzeit.
+    daylight: 0,
     npcs: [],
     mobs: [],
     player: null,
@@ -310,7 +312,7 @@ function updatePlayer(world) {
   // Öl brennt nur draußen, das Leuchtfeuer wärmt das Dorf.
   const beacon = world.objects.find((o) => o.type === 'beacon');
   const fromBeacon = Math.hypot(p.x + 0.5 - (beacon.x + beacon.w / 2), p.y + 0.5 - (beacon.y + beacon.d / 2));
-  if (fromBeacon > world.region.safeRadius) {
+  if (fromBeacon > world.region.safeRadius && world.daylight < 0.5) {
     p.oil = Math.max(0, p.oil - OIL_PER_TICK);
     if (p.oil <= 25 && p.warnedOil < 1) {
       p.warnedOil = 1;
@@ -491,7 +493,9 @@ function updateMob(world, m) {
 
   const d = cheb(m.x, m.y, p.x, p.y);
   const playerSafe = isGreyling && staticLightAt(world, p.x, p.y) >= 0.5;
-  const hostile = !playerSafe && (m.angry || (isGreyling && d <= def.aggro));
+  // Tagsüber sind Greylinge weniger mutig.
+  const aggro = def.aggro * (1 - 0.5 * world.daylight);
+  const hostile = !playerSafe && (m.angry || (isGreyling && d <= aggro));
   if (!hostile) {
     if (m.angry && playerSafe) m.angry = false;
     if (world.rand() < 0.12) {

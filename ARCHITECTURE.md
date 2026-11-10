@@ -14,6 +14,7 @@ content/                  Alles, was Inhalt ist, als Daten. Hier wächst das Spi
 shared/                   Reine Spiellogik ohne DOM, läuft später auch auf dem Server
   sim.js                  Welt im Takt (300 ms): Laufen, Kampf, Licht/Öl, Wesen
   path.js                 Wegfindung (A*, acht Richtungen)
+  daylight.js             Tag und Nacht nach der echten Sonne über Berlin
 src/                      Browser
   main.js                 Verbindet Logik, Darstellung, Eingabe
   ui.js                   Fenster, Leiste, Menü, Dialog, Zahlen
@@ -32,3 +33,10 @@ src/                      Browser
 python3 -m http.server 4180
 ```
 Dann http://localhost:4180 öffnen. In der Konsole liegt `window.__overnight` mit der Welt.
+Uhrzeit testen: `?hour=16.7` setzt die Berliner Uhrzeit, `?speed=600` lässt die Zeit schneller laufen.
+
+## Look
+
+PS1-Stil: Die Szene wird etwa 240 Pixel hoch gerendert, Eckpunkte springen auf dieses Raster
+(`uSnap` in `render/light.js`, das typische Wackeln), Farben auf 5 Bit pro Kanal mit Dithering
+(`ps1()` im CRT-Shader). Tag und Nacht ändern Nebelfarbe, Sichtweite und Sonne (`setSky`).

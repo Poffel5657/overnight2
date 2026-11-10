@@ -67,6 +67,11 @@ export function createUI(handlers) {
   }
 
   // ---------- Status und Ziel ----------
+  function updateSky(clock, phase, note) {
+    $('st-time').textContent = `${clock} ${phase}`;
+    $('st-phase').textContent = note;
+  }
+
   function updateStatus(p, place) {
     $('st-place').textContent = place;
     $('st-class').textContent = `WARDEN LV ${p.level}`;
@@ -183,7 +188,7 @@ export function createUI(handlers) {
   $('btn-help-close').addEventListener('click', () => { $('help').hidden = true; });
 
   return {
-    log, buildBar, updateBar, flashSlot, updateStatus, updateTarget,
+    log, buildBar, updateBar, flashSlot, updateStatus, updateSky, updateTarget,
     openMenu, closeMenu, menuOpen, openDialog, closeDialog, dialogKey,
     get dialogNpc() { return dialogNpc; },
     setHover, floater, overhead,

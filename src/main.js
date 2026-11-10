@@ -16,6 +16,7 @@ import { buildObjects } from './render/objects.js';
 import { makeSprite } from './render/sprites.js';
 import { setLights, lightUniforms } from './render/light.js';
 import { createUI } from './ui.js';
+import { skyState, berlinClock, minutesToMidnight } from '../shared/daylight.js';
 
 const canvas = document.getElementById('view');
 const view = createView(canvas);
@@ -336,6 +337,44 @@ for (const id of ['cam-left', 'cam-right']) {
   b.addEventListener('pointerleave', () => held.delete(id));
 }
 
+// ---------- Tag und Nacht ----------
+
+// Zum Ausprobieren: ?hour=17.5 setzt die Berliner Uhrzeit, ?speed=600 lässt die Zeit schneller laufen.
+const params = new URLSearchParams(location.search);
+const startReal = Date.now();
+let clockOffset = 0;
+if (params.has('hour')) {
+  const [h, m] = berlinClock(new Date()).split(':').map(Number);
+  clockOffset = (Number(params.get('hour')) - (h + m / 60)) * 3600000;
+}
+const speed = Number(params.get('speed')) || 1;
+const gameDate = () => new Date(startReal + (Date.now() - startReal) * speed + clockOffset);
+
+const PHASE_LINES = {
+  DAWN: ['Dawn. The Grey thins a little.', 'good'],
+  DAY: ['Day. Even the Greylings squint.', 'good'],
+  DUSK: ['The light is going. The Grey grows bold.', 'hurt'],
+  NIGHT: ['Night. Keep your wick trimmed.', 'hurt'],
+};
+let lastPhase = null;
+let lastSky = -1;
+function updateSky(now) {
+  if (now - lastSky < 250) return;
+  lastSky = now;
+  const date = gameDate();
+  const sky = skyState(date);
+  world.daylight = sky.day;
+  view.setSky(sky.day, sky.dusk);
+  const mins = minutesToMidnight(date);
+  const note = sky.phase === 'NIGHT' || sky.phase === 'DUSK'
+    ? `MIDNIGHT ${mins >= 60 ? `${Math.floor(mins / 60)}H ` : ''}${mins % 60}M`
+    : '';
+  ui.updateSky(berlinClock(date), sky.phase, note);
+  if (lastPhase && lastPhase !== sky.phase) ui.log(...PHASE_LINES[sky.phase]);
+  if (!lastPhase) ui.log(`It is ${sky.phase.toLowerCase()} in Kindle. ${berlinClock(date)}, Kindle time.`, 'sys');
+  lastPhase = sky.phase;
+}
+
 // ---------- Schleife ----------
 
 let acc = 0;
@@ -350,6 +389,7 @@ function entPos(v, alpha, out) {
 }
 
 function frame(now) {
+  updateSky(now);
   const dt = Math.min(0.1, (now - last) / 1000);
   last = now;
   acc += dt * 1000;

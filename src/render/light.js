@@ -14,7 +14,23 @@ export const lightUniforms = {
   uTime: { value: 0 },
   // Position des Spielers: Baumkronen zwischen Kamera und Spieler werden durchsichtig.
   uSee: { value: new THREE.Vector3() },
+  // Tageslicht 0 (Nacht) bis 1 (Tag), echte Uhrzeit in Berlin.
+  uDay: { value: 0 },
+  // PS1-Wackeln: Eckpunkte springen auf ein grobes Pixelraster (halbe Auflösung des Bildes).
+  uSnap: { value: new THREE.Vector2(160, 120) },
 };
+
+const FOG_NIGHT = [0.15, 0.16, 0.2];
+const FOG_DAY = [0.6, 0.62, 0.64];
+const FOG_DUSK = [0.62, 0.4, 0.32];
+
+// Nebelfarbe für einen Himmelszustand (siehe shared/daylight.js).
+export function skyFog(day, dusk) {
+  return FOG_NIGHT.map((n, i) => {
+    const base = n + (FOG_DAY[i] - n) * day;
+    return base + (FOG_DUSK[i] * (0.45 + 0.55 * day) - base) * dusk * 0.55;
+  });
+}
 
 export const FOG_GLSL = /* glsl */`
   float lHash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
@@ -34,13 +50,16 @@ export function litMaterial(material, ambient = 0.14, seeThrough = false) {
   material.onBeforeCompile = (shader) => {
     Object.assign(shader.uniforms, lightUniforms, { uAmbient: { value: ambient } });
     shader.vertexShader = shader.vertexShader
-      .replace('#include <common>', '#include <common>\nvarying vec3 vLWPos;')
+      .replace('#include <common>', '#include <common>\nvarying vec3 vLWPos;\nuniform vec2 uSnap;')
       .replace('#include <project_vertex>', `#include <project_vertex>
         vec4 lwp = vec4(transformed, 1.0);
         #ifdef USE_INSTANCING
           lwp = instanceMatrix * lwp;
         #endif
-        vLWPos = (modelMatrix * lwp).xyz;`);
+        vLWPos = (modelMatrix * lwp).xyz;
+        if (gl_Position.w > 0.0) {
+          gl_Position.xy = floor(gl_Position.xy / gl_Position.w * uSnap + 0.5) / uSnap * gl_Position.w;
+        }`);
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <common>', `#include <common>
         varying vec3 vLWPos;
@@ -50,6 +69,7 @@ export function litMaterial(material, ambient = 0.14, seeThrough = false) {
         uniform float uTime;
         uniform float uAmbient;
         uniform vec3 uSee;
+        uniform float uDay;
         ${FOG_GLSL}`)
       .replace('#include <clipping_planes_fragment>', `#include <clipping_planes_fragment>
         ${seeThrough ? `{
@@ -74,6 +94,10 @@ export function litMaterial(material, ambient = 0.14, seeThrough = false) {
           lit = max(lit, k);
           warmth = max(warmth, k * (1.0 - smoothstep(0.0, L.z, d)));
         }
+        // Tagsüber sieht man weit, nur in der Ferne bleibt der Grey als Dunst.
+        float far = smoothstep(9.0, 26.0, distance(vLWPos.xz, uSee.xz));
+        lit = max(lit, uDay * (0.95 - 0.55 * far));
+        warmth *= 1.0 - 0.75 * uDay;
         float n = greyNoise(vLWPos.xz, uTime);
         vec3 fogc = uFog * (0.7 + 0.6 * n);
         vec3 c = gl_FragColor.rgb * mix(vec3(1.0), vec3(1.12, 1.0, 0.8), warmth);

@@ -2,7 +2,7 @@
 // einen CRT-Shader auf den Bildschirm gebracht (Wölbung, Scanlines, Glühen, Vignette).
 
 import * as THREE from 'three';
-import { FOG_GLSL, FOG_RGB, lightUniforms, litMaterial } from './light.js';
+import { FOG_GLSL, FOG_RGB, lightUniforms, litMaterial, skyFog } from './light.js';
 
 THREE.ColorManagement.enabled = false;
 
@@ -11,6 +11,17 @@ const CRT_FRAG = /* glsl */`
   uniform vec2 uSrc;
   uniform float uCrt;
   varying vec2 vUv;
+  // Farben wie auf der PS1: 5 Bit pro Kanal mit geordnetem Dithering.
+  float bayer4(vec2 p) {
+    vec2 q = mod(p, 4.0);
+    int i = int(q.x) + int(q.y) * 4;
+    int m[16] = int[16](0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5);
+    return float(m[i]) / 16.0 - 0.5;
+  }
+  vec3 ps1(vec3 c, vec2 uv) {
+    vec2 sp = floor(uv * uSrc);
+    return floor(c * 31.0 + 0.5 + bayer4(sp) * 0.9) / 31.0;
+  }
   vec2 curve(vec2 uv) {
     uv = uv * 2.0 - 1.0;
     vec2 off = abs(uv.yx) / vec2(6.0, 5.0);
@@ -20,7 +31,7 @@ const CRT_FRAG = /* glsl */`
   void main() {
     vec2 uv = mix(vUv, curve(vUv), uCrt);
     if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); return; }
-    vec3 c = texture2D(tScene, uv).rgb;
+    vec3 c = ps1(texture2D(tScene, uv).rgb, uv);
     // Glühen: helle Nachbarn bluten leicht aus
     vec2 px = 1.0 / uSrc;
     vec3 b = vec3(0.0);
@@ -51,7 +62,8 @@ export function createView(canvas) {
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(FOG_RGB[0] * 0.75, FOG_RGB[1] * 0.75, FOG_RGB[2] * 0.75);
-  scene.add(new THREE.HemisphereLight('#d8d0c0', '#3a3428', 1.6));
+  const hemi = new THREE.HemisphereLight('#d8d0c0', '#3a3428', 1.6);
+  scene.add(hemi);
   const sun = new THREE.DirectionalLight('#fff0d8', 1.4);
   sun.position.set(-6, 10, 4);
   scene.add(sun);
@@ -78,10 +90,11 @@ export function createView(canvas) {
     // Hochkant (Handy) braucht ein weiteres Sichtfeld, sonst sieht man nur die eigene Figur.
     camera.fov = camera.aspect < 1 ? 38 * Math.pow(Math.min(1.7, 1 / camera.aspect), 0.75) : 38;
     camera.updateProjectionMatrix();
-    // Etwa 500 Pixel hoch rendern, egal wie groß der Bildschirm ist: so bleibt der Pixel-Look gleich.
-    const scale = Math.min(1, Math.max(0.4, 500 / h));
+    // Etwa 240 Pixel hoch rendern wie auf der PS1, egal wie groß der Bildschirm ist.
+    const scale = Math.min(1, 240 / h);
     rt.setSize(Math.max(2, Math.floor(w * scale)), Math.max(2, Math.floor(h * scale)));
     crtMat.uniforms.uSrc.value.set(rt.width, rt.height);
+    lightUniforms.uSnap.value.set(rt.width / 2, rt.height / 2);
   }
   window.addEventListener('resize', resize);
   resize();
@@ -108,7 +121,21 @@ export function createView(canvas) {
     crtMat.uniforms.uCrt.value = on ? 1 : 0;
   }
 
-  return { renderer, scene, camera, rig, render, setCrt, resize };
+  // Himmel nach der Uhrzeit: Nebelfarbe, Hintergrund, Sonne.
+  const duskColor = new THREE.Color('#ffa060');
+  const dayColor = new THREE.Color('#fff4e0');
+  const nightColor = new THREE.Color('#8090c0');
+  function setSky(day, dusk) {
+    const fog = skyFog(day, dusk);
+    lightUniforms.uFog.value.set(...fog);
+    lightUniforms.uDay.value = day;
+    scene.background.setRGB(fog[0] * 0.8, fog[1] * 0.8, fog[2] * 0.8);
+    hemi.intensity = 1.25 + 0.45 * day;
+    sun.intensity = 0.5 + 1.1 * day;
+    sun.color.copy(nightColor).lerp(dayColor, day).lerp(duskColor, dusk * 0.7);
+  }
+
+  return { renderer, scene, camera, rig, render, setCrt, resize, setSky };
 }
 
 // Die Nebelwand am Rand der Welt: mehrere halb durchsichtige, wabernde Schichten.
