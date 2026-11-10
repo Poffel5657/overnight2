@@ -12,7 +12,9 @@ function hash(x, y, s = 0) {
   return n - Math.floor(n);
 }
 
-export function buildTerrain(region) {
+// objects: Objekte der Welt. Unter jedem wird der Boden eingeebnet (Fundament),
+// am Rand weich ins Gelände übergeblendet, damit nichts im Hang steckt.
+export function buildTerrain(region, objects = []) {
   const H = region.tiles.length;
   const W = region.tiles[0].length;
   const tileH = (x, y) => heightFromChar(region.heights[y][x]);
@@ -35,6 +37,21 @@ export function buildTerrain(region) {
       }
       cornerH[cy * (W + 1) + cx] = sum / n;
       cornerC.push(c.multiplyScalar(1 / n));
+    }
+  }
+  for (const o of objects) {
+    const w = o.w || 1, d = o.d || 1;
+    let sum = 0, n = 0;
+    for (let cy = o.y; cy <= o.y + d; cy++) for (let cx = o.x; cx <= o.x + w; cx++) { sum += cornerH[cy * (W + 1) + cx]; n++; }
+    const flat = sum / n;
+    for (let cy = o.y - 2; cy <= o.y + d + 2; cy++) {
+      for (let cx = o.x - 2; cx <= o.x + w + 2; cx++) {
+        if (cx < 0 || cy < 0 || cx > W || cy > H) continue;
+        const ring = Math.max(o.x - cx, cx - (o.x + w), o.y - cy, cy - (o.y + d), 0);
+        const k = ring === 0 ? 1 : ring === 1 ? 0.6 : 0.25;
+        const i = cy * (W + 1) + cx;
+        cornerH[i] += (flat - cornerH[i]) * k;
+      }
     }
   }
   const ch = (cx, cy) => cornerH[cy * (W + 1) + cx];

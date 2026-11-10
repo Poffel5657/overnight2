@@ -23,7 +23,7 @@ const view = createView(canvas);
 const { scene, camera, rig } = view;
 
 const world = createWorld(REGION, Date.now() & 0xffff);
-const terrain = buildTerrain(REGION);
+const terrain = buildTerrain(REGION, world.objects);
 scene.add(terrain.mesh, terrain.water, buildGreyWall(terrain.W, terrain.H));
 const objects = buildObjects(world, REGION, terrain.heightAt);
 scene.add(objects.root);
@@ -385,7 +385,10 @@ function entPos(v, alpha, out) {
   const e = v.ent;
   const x = e.px + (e.x - e.px) * alpha + 0.5;
   const z = e.py + (e.y - e.py) * alpha + 0.5;
-  return out.set(x, terrain.heightAt(x, z), z);
+  // Höchster Punkt unter den Füßen, damit am Hang nichts im Boden versinkt.
+  let y = terrain.heightAt(x, z);
+  for (const [ox, oz] of [[0.3, 0], [-0.3, 0], [0, 0.3], [0, -0.3]]) y = Math.max(y, terrain.heightAt(x + ox, z + oz));
+  return out.set(x, y, z);
 }
 
 function frame(now) {

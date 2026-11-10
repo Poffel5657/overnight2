@@ -6,9 +6,11 @@ import { TILE_TYPES } from '../../content/tiles.js';
 import { litMaterial } from './light.js';
 import { makeSprite } from './sprites.js';
 
+// Alle Objekt-Materialien schneiden sich zwischen Kamera und Spieler auf (wie die Baumkronen),
+// damit Häuser und Dächer die eigene Figur nie verdecken.
 const mats = new Map();
 function mat(color) {
-  if (!mats.has(color)) mats.set(color, litMaterial(new THREE.MeshLambertMaterial({ color, flatShading: true })));
+  if (!mats.has(color)) mats.set(color, litMaterial(new THREE.MeshLambertMaterial({ color, flatShading: true }), 0.14, true));
   return mats.get(color);
 }
 const glowMat = new THREE.MeshBasicMaterial({ color: '#ffcf70' });
@@ -35,16 +37,15 @@ function roof(w, d, h, color, y) {
   return m;
 }
 
+// Der Boden unter Objekten ist eingeebnet (terrain.js), die Mitte ist also die Grundhöhe.
 function footprintBase(o, heightAt) {
-  let min = Infinity;
-  for (let y = o.y; y <= o.y + o.d; y++) for (let x = o.x; x <= o.x + o.w; x++) min = Math.min(min, heightAt(x, y));
-  return min;
+  return heightAt(o.x + o.w / 2, o.y + o.d / 2);
 }
 
 const BUILDERS = {
   house(o, g) {
     const wall = 1.3;
-    g.add(box(o.w - 0.2, wall + 0.4, o.d - 0.2, '#a08664', 0, wall / 2 - 0.2, 0));
+    g.add(box(o.w - 0.2, wall + 1, o.d - 0.2, '#a08664', 0, (wall - 1) / 2, 0));
     g.add(roof(o.w + 0.2, o.d + 0.2, 1.1, o.roof || '#7a3b26', wall));
     g.add(box(0.5, 0.85, 0.06, '#3e2a18', 0, 0.42, o.d / 2 - 0.08));
     g.add(box(0.3, 0.28, 0.06, glowMat, -o.w / 4 - 0.1, 0.8, o.d / 2 - 0.08));
@@ -52,11 +53,11 @@ const BUILDERS = {
   },
   chapel(o, g) {
     const wall = 2.0;
-    g.add(box(o.w - 0.4, wall + 0.4, o.d - 0.4, '#b8b0a0', 0, wall / 2 - 0.2, 0));
+    g.add(box(o.w - 0.4, wall + 1, o.d - 0.4, '#b8b0a0', 0, (wall - 1) / 2, 0));
     g.add(roof(o.w, o.d, 2.0, '#4a4e5a', wall));
     // Turm vorne mit Spitze
     const tower = new THREE.Group();
-    tower.add(box(1.1, 3.2, 1.1, '#aaa292', 0, 1.6, 0));
+    tower.add(box(1.1, 4.2, 1.1, '#aaa292', 0, 1.1, 0));
     tower.add(roof(1.4, 1.4, 1.6, '#4a4e5a', 3.2));
     tower.add(box(0.3, 0.45, 0.06, glowMat, 0, 2.5, 0.56));
     tower.position.set(0, 0, o.d / 2 - 0.6);

@@ -27,6 +27,15 @@ src/                      Browser
 
 **Regel:** Der Browser schickt nur Absichten an `shared/sim.js` (`walkTo`, `interact`, `useAbility`, …) und zeigt `world.events` an. So lässt sich die Simulation in Phase 2 auf den Server verschieben, ohne die Darstellung umzubauen.
 
+## Prüfen
+
+`node tools/check-world.mjs` prüft alle Gebiete: Rasterlängen, unbekannte Zeichen, Objekte im Wasser
+oder übereinander, Figuren und Wesen auf nicht begehbaren Feldern oder direkt an Gebäuden,
+fehlende Sprites, Gespräche und Palettenfarben. Muss vor jedem Commit grün sein.
+
+Der Boden unter Objekten wird beim Rendern eingeebnet (`buildTerrain(region, objects)`),
+Gebäude haben ein Fundament, Figuren stehen auf dem höchsten Punkt unter ihren Füßen.
+
 ## Lokal starten
 
 ```
