@@ -38,7 +38,7 @@ Overnight 2 ist kein Klon eines bestehenden MMOs. Der Kern kommt aus der Welt se
 
 ## Klassen: dein Platz im Kampf
 
-Jeder kann **jede Klasse** lernen und leveln, und man wechselt einfach zu der, auf die man gerade Lust hat. Wechseln geht außerhalb des Kampfes, indem man die Hauptwaffe tauscht. Jede Klasse hat **eigene Stufe, eigene Fähigkeiten und eine eigene Belegung der Leiste 1–9**. Ausrüstung teilen sich die Klassen, soweit sie passt.
+Jeder kann **jede Klasse** lernen und leveln, und man wechselt einfach zu der, auf die man gerade Lust hat. Am Anfang wählt man eine Klasse. **Ab Stufe 10** schaltet man die anderen über eine kurze Klassenquest beim jeweiligen Lehrer frei. Gewechselt wird **im Dorf** vor dem Aufbruch, indem man die Hauptwaffe tauscht. **Der Fortschritt bleibt immer erhalten.** Jede Klasse hat **eigene Stufe, eigene Fähigkeiten und eine eigene Belegung der Leiste 1–9**. Ausrüstung teilen sich die Klassen, soweit sie passt.
 
 | Klasse | Rolle | Waffe | Kern |
 |---|---|---|---|
@@ -51,7 +51,7 @@ Neue Klassen dürfen sich Spieler wünschen. Sie docken an dasselbe Gerüst an (
 
 ## Berufe: dein Platz im Dorf
 
-Jeder lernt **2 Hauptberufe** aus etwa 6. So ist jeder in etwas anderem gut und braucht die anderen. Wechseln geht beim Lehrer im Dorf, aber der Fortschritt im alten Beruf geht dabei verloren.
+Man hat immer **2 Hauptberufe aktiv** aus etwa 6. Die ersten beiden wählt man frei. Weitere schaltet man über Quests beim Lehrer frei und wechselt dann **frei im Dorf**, bevor man aufbricht. **Der Fortschritt bleibt immer erhalten.** Auf einer Expedition kann also jeder zwei Dinge, und wer lange spielt, lernt mit der Zeit alles. Handel lohnt sich trotzdem, weil Stufen Zeit brauchen und man draußen nur mit seinen zwei aktiven Berufen sammelt.
 
 | Sammeln | Herstellen |
 |---|---|
