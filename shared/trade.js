@@ -10,6 +10,7 @@ import { cheb } from './path.js';
 import { tell, emit, float } from './events.js';
 import { questEvent, checkHave, TALK_RANGE } from './talk.js';
 import * as P from './player.js';
+import { queue } from './sim.js';
 
 const GATHER_EVERY = 4;
 export const MAX_CRAFT = 10;
@@ -176,15 +177,14 @@ export function useSlot(world, p, slot) {
   if (!s) return;
   const def = ITEMS[s.id];
   if (def.slot) return equipFromBag(world, p, slot);
-  if (def.use) return consume(world, p, s.id);
+  // Benutzen geht wie alles andere über die globale Abklingzeit.
+  if (def.use) queue(p, world, `item:${s.id}`);
 }
 
 export function consume(world, p, id) {
   const def = ITEMS[id];
   if (!def?.use || P.countItem(p, id) < 1) return false;
-  if (world.tick < p.gcdUntil) return false;
   P.takeItem(p, id, 1);
-  p.gcdUntil = world.tick + 3;
   if (def.use.heal) {
     const before = p.hp;
     p.hp = Math.min(p.maxHp, p.hp + def.use.heal);

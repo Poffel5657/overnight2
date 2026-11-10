@@ -8,7 +8,8 @@
 //   zone    Fläche um das Ziel, Schaden an allem darin
 // power: Waffe zählt mit (Schaden + Waffenkraft). dazzle: Ziel kann kurz nicht angreifen.
 
-export const GCD = 3;
+// Globale Abklingzeit: eine Handlung (Fähigkeit, Gegenstand oder normaler Schlag) pro GCD Takte.
+export const GCD = 4;
 
 export const ABILITIES = {
   punch: { name: 'Punch', glyph: '·', kind: 'melee', hit: [1, 2], cd: 0, power: true },

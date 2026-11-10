@@ -20,6 +20,7 @@ import { SHOPS } from '../content/shops.js';
 import { FAVOURS, FAVOURS_PER_DAY, BEACON_FUEL } from '../content/dailies.js';
 import { BALLOT } from '../content/ballot.js';
 import { CHESTS } from '../content/chests.js';
+import { SHAPES, PALETTES, ITEM_ICONS, ABILITY_ICONS } from '../content/icons.js';
 import { CHRONICLE } from '../content/chronicle.js';
 import { createWorld, walkable } from '../shared/sim.js';
 import { findPath } from '../shared/path.js';
@@ -236,6 +237,19 @@ for (const [name, s] of Object.entries(SPRITES)) {
   for (const r of rows) if (new Set(r.map((x) => x.length)).size > 1) errors.push(`Sprite ${name}: Reihen unterschiedlich lang`);
   for (const r of [...s.rows, ...(s.walk || []), ...(s.frames || []).flat()]) {
     for (const ch of r) if (ch !== '.' && !s.palette[ch]) errors.push(`Sprite ${name}: Zeichen '${ch}' fehlt in der Palette`);
+  }
+}
+
+// Icons: jede Form 12x12, jede Farbe in der Palette, jeder Gegenstand und jede Fähigkeit hat eins.
+for (const [name, rows] of Object.entries(SHAPES)) {
+  if (rows.length !== 12 || rows.some((r) => r.length !== 12)) errors.push(`Icon-Form ${name}: nicht 12x12`);
+}
+for (const [kind, map, all] of [['Gegenstand', ITEM_ICONS, ITEMS], ['Fähigkeit', ABILITY_ICONS, ABILITIES]]) {
+  for (const id of Object.keys(all)) {
+    const def = map[id];
+    if (!def) { errors.push(`${kind} ${id} hat kein Icon (content/icons.js)`); continue; }
+    if (!SHAPES[def[0]]) errors.push(`${kind} ${id}: Icon-Form ${def[0]} fehlt`);
+    if (!PALETTES[def[1]]) errors.push(`${kind} ${id}: Icon-Palette ${def[1]} fehlt`);
   }
 }
 

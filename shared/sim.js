@@ -23,7 +23,8 @@ export { saveOf, xpForLevel, MAX_LEVEL } from './player.js';
 
 export const TICK_MS = 300;
 const OIL_PER_TICK = 0.15;
-const SWING_EVERY = 4;
+// Vorgemerkte Handlungen verfallen nach so vielen Takten (z. B. wenn man das Ziel nie erreicht).
+const QUEUE_TTL = 12;
 const OIL_LIGHT_COST = { signal: 15, brazier: 10 };
 const SHARE_RANGE = 12;
 
@@ -126,7 +127,7 @@ export function addPlayer(world, id, name, save = null) {
     hp: 30, maxHp: 30, oil: 100, gold: 0,
     cls: null, classes: {}, bag: [], equip: {}, profs: {}, quests: {}, bars: {},
     path: [], goal: null, target: null, engaged: false,
-    gcdUntil: 0, cds: {}, queued: null, braceUntil: 0, nextSwing: 0,
+    gcdUntil: 0, cds: {}, queued: null, queuedUntil: 0, braceUntil: 0,
     glowUntil: 0, fadeUntil: 0, hots: [], dialog: null, gather: null,
     warnedOil: 0,
   };
@@ -301,16 +302,30 @@ export function cycleTarget(world, pid) {
   p.target = near[(i + 1) % near.length].id;
 }
 
-// Fähigkeit oder Gegenstand von der Leiste ('item:bread').
+// Fähigkeit oder Gegenstand von der Leiste ('item:bread') vormerken. Sie wird ausgeführt, sobald die
+// globale Abklingzeit vorbei ist; es gibt immer nur eine Handlung pro globaler Abklingzeit.
 export function useAbility(world, pid, id) {
   const p = world.players.get(pid);
   if (!p || typeof id !== 'string') return;
   if (id.startsWith('item:')) {
-    consume(world, p, id.slice(5));
+    const item = id.slice(5);
+    if (!ITEMS[item]?.use) return;
+    if (P.countItem(p, item) < 1) return tell(world, p.id, `You have no ${ITEMS[item].name}.`, 'sys');
+    queue(p, world, id);
     return;
   }
   if (!Object.hasOwn(ABILITIES, id) || !P.knownAbilities(p).includes(id)) return;
+  const ready = p.cds[id] || 0;
+  if (ready > world.tick + GCD) {
+    tell(world, p.id, `${ABILITIES[id].name} is not ready yet (${Math.ceil(((ready - world.tick) * TICK_MS) / 1000)}s).`, 'sys');
+    return;
+  }
+  queue(p, world, id);
+}
+
+export function queue(p, world, id) {
   p.queued = id;
+  p.queuedUntil = world.tick + QUEUE_TTL;
 }
 
 // Leiste belegen: Fähigkeit der aktiven Klasse, benutzbarer Gegenstand oder leer.
@@ -386,20 +401,16 @@ function updatePlayer(world, p) {
     }
   }
 
-  // Im Kampf: an das Ziel heran und automatisch zuschlagen.
-  // Fernkämpfer (Flarecaster) bleiben auf Abstand und schießen automatisch.
-  if (p.engaged && target) {
-    const reach = p.cls === 'flarecaster' ? 4 : 1;
-    const d = cheb(p.x, p.y, target.x, target.y);
-    if (d <= reach) {
-      p.path = [];
-      if (world.tick >= p.nextSwing) {
-        p.nextSwing = world.tick + SWING_EVERY;
-        hitMob(world, p, target, roll(world, 1, 2) + Math.ceil(P.weaponPower(p) / 2) + Math.floor(P.classLevel(p) / 3));
-      }
-    } else {
-      p.path = pathFor(world, p, (a, b) => cheb(a, b, target.x, target.y) <= reach && !(a === target.x && b === target.y), target.x, target.y);
-    }
+  // An das Ziel heran: im Kampf oder wenn eine vorgemerkte Fähigkeit es braucht.
+  // Fernkämpfer (Flarecaster) bleiben auf Abstand.
+  const qa = p.queued && !p.queued.startsWith('item:') ? ABILITIES[p.queued] : null;
+  const qaNeedsTarget = qa && NEEDS_TARGET.has(qa.kind);
+  let inReach = false;
+  if (target && (p.engaged || qaNeedsTarget)) {
+    const reach = qaNeedsTarget ? (qa.kind === 'melee' ? 1 : qa.range) : (p.cls === 'flarecaster' ? 4 : 1);
+    inReach = cheb(p.x, p.y, target.x, target.y) <= reach;
+    if (inReach) p.path = [];
+    else p.path = pathFor(world, p, (a, b) => cheb(a, b, target.x, target.y) <= reach && !(a === target.x && b === target.y), target.x, target.y);
   }
 
   if (p.travel) return;
@@ -417,13 +428,26 @@ function updatePlayer(world, p) {
     }
   }
 
-  // Fähigkeit aus der Warteschlange, sobald Abklingzeiten es zulassen.
-  if (p.queued && world.tick >= p.gcdUntil && world.tick >= (p.cds[p.queued] || 0)) {
-    const id = p.queued;
-    p.queued = null;
-    if (castAbility(world, p, id)) {
+  // Eine Handlung pro globaler Abklingzeit: zuerst das Vorgemerkte, sonst der normale Schlag.
+  if (p.queued && world.tick > p.queuedUntil) p.queued = null;
+  if (world.tick >= p.gcdUntil) {
+    if (p.queued?.startsWith('item:')) {
+      const id = p.queued;
+      p.queued = null;
+      if (consume(world, p, id.slice(5))) p.gcdUntil = world.tick + GCD;
+    } else if (p.queued && world.tick >= (p.cds[p.queued] || 0)) {
+      const id = p.queued;
+      const r = castAbility(world, p, id);
+      // 'far': Ziel noch nicht in Reichweite, vorgemerkt lassen und hinlaufen.
+      if (r !== 'far') p.queued = null;
+      if (r === true) {
+        p.gcdUntil = world.tick + GCD;
+        p.cds[id] = world.tick + Math.max(ABILITIES[id].cd, GCD);
+      }
+    } else if (!p.queued && p.engaged && target && inReach) {
       p.gcdUntil = world.tick + GCD;
-      p.cds[id] = world.tick + Math.max(ABILITIES[id].cd, GCD);
+      emit(world, { type: 'cast', id: 'swing', by: p.id, at: target.id });
+      hitMob(world, p, target, roll(world, 1, 3) + Math.ceil(P.weaponPower(p) / 2) + Math.floor(P.classLevel(p) / 3));
     }
   }
 
@@ -555,18 +579,16 @@ function alliesNear(world, p, radius) {
   return [...world.players.values()].filter((q) => Math.hypot(q.x - p.x, q.y - p.y) <= radius);
 }
 
+const NEEDS_TARGET = new Set(['melee', 'ranged', 'snare', 'zone']);
+
 function castAbility(world, p, id) {
   const a = ABILITIES[id];
   const target = p.target ? world.mobs.find((m) => m.id === p.target && !m.dead) : null;
   if (a.oil && p.oil < a.oil) { tell(world, p.id, 'Not enough oil.', 'sys'); return false; }
-  const needsTarget = ['melee', 'ranged', 'snare', 'zone'].includes(a.kind);
+  const needsTarget = NEEDS_TARGET.has(a.kind);
   if (needsTarget && !target) { tell(world, p.id, 'No target. Click a creature or press TAB.', 'sys'); return false; }
   const range = a.kind === 'melee' ? 1 : a.range;
-  if (needsTarget && cheb(p.x, p.y, target.x, target.y) > range) {
-    tell(world, p.id, 'Too far away.', 'sys');
-    p.engaged = true;
-    return false;
-  }
+  if (needsTarget && cheb(p.x, p.y, target.x, target.y) > range) return 'far';
   if (a.oil) p.oil -= a.oil;
   emit(world, { type: 'cast', id, by: p.id, at: target?.id ?? null });
   if (a.text) tell(world, p.id, a.text);

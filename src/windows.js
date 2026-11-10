@@ -12,6 +12,7 @@ import { SHOPS } from '../content/shops.js';
 import { allNpcs } from '../content/regions/index.js';
 import { xpForLevel } from '../shared/player.js';
 import { keyLabel } from './ui.js';
+import { iconEl } from './icons.js';
 import { FAVOURS, BEACON_FUEL, BEACON_GOAL, DONATE_CAP } from '../content/dailies.js';
 import { BALLOT } from '../content/ballot.js';
 import { CHRONICLE } from '../content/chronicle.js';
@@ -104,7 +105,7 @@ export function createWindows(handlers) {
       title: `${def.name}. ${def.text}`,
       onclick: () => (extra.onclick ? extra.onclick(i, slot) : handlers.use(i)),
       oncontextmenu: (e) => { e.preventDefault(); itemMenu(e.clientX, e.clientY, i, slot); },
-    }, h('span', { class: 'glyph' }, def.glyph || '?'), slot.n > 1 ? h('span', { class: 'count' }, slot.n) : null);
+    }, iconEl('item', slot.id, def.glyph), slot.n > 1 ? h('span', { class: 'count' }, slot.n) : null);
     longPress(cell, (x, y) => itemMenu(x, y, i, slot));
     return cell;
   }
@@ -163,7 +164,7 @@ export function createWindows(handlers) {
         const known = s.classes[s.cls].level >= need;
         const onBar = s.bar.includes(ab);
         return h('li', { class: known ? '' : 'dim' },
-          h('span', { class: 'glyph' }, a.glyph), ` ${a.name} `,
+          iconEl('ability', ab, a.glyph, 'icon small'), ` ${a.name} `,
           known ? (onBar ? h('span', { class: 'muted' }, 'ON BAR') : btn('TO BAR', () => handlers.assign(ab, a.name))) : h('span', { class: 'muted' }, `LV ${need}`));
       }) : [h('li', { class: 'muted' }, 'Choose a calling with Warden Ama by the Beacon.')];
       const equip = SLOTS.map((slot) => {
@@ -239,7 +240,7 @@ export function createWindows(handlers) {
         const inputs = Object.entries(r.inputs).map(([id, n]) => `${ITEMS[id].name} ${count(id)}/${n}`).join(', ');
         const enough = Object.entries(r.inputs).every(([id, n]) => count(id) >= n);
         return h('li', { class: canLevel ? '' : 'dim' },
-          h('div', {}, h('span', { class: 'glyph' }, out.glyph), ` ${out.name}${r.out[1] > 1 ? ` x${r.out[1]}` : ''} `, h('span', { class: 'muted' }, `LV ${r.level}`)),
+          h('div', {}, iconEl('item', r.out[0], out.glyph, 'icon small'), ` ${out.name}${r.out[1] > 1 ? ` x${r.out[1]}` : ''} `, h('span', { class: 'muted' }, `LV ${r.level}`)),
           h('div', { class: 'muted small' }, inputs),
           canLevel ? h('div', { class: 'row-buttons' },
             btn('MAKE', () => handlers.craft(obj, rid, 1), { disabled: !enough }),
@@ -260,7 +261,7 @@ export function createWindows(handlers) {
       if (!state) return { heading: s.name.toUpperCase(), content: h('p', {}, '...') };
       const buy = s.sells.map((id) => {
         const it = ITEMS[id];
-        return h('li', {}, h('span', { class: 'glyph' }, it.glyph), ` ${it.name} `, h('span', { class: 'muted' }, `${it.value}G `),
+        return h('li', {}, iconEl('item', id, it.glyph, 'icon small'), ` ${it.name} `, h('span', { class: 'muted' }, `${it.value}G `),
           btn('BUY', () => handlers.buy(shop, id, 1), { disabled: state.gold < it.value }),
           it.stack ? btn('x5', () => handlers.buy(shop, id, 5), { disabled: state.gold < it.value * 5 }) : null);
       });
@@ -268,7 +269,7 @@ export function createWindows(handlers) {
         if (!slot || !ITEMS[slot.id].value) return null;
         const it = ITEMS[slot.id];
         const price = Math.max(1, Math.floor(it.value / 2));
-        return h('li', {}, h('span', { class: 'glyph' }, it.glyph), ` ${it.name}${slot.n > 1 ? ` x${slot.n}` : ''} `, h('span', { class: 'muted' }, `${price}G `),
+        return h('li', {}, iconEl('item', slot.id, it.glyph, 'icon small'), ` ${it.name}${slot.n > 1 ? ` x${slot.n}` : ''} `, h('span', { class: 'muted' }, `${price}G `),
           btn('SELL', () => handlers.sell(shop, i, 1)),
           slot.n > 1 ? btn('ALL', () => handlers.sell(shop, i, slot.n)) : null);
       }).filter(Boolean);
@@ -315,7 +316,7 @@ export function createWindows(handlers) {
       const fuels = Object.entries(BEACON_FUEL).map(([id, pts]) => {
         const it = ITEMS[id];
         const n = state ? state.bag.reduce((s, x) => s + (x && x.id === id ? x.n : 0), 0) : 0;
-        return h('li', {}, h('span', { class: 'glyph' }, it.glyph), ` ${it.name} x${n} `, h('span', { class: 'muted' }, `(+${pts} each) `),
+        return h('li', {}, iconEl('item', id, it.glyph, 'icon small'), ` ${it.name} x${n} `, h('span', { class: 'muted' }, `(+${pts} each) `),
           btn('GIVE 1', () => handlers.feed(id, 1), { disabled: n < 1 }), btn('ALL', () => handlers.feed(id, n), { disabled: n < 1 }));
       });
       return {

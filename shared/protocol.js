@@ -150,7 +150,7 @@ export function tickFor(world, pid, known) {
     me: p && {
       hp: p.hp, maxHp: p.maxHp, oil: Math.round(p.oil * 10) / 10, gold: p.gold,
       level: p.cls ? p.classes[p.cls].level : 1, xp: p.cls ? p.classes[p.cls].xp : 0, cls: p.cls,
-      target: p.target, engaged: p.engaged, gcdUntil: p.gcdUntil, cds: p.cds, braceUntil: p.braceUntil,
+      target: p.target, engaged: p.engaged, gcdUntil: p.gcdUntil, cds: p.cds, braceUntil: p.braceUntil, queued: p.queued,
       light: Math.round(lightBonusOf(p, world.tick) * 10) / 10, gathering: !!p.gather,
     },
   };

@@ -6,6 +6,7 @@ import { ABILITIES, GCD } from '../content/abilities.js';
 import { ITEMS } from '../content/items.js';
 import { TALK } from '../content/npcs.js';
 import { CLASSES, WANDERER } from '../content/classes.js';
+import { iconEl } from './icons.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -108,7 +109,7 @@ export function createUI(handlers) {
         b.classList.toggle('empty', !entry);
         b.title = entry ? `${entry.name} (${keyLabel(keys[i])})` : `Empty (${keyLabel(keys[i])}). Right-click a bag item or an ability to place it here.`;
         b.querySelector('.key').textContent = keyLabel(keys[i]);
-        b.querySelector('.glyph').textContent = entry ? entry.glyph : '·';
+        b.querySelector('.glyph').replaceChildren(entry ? iconEl(entry.item ? 'item' : 'ability', entry.item || id, entry.glyph) : '·');
         b.querySelector('.name').textContent = entry ? entry.name.toUpperCase() : '';
       });
     }
@@ -137,6 +138,7 @@ export function createUI(handlers) {
       const total = own > me.gcdUntil && a ? Math.max(a.cd, GCD) : GCD;
       const left = Math.max(0, until - now);
       cd.style.height = `${Math.min(100, (left / total) * 100)}%`;
+      slots[i].classList.toggle('queued', me.queued === id);
       if (a) slots[i].classList.toggle('unusable', !!a.oil && me.oil < a.oil);
     });
   }

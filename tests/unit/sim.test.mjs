@@ -295,6 +295,7 @@ test('Leiste: nur bekannte Fähigkeiten, Gegenstände erlaubt', () => {
   P.addItem(p, 'bread', 1);
   p.hp = 10;
   applyIntent(w, 'a', { t: 'ability', id: 'item:bread' });
+  run(w, 1);
   assert.ok(p.hp > 10);
   applyIntent(w, 'a', { t: 'ability', id: 'twin_cut' });
   assert.equal(p.queued, null, 'fremde Fähigkeit wird nicht ausgeführt');
@@ -691,4 +692,39 @@ test('Lamplighter heilt sich, wenn alle fliehen', () => {
   run(d, 2);
   assert.equal(boss.hp, boss.maxHp);
   assert.equal(boss.phase2, false);
+});
+
+// ---------- Globale Abklingzeit ----------
+
+test('Eine Handlung pro globaler Abklingzeit, Vorgemerktes geht vor und geht nicht verloren', async () => {
+  const { GCD } = await import('../../content/abilities.js');
+  const w = S.createWorld(REGION, 60);
+  const p = newcomer(w, 'a', 'warden');
+  const g = w.mobs.find((m) => m.type === 'greyling');
+  g.hp = g.maxHp = 9999;
+  p.x = g.x + 1; p.y = g.y; p.hp = p.maxHp = 999;
+  P.addItem(p, 'bread', 5);
+  applyIntent(w, 'a', { t: 'act', kind: 'mob', id: g.id, action: 'attack' });
+  const casts = [];
+  run(w, 1, (ev) => casts.push(...ev.filter((e) => e.type === 'cast' && e.by === 'a').map((e) => [w.tick, e.id])));
+  // Brot während der Abklingzeit drücken: wird vorgemerkt und kommt als nächste Handlung.
+  applyIntent(w, 'a', { t: 'ability', id: 'item:bread' });
+  assert.equal(p.queued, 'item:bread');
+  run(w, GCD * 3, (ev) => casts.push(...ev.filter((e) => e.type === 'cast' && e.by === 'a').map((e) => [w.tick, e.id])));
+  assert.equal(P.countItem(p, 'bread'), 4, 'Brot gegessen');
+  // Zwischen zwei Handlungen liegen mindestens GCD Takte.
+  for (let i = 1; i < casts.length; i++) assert.ok(casts[i][0] - casts[i - 1][0] >= GCD, `Abstand ${casts[i][0] - casts[i - 1][0]}`);
+});
+
+test('Fähigkeit auf Abklingzeit wird nicht vorgemerkt, sondern gemeldet', () => {
+  const w = S.createWorld(REGION, 61);
+  const p = newcomer(w, 'a', 'warden');
+  p.classes.warden.level = 5;
+  P.barOf(p);
+  p.cds.brace = w.tick + 100;
+  let told = false;
+  applyIntent(w, 'a', { t: 'ability', id: 'brace' });
+  assert.equal(p.queued, null);
+  for (const e of w.events) if (e.type === 'log' && e.text.includes('not ready')) told = true;
+  assert.ok(told);
 });
