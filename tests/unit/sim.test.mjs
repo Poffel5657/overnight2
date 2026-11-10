@@ -633,3 +633,62 @@ test('Truhen öffnen sich einmal am Tag pro Spieler', () => {
   run(d, 2);
   assert.equal(p.gold, gold, 'zweites Mal leer');
 });
+
+// ---------- Der Lamplighter ----------
+
+function bossFight() {
+  const d = S.createWorld(regionFor('drowned_chapel'), 50);
+  const boss = d.mobs.find((m) => m.type === 'lamplighter');
+  for (const m of d.mobs) if (m !== boss) { m.dead = true; m.deadUntil = 1e9; }
+  const p = S.addPlayer(d, 'a', 'a', { v: 2, cls: 'warden', classes: { warden: { level: 36, xp: 0 } }, equip: { main: 'greyglass_shield', body: 'greyglass_coat' }, quests: { false_light: { step: 0, n: 0 } } });
+  p.x = boss.x + 1; p.y = boss.y;
+  return { d, boss, p };
+}
+
+test('Lamplighter: Phase 2 löscht alle Lichter, im Dunkeln ist er verhüllt', () => {
+  const { d, boss, p } = bossFight();
+  const litBefore = d.lights.length;
+  assert.ok(litBefore >= 5);
+  boss.angryAt = 'a';
+  boss.hp = Math.floor(boss.maxHp * 0.5) + 5;
+  S.interact(d, 'a', { kind: 'mob', id: boss.id }, 'attack');
+  for (let i = 0; i < 40 && !boss.phase2; i++) { applyIntent(d, 'a', { t: 'ability', id: 'bash' }); p.hp = p.maxHp; run(d, 1); }
+  assert.ok(boss.phase2, 'Phase 2 erreicht');
+  assert.equal(d.lights.length, 0, 'alle Lichter aus');
+  // Verhüllt: ein Schlag im Dunkeln richtet weniger aus als im Licht
+  const brazier = d.objects.find((o) => o.type === 'brazier' && o.name.includes('nave'));
+  p.oil = 100;
+  p.x = brazier.x + 1; p.y = brazier.y;
+  if (!S.walkable(d, p.x, p.y)) p.y += 1;
+  applyIntent(d, 'a', { t: 'act', kind: 'object', id: brazier.id, action: 'light' });
+  run(d, 3);
+  assert.ok(brazier.lit, 'Kohlebecken wieder an');
+  assert.ok(p.oil <= 90);
+});
+
+test('Lamplighter: Sieg zündet die Lichter an und zählt für The False Light', () => {
+  const { d, boss, p } = bossFight();
+  boss.angryAt = 'a';
+  S.interact(d, 'a', { kind: 'mob', id: boss.id }, 'attack');
+  for (let i = 0; i < 3000 && !boss.dead; i++) {
+    applyIntent(d, 'a', { t: 'ability', id: i % 5 === 0 ? 'shield_slam' : 'bash' });
+    p.hp = p.maxHp;
+    // Dem Kampf mit Licht helfen: Kohlebecken sofort wieder anzünden
+    if (boss.phase2) for (const o of d.objects) if (o.type === 'brazier') o.lit = true;
+    run(d, 1);
+  }
+  assert.ok(boss.dead, 'Boss besiegt');
+  assert.ok(d.lights.length >= 5, 'Lichter brennen wieder');
+  assert.equal(p.quests.false_light.step, 1);
+  assert.ok(P.countItem(p, 'lamp_shard') === 1);
+});
+
+test('Lamplighter heilt sich, wenn alle fliehen', () => {
+  const { d, boss } = bossFight();
+  boss.hp = 100;
+  boss.phase2 = true;
+  S.removePlayer(d, 'a');
+  run(d, 2);
+  assert.equal(boss.hp, boss.maxHp);
+  assert.equal(boss.phase2, false);
+});

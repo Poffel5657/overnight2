@@ -65,6 +65,15 @@ export const QUESTS = {
     ],
     reward: { xp: 600, gold: 50 },
   },
+  false_light: {
+    name: 'The False Light', giver: 'stranger',
+    text: 'The Stranger knows what burns under the ruins, and wants it put out.',
+    steps: [
+      { type: 'kill', mob: 'lamplighter', n: 1, text: 'Put out the False Light in the Drowned Chapel. Bring friends and oil.' },
+      { type: 'talk', npc: 'stranger', text: 'Tell the Stranger.' },
+    ],
+    reward: { xp: 1500, gold: 150, items: { greyglass: 3 } },
+  },
   trial_warden: {
     name: 'The Warden\'s Trial', giver: 'ama',
     text: 'Ama will teach you to stand in front, if you show you can stand at all.',

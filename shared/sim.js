@@ -24,7 +24,7 @@ export { saveOf, xpForLevel, MAX_LEVEL } from './player.js';
 export const TICK_MS = 300;
 const OIL_PER_TICK = 0.15;
 const SWING_EVERY = 4;
-const OIL_LIGHT_COST = 15;
+const OIL_LIGHT_COST = { signal: 15, brazier: 10 };
 const SHARE_RANGE = 12;
 
 // Reichweite der Laterne in Feldern. bonus: aus der Laterne (content/items.js) und Leuchttränken.
@@ -185,6 +185,22 @@ function refreshLights(world) {
     .map((o) => ({ id: o.id, x: o.x + o.w / 2, y: o.y + o.d / 2, r: o.light }));
 }
 
+// Bosse mit snuff löschen alle Lichter im Gebiet; besiegt oder zurückgesetzt brennen sie wieder.
+function setAllLights(world, lit) {
+  for (const o of world.objects) {
+    if (!o.light || o.type === 'signal' || o.lit === lit) continue;
+    o.lit = lit;
+    emit(world, { type: 'lit', id: o.id, lit });
+  }
+  refreshLights(world);
+}
+
+function resetBoss(world, m) {
+  if (!m.def.boss) return;
+  if (m.phase2 && m.def.boss.snuff) setAllLights(world, true);
+  m.phase2 = false;
+}
+
 // Licht an einem Feld von festen Lichtquellen (ohne Laternen), 0 bis 1.
 export function staticLightAt(world, x, y) {
   let lit = 0;
@@ -203,7 +219,8 @@ export function objectActions(o) {
     case 'chest': return [['open', 'Open'], ['examine', 'Examine']];
     case 'shrine': return [['search', 'Search'], ['examine', 'Examine']];
     case 'altar': return [['pray', 'Pray'], ['examine', 'Examine']];
-    case 'signal': return o.lit ? [['examine', 'Examine']] : [['light', 'Light'], ['examine', 'Examine']];
+    case 'signal':
+    case 'brazier': return o.lit ? [['examine', 'Examine']] : [['light', 'Light'], ['examine', 'Examine']];
     case 'campfire': return [['rest', 'Rest'], ['examine', 'Examine']];
     case 'station': return [['use', 'Use'], ['examine', 'Examine']];
     case 'node': return [['gather', NODES[o.node].verb], ['examine', 'Examine']];
@@ -449,17 +466,18 @@ function doAction(world, p, goal) {
     p.warnedOil = 0;
     tell(world, p.id, 'You fill your lantern from the Beacon. It burns gold again.', 'good');
     questEvent(world, p, 'action', { action: 'refill' });
-  } else if (goal.action === 'light' && t.type === 'signal' && !t.lit) {
-    if (p.oil < OIL_LIGHT_COST) {
-      tell(world, p.id, `You need ${OIL_LIGHT_COST} oil to light this.`, 'sys');
+  } else if (goal.action === 'light' && (t.type === 'signal' || t.type === 'brazier') && !t.lit) {
+    const cost = OIL_LIGHT_COST[t.type];
+    if (p.oil < cost) {
+      tell(world, p.id, `You need ${cost} oil to light this.`, 'sys');
       return;
     }
-    p.oil -= OIL_LIGHT_COST;
+    p.oil -= cost;
     t.lit = true;
     refreshLights(world);
-    emit(world, { type: 'lit', id: t.id });
-    emit(world, { type: 'log', text: `${p.name} lit a signal fire. The Grey takes a step back.`, cls: 'good' });
-    questEvent(world, p, 'action', { action: 'light' });
+    emit(world, { type: 'lit', id: t.id, lit: true });
+    emit(world, { type: 'log', text: t.type === 'signal' ? `${p.name} lit a signal fire. The Grey takes a step back.` : `${p.name} relights a brazier.`, cls: 'good' });
+    if (t.type === 'signal') questEvent(world, p, 'action', { action: 'light' });
   } else if (goal.action === 'light' && t.type === 'signal' && t.lit) {
     // Schon an: zählt trotzdem für Quests, damit niemand auf ein dunkles Feuer warten muss.
     tell(world, p.id, 'This one is already burning. You warm your hands and feel useful.', 'sys');
@@ -509,6 +527,10 @@ export function travel(world, p, to) {
   closeTalk(world, p);
   emit(world, { to: p.id, type: 'travel', region: to.region });
 }
+
+// „The Lamplighter“ heißt schon so; alle anderen bekommen den Artikel.
+function theName(name) { return name.startsWith('The ') ? name : `The ${name}`; }
+function aName(name) { return name.startsWith('The ') ? name : `A ${name}`; }
 
 function roll(world, a, b) {
   return a + Math.floor(world.rand() * (b - a + 1));
@@ -622,7 +644,21 @@ function dropTelegraphs(world, match) {
 }
 
 function hitMob(world, p, m, dmg) {
+  const boss = m.def.boss;
+  // Im Dunkeln ist ein Boss in Phase 2 verhüllt: weniger Schaden, bis man ihn ins Licht lockt.
+  if (boss?.shroud && m.phase2 && staticLightAt(world, m.x, m.y) < 0.4) {
+    dmg = Math.max(1, Math.round(dmg * boss.shroud));
+    if ((m.shroudTold || 0) < world.tick) {
+      m.shroudTold = world.tick + 15;
+      tell(world, p.id, `${m.name} is shrouded in the dark. Relight the braziers and draw him into the light.`, 'hurt');
+    }
+  }
   m.hp -= dmg;
+  if (boss && !m.phase2 && m.hp > 0 && m.hp <= m.maxHp * boss.phase2At) {
+    m.phase2 = true;
+    emit(world, { type: 'log', text: boss.phase2Text, cls: 'hurt' });
+    if (boss.snuff) setAllLights(world, false);
+  }
   m.hitters.add(p.id);
   if (!m.angryAt) m.angryAt = p.id;
   float(world, m.id, String(dmg));
@@ -633,11 +669,15 @@ function hitMob(world, p, m, dmg) {
   m.deadUntil = world.tick + m.def.respawn;
   dropTelegraphs(world, (t) => t.mob === m.id);
   emit(world, { type: 'death', ent: m.id });
+  if (boss) {
+    resetBoss(world, m);
+    emit(world, { type: 'log', text: boss.deathText, cls: 'good' });
+  }
   // Alle, die mitgekämpft haben und in der Nähe sind, bekommen Erfahrung und Quest-Fortschritt.
   for (const pid of m.hitters) {
     const q = world.players.get(pid);
     if (!q || cheb(q.x, q.y, m.x, m.y) > SHARE_RANGE) continue;
-    tell(world, q.id, m.type === 'greyling' ? 'The Greyling comes apart into fog.' : `The ${m.name} gives up.`, 'good');
+    tell(world, q.id, m.type === 'greyling' ? 'The Greyling comes apart into fog.' : `${theName(m.name)} falls.`, 'good');
     grantXp(world, q, m.def.xp);
     questEvent(world, q, 'kill', { mob: m.type });
     onKill(world, q, m.type);
@@ -782,6 +822,7 @@ function updateMob(world, m) {
       m.angryAt = null;
       m.returning = false;
       m.hitters.clear();
+      m.phase2 = false;
     }
     return;
   }
@@ -806,6 +847,7 @@ function updateMob(world, m) {
   if (m.returning) {
     m.angryAt = null;
     m.hitters.clear();
+    resetBoss(world, m);
     move(m.home.x, m.home.y);
     if (cheb(m.x, m.y, m.home.x, m.home.y) <= 1 || rooted) {
       m.returning = false;
@@ -822,6 +864,11 @@ function updateMob(world, m) {
   // Tagsüber sind Greylinge weniger mutig.
   const aggro = def.aggro * (1 - 0.5 * world.daylight);
   const p = pickVictim(world, m, aggro);
+  // Ein Boss ohne Gegner heilt sich und zündet die Lichter wieder an.
+  if (!p && def.boss && m.hp < m.maxHp) {
+    m.hp = m.maxHp;
+    resetBoss(world, m);
+  }
   if (!p) {
     if (world.rand() < 0.12) move(m.home.x + roll(world, -3, 3), m.home.y + roll(world, -3, 3));
     return;
@@ -833,8 +880,10 @@ function updateMob(world, m) {
   }
   if (world.tick < m.nextAttack || world.tick < m.dazzleUntil) return;
   m.attacks++;
-  const sp = def.special;
-  if (sp && m.attacks % sp.every === 0) {
+  const specs = def.specials || (def.special ? [def.special] : []);
+  const spEvery = def.specialEvery ?? def.special?.every ?? 0;
+  const sp = spEvery && m.attacks % spEvery === 0 ? specs[(m.attacks / spEvery - 1) % specs.length] : null;
+  if (sp) {
     const tiles = specialTiles(world, m, p, sp.pattern);
     const t = { id: world.nextTelegraph++, mob: m.id, victim: p.id, tiles, at: world.tick + sp.delay, hit: sp.hit, name: def.name };
     world.telegraphs.push(t);
@@ -846,9 +895,9 @@ function updateMob(world, m) {
   m.nextAttack = world.tick + def.attackEvery;
   if (def.drainOil && p.oil > 0) {
     p.oil = Math.max(0, p.oil - def.drainOil);
-    tell(world, p.id, `The ${def.name} drinks from your lantern. (-${def.drainOil} oil)`, 'hurt');
+    tell(world, p.id, `${theName(def.name)} drinks from your lantern. (-${def.drainOil} oil)`, 'hurt');
   }
-  hurtPlayer(world, p, roll(world, def.hit[0], def.hit[1]), `A ${def.name}`);
+  hurtPlayer(world, p, roll(world, def.hit[0], def.hit[1]), aName(def.name));
 }
 
 function updateNpc(world, n) {
@@ -879,9 +928,9 @@ function resolveTelegraphs(world) {
     for (const p of world.players.values()) {
       if (!t.tiles.some((tile) => tile.x === p.x && tile.y === p.y)) continue;
       hitAny = true;
-      tell(world, p.id, `The ${t.name} strikes where you stand!`, 'hurt');
-      hurtPlayer(world, p, roll(world, t.hit[0], t.hit[1]), `A ${t.name}`);
+      tell(world, p.id, `${theName(t.name)} strikes where you stand!`, 'hurt');
+      hurtPlayer(world, p, roll(world, t.hit[0], t.hit[1]), aName(t.name));
     }
-    if (!hitAny && world.players.has(t.victim)) tell(world, t.victim, `You step aside. The ${t.name} strikes at nothing.`, 'good');
+    if (!hitAny && world.players.has(t.victim)) tell(world, t.victim, `You step aside. ${theName(t.name)} strikes at nothing.`, 'good');
   }
 }

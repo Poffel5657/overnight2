@@ -242,7 +242,7 @@ function flushEvents(events) {
     else if (e.type === 'community') windows.setCommunity(e.community);
     else if (e.type === 'telegraph') addTelegraph(e.t);
     else if (e.type === 'telegraphEnd') removeTelegraph(e.id);
-    else if (e.type === 'lit') setLit(e.id, true);
+    else if (e.type === 'lit') setLit(e.id, e.lit !== false);
     else if (e.type === 'cast' && e.id === 'flare' && e.by === mirror.you) flareUntil = performance.now() + 450;
     else if (e.type === 'respawn') {
       ui.closeDialog();

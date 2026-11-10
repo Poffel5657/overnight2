@@ -43,6 +43,7 @@ export const ITEMS = {
   tin_lantern: { name: 'Tin Lantern', slot: 'lantern', light: 0, burn: 1, value: 4, glyph: 'i', text: 'Everyone in Kindle gets one. Most of them still work.' },
   brass_lantern: { name: 'Brass Lantern', slot: 'lantern', light: 1.5, burn: 0.7, value: 45, glyph: 'i', text: 'Brighter and thriftier. Wren polished the reflector with a map.' },
   glim_lantern: { name: 'Glimsteel Lantern', slot: 'lantern', light: 2.5, burn: 0.55, value: 120, glyph: 'i', text: 'The glimmer holds some light back for later.' },
+  shard_lantern: { name: 'Shard Lantern', slot: 'lantern', light: 4.5, burn: 0.3, value: 500, glyph: 'i', text: 'Built around a shard of the False Light. It burns for you now. Mostly.' },
   greyglass_lantern: { name: 'Greyglass Lantern', slot: 'lantern', light: 3.5, burn: 0.4, value: 280, glyph: 'i', text: 'It burns brightest where the Grey is thickest. Nobody likes to think about why.' },
 
   // ---------- Verbrauch ----------
@@ -70,6 +71,7 @@ export const ITEMS = {
   greyglass: { name: 'Greyglass', stack: true, value: 20, glyph: '*', text: 'Glass made of fog, somehow. Cold and very sharp.' },
   wolf_pelt: { name: 'Wolf Pelt', stack: true, value: 6, glyph: '&', text: 'Thick grey fur that smells of pine and bad intentions.' },
   beetle_shell: { name: 'Beetle Shell', stack: true, value: 10, glyph: ')', text: 'A plate of stone-hard shell. Rook wants these.' },
+  lamp_shard: { name: 'Lamp Shard', stack: true, value: 60, glyph: '*', text: 'A piece of the False Light. Still warm. Still wrong.' },
   prayer_tablet: { name: 'Prayer Tablet', stack: true, value: 0, glyph: '=', text: 'A cracked stone tablet. The prayer on it is not addressed to the Nightwright.' },
   crow_feather: { name: 'Crow Feather', stack: true, value: 1, glyph: '/', text: 'Glossy and judgemental. Fen collects them for quills.' },
 };

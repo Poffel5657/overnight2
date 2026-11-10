@@ -7,6 +7,9 @@
 //            pattern: plus (Kreuz um das Ziel), ring (alle Felder um das Wesen), line (drei Felder vom Wesen
 //            zum Ziel), bigplus (Kreuz mit Reichweite 2 um das Ziel).
 //   drainOil: Treffer stiehlt so viel Lampenöl.
+//   specials: mehrere angekündigte Angriffe im Wechsel (statt special).
+//   boss: { phase2At (Anteil HP), phase2Text, snuff (löscht alle Lichter im Gebiet), shroud (Schadensfaktor
+//         im Dunkeln in Phase 2), deathText }. Bosse heilen und zünden die Lichter wieder an, wenn alle fliehen.
 //   drops: [Gegenstand, Chance, min, max].  gold: [min, max].
 
 export const MOBS = {
@@ -64,6 +67,24 @@ export const MOBS = {
     drops: [['lily_bulb', 0.3, 1, 1], ['scrap', 0.3, 1, 3]], gold: [8, 16],
     special: { every: 3, delay: 3, pattern: 'bigplus', hit: [20, 26], text: 'The toad inflates. Everyone nearby should not be.' },
     examine: 'About the size of a cart, and twice as smug.',
+  },
+  lamplighter: {
+    name: 'The Lamplighter', sprite: 'lamplighter', level: 36, ai: 'beast',
+    hp: 650, hit: [14, 18], attackEvery: 4, aggro: 7, leash: 12, respawn: 900, xp: 900,
+    drops: [['lamp_shard', 1, 1, 1], ['greyglass', 0.8, 2, 3]], gold: [80, 140],
+    specials: [
+      { every: 1, delay: 3, pattern: 'ring', hit: [26, 32], text: 'The Lamplighter swings his lamp in a wide circle.' },
+      { every: 1, delay: 3, pattern: 'bigplus', hit: [24, 30], text: 'The Lamplighter raises his lamp. Light pools around you.' },
+    ],
+    specialEvery: 3,
+    boss: {
+      phase2At: 0.5,
+      phase2Text: 'The Lamplighter breathes in. Every light in the chapel goes out.',
+      snuff: true,
+      shroud: 0.5,
+      deathText: 'The False Light goes out. Somewhere far off in the Grey, another light flickers.',
+    },
+    examine: 'Tall, thin, patient. He tends a light that should not be burning.',
   },
   drowned_pilgrim: {
     name: 'Drowned Pilgrim', sprite: 'drowned_pilgrim', level: 32, ai: 'grey',

@@ -463,6 +463,37 @@ export const SPRITES = {
     ],
   },
 
+  lamplighter: {
+    px: 1 / 9,
+    palette: { k: '#1c1a20', K: '#2c2a34', f: '#b8b0a0', e: '!#ffe08a', p: '#3a3844', l: '!#c8e8ff', L: '!#ffffff', h: '#5a5650', d: '#141218' },
+    rows: [
+      '.....kkkk.....',
+      '....kkkkkk....',
+      '....kfffkk....',
+      '....kefefk....',
+      '....kfffkk....',
+      '.....kkkk.....',
+      '...kkkkkkkkh..',
+      '..kKkkkkkkKh..',
+      '..kKkkkkkkKh..',
+      '..fkkkkkkkkh..',
+      '...kkkkkkkklll',
+      '...kkkkkkkklLl',
+      '...kkkkkkkklll',
+      '...kkkkkkkk...',
+      '...kkkkkkkk...',
+      '..kkkkkkkkkk..',
+      '..kkkkkkkkkk..',
+      '..kkkkkkkkkk..',
+      '...pp....pp...',
+      '...dd....dd...',
+    ],
+    walk: [
+      '..pp......pp..',
+      '..dd......dd..',
+    ],
+  },
+
   flame: {
     px: 1 / 12,
     palette: { r: '!#ff6a2a', o: '!#ffa040', y: '!#ffe08a' },

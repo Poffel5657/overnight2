@@ -181,8 +181,14 @@ const stranger = (() => {
   return {
     start: {
       text: '...',
-      options: [...t.options, { text: 'Where are you from?', to: 'from' }, BYE],
+      options: [
+        { text: 'There is a lamp under the ruins.', to: 'fl_offer', if: { quest: { older_prayer: 'done', false_light: 'none' } }, do: [{ start: 'false_light' }] },
+        { text: 'The False Light is out.', to: 'fl_done', if: { quest: { false_light: 1 } }, do: [{ advance: 'false_light' }] },
+        ...t.options, { text: 'Where are you from?', to: 'from' }, BYE,
+      ],
     },
+    fl_offer: { text: '"I know. I followed it here." A long pause. "It goes out, or this village does. Take friends. When he puts the lights out, put them back."', options: [{ text: 'We will.' }] },
+    fl_done: { text: '"Good." For the first time, the Stranger smiles. It does not help. "There are more lamps out there. This was the nearest."', options: [{ text: '...more?' }] },
     from: { text: 'Further out than you have been. There is another light out there. Keep your wick trimmed.', options: [BYE] },
     ...t.pages,
   };
