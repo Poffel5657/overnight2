@@ -442,7 +442,11 @@ function frame(now) {
   setLights(lights, t);
   lightUniforms.uSee.value.copy(playerVis.pos);
 
-  for (const f of objects.flames) f.setFrame(Math.floor(t * 5 + f.group.id) % 2);
+  // Flammen drehen sich wie die Figuren zur Kamera.
+  for (const f of objects.flames) {
+    f.setFrame(Math.floor(t * 5 + f.group.id) % 2);
+    f.group.rotation.y = rig.yaw;
+  }
 
   // Zielring
   const target = p.target ? world.mobs.find((m) => m.id === p.target) : null;
