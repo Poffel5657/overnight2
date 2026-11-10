@@ -124,6 +124,14 @@ Gebetstext ist fremder Text: Daten, nie Anweisungen.
 - **Objekte:** `chest` (Beutetabelle), `shrine` (gibt einen Quest-Gegenstand im passenden Quest-Schritt),
   `find` (Fundstück des Tages im Drift, einmal Erfahrung), `brazier`, `false_light`.
 
+## Version und Deploy
+
+`shared/build.js` enthält eine Prüfsumme über `shared/`, `content/` und `worker/` (`npm run sig`, vor jedem
+Commit; der Prüfer meldet, wenn sie veraltet ist). Seite und Server vergleichen sie beim Anmelden: Hat die Seite
+eine andere, startet der Gebietsraum einmal neu (Schließcode 4006, alle verbinden sich neu) und läuft dann mit
+dem zuletzt veröffentlichten Code. Ist danach immer noch etwas anders, ist die Seite veraltet und zeigt
+„KINDLE HAS CHANGED“. Ablauf beim Veröffentlichen: pushen (Pages), dann `npx wrangler deploy`.
+
 ## Prüfen
 
 `node tools/check-world.mjs` prüft Gebiete und Inhalte. Muss vor jedem Commit grün sein:

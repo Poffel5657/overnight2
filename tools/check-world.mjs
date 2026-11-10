@@ -21,6 +21,8 @@ import { FAVOURS, FAVOURS_PER_DAY, BEACON_FUEL } from '../content/dailies.js';
 import { BALLOT } from '../content/ballot.js';
 import { CHESTS } from '../content/chests.js';
 import { SHAPES, PALETTES, ITEM_ICONS, ABILITY_ICONS } from '../content/icons.js';
+import { computeBuild } from './build-sig.mjs';
+import { BUILD } from '../shared/build.js';
 import { CHRONICLE } from '../content/chronicle.js';
 import { createWorld, walkable } from '../shared/sim.js';
 import { findPath } from '../shared/path.js';
@@ -252,6 +254,9 @@ for (const [kind, map, all] of [['Gegenstand', ITEM_ICONS, ITEMS], ['Fähigkeit'
     if (!PALETTES[def[1]]) errors.push(`${kind} ${id}: Icon-Palette ${def[1]} fehlt`);
   }
 }
+
+// Versionsprüfsumme aktuell? Sonst steigt der Server nach einem Deploy nicht um.
+if (computeBuild() !== BUILD) errors.push('shared/build.js ist veraltet: npm run sig ausführen und mit einchecken');
 
 const regions = Object.values(STATIC_REGIONS);
 for (const r of regions) check(r);
