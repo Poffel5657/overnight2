@@ -166,6 +166,7 @@ const windows = createWindows({
     return true;
   },
   online() { return conn ? !conn.offline : false; },
+  leave() { document.getElementById('btn-leave').click(); },
   async fetchBoard() {
     const res = await fetch(`${SERVER}/api/board`);
     return (await res.json()).top;

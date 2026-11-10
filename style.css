@@ -90,7 +90,7 @@ button:hover, button:focus-visible { color: var(--bright); outline: none; }
 .wtitle button { padding: 0; color: var(--accent); }
 
 .status { top: var(--gap); left: var(--gap); width: 270px; }
-.status-row { display: flex; justify-content: space-between; color: var(--muted); }
+.status-row { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); }
 
 .bar { display: flex; align-items: center; gap: 6px; margin-top: 3px; }
 .bar-label { width: 30px; color: var(--muted); }
@@ -278,6 +278,10 @@ button:disabled { color: var(--line); cursor: default; }
   .hotbar { gap: 2px; padding: 2px; }
   .dialog { bottom: 140px; }
   .menubar { top: calc(var(--gap) + 40px); }
+  /* Am Handy ist oben wenig Platz: LEAVE steht im CHAR-Fenster. */
+  #btn-leave { display: none; }
+  .status-row { font-size: 15px; white-space: nowrap; }
+  .topbuttons button { padding: 2px 2px; }
   .menubar .long { display: none; }
   .panel { top: auto; bottom: 168px; left: var(--gap); right: var(--gap); width: auto; max-height: 50vh; z-index: 45; }
   .grid { grid-template-columns: repeat(6, 1fr); }

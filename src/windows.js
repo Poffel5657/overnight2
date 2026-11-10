@@ -188,7 +188,7 @@ export function createWindows(handlers) {
           h('h3', {}, `TRADES (${Object.keys(s.profs).length}/${MAX_PROFESSIONS})`),
           h('ul', { class: 'rows' }, profRows.length ? profRows : [h('li', { class: 'muted' }, 'None yet.')]),
           free > 0 ? h('p', { class: 'muted small' }, 'Teachers: Rook (Salvage, Tinkering), Tallow (Foraging, Alchemy), Fen (Cartography), Wren (Lampwright).') : null,
-          h('div', { class: 'row-buttons' }, btn('KEYS', () => open('keys'))),
+          h('div', { class: 'row-buttons' }, btn('KEYS', () => open('keys')), handlers.online() ? btn('LEAVE KINDLE', () => { close(); handlers.leave(); }) : null),
         ],
       };
     },
