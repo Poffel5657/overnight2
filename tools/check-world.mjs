@@ -4,7 +4,7 @@
 //  - Gegenstände: jeder hat einen Fundort und einen Zweck
 //  - Quests, Gespräche, Klassen, Berufe, Rezepte: alles verweist auf Existierendes und ist spielbar
 
-import { REGION as KINDLE } from '../content/regions/kindle.js';
+import { STATIC_REGIONS, REGION_IDS, regionFor } from '../content/regions/index.js';
 import { TILE_TYPES } from '../content/tiles.js';
 import { SPRITES } from '../content/sprites.js';
 import { MOBS } from '../content/mobs.js';
@@ -73,9 +73,21 @@ function check(region) {
     if (!MOBS[m.type]) err(`unbekanntes Wesen '${m.type}'`);
   }
   spawnOk('Start', { id: 'start', ...region.start });
-  spawnOk('Aufwachpunkt', { id: 'respawn', ...region.respawn });
+  if (region.respawn) spawnOk('Aufwachpunkt', { id: 'respawn', ...region.respawn });
+  if (region.deathTo) {
+    const home = regionFor(region.deathTo.region, '2026-11-10');
+    if (!home || !TILE_TYPES[home.tiles[region.deathTo.y]?.[region.deathTo.x]]?.walk) err(`deathTo zeigt auf kein begehbares Feld`);
+  }
+  if (!region.respawn && !region.deathTo) err('weder respawn noch deathTo');
 
   for (const o of region.objects) {
+    if (o.type === 'door') {
+      const target = REGION_IDS.includes(o.to) && regionFor(o.to, '2026-11-10');
+      if (!target) err(`Tür bei ${o.x},${o.y} führt in unbekanntes Gebiet '${o.to}'`);
+      else if (!TILE_TYPES[target.tiles[o.ty]?.[o.tx]]?.walk || target.objects.some((t) => o.tx >= t.x && o.tx < t.x + (t.w || 1) && o.ty >= t.y && o.ty < t.y + (t.d || 1))) {
+        err(`Tür bei ${o.x},${o.y} landet in ${o.to} auf ${o.tx},${o.ty}, das ist nicht begehbar`);
+      }
+    }
     if (o.type === 'node' && !NODES[o.node]) err(`unbekannte Fundstelle '${o.node}' bei ${o.x},${o.y}`);
     if (o.type === 'station' && !Object.values(PROFESSIONS).some((pr) => pr.station === o.station)) err(`Station '${o.station}' gehört zu keinem Beruf`);
   }
@@ -186,7 +198,7 @@ function checkContent(regions) {
   }
   if (Object.keys(FAVOURS).length < FAVOURS_PER_DAY) err('weniger Gefallen als pro Tag gezogen werden');
   for (const i of Object.keys(BEACON_FUEL)) item(i, 'Brennstoff');
-  for (const r of regions) for (const t of ['board', 'altar', 'beacon']) if (!r.objects.some((o) => o.type === t)) err(`${r.id}: ${t} fehlt`);
+  for (const t of ['board', 'altar', 'beacon']) if (!STATIC_REGIONS.kindle.objects.some((o) => o.type === t)) err(`kindle: ${t} fehlt`);
   if (!Array.isArray(BALLOT.options) || BALLOT.options.length < 2) err('Stimmzettel braucht mindestens zwei Ideen');
   for (const o of BALLOT.options) {
     if (!/^[a-z0-9-]{1,32}$/.test(o.id)) err(`Stimmzettel: ID ${o.id} ungültig`);
@@ -214,8 +226,11 @@ for (const [name, s] of Object.entries(SPRITES)) {
   }
 }
 
-check(KINDLE);
-checkContent([KINDLE]);
+const regions = Object.values(STATIC_REGIONS);
+for (const r of regions) check(r);
+// Der Drift wird jeden Tag neu gewürfelt: mehrere Tage prüfen.
+for (const d of ['2026-11-10', '2026-11-11', '2026-12-24', '2027-01-01', '2027-03-15', '2027-07-04']) check(regionFor('drift', d));
+checkContent([...regions, regionFor('drift', '2026-11-10')]);
 if (errors.length) {
   console.error(errors.map((e) => `FEHLER ${e}`).join('\n'));
   process.exit(1);

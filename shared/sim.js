@@ -138,16 +138,27 @@ export function addPlayer(world, id, name, save = null) {
   return p;
 }
 
+// Spielstand eines Spielers im Gebiet (auf Reisen schon mit dem Ziel).
+export function saveFor(world, id) {
+  const p = world.players.get(id);
+  if (!p) return null;
+  const save = P.saveOf(p);
+  save.region = p.travel?.region ?? world.region.id;
+  if (p.travel) { save.x = p.travel.x; save.y = p.travel.y; }
+  return save;
+}
+
 export function removePlayer(world, id) {
   const p = world.players.get(id);
   if (!p) return null;
+  const save = saveFor(world, id);
   world.players.delete(id);
   for (const m of world.mobs) {
     if (m.angryAt === id) m.angryAt = null;
     m.hitters.delete(id);
   }
   world.telegraphs = world.telegraphs.filter((t) => t.victim !== id);
-  return P.saveOf(p);
+  return save;
 }
 
 export function walkable(world, x, y) {
@@ -187,6 +198,7 @@ export function objectActions(o) {
   switch (o.type) {
     case 'beacon': return [['refill', 'Fill lantern'], ['feed', 'Feed'], ['examine', 'Examine']];
     case 'board': return [['read', 'Read'], ['examine', 'Examine']];
+    case 'door': return [['enter', o.look === 'stairs' ? 'Climb' : 'Enter'], ['examine', 'Examine']];
     case 'altar': return [['pray', 'Pray'], ['examine', 'Examine']];
     case 'signal': return o.lit ? [['examine', 'Examine']] : [['light', 'Light'], ['examine', 'Examine']];
     case 'campfire': return [['rest', 'Rest'], ['examine', 'Examine']];
@@ -368,6 +380,7 @@ function updatePlayer(world, p) {
     }
   }
 
+  if (p.travel) return;
   if (p.path.length) {
     const next = p.path.shift();
     if (walkable(world, next.x, next.y)) {
@@ -456,6 +469,8 @@ function doAction(world, p, goal) {
     startGather(world, p, t);
   } else if (goal.action === 'use' && t.type === 'station') {
     emit(world, { to: p.id, type: 'craft', obj: t.id, station: t.station });
+  } else if (goal.action === 'enter' && t.type === 'door') {
+    travel(world, p, { region: t.to, x: t.tx, y: t.ty });
   } else if (goal.action === 'read' && t.type === 'board') {
     dailyOf(world, p);
     emit(world, { to: p.id, type: 'window', win: 'board' });
@@ -465,6 +480,17 @@ function doAction(world, p, goal) {
     dailyOf(world, p);
     emit(world, { to: p.id, type: 'window', win: 'altar' });
   }
+}
+
+// In ein anderes Gebiet wechseln. Der Server speichert, trennt und verbindet den Spieler neu.
+export function travel(world, p, to) {
+  p.travel = to;
+  p.path = [];
+  p.goal = null;
+  p.target = null;
+  p.engaged = false;
+  closeTalk(world, p);
+  emit(world, { to: p.id, type: 'travel', region: to.region });
 }
 
 function roll(world, a, b) {
@@ -634,9 +660,12 @@ function hurtPlayer(world, p, dmg, by) {
   p.gather = null;
   if (p.hp > 0) return;
   // Milde Niederlage: am Lagerfeuer aufwachen, alles behalten.
-  const r = nearestWalkable(world, world.region.respawn.x, world.region.respawn.y);
-  p.x = p.px = r.x;
-  p.y = p.py = r.y;
+  // Aufwachen am Lagerfeuer des Gebiets; ohne eigenes Lagerfeuer geht es weiter unten nach Kindle.
+  if (world.region.respawn) {
+    const r = nearestWalkable(world, world.region.respawn.x, world.region.respawn.y);
+    p.x = p.px = r.x;
+    p.y = p.py = r.y;
+  }
   p.hp = p.maxHp;
   p.oil = Math.max(p.oil, 50);
   p.path = [];
@@ -650,8 +679,10 @@ function hurtPlayer(world, p, dmg, by) {
     if (m.angryAt === p.id) m.angryAt = null;
     m.hitters.delete(p.id);
   }
-  emit(world, { to: p.id, type: 'respawn' });
   tell(world, p.id, `${by} got the better of you. You wake by the campfire. Someone has tucked you in.`, 'hurt');
+  // In fremden Gebieten wacht man in Kindle auf.
+  if (world.region.deathTo) travel(world, p, world.region.deathTo);
+  else emit(world, { to: p.id, type: 'respawn' });
 }
 
 // Greylinge suchen sich den nächsten Spieler im Dunkeln, Tiere nur den, der sie geärgert hat.

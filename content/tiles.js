@@ -10,6 +10,19 @@ export const TILE_TYPES = {
   '%': { name: 'marsh', color: '#5a5c32', walk: true },
   'T': { name: 'grass', color: '#46702c', walk: false, object: 'tree' },
   'r': { name: 'grass', color: '#5b8a3a', walk: false, object: 'rock' },
+  // Innenräume und Ruinen
+  'f': { name: 'flagstone', color: '#6a6660', walk: true },
+  'F': { name: 'mossy flagstone', color: '#56604e', walk: true },
+  'w': { name: 'shallow water', color: '#2f5a5a', walk: true },
+  '#': { name: 'wall', color: '#4a4844', walk: false, object: 'wall' },
+  // Hügel und Mine
+  's': { name: 'stone', color: '#7a7268', walk: true },
+  'g': { name: 'gravel', color: '#8a7a62', walk: true },
+  // Sumpf
+  'm': { name: 'mud', color: '#4a4a2a', walk: true },
+  // Der Drift: Grund im Nebel
+  'd': { name: 'drift ground', color: '#5a5c60', walk: true },
+  'x': { name: 'the Grey', color: '#2a2c30', walk: false },
 };
 
 // Höhenzeichen: a = -1, b = 0 … j = 8 (in halben Einheiten).

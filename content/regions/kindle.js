@@ -27,6 +27,9 @@ export const REGION = {
     { type: 'signal', x: 52, y: 29, light: 5, name: 'a signal fire' },
     { type: 'signal', x: 3, y: 26, light: 5, name: 'a signal fire' },
     { type: 'signal', x: 30, y: 51, light: 5, name: 'a signal fire' },
+    // Übergänge: hinab in die Drowned Chapel, hinaus in den Drift
+    { type: 'door', to: 'drowned_chapel', tx: 18, ty: 36, x: 26, y: 51, name: 'stairs into the ruins', look: 'stairs' },
+    { type: 'door', to: 'drift', tx: 24, ty: 43, x: 28, y: 5, name: 'a tear in the Grey', look: 'rift' },
     // Gemeinschaft: Anschlagbrett (Gefallen, Bestenliste) und Altar mit Opferstöcken vor der Kapelle
     { type: 'board', x: 24, y: 32, w: 1, d: 1, name: 'the Notice Board' },
     { type: 'altar', x: 20, y: 23, w: 2, d: 1, name: 'the Altar' },

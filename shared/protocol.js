@@ -10,7 +10,7 @@ import { SLOTS } from '../content/items.js';
 
 const ID = /^[a-z0-9_]{1,24}$/;
 const BAR_ID = /^(item:)?[a-z0-9_]{1,24}$/;
-const ACTIONS = new Set(['attack', 'talk', 'examine', 'refill', 'light', 'rest', 'gather', 'use', 'read', 'feed', 'pray']);
+const ACTIONS = new Set(['attack', 'talk', 'examine', 'refill', 'light', 'rest', 'gather', 'use', 'read', 'feed', 'pray', 'enter']);
 const OPTION = /^[a-z0-9-]{1,32}$/;
 const KINDS = new Set(['npc', 'mob', 'object']);
 const MAX_COORD = 1024;
@@ -88,6 +88,7 @@ export function welcomeFor(world, pid) {
     you: pid,
     name: world.players.get(pid)?.name,
     region: world.region.id,
+    regionDate: world.region.date ?? null,
     tick: world.tick,
     lit: world.objects.filter((o) => o.lit).map((o) => o.id),
     depleted: world.objects.filter((o) => o.type === 'node' && o.left <= 0).map((o) => o.id),

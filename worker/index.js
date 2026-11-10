@@ -7,6 +7,7 @@
 
 import { RegionRoom } from './region.js';
 import { hashPassword, sameHex, createSession, accountForToken, tokenHash } from './auth.js';
+import { REGION_IDS, HOME_REGION } from '../content/regions/index.js';
 
 export { RegionRoom };
 
@@ -71,8 +72,9 @@ async function register(req, env, cors) {
     const res = await env.DB.prepare('INSERT INTO accounts (name, name_lower, pass_hash, pass_salt, created_at) VALUES (?, ?, ?, ?, ?)')
       .bind(name, name.toLowerCase(), hash, salt, Date.now()).run();
     accountId = res.meta.last_row_id;
-  } catch {
-    return json(cors, 409, { error: 'That name is already written in the ledger.' });
+  } catch (err) {
+    if (String(err?.message || err).includes('UNIQUE')) return json(cors, 409, { error: 'That name is already written in the ledger.' });
+    throw err;
   }
   const token = await createSession(env.DB, accountId);
   return json(cors, 200, { token, name });
@@ -150,9 +152,14 @@ export default {
       if (req.headers.get('Upgrade') !== 'websocket') return new Response('Expected WebSocket', { status: 426 });
       const origin = req.headers.get('Origin');
       if (origin && !allowedOrigins(env).includes(origin)) return new Response('Forbidden', { status: 403 });
-      // Heute gibt es ein Gebiet. Weitere bekommen eigene Räume (idFromName(regionId)).
-      const room = env.REGION.get(env.REGION.idFromName('kindle'));
-      return room.fetch(req);
+      // Ein Raum pro Gebiet. Das Gebiet nennt der Browser; der Raum prüft beim Anmelden, ob der
+      // Charakter wirklich dort steht, und schickt ihn sonst an den richtigen Ort.
+      const wanted = url.searchParams.get('region');
+      const regionId = REGION_IDS.includes(wanted) ? wanted : HOME_REGION;
+      const room = env.REGION.get(env.REGION.idFromName(regionId));
+      const fwd = new Request(req);
+      fwd.headers.set('X-Region', regionId);
+      return room.fetch(fwd);
     }
 
     try {

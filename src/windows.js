@@ -9,7 +9,7 @@ import { PROFESSIONS, MAX_PROFESSIONS } from '../content/professions.js';
 import { QUESTS } from '../content/quests.js';
 import { RECIPES } from '../content/recipes.js';
 import { SHOPS } from '../content/shops.js';
-import { REGION } from '../content/regions/kindle.js';
+import { allNpcs } from '../content/regions/index.js';
 import { xpForLevel } from '../shared/player.js';
 import { keyLabel } from './ui.js';
 import { FAVOURS, BEACON_FUEL, BEACON_GOAL, DONATE_CAP } from '../content/dailies.js';
@@ -35,7 +35,7 @@ function h(tag, attrs = {}, ...kids) {
   return el;
 }
 const btn = (label, onclick, attrs = {}) => h('button', { type: 'button', onclick, ...attrs }, `[ ${label} ]`);
-const npcName = (id) => REGION.npcs.find((n) => n.id === id)?.name ?? id;
+const npcName = (id) => allNpcs().find((n) => n.id === id)?.name ?? id;
 
 function xpLine(level, xp) {
   const lo = xpForLevel(level);

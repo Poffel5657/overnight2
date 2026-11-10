@@ -46,6 +46,13 @@ export function minutesToMidnight(date) {
 
 const dateFmt = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit' });
 
+// Tageslicht in einem Gebiet: unter der Erde nie, im Drift höchstens ein wenig.
+export function regionDaylight(region, date) {
+  if (region.indoor) return 0;
+  const day = skyState(date).day;
+  return region.murk !== undefined ? Math.min(day, region.murk) : day;
+}
+
 // Kalendertag in Berlin (JJJJ-MM-TT). Um Mitternacht beginnt ein neuer Tag: neue Gefallen, neue Nacht.
 export function berlinDate(date) {
   return dateFmt.format(date);

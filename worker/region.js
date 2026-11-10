@@ -3,10 +3,10 @@
 // alle 30 Sekunden und beim Aufwachen am Lagerfeuer gespeichert.
 // Die Welt selbst (Wesen, angezündete Feuer) lebt nur im Speicher: Ist niemand da, darf sie verfallen.
 
-import { REGION } from '../content/regions/kindle.js';
-import { TICK_MS, createWorld, step, addPlayer, removePlayer, saveOf, drainEvents } from '../shared/sim.js';
+import { regionFor, REGION_IDS, HOME_REGION } from '../content/regions/index.js';
+import { TICK_MS, createWorld, step, addPlayer, removePlayer, saveFor, drainEvents, travel } from '../shared/sim.js';
 import { parseIntent, applyIntent, welcomeFor, tickFor } from '../shared/protocol.js';
-import { skyState, berlinDate } from '../shared/daylight.js';
+import { regionDaylight, berlinDate } from '../shared/daylight.js';
 import { BALLOT } from '../content/ballot.js';
 import { accountForToken } from './auth.js';
 
@@ -30,11 +30,14 @@ export class RegionRoom {
     // WebSocket -> { pid, accountId, known, tokens, at, strikes }
     this.conns = new Map();
     this.loop = null;
+    this.regionId = null;
   }
 
   async ensureWorld() {
     if (this.world) return this.world;
-    const world = createWorld(REGION, Math.floor(Math.random() * 2 ** 31));
+    const date = berlinDate(new Date());
+    const world = createWorld(regionFor(this.regionId, date), Math.floor(Math.random() * 2 ** 31));
+    world.date = date;
     await this.loadCommunity(world);
     // Zwei Anmeldungen gleichzeitig: wer zuerst fertig ist, gewinnt.
     if (!this.world) this.world = world;
@@ -80,7 +83,9 @@ export class RegionRoom {
     await this.env.DB.prepare(`UPDATE prayers SET notified = 1 WHERE id IN (${results.map(() => '?').join(',')})`).bind(...results.map((r) => r.id)).run();
   }
 
-  async fetch() {
+  async fetch(req) {
+    const id = req.headers.get('X-Region');
+    if (!this.regionId) this.regionId = REGION_IDS.includes(id) ? id : HOME_REGION;
     const [client, server] = Object.values(new WebSocketPair());
     server.accept();
     const conn = { pid: null, accountId: null, known: new Set(), tokens: BUCKET_SIZE, at: Date.now(), strikes: 0 };
@@ -134,9 +139,15 @@ export class RegionRoom {
       ws.send(JSON.stringify({ t: 'error', error: 'Kindle is full tonight. Try again soon.' }));
       return this.drop(ws, 4004, 'Full');
     }
-    const row = await this.env.DB.prepare('SELECT data FROM characters WHERE account_id = ?').bind(account.id).first();
+    const row = await this.env.DB.prepare('SELECT region, data FROM characters WHERE account_id = ?').bind(account.id).first();
     let save = null;
     try { save = row ? JSON.parse(row.data) : null; } catch { save = null; }
+    // Steht der Charakter woanders, schicken wir den Browser dorthin (kein Springen durch die Welt).
+    const home = row && REGION_IDS.includes(row.region) ? row.region : HOME_REGION;
+    if (home !== this.regionId) {
+      ws.send(JSON.stringify({ t: 'tick', tick: 0, ents: [], spawn: [], gone: [], events: [{ type: 'travel', region: home }] }));
+      return this.drop(ws, 4005, 'Elsewhere');
+    }
     const world = await this.ensureWorld();
     if (!this.conns.has(ws)) return;
     const pid = `p${account.id}`;
@@ -159,16 +170,23 @@ export class RegionRoom {
     if (!world || world.players.size === 0) {
       clearInterval(this.loop);
       this.loop = null;
+      if (this.rebuild) { this.world = null; this.rebuild = false; }
       return;
     }
     const now = new Date();
-    world.daylight = skyState(now).day;
+    world.daylight = regionDaylight(world.region, now);
     const today = berlinDate(now);
     if (today !== world.date) {
       // Mitternacht in Berlin: neuer Tag, das Leuchtfeuer zählt von vorn.
       world.date = today;
       world.community.beacon = 0;
       world.events.push({ type: 'community', community: world.community });
+      // Der Drift wird neu gewürfelt: Wer noch drin ist, wird nach Hause geweht.
+      if (world.region.daily) {
+        world.events.push({ type: 'log', text: 'The Grey shifts. The Drift folds itself up, and you with it.', cls: 'hurt' });
+        for (const p of world.players.values()) travel(world, p, { region: HOME_REGION, x: 28, y: 7 });
+        this.rebuild = true;
+      }
     }
     const events = [...step(world)];
     for (const [ws, conn] of this.conns) {
@@ -181,6 +199,11 @@ export class RegionRoom {
     }
     drainEvents(world);
     this.flushOutbox(world).catch((err) => console.error('outbox failed', err));
+    // Reisende speichern und trennen; der Browser verbindet sich mit dem Zielgebiet.
+    for (const [ws, conn] of [...this.conns]) {
+      const p = conn.pid && world.players.get(conn.pid);
+      if (p?.travel) this.leave(ws).then(() => { try { ws.close(4005, 'Travel'); } catch { /* schon zu */ } });
+    }
     // Nach einer Niederlage sofort speichern, sonst alle 30 Sekunden.
     const respawned = new Set(events.filter((e) => e.type === 'respawn').map((e) => e.to));
     if (world.tick % SAVE_EVERY_TICKS === 0 || respawned.size) {
@@ -193,8 +216,8 @@ export class RegionRoom {
     const stmts = [];
     for (const conn of this.conns.values()) {
       if (!conn.pid || (only && !only.has(conn.pid))) continue;
-      const p = this.world.players.get(conn.pid);
-      if (p) stmts.push(this.saveStmt(conn.accountId, saveOf(p)));
+      const save = saveFor(this.world, conn.pid);
+      if (save) stmts.push(this.saveStmt(conn.accountId, save));
     }
     if (stmts.length) await this.env.DB.batch(stmts);
   }
@@ -204,7 +227,7 @@ export class RegionRoom {
       `INSERT INTO characters (account_id, region, data, level, xp, updated_at) VALUES (?, ?, ?, ?, ?, ?)
        ON CONFLICT(account_id) DO UPDATE SET region = excluded.region, data = excluded.data,
        level = excluded.level, xp = excluded.xp, updated_at = excluded.updated_at`,
-    ).bind(accountId, REGION.id, JSON.stringify(save), bestLevel(save), totalXp(save), Date.now());
+    ).bind(accountId, save.region || HOME_REGION, JSON.stringify(save), bestLevel(save), totalXp(save), Date.now());
   }
 
   async leave(ws) {

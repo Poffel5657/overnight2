@@ -18,6 +18,7 @@ const glowMat = new THREE.MeshBasicMaterial({ color: '#ffcf70' });
 const forgeMat = new THREE.MeshBasicMaterial({ color: '#ff8a3a' });
 const emberMat = new THREE.MeshBasicMaterial({ color: '#ff6a2a' });
 const glimmerMat = new THREE.MeshBasicMaterial({ color: '#9fe0ff' });
+const riftMat = new THREE.MeshBasicMaterial({ color: '#c8e8ff', transparent: true, opacity: 0.75, side: THREE.DoubleSide });
 
 function hash(x, y, s = 0) {
   const n = Math.sin(x * 12.9898 + y * 78.233 + s * 37.719) * 43758.5453;
@@ -122,6 +123,30 @@ const LOOKS = {
 };
 
 const BUILDERS = {
+  door(o, g, ctx) {
+    if (o.look === 'stairs') {
+      for (let i = 0; i < 4; i++) g.add(box(0.9, 0.12, 0.25, '#6a6660', 0, 0.06 + i * 0.12, 0.35 - i * 0.22));
+      g.add(box(1.1, 1.6, 0.15, '#4a4844', 0, 0.8, -0.45));
+      g.add(box(0.5, 0.9, 0.05, '#0a0a0c', 0, 0.45, -0.37));
+    } else {
+      // Ein Riss im Grey: zwei schiefe Pfosten und flackerndes kaltes Licht dazwischen
+      g.add(box(0.12, 1.8, 0.12, '#3a3a40', -0.45, 0.9, 0).rotateZ(0.1));
+      g.add(box(0.12, 1.7, 0.12, '#3a3a40', 0.45, 0.85, 0).rotateZ(-0.12));
+      g.add(box(0.7, 1.4, 0.04, riftMat, 0, 0.8, 0));
+    }
+  },
+  brazier(o, g, ctx) {
+    g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.18, 0.5, 6), mat('#3a3434')).translateY(0.55));
+    g.add(box(0.08, 0.35, 0.08, '#2a2424', 0, 0.17, 0));
+    ctx.flame(g, 0.8, 0.75);
+  },
+  false_light(o, g, ctx) {
+    g.add(box(o.w - 0.2, 0.8, o.d - 0.1, '#5a5650', 0, 0.4, 0));
+    g.add(box(0.1, 1.6, 0.1, '#2a2a30', 0, 1.6, 0));
+    const lamp = new THREE.Mesh(new THREE.OctahedronGeometry(0.3, 0), riftMat);
+    lamp.position.y = 2.5;
+    g.add(lamp);
+  },
   board(o, g) {
     for (const x of [-0.35, 0.35]) g.add(box(0.08, 1.4, 0.08, '#5a4028', x, 0.7, 0));
     g.add(box(0.9, 0.7, 0.06, '#7a5a34', 0, 1.05, 0));
@@ -248,12 +273,14 @@ export function buildObjects(world, region, heightAt) {
   // Bäume und Felsen aus dem Raster als Instanzen (schnell, auch bei Hunderten).
   const trees = [];
   const rocks = [];
+  const walls = [];
   region.tiles.forEach((row, y) => {
     [...row].forEach((ch, x) => {
       if (blocked.has(`${x},${y}`)) return;
       const kind = TILE_TYPES[ch]?.object;
       if (kind === 'tree') trees.push({ x, y });
       if (kind === 'rock') rocks.push({ x, y });
+      if (kind === 'wall') walls.push({ x, y });
     });
   });
 
@@ -295,7 +322,19 @@ export function buildObjects(world, region, heightAt) {
   rockMesh.userData.cells = rocks;
   rockMesh.userData.kind = 'rock';
 
-  root.add(trunks, crowns, rockMesh);
+  // Mauern (Innenräume, Ruinen): Steinblöcke, durchsichtig, wenn sie den Spieler verdecken.
+  const wallMesh = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 2.2, 1).translate(0, 1.0, 0),
+    litMaterial(new THREE.MeshLambertMaterial({ color: '#ffffff', flatShading: true }), 0.1, true), Math.max(1, walls.length));
+  wallMesh.count = walls.length;
+  walls.forEach((t, i) => {
+    m4.compose(new THREE.Vector3(t.x + 0.5, heightAt(t.x + 0.5, t.y + 0.5) - 0.2, t.y + 0.5), new THREE.Quaternion(), new THREE.Vector3(1, 0.9 + hash(t.x, t.y, 9) * 0.25, 1));
+    wallMesh.setMatrixAt(i, m4);
+    wallMesh.setColorAt(i, color.set('#5a5650').multiplyScalar(0.8 + hash(t.x, t.y, 10) * 0.35));
+  });
+  wallMesh.userData.cells = walls;
+  wallMesh.userData.kind = 'wall';
+
+  root.add(trunks, crowns, rockMesh, wallMesh);
   pickables.push(trunks, crowns, rockMesh);
   return { root, pickables, flames, flameByObject, setDepleted };
 }

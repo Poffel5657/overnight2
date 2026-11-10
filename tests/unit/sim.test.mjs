@@ -502,3 +502,42 @@ test('Tagesstand übersteht Speichern', () => {
   assert.equal(q.daily.donated, 10);
   assert.equal(q.daily.date, w.date);
 });
+
+// ---------- Gebiete ----------
+
+import { regionFor } from '../../content/regions/index.js';
+
+test('Tür führt ins andere Gebiet, der Spielstand merkt sich das Ziel', () => {
+  const w = S.createWorld(REGION, 30);
+  const p = newcomer(w, 'a', 'warden');
+  const stairs = w.objects.find((o) => o.type === 'door' && o.to === 'drowned_chapel');
+  p.x = stairs.x + 1; p.y = stairs.y;
+  applyIntent(w, 'a', { t: 'act', kind: 'object', id: stairs.id, action: 'enter' });
+  run(w, 5);
+  assert.deepEqual(p.travel, { region: 'drowned_chapel', x: stairs.tx, y: stairs.ty });
+  const save = S.removePlayer(w, 'a');
+  assert.equal(save.region, 'drowned_chapel');
+  const d = S.createWorld(regionFor('drowned_chapel'), 31);
+  const q = S.addPlayer(d, 'a', 'a', save);
+  assert.equal(q.x, stairs.tx);
+  assert.equal(q.cls, 'warden');
+});
+
+test('Wer im Dungeon unterliegt, wacht in Kindle auf', () => {
+  const d = S.createWorld(regionFor('drowned_chapel'), 32);
+  const p = S.addPlayer(d, 'a', 'a', { v: 2, cls: 'warden', classes: { warden: { level: 1, xp: 0 } }, equip: { main: 'scrap_shield' } });
+  const g = d.mobs[0];
+  p.x = g.x + 1; p.y = g.y; p.hp = 1;
+  g.angryAt = 'a'; g.nextAttack = 0; g.attacks = 0;
+  run(d, 3);
+  assert.equal(p.travel?.region, 'kindle');
+  assert.equal(S.removePlayer(d, 'a').region, 'kindle');
+});
+
+test('Der Drift ist jeden Tag anders, am selben Tag gleich', () => {
+  const a = regionFor('drift', '2026-11-10');
+  assert.deepEqual(regionFor('drift', '2026-11-10').tiles, a.tiles);
+  assert.notDeepEqual(regionFor('drift', '2026-11-11').tiles, a.tiles);
+  const w = S.createWorld(a, 1);
+  assert.ok(w.objects.some((o) => o.type === 'door' && o.to === 'kindle'));
+});

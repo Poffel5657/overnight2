@@ -3,11 +3,11 @@
 // Figuren mit Position und HP, der eigene Zustand und angezündete Feuer.
 
 import * as THREE from 'three';
-import { REGION } from '../content/regions/kindle.js';
+import { regionFor, HOME_REGION } from '../content/regions/index.js';
 import { EXAMINE } from '../content/npcs.js';
 import { TICK_MS, objectActions, lanternRadius, regionObjects } from '../shared/sim.js';
 import { cheb } from '../shared/path.js';
-import { skyState, berlinClock, minutesToMidnight } from '../shared/daylight.js';
+import { skyState, berlinClock, minutesToMidnight, berlinDate } from '../shared/daylight.js';
 import { createView, buildGreyWall } from './render/view.js';
 import { buildTerrain } from './render/terrain.js';
 import { buildObjects } from './render/objects.js';
@@ -36,13 +36,44 @@ const mirror = {
   arrivedAt: performance.now(),
   ents: new Map(),
   me: null,
-  objects: regionObjects(REGION),
+  objects: [],
 };
 
-const terrain = buildTerrain(REGION, mirror.objects);
-scene.add(terrain.mesh, terrain.water, buildGreyWall(terrain.W, terrain.H));
-const objects = buildObjects({ objects: mirror.objects }, REGION, terrain.heightAt);
-scene.add(objects.root);
+// Das aktuelle Gebiet. Bei jedem Wechsel (Tür, Aufwachen in Kindle) wird es neu gebaut.
+let lastSky = -1;
+let greeted = false;
+let region = null;
+let terrain = null;
+let objects = null;
+let greyWall = null;
+const REGION_KEY = 'overnight2.region';
+
+function loadRegion(id, date) {
+  const r = regionFor(id, date || berlinDate(new Date()));
+  if (!r) return;
+  if (region && region.id === r.id && (region.date ?? null) === (r.date ?? null)) return;
+  if (terrain) {
+    for (const obj of [terrain.mesh, terrain.water, greyWall, objects.root]) {
+      scene.remove(obj);
+      obj.traverse((c) => c.geometry?.dispose());
+    }
+  }
+  region = r;
+  mirror.objects = regionObjects(r);
+  terrain = buildTerrain(r, mirror.objects);
+  greyWall = buildGreyWall(terrain.W, terrain.H);
+  objects = buildObjects({ objects: mirror.objects }, r, terrain.heightAt);
+  scene.add(terrain.mesh, terrain.water, greyWall, objects.root);
+  lastSky = -1;
+}
+loadRegion(savedRegion());
+
+function savedRegion() {
+  try { return localStorage.getItem(REGION_KEY) || HOME_REGION; } catch { return HOME_REGION; }
+}
+function rememberRegion(id) {
+  try { localStorage.setItem(REGION_KEY, id); } catch { /* egal */ }
+}
 
 function findEntity(ref) {
   if (!ref) return null;
@@ -202,6 +233,11 @@ function flushEvents(events) {
     else if (e.type === 'craft') windows.open('craft', { obj: e.obj, station: e.station });
     else if (e.type === 'node') objects.setDepleted(e.id, e.left <= 0);
     else if (e.type === 'window') { ui.closeDialog(); windows.open(e.win); }
+    else if (e.type === 'travel') {
+      rememberRegion(e.region);
+      windows.close();
+      banner('THE WAY OPENS...');
+    }
     else if (e.type === 'community') windows.setCommunity(e.community);
     else if (e.type === 'telegraph') addTelegraph(e.t);
     else if (e.type === 'telegraphEnd') removeTelegraph(e.id);
@@ -216,6 +252,8 @@ function flushEvents(events) {
 
 function onMessage(msg) {
   if (msg.t === 'welcome') {
+    loadRegion(msg.region, msg.regionDate);
+    rememberRegion(msg.region);
     mirror.you = msg.you;
     for (const o of mirror.objects) setLit(o.id, msg.lit.includes(o.id));
     for (const o of mirror.objects) if (o.type === 'node') objects.setDepleted(o.id, msg.depleted.includes(o.id));
@@ -229,7 +267,9 @@ function onMessage(msg) {
     login.hide();
     banner(null);
     document.getElementById('btn-leave').hidden = conn?.offline !== false;
-    ui.log(conn?.offline ? 'OFFLINE. The world runs in your browser; progress stays on this device.' : `Welcome to Kindle, ${msg.name}.`, 'sys');
+    if (!greeted) ui.log(conn?.offline ? 'OFFLINE. The world runs in your browser; progress stays on this device.' : `Welcome to Kindle, ${msg.name}.`, 'sys');
+    else ui.log(`You arrive: ${region.name}.`, 'sys');
+    greeted = true;
     return;
   }
   if (msg.t === 'tick') {
@@ -314,6 +354,11 @@ function onClosed(msg) {
     login.show('Your name was forgotten by the Beacon. Please sign in again.');
     return;
   }
+  // 4005: Reise in ein anderes Gebiet, gleich neu verbinden.
+  if (msg.code === 4005) {
+    connect();
+    return;
+  }
   if (msg.code === 4002) {
     banner('You stepped into Kindle somewhere else. [ RELOAD ] to come back here.');
     return;
@@ -330,7 +375,7 @@ function forgetToken() { try { localStorage.removeItem(TOKEN_KEY); } catch { /* 
 function connect() {
   const token = getToken();
   if (!token) { login.show(); return; }
-  conn = new NetConnection(SERVER, token, onMessage);
+  conn = new NetConnection(SERVER, token, savedRegion(), onMessage);
   conn.ws.addEventListener('open', () => { retry = 0; });
 }
 
@@ -603,18 +648,20 @@ const PHASE_LINES = {
   NIGHT: ['Night. Keep your wick trimmed.', 'hurt'],
 };
 let lastPhase = null;
-let lastSky = -1;
 function updateSky(now) {
   if (now - lastSky < 250) return;
   lastSky = now;
   const date = gameDate();
   const sky = skyState(date);
-  view.setSky(sky.day, sky.dusk);
+  // Unter der Erde gibt es keinen Himmel, im Drift nur einen trüben.
+  if (region?.indoor) view.setSky(0, 0);
+  else if (region?.murk !== undefined) view.setSky(Math.min(sky.day, region.murk), sky.dusk * 0.3);
+  else view.setSky(sky.day, sky.dusk);
   const mins = minutesToMidnight(date);
   const note = sky.phase === 'NIGHT' || sky.phase === 'DUSK'
     ? `MIDNIGHT ${mins >= 60 ? `${Math.floor(mins / 60)}H ` : ''}${mins % 60}M`
     : '';
-  ui.updateSky(berlinClock(date), sky.phase, note);
+  ui.updateSky(berlinClock(date), region?.indoor ? 'UNDERGROUND' : region?.murk !== undefined ? 'IN THE GREY' : sky.phase, note);
   if (lastPhase && lastPhase !== sky.phase) ui.log(...PHASE_LINES[sky.phase]);
   if (!lastPhase) ui.log(`It is ${sky.phase.toLowerCase()} in Kindle. ${berlinClock(date)}, Kindle time.`, 'sys');
   lastPhase = sky.phase;
@@ -773,7 +820,7 @@ function frame(now) {
   }
 
   if (me) {
-    ui.updateStatus(me, REGION.name);
+    ui.updateStatus(me, region.name);
     ui.updateBar(me, mirror.tick, alpha);
   }
   requestAnimationFrame(frame);
