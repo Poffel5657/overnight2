@@ -3,13 +3,15 @@
 
 import { walkTo, interact, useAbility, setTarget, cycleTarget, setBar, lightBonusOf } from './sim.js';
 import { say, closeTalk } from './talk.js';
+import { handIn, feedBeacon, pray, donate, PRAYER_MAX } from './community.js';
 import { useSlot, unequip, dropSlot, craft, buy, sell } from './trade.js';
 import { stateOf } from './player.js';
 import { SLOTS } from '../content/items.js';
 
 const ID = /^[a-z0-9_]{1,24}$/;
 const BAR_ID = /^(item:)?[a-z0-9_]{1,24}$/;
-const ACTIONS = new Set(['attack', 'talk', 'examine', 'refill', 'light', 'rest', 'gather', 'use']);
+const ACTIONS = new Set(['attack', 'talk', 'examine', 'refill', 'light', 'rest', 'gather', 'use', 'read', 'feed', 'pray']);
+const OPTION = /^[a-z0-9-]{1,32}$/;
 const KINDS = new Set(['npc', 'mob', 'object']);
 const MAX_COORD = 1024;
 const int = (v, lo, hi) => Number.isInteger(v) && v >= lo && v <= hi;
@@ -17,7 +19,7 @@ const coord = (v) => int(v, 0, MAX_COORD);
 
 // Gibt eine bereinigte Absicht zurück oder null.
 export function parseIntent(raw) {
-  if (typeof raw !== 'string' || raw.length > 512) return null;
+  if (typeof raw !== 'string' || raw.length > 2048) return null;
   let m;
   try { m = JSON.parse(raw); } catch { return null; }
   if (!m || typeof m !== 'object') return null;
@@ -36,6 +38,10 @@ export function parseIntent(raw) {
     case 'buy': return ID.test(String(m.shop)) && ID.test(String(m.item)) && int(m.n, 1, 20) ? { t: 'buy', shop: m.shop, item: m.item, n: m.n } : null;
     case 'sell': return ID.test(String(m.shop)) && int(m.slot, 0, 63) && int(m.n, 1, 9999) ? { t: 'sell', shop: m.shop, slot: m.slot, n: m.n } : null;
     case 'bar': return int(m.slot, 0, 8) && (m.id === null || BAR_ID.test(String(m.id))) ? { t: 'bar', slot: m.slot, id: m.id } : null;
+    case 'favour': return ID.test(String(m.id)) ? { t: 'favour', id: m.id } : null;
+    case 'feed': return ID.test(String(m.item)) && int(m.n, 1, 999) ? { t: 'feed', item: m.item, n: m.n } : null;
+    case 'pray': return typeof m.text === 'string' && m.text.length <= PRAYER_MAX * 2 ? { t: 'pray', text: m.text } : null;
+    case 'donate': return OPTION.test(String(m.option)) && int(m.gold, 1, 1000) ? { t: 'donate', option: m.option, gold: m.gold } : null;
     case 'ping': return { t: 'ping' };
     default: return null;
   }
@@ -59,6 +65,10 @@ export function applyIntent(world, pid, m) {
     case 'buy': buy(world, p, m.shop, m.item, m.n); break;
     case 'sell': sell(world, p, m.shop, m.slot, m.n); break;
     case 'bar': setBar(world, pid, m.slot, m.id); break;
+    case 'favour': handIn(world, p, m.id); break;
+    case 'feed': feedBeacon(world, p, m.item, m.n); break;
+    case 'pray': pray(world, p, m.text); break;
+    case 'donate': donate(world, p, m.option, m.gold); break;
     default: break;
   }
 }
@@ -82,6 +92,8 @@ export function welcomeFor(world, pid) {
     lit: world.objects.filter((o) => o.lit).map((o) => o.id),
     depleted: world.objects.filter((o) => o.type === 'node' && o.left <= 0).map((o) => o.id),
     telegraphs: world.telegraphs.map((t) => ({ id: t.id, tiles: t.tiles })),
+    community: world.community,
+    date: world.date,
   };
 }
 

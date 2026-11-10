@@ -6,7 +6,8 @@
 import { REGION } from '../content/regions/kindle.js';
 import { TICK_MS, createWorld, step, addPlayer, removePlayer, saveOf, drainEvents } from '../shared/sim.js';
 import { parseIntent, applyIntent, welcomeFor, tickFor } from '../shared/protocol.js';
-import { skyState } from '../shared/daylight.js';
+import { skyState, berlinDate } from '../shared/daylight.js';
+import { BALLOT } from '../content/ballot.js';
 import { accountForToken } from './auth.js';
 
 export const MAX_PLAYERS = 100;
@@ -31,9 +32,52 @@ export class RegionRoom {
     this.loop = null;
   }
 
-  ensureWorld() {
-    if (!this.world) this.world = createWorld(REGION, Math.floor(Math.random() * 2 ** 31));
+  async ensureWorld() {
+    if (this.world) return this.world;
+    const world = createWorld(REGION, Math.floor(Math.random() * 2 ** 31));
+    await this.loadCommunity(world);
+    // Zwei Anmeldungen gleichzeitig: wer zuerst fertig ist, gewinnt.
+    if (!this.world) this.world = world;
     return this.world;
+  }
+
+  // Gemeinschaftsstand des Tages aus D1 (Leuchtfeuer, Spenden für den aktuellen Zettel).
+  async loadCommunity(world) {
+    const beacon = await this.env.DB.prepare('SELECT value FROM world_state WHERE key = ?').bind(`beacon:${world.date}`).first();
+    const { results } = await this.env.DB.prepare('SELECT option, SUM(gold) AS gold FROM donations WHERE ballot = ? GROUP BY option').bind(BALLOT.day).all();
+    world.community = { beacon: beacon?.value ?? 0, ballot: Object.fromEntries(results.map((r) => [r.option, r.gold])) };
+  }
+
+  // Was die Simulation dauerhaft festhalten will.
+  async flushOutbox(world) {
+    if (!world.outbox.length) return;
+    const items = world.outbox.splice(0);
+    const now = Date.now();
+    const stmts = [];
+    for (const o of items) {
+      const conn = [...this.conns.values()].find((c) => c.pid === o.pid);
+      if (o.kind === 'beacon') {
+        stmts.push(this.env.DB.prepare(`INSERT INTO world_state (key, value, updated_at) VALUES (?, ?, ?)
+          ON CONFLICT(key) DO UPDATE SET value = value + excluded.value, updated_at = excluded.updated_at`).bind(`beacon:${o.date}`, o.add, now));
+      } else if (o.kind === 'prayer' && conn) {
+        stmts.push(this.env.DB.prepare('INSERT INTO prayers (account_id, date, text, created_at) VALUES (?, ?, ?, ?)').bind(conn.accountId, o.date, o.text, now));
+      } else if (o.kind === 'donation' && conn) {
+        stmts.push(this.env.DB.prepare('INSERT INTO donations (account_id, ballot, option, gold, created_at) VALUES (?, ?, ?, ?, ?)').bind(conn.accountId, o.ballot, o.option, o.gold, now));
+      }
+    }
+    if (stmts.length) await this.env.DB.batch(stmts);
+  }
+
+  // Erhörte Gebete, von denen der Spieler noch nichts weiß.
+  async answeredFor(ws, accountId) {
+    const { results } = await this.env.DB.prepare(
+      'SELECT id, answer_note FROM prayers WHERE account_id = ? AND answered_at IS NOT NULL AND notified = 0',
+    ).bind(accountId).all();
+    if (!results.length) return;
+    for (const r of results) {
+      ws.send(JSON.stringify({ t: 'answered', note: r.answer_note || '' }));
+    }
+    await this.env.DB.prepare(`UPDATE prayers SET notified = 1 WHERE id IN (${results.map(() => '?').join(',')})`).bind(...results.map((r) => r.id)).run();
   }
 
   async fetch() {
@@ -93,7 +137,8 @@ export class RegionRoom {
     const row = await this.env.DB.prepare('SELECT data FROM characters WHERE account_id = ?').bind(account.id).first();
     let save = null;
     try { save = row ? JSON.parse(row.data) : null; } catch { save = null; }
-    const world = this.ensureWorld();
+    const world = await this.ensureWorld();
+    if (!this.conns.has(ws)) return;
     const pid = `p${account.id}`;
     conn.pid = pid;
     conn.accountId = account.id;
@@ -101,6 +146,7 @@ export class RegionRoom {
     ws.send(JSON.stringify(welcomeFor(world, pid)));
     world.events.push({ type: 'log', text: `${account.name} steps into the light of the Beacon.`, cls: 'sys' });
     this.start();
+    this.answeredFor(ws, account.id).catch((err) => console.error('answered failed', err));
   }
 
   start() {
@@ -115,7 +161,15 @@ export class RegionRoom {
       this.loop = null;
       return;
     }
-    world.daylight = skyState(new Date()).day;
+    const now = new Date();
+    world.daylight = skyState(now).day;
+    const today = berlinDate(now);
+    if (today !== world.date) {
+      // Mitternacht in Berlin: neuer Tag, das Leuchtfeuer zählt von vorn.
+      world.date = today;
+      world.community.beacon = 0;
+      world.events.push({ type: 'community', community: world.community });
+    }
     const events = [...step(world)];
     for (const [ws, conn] of this.conns) {
       if (!conn.pid) continue;
@@ -126,6 +180,7 @@ export class RegionRoom {
       }
     }
     drainEvents(world);
+    this.flushOutbox(world).catch((err) => console.error('outbox failed', err));
     // Nach einer Niederlage sofort speichern, sonst alle 30 Sekunden.
     const respawned = new Set(events.filter((e) => e.type === 'respawn').map((e) => e.to));
     if (world.tick % SAVE_EVERY_TICKS === 0 || respawned.size) {

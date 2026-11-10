@@ -27,6 +27,9 @@ export const REGION = {
     { type: 'signal', x: 52, y: 29, light: 5, name: 'a signal fire' },
     { type: 'signal', x: 3, y: 26, light: 5, name: 'a signal fire' },
     { type: 'signal', x: 30, y: 51, light: 5, name: 'a signal fire' },
+    // Gemeinschaft: Anschlagbrett (Gefallen, Bestenliste) und Altar mit Opferstöcken vor der Kapelle
+    { type: 'board', x: 24, y: 32, w: 1, d: 1, name: 'the Notice Board' },
+    { type: 'altar', x: 20, y: 23, w: 2, d: 1, name: 'the Altar' },
     // Werkstationen für Herstellberufe
     { type: 'station', station: 'workbench', x: 41, y: 30, w: 1, d: 2, name: 'the Workbench' },
     { type: 'station', station: 'lampbench', x: 36, y: 28, w: 1, d: 1, name: 'the Lamp Bench' },

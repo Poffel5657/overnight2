@@ -15,6 +15,8 @@ import { tell, emit, float } from './events.js';
 import * as P from './player.js';
 import { openTalk, closeTalk, questEvent, grantXp, checkHave, TALK_RANGE } from './talk.js';
 import { startGather, tickGather, tickNodes, consume, inVillage } from './trade.js';
+import { onKill, dailyOf } from './community.js';
+import { berlinDate } from './daylight.js';
 
 export { saveOf, xpForLevel, MAX_LEVEL } from './player.js';
 
@@ -89,6 +91,10 @@ export function createWorld(region, seed = 1234) {
     npcs: [],
     mobs: [],
     players: new Map(),
+    // Berliner Datum (setzt der Server jeden Takt), Gemeinschaftsstand und was gespeichert werden muss.
+    date: berlinDate(new Date()),
+    community: { beacon: 0, ballot: {} },
+    outbox: [],
   };
   refreshLights(world);
 
@@ -179,7 +185,9 @@ export function staticLightAt(world, x, y) {
 
 export function objectActions(o) {
   switch (o.type) {
-    case 'beacon': return [['refill', 'Fill lantern'], ['examine', 'Examine']];
+    case 'beacon': return [['refill', 'Fill lantern'], ['feed', 'Feed'], ['examine', 'Examine']];
+    case 'board': return [['read', 'Read'], ['examine', 'Examine']];
+    case 'altar': return [['pray', 'Pray'], ['examine', 'Examine']];
     case 'signal': return o.lit ? [['examine', 'Examine']] : [['light', 'Light'], ['examine', 'Examine']];
     case 'campfire': return [['rest', 'Rest'], ['examine', 'Examine']];
     case 'station': return [['use', 'Use'], ['examine', 'Examine']];
@@ -448,6 +456,14 @@ function doAction(world, p, goal) {
     startGather(world, p, t);
   } else if (goal.action === 'use' && t.type === 'station') {
     emit(world, { to: p.id, type: 'craft', obj: t.id, station: t.station });
+  } else if (goal.action === 'read' && t.type === 'board') {
+    dailyOf(world, p);
+    emit(world, { to: p.id, type: 'window', win: 'board' });
+  } else if (goal.action === 'feed' && t.type === 'beacon') {
+    emit(world, { to: p.id, type: 'window', win: 'beacon' });
+  } else if (goal.action === 'pray' && t.type === 'altar') {
+    dailyOf(world, p);
+    emit(world, { to: p.id, type: 'window', win: 'altar' });
   }
 }
 
@@ -581,6 +597,7 @@ function hitMob(world, p, m, dmg) {
     tell(world, q.id, m.type === 'greyling' ? 'The Greyling comes apart into fog.' : `The ${m.name} gives up.`, 'good');
     grantXp(world, q, m.def.xp);
     questEvent(world, q, 'kill', { mob: m.type });
+    onKill(world, q, m.type);
   }
   m.hitters.clear();
   loot(world, p, m);

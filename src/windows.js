@@ -12,6 +12,10 @@ import { SHOPS } from '../content/shops.js';
 import { REGION } from '../content/regions/kindle.js';
 import { xpForLevel } from '../shared/player.js';
 import { keyLabel } from './ui.js';
+import { FAVOURS, BEACON_FUEL, BEACON_GOAL, DONATE_CAP } from '../content/dailies.js';
+import { BALLOT } from '../content/ballot.js';
+import { CHRONICLE } from '../content/chronicle.js';
+import { favoursFor, PRAYER_MAX } from '../shared/community.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -24,7 +28,7 @@ function h(tag, attrs = {}, ...kids) {
     else if (k === 'class') el.className = v;
     else el.setAttribute(k, v === true ? '' : v);
   }
-  for (const kid of kids.flat()) {
+  for (const kid of kids.flat(Infinity)) {
     if (kid === null || kid === undefined || kid === false) continue;
     el.append(typeof kid === 'string' || typeof kid === 'number' ? String(kid) : kid);
   }
@@ -46,6 +50,10 @@ export function createWindows(handlers) {
   const body = $('panel-body');
   let current = null; // { kind, opts }
   let state = null;
+  let community = { beacon: 0, ballot: {} };
+  let date = '';
+  let top = null;
+  let prayerDraft = '';
 
   function open(kind, opts = {}) {
     current = { kind, opts };
@@ -67,16 +75,23 @@ export function createWindows(handlers) {
     state = s;
     if (current) render();
   }
+  function setCommunity(c, d) {
+    community = c;
+    if (d) date = d;
+    if (current && ['board', 'beacon', 'altar'].includes(current.kind)) render();
+  }
 
   function render() {
     if (!current) return;
     const r = RENDER[current.kind];
     if (!r) return close();
     const scroll = body.scrollTop;
+    const focused = document.activeElement?.id;
     const { heading, content } = r(current.opts);
     title.textContent = `[ ${heading} ]`;
-    body.replaceChildren(...[content].flat());
+    body.replaceChildren(...[content].flat(Infinity).filter(Boolean));
     body.scrollTop = scroll;
+    if (focused === 'prayer-text') $('prayer-text')?.focus();
   }
 
   // ---------- Gegenstände ----------
@@ -118,6 +133,11 @@ export function createWindows(handlers) {
     const stop = () => clearTimeout(timer);
     el.addEventListener('pointerup', stop);
     el.addEventListener('pointerleave', stop);
+  }
+
+  function beaconBar() {
+    const frac = Math.min(1, community.beacon / BEACON_GOAL);
+    return h('div', { class: 'bar fuel' }, h('span', { class: 'bar-label' }, 'FIRE'), h('div', { class: 'bar-track' }, h('div', { class: 'bar-fill', style: `width:${(frac * 100).toFixed(1)}%` })), h('span', {}, `${community.beacon}/${BEACON_GOAL}`));
   }
 
   function bagGrid(onclick) {
@@ -261,6 +281,97 @@ export function createWindows(handlers) {
       };
     },
 
+    board() {
+      const d = state?.daily && state.daily.date === date ? state.daily : { kills: {}, done: [] };
+      const favours = favoursFor(date).map((id) => {
+        const f = FAVOURS[id];
+        const done = d.done.includes(id);
+        const have = f.type === 'bring' && state ? state.bag.reduce((s, x) => s + (x && x.id === f.item ? x.n : 0), 0) : 0;
+        const progress = f.type === 'kill' ? `${Math.min(f.n, d.kills[id] || 0)}/${f.n}` : `${Math.min(f.n, have)}/${f.n} ${ITEMS[f.item].name}`;
+        return h('li', { class: done ? 'dim' : 'quest' },
+          h('div', {}, done ? '+ ' : '> ', f.text),
+          h('div', { class: 'muted small' }, `${npcName(f.from)} // ${done ? 'DONE' : progress} // ${f.reward.gold}G`),
+          !done && f.type === 'bring' ? btn('HAND IN', () => handlers.favour(id), { disabled: have < f.n }) : null);
+      });
+      if (top === null && handlers.online()) handlers.fetchBoard().then((t) => { top = t; render(); }).catch(() => { top = []; });
+      const ranks = (top || []).map((r, i) => h('li', {}, `${String(i + 1).padStart(2)}. ${r.name}  LV ${r.level}`));
+      return {
+        heading: 'NOTICE BOARD',
+        content: [
+          h('h3', {}, 'FAVOURS TODAY'),
+          h('ul', { class: 'rows' }, favours),
+          h('p', { class: 'muted small' }, 'New favours every midnight. Kills count by themselves; bring the rest here.'),
+          h('h3', {}, 'THE BEACON'),
+          beaconBar(),
+          h('h3', {}, 'THE BRAVE'),
+          handlers.online()
+            ? h('ul', { class: 'rows mono' }, ranks.length ? ranks : [h('li', { class: 'muted' }, top === null ? 'Reading...' : 'Nobody yet.')])
+            : h('p', { class: 'muted' }, 'Offline: the list lives in Kindle.'),
+        ],
+      };
+    },
+
+    beacon() {
+      const fuels = Object.entries(BEACON_FUEL).map(([id, pts]) => {
+        const it = ITEMS[id];
+        const n = state ? state.bag.reduce((s, x) => s + (x && x.id === id ? x.n : 0), 0) : 0;
+        return h('li', {}, h('span', { class: 'glyph' }, it.glyph), ` ${it.name} x${n} `, h('span', { class: 'muted' }, `(+${pts} each) `),
+          btn('GIVE 1', () => handlers.feed(id, 1), { disabled: n < 1 }), btn('ALL', () => handlers.feed(id, n), { disabled: n < 1 }));
+      });
+      return {
+        heading: 'THE BEACON',
+        content: [
+          h('p', {}, 'Everyone in Kindle feeds the same fire. If it blazes by midnight, the Grey has to step back further tonight.'),
+          beaconBar(),
+          h('ul', { class: 'rows' }, fuels),
+          h('p', { class: 'muted small' }, 'Lamp oil from alchemists or Marrow, wax from foragers, wisps from Greylings.'),
+        ],
+      };
+    },
+
+    altar() {
+      const d = state?.daily && state.daily.date === date ? state.daily : { donated: 0, prayed: false };
+      const total = Object.values(community.ballot).reduce((a, b) => a + b, 0) || 1;
+      const left = Math.max(0, DONATE_CAP - d.donated);
+      const options = BALLOT.options.map((o) => {
+        const g = community.ballot[o.id] || 0;
+        return h('li', { class: 'quest' }, h('div', {}, o.text),
+          h('div', { class: 'bar' }, h('div', { class: 'bar-track' }, h('div', { class: 'bar-fill xp', style: `width:${(g / total) * 100}%` })), h('span', {}, `${g}G`)),
+          h('div', { class: 'row-buttons' },
+            btn('GIVE 5G', () => handlers.donate(o.id, 5), { disabled: !state || state.gold < 1 || left < 1 }),
+            btn('GIVE 25G', () => handlers.donate(o.id, 25), { disabled: !state || state.gold < 1 || left < 1 })));
+      });
+      const area = h('textarea', { id: 'prayer-text', maxlength: PRAYER_MAX, rows: 3, placeholder: 'What is the world missing?', oninput: (e) => { prayerDraft = e.target.value; } });
+      area.value = prayerDraft;
+      return {
+        heading: 'THE ALTAR',
+        content: [
+          h('h3', {}, 'PRAY'),
+          d.prayed ? h('p', { class: 'muted' }, 'You prayed today. Come back tomorrow. If the Nightwright builds your idea, you will hear of it.')
+            : [h('p', { class: 'muted small' }, 'Say what Kindle is missing: a place, a creature, a trade, a story. One prayer a day. Only the Nightwright reads it.'),
+              area,
+              h('div', { class: 'row-buttons' }, btn('PRAY', () => { if (handlers.pray(prayerDraft)) { prayerDraft = ''; render(); } }, { disabled: !handlers.online() }))],
+          !handlers.online() ? h('p', { class: 'muted small' }, 'Offline: prayers need the line to Kindle.') : null,
+          h('h3', {}, `OFFERINGS // ${left}G LEFT TODAY`),
+          h('p', { class: 'muted small' }, 'Gold is a vote. The idea with the most gold tonight is built next.'),
+          h('ul', { class: 'rows' }, options),
+        ],
+      };
+    },
+
+    news() {
+      const last = CHRONICLE[CHRONICLE.length - 1];
+      return {
+        heading: `LAST NIGHT // DAY ${last.day}`,
+        content: [
+          h('h3', {}, last.title.toUpperCase()),
+          h('p', {}, last.text),
+          CHRONICLE.length > 1 ? h('h3', {}, 'BEFORE THAT') : null,
+          h('ul', { class: 'rows' }, CHRONICLE.slice(0, -1).reverse().slice(0, 6).map((c) => h('li', { class: 'muted' }, `DAY ${c.day}: ${c.title}`))),
+        ],
+      };
+    },
+
     keys() {
       const keys = handlers.keys();
       const rows = keys.map((k, i) => h('li', {}, `SLOT ${i + 1}  `, btn(waitingFor === i ? 'PRESS A KEY...' : keyLabel(k), () => { waitingFor = i; render(); })));
@@ -297,7 +408,7 @@ export function createWindows(handlers) {
   for (const b of document.querySelectorAll('.menubar button')) b.addEventListener('click', () => toggle(b.dataset.win));
 
   return {
-    open, close, toggle, setState,
+    open, close, toggle, setState, setCommunity,
     get kind() { return current?.kind ?? null; },
     get opts() { return current?.opts ?? null; },
     get capturing() { return waitingFor !== null; },

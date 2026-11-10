@@ -254,6 +254,17 @@ export function loadInto(p, raw) {
       return null;
     });
   }
+  // Tagesstand (Gefallen, Spenden, Gebet). Gilt nur für das gespeicherte Datum.
+  const d = save.daily;
+  if (d && typeof d.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d.date)) {
+    p.daily = {
+      date: d.date,
+      kills: Object.fromEntries(Object.entries(d.kills || {}).filter(([k]) => typeof k === 'string' && k.length < 32).map(([k, v]) => [k, clampInt(v, 0, 999, 0)])),
+      done: Array.isArray(d.done) ? d.done.filter((x) => typeof x === 'string' && x.length < 32).slice(0, 10) : [],
+      donated: clampInt(d.donated, 0, 1e6, 0),
+      prayed: !!d.prayed,
+    };
+  }
   p.maxHp = maxHpOf(p);
   p.hp = clampInt(save.hp, 1, p.maxHp, p.maxHp);
   barOf(p);
@@ -264,7 +275,7 @@ export function saveOf(p) {
     v: SAVE_VERSION,
     x: p.x, y: p.y, hp: Math.max(1, p.hp), oil: Math.round(p.oil * 10) / 10, gold: p.gold,
     cls: p.cls, classes: p.classes, bag: p.bag.filter(Boolean), equip: p.equip,
-    profs: p.profs, quests: p.quests, bars: p.bars,
+    profs: p.profs, quests: p.quests, bars: p.bars, daily: p.daily ?? null,
   };
 }
 
@@ -273,5 +284,6 @@ export function stateOf(p) {
   return {
     cls: p.cls, classes: p.classes, bag: p.bag, equip: p.equip, gold: p.gold,
     profs: p.profs, quests: p.quests, bar: barOf(p), defence: defenceOf(p), power: weaponPower(p),
+    daily: p.daily ?? null,
   };
 }

@@ -43,3 +43,10 @@ export function minutesToMidnight(date) {
   const [h, m] = berlinClock(date).split(':').map(Number);
   return (24 * 60 - (h * 60 + m)) % (24 * 60);
 }
+
+const dateFmt = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit' });
+
+// Kalendertag in Berlin (JJJJ-MM-TT). Um Mitternacht beginnt ein neuer Tag: neue Gefallen, neue Nacht.
+export function berlinDate(date) {
+  return dateFmt.format(date);
+}

@@ -212,4 +212,6 @@ export const EXAMINE = {
   lampbench: 'A bench covered in glass dust. Lampwrights work here.',
   node: 'Something worth a closer look, for someone who knows how.',
   depleted: 'Picked clean. Come back later.',
+  board: 'The Notice Board. Favours, gossip, and a list of the brave.',
+  altar: 'A stone altar with offering boxes. People pray here, and leave gold for the ideas they like.',
 };

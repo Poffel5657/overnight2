@@ -231,6 +231,18 @@ button:disabled { color: var(--line); cursor: default; }
   text-shadow: inherit;
 }
 .login input:focus { outline: 1px solid var(--accent); }
+.panel textarea {
+  width: 100%;
+  font: inherit;
+  color: var(--bright);
+  background: #000;
+  border: 1px solid var(--line);
+  padding: 4px 8px;
+  resize: vertical;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.panel textarea:focus { outline: 1px solid var(--accent); }
 .login-buttons { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; }
 .login-error { color: var(--danger); min-height: 1.2em; }
 #login-offline { color: var(--muted); }

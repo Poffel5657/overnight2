@@ -21,6 +21,7 @@ import { SHOPS } from '../content/shops.js';
 import { LocalConnection, NetConnection } from './net.js';
 import { createLogin } from './login.js';
 import { SERVER, OFFLINE } from './config.js';
+import { CHRONICLE } from '../content/chronicle.js';
 
 const canvas = document.getElementById('view');
 const view = createView(canvas);
@@ -156,6 +157,19 @@ const windows = createWindows({
   log(text, cls) { ui.log(text, cls); },
   keys() { return ui.keys; },
   setKeys(k) { ui.setKeys(k); },
+  favour(id) { send({ t: 'favour', id }); },
+  feed(item, n) { send({ t: 'feed', item, n }); },
+  donate(option, gold) { send({ t: 'donate', option, gold }); },
+  pray(text) {
+    if (!text || text.trim().length < 3) { ui.log('A prayer needs a few words at least.', 'sys'); return false; }
+    send({ t: 'pray', text });
+    return true;
+  },
+  online() { return conn ? !conn.offline : false; },
+  async fetchBoard() {
+    const res = await fetch(`${SERVER}/api/board`);
+    return (await res.json()).top;
+  },
 });
 try {
   if (localStorage.getItem('overnight2.crt') === '0') document.getElementById('btn-crt').click();
@@ -186,6 +200,8 @@ function flushEvents(events) {
     else if (e.type === 'shop') { ui.closeDialog(); windows.open('shop', { shop: e.shop }); }
     else if (e.type === 'craft') windows.open('craft', { obj: e.obj, station: e.station });
     else if (e.type === 'node') objects.setDepleted(e.id, e.left <= 0);
+    else if (e.type === 'window') { ui.closeDialog(); windows.open(e.win); }
+    else if (e.type === 'community') windows.setCommunity(e.community);
     else if (e.type === 'telegraph') addTelegraph(e.t);
     else if (e.type === 'telegraphEnd') removeTelegraph(e.id);
     else if (e.type === 'lit') setLit(e.id, true);
@@ -202,6 +218,8 @@ function onMessage(msg) {
     mirror.you = msg.you;
     for (const o of mirror.objects) setLit(o.id, msg.lit.includes(o.id));
     for (const o of mirror.objects) if (o.type === 'node') objects.setDepleted(o.id, msg.depleted.includes(o.id));
+    windows.setCommunity(msg.community, msg.date);
+    showNews();
     for (const id of [...telegraphs.keys()]) removeTelegraph(id);
     for (const t of msg.telegraphs) addTelegraph(t);
     for (const id of [...visuals.keys()]) removeVisual(id);
@@ -251,6 +269,11 @@ function onMessage(msg) {
     flushEvents(msg.events);
     return;
   }
+  if (msg.t === 'answered') {
+    ui.log(`Your prayer was heard. ${msg.note || 'Look around Kindle tomorrow.'}`, 'good');
+    ui.floater(window.innerWidth / 2, window.innerHeight / 3, 'YOUR PRAYER WAS HEARD', 'info');
+    return;
+  }
   if (msg.t === 'error') {
     ui.log(msg.error, 'hurt');
     return;
@@ -269,6 +292,16 @@ function updateMarkers() {
     if (opts.some((o) => o.do.some((d) => d.advance))) markers.set(npc, '?');
     else if (opts.some((o) => o.do.some((d) => d.start || d.chooseClass))) markers.set(npc, '!');
   }
+}
+
+// „Last night…“: einmal pro neuem Chronik-Eintrag beim Einloggen zeigen.
+function showNews() {
+  const day = CHRONICLE[CHRONICLE.length - 1].day;
+  let seen = -1;
+  try { seen = Number(localStorage.getItem('overnight2.newsSeen') ?? -1); } catch { /* egal */ }
+  if (seen >= day) return;
+  windows.open('news');
+  try { localStorage.setItem('overnight2.newsSeen', String(day)); } catch { /* egal */ }
 }
 
 let retry = 0;

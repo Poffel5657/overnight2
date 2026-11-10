@@ -394,3 +394,111 @@ test('Antworten, die gerade nicht angeboten werden, wirken nicht', () => {
   applyIntent(w, 'a', { t: 'ability', id: '__proto__' });
   assert.equal(p.queued, null);
 });
+
+// ---------- Gemeinschaft ----------
+
+import { favoursFor, cleanPrayer } from '../../shared/community.js';
+import { FAVOURS, BEACON_FUEL, DONATE_CAP } from '../../content/dailies.js';
+import { BALLOT } from '../../content/ballot.js';
+
+function nearObject(w, p, type) {
+  const o = w.objects.find((x) => x.type === type);
+  p.x = o.x + o.w; p.y = o.y + o.d;
+  if (!S.walkable(w, p.x, p.y)) { p.x = o.x - 1; p.y = o.y; }
+}
+
+test('Gefallen: für alle gleich, jeden Tag andere', () => {
+  const a = favoursFor('2026-11-10');
+  assert.equal(a.length, 3);
+  assert.deepEqual(favoursFor('2026-11-10'), a);
+  const days = ['2026-11-11', '2026-11-12', '2026-11-13', '2026-11-14'].map((d) => favoursFor(d).join());
+  assert.ok(new Set(days).size > 1, 'nicht jeden Tag dieselben');
+});
+
+test('Gefallen erledigen: Abgeben am Brett und Besiegen', () => {
+  const w = S.createWorld(REGION, 20);
+  // Einen Tag suchen, an dem beide Arten vorkommen
+  let date = '2026-11-10';
+  for (let i = 0; i < 60; i++) {
+    const f = favoursFor(date).map((id) => FAVOURS[id].type);
+    if (f.includes('bring') && f.includes('kill')) break;
+    date = `2026-12-${String(i % 28 + 1).padStart(2, '0')}`;
+  }
+  w.date = date;
+  const p = newcomer(w, 'a', 'warden');
+  const ids = favoursFor(date);
+  const bring = ids.find((id) => FAVOURS[id].type === 'bring');
+  const kill = ids.find((id) => FAVOURS[id].type === 'kill');
+  P.addItem(p, FAVOURS[bring].item, FAVOURS[bring].n);
+  const gold = p.gold;
+  nearObject(w, p, 'board');
+  applyIntent(w, 'a', { t: 'favour', id: bring });
+  assert.ok(p.daily.done.includes(bring));
+  assert.ok(p.gold > gold);
+  applyIntent(w, 'a', { t: 'favour', id: bring });
+  assert.equal(p.daily.done.filter((x) => x === bring).length, 1, 'nur einmal pro Tag');
+  for (let k = 0; k < FAVOURS[kill].n; k++) {
+    const m = w.mobs.find((x) => x.type === FAVOURS[kill].mob && !x.dead);
+    p.x = m.x + 1; p.y = m.y; p.hp = p.maxHp;
+    fight(w, 'a', m, ['bash']);
+  }
+  assert.ok(p.daily.done.includes(kill));
+});
+
+test('Leuchtfeuer füttern zählt für alle und landet in der Outbox', () => {
+  const w = S.createWorld(REGION, 21);
+  const p = newcomer(w, 'a', 'warden');
+  P.addItem(p, 'lamp_oil', 3);
+  nearObject(w, p, 'beacon');
+  applyIntent(w, 'a', { t: 'feed', item: 'lamp_oil', n: 3 });
+  assert.equal(w.community.beacon, BEACON_FUEL.lamp_oil * 3);
+  assert.equal(P.countItem(p, 'lamp_oil'), 0);
+  assert.ok(w.outbox.some((o) => o.kind === 'beacon'));
+  applyIntent(w, 'a', { t: 'feed', item: 'bread', n: 1 });
+  assert.equal(w.community.beacon, BEACON_FUEL.lamp_oil * 3, 'Brot brennt nicht');
+});
+
+test('Beten: einmal am Tag, nur am Altar, Text wird bereinigt', () => {
+  const w = S.createWorld(REGION, 22);
+  const p = newcomer(w, 'a', 'warden');
+  applyIntent(w, 'a', { t: 'pray', text: 'A lighthouse in the Grey.' });
+  assert.equal(w.outbox.length, 0, 'nicht am Altar');
+  nearObject(w, p, 'altar');
+  applyIntent(w, 'a', { t: 'pray', text: '  A   lighthouse‮ in the Grey.\u0000 ' });
+  assert.equal(w.outbox.length, 1);
+  assert.equal(w.outbox[0].text, 'A lighthouse in the Grey.');
+  applyIntent(w, 'a', { t: 'pray', text: 'Another one.' });
+  assert.equal(w.outbox.length, 1, 'einmal am Tag');
+  assert.equal(cleanPrayer('x'.repeat(999)).length, 300);
+  assert.equal(cleanPrayer('  '), null);
+});
+
+test('Spenden: Gold wird zur Stimme, gedeckelt pro Tag', () => {
+  const w = S.createWorld(REGION, 23);
+  const p = newcomer(w, 'a', 'warden');
+  p.gold = 200;
+  nearObject(w, p, 'altar');
+  const opt = BALLOT.options[0].id;
+  applyIntent(w, 'a', { t: 'donate', option: opt, gold: 25 });
+  applyIntent(w, 'a', { t: 'donate', option: opt, gold: 25 });
+  applyIntent(w, 'a', { t: 'donate', option: opt, gold: 25 });
+  assert.equal(w.community.ballot[opt], DONATE_CAP);
+  assert.equal(p.gold, 200 - DONATE_CAP);
+  applyIntent(w, 'a', { t: 'donate', option: 'nope', gold: 5 });
+  assert.equal(p.gold, 200 - DONATE_CAP);
+  // Neuer Tag: wieder spenden
+  w.date = '2099-01-01';
+  applyIntent(w, 'a', { t: 'donate', option: opt, gold: 5 });
+  assert.equal(p.gold, 200 - DONATE_CAP - 5);
+});
+
+test('Tagesstand übersteht Speichern', () => {
+  const w = S.createWorld(REGION, 24);
+  const p = newcomer(w, 'a', 'warden');
+  p.gold = 30;
+  nearObject(w, p, 'altar');
+  applyIntent(w, 'a', { t: 'donate', option: BALLOT.options[0].id, gold: 10 });
+  const q = S.addPlayer(w, 'b', 'b', JSON.parse(JSON.stringify(S.removePlayer(w, 'a'))));
+  assert.equal(q.daily.donated, 10);
+  assert.equal(q.daily.date, w.date);
+});

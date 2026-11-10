@@ -17,6 +17,9 @@ import { CLASSES } from '../content/classes.js';
 import { ABILITIES } from '../content/abilities.js';
 import { PROFESSIONS } from '../content/professions.js';
 import { SHOPS } from '../content/shops.js';
+import { FAVOURS, FAVOURS_PER_DAY, BEACON_FUEL } from '../content/dailies.js';
+import { BALLOT } from '../content/ballot.js';
+import { CHRONICLE } from '../content/chronicle.js';
 import { createWorld, walkable } from '../shared/sim.js';
 import { findPath } from '../shared/path.js';
 
@@ -174,7 +177,26 @@ function checkContent(regions) {
   for (const c of Object.values(CLASSES)) add(c.starter, 'Klasse');
   for (const e of effects) for (const i of Object.keys(e.give || {})) add(i, 'Gespräch');
 
+  // Gemeinschaft
+  for (const [id, f] of Object.entries(FAVOURS)) {
+    if (!npcIds.has(f.from)) err(`Gefallen ${id}: ${f.from} fehlt`);
+    if (f.type === 'bring') item(f.item, `Gefallen ${id}`);
+    else if (f.type === 'kill' && !mobTypes.has(f.mob)) err(`Gefallen ${id}: Wesen ${f.mob} lebt nirgends`);
+    else if (!['bring', 'kill'].includes(f.type)) err(`Gefallen ${id}: unbekannte Art`);
+  }
+  if (Object.keys(FAVOURS).length < FAVOURS_PER_DAY) err('weniger Gefallen als pro Tag gezogen werden');
+  for (const i of Object.keys(BEACON_FUEL)) item(i, 'Brennstoff');
+  for (const r of regions) for (const t of ['board', 'altar', 'beacon']) if (!r.objects.some((o) => o.type === t)) err(`${r.id}: ${t} fehlt`);
+  if (!Array.isArray(BALLOT.options) || BALLOT.options.length < 2) err('Stimmzettel braucht mindestens zwei Ideen');
+  for (const o of BALLOT.options) {
+    if (!/^[a-z0-9-]{1,32}$/.test(o.id)) err(`Stimmzettel: ID ${o.id} ungültig`);
+    if (!o.text || o.text.length > 90) err(`Stimmzettel ${o.id}: Text fehlt oder länger als 90 Zeichen`);
+  }
+  CHRONICLE.forEach((c, i) => { if (c.day !== i) err(`Chronik: Eintrag ${i} hat day ${c.day} (lückenlos von 0 zählen)`); });
+
   const purposes = new Set();
+  for (const f of Object.values(FAVOURS)) if (f.type === 'bring') purposes.add(f.item);
+  for (const i of Object.keys(BEACON_FUEL)) purposes.add(i);
   for (const r of Object.values(RECIPES)) for (const i of Object.keys(r.inputs)) purposes.add(i);
   for (const q of Object.values(QUESTS)) for (const st of q.steps) if (st.type === 'have') purposes.add(st.item);
   for (const [id, def] of Object.entries(ITEMS)) {

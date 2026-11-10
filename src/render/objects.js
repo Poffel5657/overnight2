@@ -122,6 +122,17 @@ const LOOKS = {
 };
 
 const BUILDERS = {
+  board(o, g) {
+    for (const x of [-0.35, 0.35]) g.add(box(0.08, 1.4, 0.08, '#5a4028', x, 0.7, 0));
+    g.add(box(0.9, 0.7, 0.06, '#7a5a34', 0, 1.05, 0));
+    for (const [x, y, c] of [[-0.2, 1.15, '#e8dcc0'], [0.15, 1.0, '#d8c8a0'], [0.05, 1.22, '#f0e4c8']]) g.add(box(0.22, 0.26, 0.02, c, x, y, 0.04));
+  },
+  altar(o, g) {
+    g.add(box(1.6, 0.6, 0.7, '#8a847a', 0, 0.3, 0));
+    g.add(box(1.8, 0.12, 0.8, '#6a645a', 0, 0.66, 0));
+    for (const x of [-0.6, 0, 0.6]) g.add(box(0.3, 0.25, 0.25, '#5a4028', x, 0.85, 0.15));
+    g.add(box(0.12, 0.2, 0.12, glowMat, 0, 0.82, -0.2));
+  },
   node(o, g) { (LOOKS[NODES[o.node].look] || LOOKS.heap)(g, o); },
   station(o, g) { (LOOKS[o.station] || LOOKS.workbench)(g, o); },
   house(o, g) {

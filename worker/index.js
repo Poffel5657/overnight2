@@ -100,6 +100,46 @@ async function login(req, env, cors) {
   return json(cors, 200, { token, name: row.name });
 }
 
+// ---------- Für den Nightwright: Gebete und Spenden lesen, Gebete als erhört markieren ----------
+// Nur mit dem geheimen Schlüssel ADMIN_KEY (wrangler secret put ADMIN_KEY). Ohne Schlüssel gibt es die Wege nicht.
+
+async function admin(req, env, url) {
+  const key = req.headers.get('X-Admin-Key') || '';
+  if (!env.ADMIN_KEY || key.length !== env.ADMIN_KEY.length || !sameHex(key, env.ADMIN_KEY)) return new Response('Not found', { status: 404 });
+  const plain = (data) => new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+  if (url.pathname === '/api/admin/inbox' && req.method === 'GET') {
+    const since = Number(url.searchParams.get('since') || 0);
+    const ballot = Number(url.searchParams.get('ballot') || 0);
+    const prayers = await env.DB.prepare(
+      'SELECT p.id, p.date, p.text, p.created_at, a.name FROM prayers p JOIN accounts a ON a.id = p.account_id WHERE p.created_at > ? ORDER BY p.created_at LIMIT 500',
+    ).bind(since).all();
+    const votes = await env.DB.prepare('SELECT option, SUM(gold) AS gold, COUNT(DISTINCT account_id) AS donors FROM donations WHERE ballot = ? GROUP BY option').bind(ballot).all();
+    const beacon = await env.DB.prepare("SELECT key, value FROM world_state WHERE key LIKE 'beacon:%' ORDER BY key DESC LIMIT 7").all();
+    const players = await env.DB.prepare('SELECT COUNT(*) AS n, SUM(updated_at > ?) AS active FROM characters').bind(Date.now() - 86400000).first();
+    return plain({ prayers: prayers.results, votes: votes.results, beacon: beacon.results, players });
+  }
+  if (url.pathname === '/api/admin/answer' && req.method === 'POST') {
+    const body = await readBody(req);
+    const ids = Array.isArray(body?.ids) ? body.ids.filter(Number.isInteger).slice(0, 100) : [];
+    const note = typeof body?.note === 'string' ? body.note.slice(0, 200) : '';
+    if (!ids.length) return plain({ updated: 0 });
+    const res = await env.DB.prepare(`UPDATE prayers SET answered_at = ?, answer_note = ? WHERE id IN (${ids.map(() => '?').join(',')})`)
+      .bind(Date.now(), note, ...ids).run();
+    return plain({ updated: res.meta.changes });
+  }
+  return new Response('Not found', { status: 404 });
+}
+
+// Bestenliste: die zehn höchsten Charaktere (beste Klassenstufe, dann gesamte Erfahrung).
+async function board(env, cors) {
+  const { results } = await env.DB.prepare(
+    'SELECT a.name, c.level, c.xp FROM characters c JOIN accounts a ON a.id = c.account_id ORDER BY c.level DESC, c.xp DESC LIMIT 10',
+  ).all();
+  return new Response(JSON.stringify({ top: results }), {
+    headers: { ...cors, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' },
+  });
+}
+
 export default {
   async fetch(req, env) {
     const url = new URL(req.url);
@@ -128,6 +168,8 @@ export default {
         return acc ? json(cors, 200, { name: acc.name }) : json(cors, 401, { error: 'Not signed in.' });
       }
       if (url.pathname === '/api/health') return json(cors, 200, { ok: true });
+      if (url.pathname === '/api/board' && req.method === 'GET') return await board(env, cors);
+      if (url.pathname.startsWith('/api/admin/')) return await admin(req, env, url);
     } catch (err) {
       console.error(err);
       return json(cors, 500, { error: 'The Beacon flickered. Try again.' });
