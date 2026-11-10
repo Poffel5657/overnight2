@@ -138,7 +138,8 @@ export class RegionRoom {
     for (const ws of this.conns.keys()) {
       try { ws.close(4006, 'Kindle was rebuilt'); } catch { /* schon zu */ }
     }
-    this.ctx.abort('content changed');
+    // Kurz warten, damit die Schließnachricht (4006) noch ankommt und der Browser still neu verbindet.
+    setTimeout(() => this.ctx.abort('content changed'), 250);
     return true;
   }
 
