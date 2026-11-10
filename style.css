@@ -177,6 +177,44 @@ button:hover, button:focus-visible { color: var(--bright); outline: none; }
 .overhead div { height: 100%; background: var(--danger); }
 @keyframes rise { from { opacity: 1; margin-top: 0; } to { opacity: 0; margin-top: -36px; } }
 
+/* ---------- Fenster ---------- */
+
+.menubar { position: fixed; top: calc(var(--gap) + 44px); right: var(--gap); z-index: 30; display: flex; gap: 2px; background: var(--panel); border: 3px double var(--line); }
+.menubar button.on { color: var(--bright); background: rgba(255, 179, 71, 0.15); }
+
+.panel { top: calc(var(--gap) + 90px); right: var(--gap); width: 380px; max-height: calc(100vh - 220px); display: flex; flex-direction: column; z-index: 35; }
+.panel-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.panel-head button { color: var(--muted); padding: 0; }
+.panel-body { overflow-y: auto; padding-right: 4px; }
+.panel h3 { margin: 10px 0 4px; font-size: 18px; font-weight: normal; color: var(--accent); }
+.panel p { margin: 4px 0; }
+.rows { list-style: none; margin: 0; padding: 0; }
+.rows li { padding: 2px 0; }
+.rows li.on { color: var(--bright); }
+.rows li.dim { color: var(--muted); opacity: 0.7; }
+.rows.mono li { white-space: pre; }
+.rows .quest { padding: 4px 0 8px; border-bottom: 1px dashed var(--line); }
+.rows button, .row-buttons button { padding: 0 2px; }
+.row-buttons { display: flex; flex-wrap: wrap; gap: 2px 8px; }
+.muted { color: var(--muted); }
+.small { font-size: 17px; }
+.glyph { color: var(--bright); }
+.bar-fill.xp { background: var(--accent); }
+.grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+.cell { position: relative; aspect-ratio: 1; border: 1px solid var(--line); background: #000; font-size: 26px; display: flex; align-items: center; justify-content: center; }
+.cell.empty { color: var(--line); cursor: default; }
+.cell .count { position: absolute; right: 3px; bottom: 0; font-size: 15px; color: var(--text); }
+button:disabled { color: var(--line); cursor: default; }
+
+.slot .count { position: absolute; right: 4px; top: 2px; font-size: 15px; color: var(--text); }
+.hotbar.assigning .slot { border-color: var(--accent); animation: blink 0.6s steps(2) infinite; }
+@keyframes blink { 50% { border-color: var(--line); } }
+
+.nametag { position: absolute; transform: translate(-50%, -100%); font-size: 16px; color: var(--bright); text-shadow: 0 0 3px #000, 0 0 2px #000; white-space: nowrap; }
+.nametag.marker { font-size: 30px; color: #ffe060; animation: bob 1s ease-in-out infinite alternate; }
+@keyframes bob { from { margin-top: 0; } to { margin-top: -6px; } }
+.dialog .panel-head { margin-bottom: 4px; }
+
 /* ---------- Anmelden ---------- */
 
 .login { left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(420px, calc(100vw - 2 * var(--gap))); z-index: 80; padding: 8px 14px 12px; }
@@ -227,6 +265,10 @@ button:hover, button:focus-visible { color: var(--bright); outline: none; }
   .slot .glyph { font-size: 22px; }
   .hotbar { gap: 2px; padding: 2px; }
   .dialog { bottom: 140px; }
+  .menubar { top: calc(var(--gap) + 40px); }
+  .menubar .long { display: none; }
+  .panel { top: auto; bottom: 168px; left: var(--gap); right: var(--gap); width: auto; max-height: 50vh; z-index: 45; }
+  .grid { grid-template-columns: repeat(6, 1fr); }
   .camera-buttons { bottom: 200px; }
 }
 @media (prefers-reduced-motion: reduce) {

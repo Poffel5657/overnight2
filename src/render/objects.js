@@ -3,6 +3,7 @@
 
 import * as THREE from 'three';
 import { TILE_TYPES } from '../../content/tiles.js';
+import { NODES } from '../../content/nodes.js';
 import { litMaterial } from './light.js';
 import { makeSprite } from './sprites.js';
 
@@ -15,6 +16,8 @@ function mat(color) {
 }
 const glowMat = new THREE.MeshBasicMaterial({ color: '#ffcf70' });
 const forgeMat = new THREE.MeshBasicMaterial({ color: '#ff8a3a' });
+const emberMat = new THREE.MeshBasicMaterial({ color: '#ff6a2a' });
+const glimmerMat = new THREE.MeshBasicMaterial({ color: '#9fe0ff' });
 
 function hash(x, y, s = 0) {
   const n = Math.sin(x * 12.9898 + y * 78.233 + s * 37.719) * 43758.5453;
@@ -42,7 +45,76 @@ function footprintBase(o, heightAt) {
   return heightAt(o.x + o.w / 2, o.y + o.d / 2);
 }
 
+// Fundstellen (content/nodes.js, Feld look) und Werkstationen (Feld station).
+const LOOKS = {
+  heap(g) {
+    for (const [x, z, s, r, c] of [[-0.15, 0.1, 0.35, 0.3, '#5a5048'], [0.18, -0.08, 0.3, 1.1, '#6a5a48'], [0.02, 0.18, 0.22, 2, '#7a4a30'], [0.1, 0.05, 0.18, 0.7, '#4a4a50']]) {
+      g.add(box(s, s * 0.7, s * 1.3, c, x, s * 0.35, z).rotateY(r).rotateZ(r * 0.3));
+    }
+    g.add(box(0.5, 0.04, 0.3, '#8a6a3a', 0, 0.32, 0).rotateZ(0.5));
+  },
+  wreck(g) {
+    const hull = box(0.9, 0.35, 0.45, '#9a7a3a', 0, 0.2, 0);
+    hull.rotation.z = 0.35;
+    g.add(hull);
+    for (const x of [-0.3, 0, 0.3]) g.add(box(0.06, 0.6, 0.06, '#c8a050', x, 0.4, 0.2));
+    g.add(box(0.2, 0.1, 0.2, glimmerMat, 0.25, 0.42, -0.1));
+  },
+  herbs(g) {
+    for (let i = 0; i < 6; i++) {
+      const a = i * 1.1;
+      const leaf = new THREE.Mesh(new THREE.ConeGeometry(0.08, 0.35, 4), mat(i % 2 ? '#6a9a3a' : '#8aa848'));
+      leaf.position.set(Math.cos(a) * 0.22, 0.17, Math.sin(a) * 0.22);
+      leaf.rotation.z = Math.cos(a) * 0.4;
+      g.add(leaf);
+    }
+  },
+  hive(g) {
+    g.add(box(0.08, 0.7, 0.08, '#5a4028', 0, 0.35, 0));
+    g.add(new THREE.Mesh(new THREE.DodecahedronGeometry(0.26, 0), mat('#b08a40')).translateY(0.75));
+  },
+  ember(g) {
+    for (let i = 0; i < 4; i++) {
+      const a = i * 1.6;
+      const r = new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.28, 4), emberMat);
+      r.position.set(Math.cos(a) * 0.18, 0.14, Math.sin(a) * 0.18);
+      g.add(r);
+    }
+  },
+  waymark(g) {
+    g.add(box(0.3, 1.0, 0.3, '#8a847a', 0, 0.5, 0));
+    g.add(box(0.36, 0.12, 0.36, '#6a645a', 0, 1.05, 0));
+  },
+  signpost(g) {
+    const post = box(0.1, 1.4, 0.1, '#5a4028', 0, 0.7, 0);
+    post.rotation.z = 0.2;
+    g.add(post);
+    g.add(box(0.6, 0.16, 0.05, '#7a5a34', 0.2, 1.2, 0.05).rotateZ(0.05));
+  },
+  workbench(g, o) {
+    g.add(box(o.w - 0.2, 0.1, o.d - 0.2, '#7a5a34', 0, 0.7, 0));
+    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) g.add(box(0.08, 0.7, 0.08, '#5a4028', sx * (o.w / 2 - 0.2), 0.35, sz * (o.d / 2 - 0.2)));
+    g.add(box(0.25, 0.2, 0.2, '#4a4a50', 0, 0.85, -0.3));
+    g.add(box(0.15, 0.06, 0.4, '#8a8a90', 0.1, 0.78, 0.4));
+  },
+  still(g) {
+    g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.32, 0.6, 8), mat('#b06a3a')).translateY(0.5));
+    g.add(new THREE.Mesh(new THREE.SphereGeometry(0.22, 8, 6), mat('#c07a4a')).translateY(0.85));
+    g.add(box(0.5, 0.05, 0.05, '#8a5a30', 0.3, 0.95, 0).rotateZ(-0.4));
+    g.add(box(0.3, 0.15, 0.3, emberMat, 0, 0.1, 0));
+  },
+  lampbench(g) {
+    g.add(box(0.8, 0.08, 0.6, '#6a5a40', 0, 0.65, 0));
+    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) g.add(box(0.06, 0.65, 0.06, '#4a3420', sx * 0.32, 0.32, sz * 0.22));
+    const lens = new THREE.Mesh(new THREE.TorusGeometry(0.14, 0.04, 6, 12), glimmerMat);
+    lens.position.y = 0.85;
+    g.add(lens);
+  },
+};
+
 const BUILDERS = {
+  node(o, g) { (LOOKS[NODES[o.node].look] || LOOKS.heap)(g, o); },
+  station(o, g) { (LOOKS[o.station] || LOOKS.workbench)(g, o); },
   house(o, g) {
     const wall = 1.3;
     g.add(box(o.w - 0.2, wall + 1, o.d - 0.2, '#a08664', 0, (wall - 1) / 2, 0));
@@ -123,6 +195,7 @@ export function buildObjects(world, region, heightAt) {
   const pickables = [];
   const flames = [];
   const flameByObject = new Map();
+  const groupByObject = new Map();
   const blocked = new Set();
 
   for (const o of world.objects) {
@@ -143,6 +216,13 @@ export function buildObjects(world, region, heightAt) {
     g.traverse((c) => { c.userData.ref = { kind: 'object', id: o.id }; });
     root.add(g);
     pickables.push(g);
+    groupByObject.set(o.id, g);
+  }
+
+  // Leere Fundstellen schrumpfen, bis sie nachwachsen.
+  function setDepleted(id, depleted) {
+    const g = groupByObject.get(id);
+    if (g) g.scale.set(depleted ? 0.7 : 1, depleted ? 0.35 : 1, depleted ? 0.7 : 1);
   }
 
   // Bäume und Felsen aus dem Raster als Instanzen (schnell, auch bei Hunderten).
@@ -197,5 +277,5 @@ export function buildObjects(world, region, heightAt) {
 
   root.add(trunks, crowns, rockMesh);
   pickables.push(trunks, crowns, rockMesh);
-  return { root, pickables, flames, flameByObject };
+  return { root, pickables, flames, flameByObject, setDepleted };
 }

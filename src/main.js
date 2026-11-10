@@ -4,7 +4,6 @@
 
 import * as THREE from 'three';
 import { REGION } from '../content/regions/kindle.js';
-import { DEFAULT_BAR } from '../content/abilities.js';
 import { EXAMINE } from '../content/npcs.js';
 import { TICK_MS, objectActions, lanternRadius, regionObjects } from '../shared/sim.js';
 import { cheb } from '../shared/path.js';
@@ -15,6 +14,10 @@ import { buildObjects } from './render/objects.js';
 import { makeSprite } from './render/sprites.js';
 import { setLights, lightUniforms } from './render/light.js';
 import { createUI } from './ui.js';
+import { conditionHolds } from '../shared/talk.js';
+import { TALK } from '../content/npcs.js';
+import { createWindows } from './windows.js';
+import { SHOPS } from '../content/shops.js';
 import { LocalConnection, NetConnection } from './net.js';
 import { createLogin } from './login.js';
 import { SERVER, OFFLINE } from './config.js';
@@ -26,6 +29,7 @@ const { scene, camera, rig } = view;
 // ---------- Spiegelwelt ----------
 
 const mirror = {
+  state: null,
   you: null,
   tick: 0,
   arrivedAt: performance.now(),
@@ -74,6 +78,7 @@ function removeVisual(id) {
   scene.remove(v.sprite.group, v.shadow);
   visuals.delete(id);
   ui.overhead(id, 0, 0, null);
+  ui.nameTag(id, 0, 0, null);
 }
 
 // Zielring und Klickmarke
@@ -124,17 +129,34 @@ function setLit(id, lit) {
 let conn = null;
 const send = (intent) => conn?.send(intent);
 
+function useBarSlot(i) {
+  const id = ui.bar[i];
+  if (!id) return;
+  send({ t: 'ability', id });
+  ui.flashSlot(i);
+}
+
 const ui = createUI({
-  ability(i) {
-    const id = DEFAULT_BAR[i];
-    if (!id) return;
-    send({ t: 'ability', id });
-    ui.flashSlot(i);
-  },
-  dialogAction(npc, action) { send({ t: 'dialog', npc, action }); },
+  ability: useBarSlot,
+  assign(slot, id) { send({ t: 'bar', slot, id }); },
+  say(i) { send({ t: 'say', i }); },
+  bye() { send({ t: 'bye' }); },
   crt(on) { view.setCrt(on); },
 });
-ui.buildBar(DEFAULT_BAR);
+
+const windows = createWindows({
+  use(slot) { send({ t: 'use', slot }); },
+  drop(slot) { send({ t: 'drop', slot }); },
+  unequip(slot) { send({ t: 'unequip', slot }); },
+  craft(obj, recipe, n) { send({ t: 'craft', obj, recipe, n }); },
+  buy(shop, item, n) { send({ t: 'buy', shop, item, n }); },
+  sell(shop, slot, n) { send({ t: 'sell', shop, slot, n }); },
+  assign(id, name) { ui.beginAssign(id, name); },
+  menu(x, y, entries) { ui.openMenu(x, y, entries); },
+  log(text, cls) { ui.log(text, cls); },
+  keys() { return ui.keys; },
+  setKeys(k) { ui.setKeys(k); },
+});
 try {
   if (localStorage.getItem('overnight2.crt') === '0') document.getElementById('btn-crt').click();
 } catch { /* egal */ }
@@ -146,7 +168,9 @@ function screenOf(v, lift = 0) {
   const p = v.pos.clone();
   p.y += v.sprite.height + lift;
   p.project(camera);
-  return { x: (p.x * 0.5 + 0.5) * window.innerWidth, y: (-p.y * 0.5 + 0.5) * window.innerHeight, visible: p.z < 1 };
+  const x = (p.x * 0.5 + 0.5) * window.innerWidth;
+  const y = (-p.y * 0.5 + 0.5) * window.innerHeight;
+  return { x, y, visible: p.z < 1 && x > 0 && x < window.innerWidth && y > 0 && y < window.innerHeight };
 }
 
 function flushEvents(events) {
@@ -157,8 +181,12 @@ function flushEvents(events) {
       if (v) { const s = screenOf(v); ui.floater(s.x, s.y, e.text, e.cls); }
     } else if (e.type === 'dialog') {
       const npc = mirror.ents.get(e.npc);
-      if (npc) ui.openDialog(npc.id, npc.name, e.page);
-    } else if (e.type === 'telegraph') addTelegraph(e.t);
+      if (npc) ui.openDialog(npc.id, npc.name, e.page, e.options);
+    } else if (e.type === 'dialogEnd') ui.closeDialog();
+    else if (e.type === 'shop') { ui.closeDialog(); windows.open('shop', { shop: e.shop }); }
+    else if (e.type === 'craft') windows.open('craft', { obj: e.obj, station: e.station });
+    else if (e.type === 'node') objects.setDepleted(e.id, e.left <= 0);
+    else if (e.type === 'telegraph') addTelegraph(e.t);
     else if (e.type === 'telegraphEnd') removeTelegraph(e.id);
     else if (e.type === 'lit') setLit(e.id, true);
     else if (e.type === 'cast' && e.id === 'flare' && e.by === mirror.you) flareUntil = performance.now() + 450;
@@ -173,6 +201,7 @@ function onMessage(msg) {
   if (msg.t === 'welcome') {
     mirror.you = msg.you;
     for (const o of mirror.objects) setLit(o.id, msg.lit.includes(o.id));
+    for (const o of mirror.objects) if (o.type === 'node') objects.setDepleted(o.id, msg.depleted.includes(o.id));
     for (const id of [...telegraphs.keys()]) removeTelegraph(id);
     for (const t of msg.telegraphs) addTelegraph(t);
     for (const id of [...visuals.keys()]) removeVisual(id);
@@ -189,7 +218,7 @@ function onMessage(msg) {
       const ent = { ...meta, x: 0, y: 0, px: 0, py: 0, hp: 0, dead: false, dazzled: false, fresh: true };
       mirror.ents.set(meta.id, ent);
     }
-    for (const [id, x, y, hp, flags] of msg.ents) {
+    for (const [id, x, y, hp, flags, maxHp] of msg.ents) {
       const e = mirror.ents.get(id);
       if (!e) continue;
       // Neu gesehen oder weit gesprungen (Aufwachen): nicht hingleiten.
@@ -199,6 +228,7 @@ function onMessage(msg) {
       e.x = x;
       e.y = y;
       e.hp = hp;
+      e.maxHp = maxHp;
       e.dead = !!(flags & 1);
       e.dazzled = !!(flags & 2);
       if (e.fresh) { e.fresh = false; addVisual(e); }
@@ -209,6 +239,14 @@ function onMessage(msg) {
     }
     mirror.me = msg.me;
     mirror.tick = msg.tick;
+    if (msg.state) {
+      const first = !mirror.state;
+      mirror.state = msg.state;
+      windows.setState(msg.state);
+      updateMarkers();
+      if (first && !msg.state.cls) ui.log('Warden Ama stands by the Beacon. Talk to her to begin. (Look for the !)', 'good');
+    }
+    if (mirror.state) ui.setBar(mirror.state.bar, mirror.state);
     mirror.arrivedAt = performance.now();
     flushEvents(msg.events);
     return;
@@ -218,6 +256,19 @@ function onMessage(msg) {
     return;
   }
   if (msg.t === 'closed') onClosed(msg);
+}
+
+// Wer etwas für mich hat: ! = neue Quest, ? = etwas abzugeben. Dieselbe Prüfung wie auf dem Server.
+const markers = new Map();
+function updateMarkers() {
+  markers.clear();
+  const s = mirror.state;
+  if (!s) return;
+  for (const [npc, pages] of Object.entries(TALK)) {
+    const opts = (pages.start?.options || []).filter((o) => o.do && conditionHolds(s, o.if));
+    if (opts.some((o) => o.do.some((d) => d.advance))) markers.set(npc, '?');
+    else if (opts.some((o) => o.do.some((d) => d.start || d.chooseClass))) markers.set(npc, '!');
+  }
 }
 
 let retry = 0;
@@ -465,17 +516,24 @@ window.addEventListener('keydown', (e) => {
   }
   if (k === 'Escape') {
     if (ui.menuOpen()) ui.closeMenu();
-    else if (ui.dialogNpc) ui.closeDialog();
+    else if (ui.assigning) ui.endAssign();
+    else if (windows.kind) windows.close();
+    else if (ui.dialogNpc) ui.closeDialog(true);
     else send({ t: 'target', id: null });
     return;
   }
-  if (/^[1-9]$/.test(k)) {
-    if (!ui.dialogKey(Number(k))) {
-      const i = Number(k) - 1;
-      if (DEFAULT_BAR[i]) { send({ t: 'ability', id: DEFAULT_BAR[i] }); ui.flashSlot(i); }
-    }
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  // Im Gespräch wählen Zahlen Antworten.
+  if (/^[1-9]$/.test(k) && ui.dialogKey(Number(k))) return;
+  const key = k.length === 1 ? k.toLowerCase() : k;
+  const slot = ui.keys.indexOf(key);
+  if (slot >= 0) {
+    useBarSlot(slot);
     return;
   }
+  if (key === 'c') { windows.toggle('char'); return; }
+  if (key === 'b' || key === 'i') { windows.toggle('bag'); return; }
+  if (key === 'j') { windows.toggle('quests'); return; }
   held.add(k.toLowerCase());
 });
 window.addEventListener('keyup', (e) => held.delete(e.key.toLowerCase()));
@@ -596,7 +654,7 @@ function frame(now) {
     .map((o, i) => ({ x: o.x + o.w / 2, y: o.y + o.d / 2, r: o.light * (1 + Math.sin(t * 7 + i * 3) * 0.02 + Math.sin(t * 13 + i) * 0.015), w: 1 }));
   if (selfVis && me) {
     const flare = now < flareUntil ? 1 + (flareUntil - now) / 450 * 1.6 : 1;
-    lights.unshift({ x: selfVis.pos.x, y: selfVis.pos.z, r: lanternRadius(me.oil) * flare * (1 + Math.sin(t * 9) * 0.03), w: 1 });
+    lights.unshift({ x: selfVis.pos.x, y: selfVis.pos.z, r: lanternRadius(me.oil, me.light) * flare * (1 + Math.sin(t * 9) * 0.03), w: 1 });
   }
   for (const v of visuals.values()) {
     if (v.ent.kind === 'player' && v.ent.id !== mirror.you) lights.push({ x: v.pos.x, y: v.pos.z, r: 4, w: 0.9 });
@@ -636,17 +694,35 @@ function frame(now) {
     if (markerAge > 0.8) marker.visible = false;
   }
 
-  // Dialog schließt, wenn man wegläuft
-  if (ui.dialogNpc && self) {
-    const n = mirror.ents.get(ui.dialogNpc);
-    if (!n || cheb(n.x, n.y, self.x, self.y) > 2) ui.closeDialog();
+  // Herstell- und Händlerfenster schließen, wenn man wegläuft (Gespräche schließt der Server).
+  if (self && (windows.kind === 'craft' || windows.kind === 'shop')) {
+    let far = false;
+    if (windows.kind === 'craft') {
+      const o = mirror.objects.find((x) => x.id === windows.opts.obj);
+      far = !o || cheb(self.x, self.y, Math.max(o.x, Math.min(self.x, o.x + o.w - 1)), Math.max(o.y, Math.min(self.y, o.y + o.d - 1))) > 1;
+    } else {
+      const n = mirror.ents.get(SHOPS[windows.opts.shop]?.npc);
+      far = !n || cheb(n.x, n.y, self.x, self.y) > 2;
+    }
+    if (far) windows.close();
   }
 
   view.render();
 
-  // HP-Balken über verletzten Wesen
+  // HP-Balken über verletzten Wesen, Namen über anderen Spielern
   for (const v of visuals.values()) {
     const e = v.ent;
+    if (e.kind === 'player' && e.id !== mirror.you) {
+      const s = screenOf(v, 0.1);
+      ui.nameTag(e.id, s.x, s.y, s.visible ? e.name : null);
+      continue;
+    }
+    if (e.kind === 'npc') {
+      const mark = markers.get(e.id);
+      const s = screenOf(v, 0.1);
+      ui.nameTag(e.id, s.x, s.y, mark && s.visible ? mark : null, 'marker');
+      continue;
+    }
     if (e.kind !== 'mob') continue;
     if (e.dead || e.hp >= e.maxHp) { ui.overhead(e.id, 0, 0, null); continue; }
     const s = screenOf(v, 0.15);
@@ -678,4 +754,4 @@ else if (getToken()) connect();
 else login.show();
 
 // Für Tests und Neugierige
-window.__overnight = { mirror, view, get conn() { return conn; } };
+window.__overnight = { mirror, view, windows, get conn() { return conn; } };
