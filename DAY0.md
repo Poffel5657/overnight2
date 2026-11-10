@@ -2,16 +2,29 @@
 
 Ziel: Gleich zum Start sind 1–2 Wochen Spielzeit da, ohne eine einzige Nacht. Zahlen sind Richtwerte, die Balance macht später der Probespieler.
 
-## Fähigkeiten (Stufe 1–50 zum Start)
+## Klassen (Stufe 1–30 zum Start, jede einzeln)
 
-| Fähigkeit | Tag-0-Inhalt |
+Jede Klasse hat an Tag 0 etwa 8 Fähigkeiten für die Leiste, freigeschaltet über die Stufen, darunter mindestens eine Licht-Fähigkeit.
+
+- **Warden:** *Bash*, *Taunt*, *Brace* (Schaden abfangen), *Lantern Ward* (Lichtkreis für die Gruppe), *Shield Wall* …
+- **Mender:** *Ember Touch* (Heilung), *Warmth* (Heilung über Zeit), *Kindle Soul* (Wiederbeleben), *Glow* (Schild) …
+- **Flarecaster:** *Flare* (blendet), *Sear*, *Sunspot* (Fläche am Boden), *Focus* …
+- **Drifter:** *Slash*, *Dusk Step* (Ausweichsprung), *Snare* (Falle), *Fade* (im Dunkeln unsichtbar) …
+
+Klassenlehrer stehen in Kindle (Warden Ama für Warden, Brother Tallow für Mender, der Stranger für Drifter, eine Linsenschleiferin für Flarecaster). Die erste Klasse wählt man in der Einstiegsquest.
+
+## Berufe (2 von 6, Stufe 1–50 zum Start)
+
+| Beruf | Tag-0-Inhalt |
 |---|---|
-| Warding | ~10 Kampftechniken freischaltbar (z. B. *Strike*, *Shove* (zurückstoßen), *Flare* (Licht-Stoß, blendet), *Brace* (Schaden abfangen), *Mend* (kleine Heilung), *Lantern Swing* (Fläche, kostet Brennstoff)) |
-| Kindling | Laterne füllen, Öl und Talg herstellen, Fackeln, Signalfeuer, Brennstoff fürs Leuchtfeuer |
-| Wayfinding | Wegmarken setzen (kurze Rückkehr, auch für andere sichtbar), Spuren lesen, Truhen und Wracks im Nebel aufspüren |
-| Salvage | Treibgut, Wracks, Erzadern und tote Bäume am Rand zerlegen |
-| Tinkering | Werkzeuge, Waffen, Rüstung, Laternen und Vorrichtungen aus Geborgenem |
-| Foraging | Kräuter, Pilze und Beeren sammeln, Mahlzeiten (Heilung) und Tränke (Licht, Tempo, Abwehr) |
+| Salvage | Treibgut, Wracks, Erzadern in 4 Stufen |
+| Foraging | Kräuter, Pilze, Talg in 4 Stufen |
+| Cartography | Karten zu Fundstellen im nahen und mittleren Drift |
+| Tinkering | Waffen und Rüstung aller Klassen, Fallen |
+| Alchemy | Heil- und Lichttränke, Öle, Brennstoff |
+| Lampwright | Laternen, Linsen, Glut |
+
+Nebenfähigkeiten für alle: **Kindling**, **Cooking**, **Wayfinding**.
 
 ## Licht
 
@@ -21,10 +34,10 @@ Ziel: Gleich zum Start sind 1–2 Wochen Spielzeit da, ohne eine einzige Nacht. 
 
 ## Gegenstände (~40)
 
-- **Waffen in 3 Arten:** Klinge (schnell), Stab (Reichweite 2, Licht-Fähigkeiten stärker), Schild + Hammer (Schutz). Jeweils in 4 Stufen aus Geborgenem (Schrott → Messing → Glimmstahl → Greyglass).
+- **Waffen je Klasse** (Schild + Laterne, Glutstab, Linse, Klingenpaar) in 4 Stufen aus Geborgenem: Schrott → Messing → Glimmstahl → Greyglass.
 - **Rüstung:** Mantel, Haube, Stiefel, Handschuhe in denselben Stufen.
 - **Laternen:** 4 Stufen (Zunderlicht, Messinglaterne, Glimmlaterne, Leuchtfeuer-Splitter).
-- **Werkzeuge:** Brecheisen (Salvage), Sichel (Foraging).
+- **Werkzeuge:** Brecheisen (Salvage), Sichel (Foraging), Zirkel (Cartography), Werkzeugkasten (Tinkering), Mörser (Alchemy), Schleifstein (Lampwright).
 - **Rohstoffe:** Schrott, Messing, Glimmstein, Greyglass, Treibholz, Talg, Kräuter, Pilze.
 - **Besondere Funde:** Nebelperle (selten, Sammelbuch), Lampenscherbe (Boss), Stranger's Button (Quest).
 
@@ -41,14 +54,14 @@ Nebelratte, Krähe, Wolf, Moosgeist, Steinkäfer, Grubenwurm, Irrlicht (stiehlt 
 
 ## Quests (4)
 
-1. **„Kindling“** (Warden Ama, Einstieg): Laterne bekommen, Brennstoff herstellen, Signalfeuer am Rand von Fernmeadow anzünden. Lehrt Bewegung, Ziel wählen, Leiste 1–9 und Licht.
+1. **„Kindling“** (Warden Ama, Einstieg): Laterne bekommen, erste Klasse wählen, Brennstoff herstellen, Signalfeuer am Rand von Fernmeadow anzünden. Lehrt Bewegung, Ziel wählen, Leiste 1–9 und Licht. Am Ende empfiehlt Ama, zwei Berufe zu lernen.
 2. **„Fen Wants Out“** (Fen): Fen auf seiner ersten Expedition in den Drift begleiten. Endet mit dem ersten Blick auf das ferne Licht.
 3. **„Rook's Bad Week“** (Old Rook, Werkstatt): Schrott bergen, erste Messing-Ausrüstung bauen, die verschüttete Seite von Copperdeep freiräumen.
 4. **„The Older Prayer“** (Brother Tallow, Stufe ~30): In Sinkmarsh nach einer alten Gebetstafel suchen. Öffnet die Drowned Chapel.
 
 ## Gefallen (6, 3 pro Tag zufällig)
 
-Brennstoff fürs Leuchtfeuer, Kräuter für Tallow, Schrott für Rook, Greylinge aus dem nahen Drift vertreiben, eine Wegmarke im Drift setzen, Fund aus dem Drift zum Ausrufer bringen. Belohnung: Erfahrung und Gold (Gold geht in die Kapelle).
+Brennstoff fürs Leuchtfeuer, Kräuter für Tallow, Schrott für Rook, Greylinge aus dem nahen Drift vertreiben, einer anderen Klasse eine Stufe geben, eine Wegmarke im Drift setzen, Fund aus dem Drift zum Ausrufer bringen. Belohnung: Erfahrung und Gold (Gold geht in die Kapelle).
 
 ## Bindungssysteme
 

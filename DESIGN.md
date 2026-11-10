@@ -36,20 +36,32 @@ Overnight 2 ist kein Klon eines bestehenden MMOs. Der Kern kommt aus der Welt se
 - **Expeditionen:** Hinter der festen Welt liegt ein Streifen Grey, den der Nightwright **jede Nacht neu würfelt**, mit Funden, Wracks, Fremden, Gefahren und manchmal einem Ort, der danach fest bleibt. Das ist ein täglicher Grund, reinzuschauen.
 - **Funde bauen das Dorf aus.** Spenden von Funden und Rohstoffen schalten Gebäude und Ausbauten frei (Werkstatt, Wachturm, Gasthaus …), die allen neue Möglichkeiten geben.
 
-## Fähigkeiten
+## Klassen: dein Platz im Kampf
 
-Eigene Fähigkeiten, die aus der Welt kommen, keine Standardliste. Jede steigt durch Benutzen, mit langer Kurve.
+Jeder kann **jede Klasse** lernen und leveln, und man wechselt einfach zu der, auf die man gerade Lust hat. Wechseln geht außerhalb des Kampfes, indem man die Hauptwaffe tauscht. Jede Klasse hat **eigene Stufe, eigene Fähigkeiten und eine eigene Belegung der Leiste 1–9**. Ausrüstung teilen sich die Klassen, soweit sie passt.
 
-| Fähigkeit | Worum es geht |
+| Klasse | Rolle | Waffe | Kern |
+|---|---|---|---|
+| **Warden** | Tank | Schild + Laterne | steht vorne, bindet Gegner, hält das Licht für die Gruppe |
+| **Mender** | Heiler | Stab mit Glut | heilt und schützt mit warmem Licht |
+| **Flarecaster** | Fernkampf | Linse/Fokus | Licht als Waffe, blendet und verbrennt Nebelwesen aus der Distanz |
+| **Drifter** | Nahkampf | zwei Klingen | schnell, im Dunkeln stark, Fallen und Ausweichen |
+
+Neue Klassen dürfen sich Spieler wünschen. Sie docken an dasselbe Gerüst an (Waffe, Fähigkeiten, Stufen).
+
+## Berufe: dein Platz im Dorf
+
+Jeder lernt **2 Hauptberufe** aus etwa 6. So ist jeder in etwas anderem gut und braucht die anderen. Wechseln geht beim Lehrer im Dorf, aber der Fortschritt im alten Beruf geht dabei verloren.
+
+| Sammeln | Herstellen |
 |---|---|
-| **Warding** | Kämpfen und Abwehr gegen Nebelwesen. Schaltet neue Kampftechniken für die Leiste frei. |
-| **Kindling** | Licht und Feuer: Laternen füllen, Fackeln und Signalfeuer bauen, Brennstoff herstellen, das Leuchtfeuer füttern. |
-| **Wayfinding** | Wie weit man in den Grey kommt, was man dort entdeckt, Wegmarken setzen, die anderen helfen. |
-| **Salvage** | Treibgut und Wracks aus dem Nebel zerlegen, Erz und Holz am Rand der Welt gewinnen. |
-| **Tinkering** | Aus Geborgenem Werkzeuge, Ausrüstung, Laternen und Vorrichtungen bauen. |
-| **Foraging** | Essen, Kräuter und Pilze sammeln und daraus Mahlzeiten und Tränke machen. |
+| **Salvage:** Schrott, Messing, Glimmstein aus Wracks und Adern | **Tinkering:** Waffen, Rüstung, Vorrichtungen |
+| **Foraging:** Kräuter, Pilze, Talg | **Alchemy:** Tränke, Öle, Brennstoff |
+| **Cartography:** Karten zu tieferen und reicheren Stellen im Drift | **Lampwright:** Laternen, Linsen, Glut für Lichtklassen |
 
-Neue Fähigkeiten dürfen sich Spieler wünschen.
+**Nebenfähigkeiten für alle:** Kindling (Laterne füllen, Feuer, Signalfeuer), Cooking (Essen heilt), Wayfinding (Wegmarken, Spuren, wie tief man in den Drift kommt).
+
+**So hängen Klassen und Berufe zusammen:** ohne feste Kopplung, aber jede Klasse braucht Dinge aus fremden Berufen. Der Schild des Wardens kommt vom Tinkerer, die Heilöle des Menders vom Alchemisten, die Linse des Flarecasters vom Lampwright, die Fallen des Drifters vom Tinkerer und die Karten zu reichen Stellen vom Kartografen. Daraus entsteht Handel zwischen Spielern (Markt und Tausch). Jeder Beruf hat außerdem ein paar Rezepte für sich selbst.
 
 ## Kampf
 
@@ -60,7 +72,7 @@ Eine Mischung aus Klick-Bewegung und Tab-Target-MMO, **nicht** Kampf über das I
 - **Fähigkeitenleiste 1–9:** Angriffe, Techniken, Licht-Fähigkeiten, Essen, Tränke. Jede Taste ist frei belegbar, auch mit eigenen Tastenkürzeln. Am Handy gibt es eine Knopfleiste. Fähigkeiten haben Abklingzeiten, eine globale Abklingzeit hält das Tempo ruhig.
 - **Der Server rechnet im Takt** (300–600 ms), damit alle Spieler dasselbe sehen und nicht geschummelt wird.
 - **Gegner kündigen an:** Starke Angriffe markieren vorher den Boden, und man weicht aus. Licht schwächt Nebelwesen oder blendet sie, Dunkelheit stärkt sie.
-- **Rollen ohne feste Klassen:** Die Ausrüstung und welche Fähigkeiten man auf die Leiste legt, bestimmen, ob man eher austeilt, schützt oder Licht für die Gruppe hält.
+- **Rollen über Klassen:** Tank, Heiler, Fern- und Nahkampf. Gruppeninhalte (Boss, tiefer Drift) sind für gemischte Gruppen gebaut, aber auch allein oder zu zweit schaffbar, nur langsamer.
 
 ## Spielregeln, die bleiben
 
