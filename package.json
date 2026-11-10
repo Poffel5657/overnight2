@@ -1,0 +1,14 @@
+{
+  "name": "overnight2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node tools/check-world.mjs",
+    "test": "node --test tests/unit/",
+    "dev:server": "wrangler dev --port 8787 --local",
+    "dev:db": "wrangler d1 migrations apply overnight2 --local"
+  },
+  "devDependencies": {
+    "wrangler": "4.153.0"
+  }
+}

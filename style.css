@@ -177,6 +177,38 @@ button:hover, button:focus-visible { color: var(--bright); outline: none; }
 .overhead div { height: 100%; background: var(--danger); }
 @keyframes rise { from { opacity: 1; margin-top: 0; } to { opacity: 0; margin-top: -36px; } }
 
+/* ---------- Anmelden ---------- */
+
+.login { left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(420px, calc(100vw - 2 * var(--gap))); z-index: 80; padding: 8px 14px 12px; }
+.login form { display: grid; gap: 4px; margin: 8px 0; }
+.login label { color: var(--muted); }
+.login input {
+  font: inherit;
+  color: var(--bright);
+  background: #000;
+  border: 1px solid var(--line);
+  padding: 4px 8px;
+  -webkit-user-select: text;
+  user-select: text;
+  text-shadow: inherit;
+}
+.login input:focus { outline: 1px solid var(--accent); }
+.login-buttons { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; }
+.login-error { color: var(--danger); min-height: 1.2em; }
+#login-offline { color: var(--muted); }
+
+.banner {
+  position: fixed;
+  z-index: 90;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 8px 16px;
+  background: var(--panel);
+  border: 3px double var(--line);
+  color: var(--bright);
+}
+
 /* ---------- Handy ---------- */
 
 @media (pointer: coarse) {

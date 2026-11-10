@@ -1,32 +1,49 @@
-// Overnight 2, Prototyp: verbindet Spiellogik (shared/sim.js), Darstellung (src/render/) und Oberfläche.
-// Heute läuft die Simulation im Browser, später schickt der Server dieselben Ereignisse.
+// Overnight 2: verbindet Verbindung (src/net.js), Darstellung (src/render/) und Oberfläche (src/ui.js).
+// Die Welt rechnet der Server (oder offline der Browser). Hier liegt nur eine Spiegelung davon:
+// Figuren mit Position und HP, der eigene Zustand und angezündete Feuer.
 
 import * as THREE from 'three';
 import { REGION } from '../content/regions/kindle.js';
 import { DEFAULT_BAR } from '../content/abilities.js';
 import { EXAMINE } from '../content/npcs.js';
-import {
-  TICK_MS, createWorld, step, walkTo, interact, cycleTarget, setTarget, useAbility,
-  dialogAction, objectActions, findEntity, lanternRadius, staticLightAt,
-} from '../shared/sim.js';
+import { TICK_MS, objectActions, lanternRadius, regionObjects } from '../shared/sim.js';
 import { cheb } from '../shared/path.js';
+import { skyState, berlinClock, minutesToMidnight } from '../shared/daylight.js';
 import { createView, buildGreyWall } from './render/view.js';
 import { buildTerrain } from './render/terrain.js';
 import { buildObjects } from './render/objects.js';
 import { makeSprite } from './render/sprites.js';
 import { setLights, lightUniforms } from './render/light.js';
 import { createUI } from './ui.js';
-import { skyState, berlinClock, minutesToMidnight } from '../shared/daylight.js';
+import { LocalConnection, NetConnection } from './net.js';
+import { createLogin } from './login.js';
+import { SERVER, OFFLINE } from './config.js';
 
 const canvas = document.getElementById('view');
 const view = createView(canvas);
 const { scene, camera, rig } = view;
 
-const world = createWorld(REGION, Date.now() & 0xffff);
-const terrain = buildTerrain(REGION, world.objects);
+// ---------- Spiegelwelt ----------
+
+const mirror = {
+  you: null,
+  tick: 0,
+  arrivedAt: performance.now(),
+  ents: new Map(),
+  me: null,
+  objects: regionObjects(REGION),
+};
+
+const terrain = buildTerrain(REGION, mirror.objects);
 scene.add(terrain.mesh, terrain.water, buildGreyWall(terrain.W, terrain.H));
-const objects = buildObjects(world, REGION, terrain.heightAt);
+const objects = buildObjects({ objects: mirror.objects }, REGION, terrain.heightAt);
 scene.add(objects.root);
+
+function findEntity(ref) {
+  if (!ref) return null;
+  if (ref.kind === 'object') return mirror.objects.find((o) => o.id === ref.id) || null;
+  return mirror.ents.get(ref.id) || null;
+}
 
 // ---------- Figuren ----------
 
@@ -34,20 +51,30 @@ const shadowGeo = new THREE.CircleGeometry(0.32, 12).rotateX(-Math.PI / 2);
 const shadowMat = new THREE.MeshBasicMaterial({ color: '#000000', transparent: true, opacity: 0.35, depthWrite: false });
 const visuals = new Map();
 
+function idHash(id) {
+  let h = 0;
+  for (const c of id) h = (h * 31 + c.charCodeAt(0)) | 0;
+  return Math.abs(h % 1000) / 100;
+}
+
 function addVisual(ent) {
   const s = makeSprite(ent.sprite);
   const shadow = new THREE.Mesh(shadowGeo, shadowMat);
   shadow.renderOrder = 1;
-  const ref = ent.kind === 'player' ? null : { kind: ent.kind, id: ent.id };
-  for (const m of s.meshes) m.userData.ref = ref;
+  for (const m of s.meshes) m.userData.ref = { kind: ent.kind, id: ent.id };
   scene.add(s.group, shadow);
-  const v = { ent, sprite: s, shadow, pos: new THREE.Vector3(), flip: 1, fade: 1 };
+  const v = { ent, sprite: s, shadow, pos: new THREE.Vector3(), flip: 1, fade: ent.dead ? 0 : 1, bob: idHash(ent.id) };
   visuals.set(ent.id, v);
   return v;
 }
-const playerVis = addVisual(world.player);
-world.npcs.forEach(addVisual);
-world.mobs.forEach(addVisual);
+
+function removeVisual(id) {
+  const v = visuals.get(id);
+  if (!v) return;
+  scene.remove(v.sprite.group, v.shadow);
+  visuals.delete(id);
+  ui.overhead(id, 0, 0, null);
+}
 
 // Zielring und Klickmarke
 const ring = new THREE.Mesh(new THREE.RingGeometry(0.42, 0.52, 20).rotateX(-Math.PI / 2),
@@ -70,31 +97,51 @@ function tileQuad(x, y, lift = 0.05) {
   g.setAttribute('position', new THREE.Float32BufferAttribute([0, 3, 2, 0, 2, 1].flatMap((i) => p[i]), 3));
   return g;
 }
+function addTelegraph(t) {
+  const g = new THREE.Group();
+  for (const tile of t.tiles) g.add(new THREE.Mesh(tileQuad(tile.x, tile.y), teleMat));
+  g.renderOrder = 3;
+  scene.add(g);
+  telegraphs.set(t.id, g);
+}
+function removeTelegraph(id) {
+  const g = telegraphs.get(id);
+  if (!g) return;
+  scene.remove(g);
+  g.traverse((c) => c.geometry?.dispose());
+  telegraphs.delete(id);
+}
 
-// ---------- Oberfläche ----------
+function setLit(id, lit) {
+  const o = mirror.objects.find((x) => x.id === id);
+  if (o) o.lit = lit;
+  const f = objects.flameByObject.get(id);
+  if (f) f.group.visible = lit;
+}
+
+// ---------- Verbindung ----------
+
+let conn = null;
+const send = (intent) => conn?.send(intent);
 
 const ui = createUI({
   ability(i) {
     const id = DEFAULT_BAR[i];
     if (!id) return;
-    useAbility(world, id);
+    send({ t: 'ability', id });
     ui.flashSlot(i);
   },
-  dialogAction(npcId, action) { dialogAction(world, npcId, action); flushEvents(world.events.splice(0)); },
+  dialogAction(npc, action) { send({ t: 'dialog', npc, action }); },
   crt(on) { view.setCrt(on); },
 });
 ui.buildBar(DEFAULT_BAR);
 try {
   if (localStorage.getItem('overnight2.crt') === '0') document.getElementById('btn-crt').click();
 } catch { /* egal */ }
-ui.log('OVERNIGHT 2 // PROTOTYPE // DAY 0', 'sys');
-ui.log('You stand in Kindle, by the Beacon. Beyond the fields: the Grey.');
-ui.log('Click to walk. Click a Greyling to fight. TAB, 1-9 for abilities.', 'sys');
-
-// ---------- Ereignisse aus der Simulation ----------
 
 let flareUntil = 0;
 let snapCamera = true;
+
 function screenOf(v, lift = 0) {
   const p = v.pos.clone();
   p.y += v.sprite.height + lift;
@@ -109,28 +156,128 @@ function flushEvents(events) {
       const v = visuals.get(e.ent);
       if (v) { const s = screenOf(v); ui.floater(s.x, s.y, e.text, e.cls); }
     } else if (e.type === 'dialog') {
-      const npc = world.npcs.find((n) => n.id === e.npc);
-      ui.openDialog(npc.id, npc.name, e.page);
-    } else if (e.type === 'telegraph') {
-      const g = new THREE.Group();
-      for (const t of e.t.tiles) g.add(new THREE.Mesh(tileQuad(t.x, t.y), teleMat));
-      g.renderOrder = 3;
-      scene.add(g);
-      telegraphs.set(e.t.id, g);
-    } else if (e.type === 'telegraphEnd') {
-      const g = telegraphs.get(e.id);
-      if (g) { scene.remove(g); g.traverse((c) => c.geometry?.dispose()); telegraphs.delete(e.id); }
-    } else if (e.type === 'lit') {
-      const f = objects.flameByObject.get(e.id);
-      if (f) f.group.visible = true;
-    } else if (e.type === 'cast' && e.id === 'flare') {
-      flareUntil = performance.now() + 450;
-    } else if (e.type === 'respawn') {
+      const npc = mirror.ents.get(e.npc);
+      if (npc) ui.openDialog(npc.id, npc.name, e.page);
+    } else if (e.type === 'telegraph') addTelegraph(e.t);
+    else if (e.type === 'telegraphEnd') removeTelegraph(e.id);
+    else if (e.type === 'lit') setLit(e.id, true);
+    else if (e.type === 'cast' && e.id === 'flare' && e.by === mirror.you) flareUntil = performance.now() + 450;
+    else if (e.type === 'respawn') {
       ui.closeDialog();
       snapCamera = true;
     }
   }
 }
+
+function onMessage(msg) {
+  if (msg.t === 'welcome') {
+    mirror.you = msg.you;
+    for (const o of mirror.objects) setLit(o.id, msg.lit.includes(o.id));
+    for (const id of [...telegraphs.keys()]) removeTelegraph(id);
+    for (const t of msg.telegraphs) addTelegraph(t);
+    for (const id of [...visuals.keys()]) removeVisual(id);
+    mirror.ents.clear();
+    snapCamera = true;
+    login.hide();
+    banner(null);
+    document.getElementById('btn-leave').hidden = conn?.offline !== false;
+    ui.log(conn?.offline ? 'OFFLINE. The world runs in your browser; progress stays on this device.' : `Welcome to Kindle, ${msg.name}.`, 'sys');
+    return;
+  }
+  if (msg.t === 'tick') {
+    for (const meta of msg.spawn) {
+      const ent = { ...meta, x: 0, y: 0, px: 0, py: 0, hp: 0, dead: false, dazzled: false, fresh: true };
+      mirror.ents.set(meta.id, ent);
+    }
+    for (const [id, x, y, hp, flags] of msg.ents) {
+      const e = mirror.ents.get(id);
+      if (!e) continue;
+      // Neu gesehen oder weit gesprungen (Aufwachen): nicht hingleiten.
+      const jump = e.fresh || Math.abs(e.x - x) > 2 || Math.abs(e.y - y) > 2;
+      e.px = jump ? x : e.x;
+      e.py = jump ? y : e.y;
+      e.x = x;
+      e.y = y;
+      e.hp = hp;
+      e.dead = !!(flags & 1);
+      e.dazzled = !!(flags & 2);
+      if (e.fresh) { e.fresh = false; addVisual(e); }
+    }
+    for (const id of msg.gone) {
+      mirror.ents.delete(id);
+      removeVisual(id);
+    }
+    mirror.me = msg.me;
+    mirror.tick = msg.tick;
+    mirror.arrivedAt = performance.now();
+    flushEvents(msg.events);
+    return;
+  }
+  if (msg.t === 'error') {
+    ui.log(msg.error, 'hurt');
+    return;
+  }
+  if (msg.t === 'closed') onClosed(msg);
+}
+
+let retry = 0;
+function onClosed(msg) {
+  conn = null;
+  // 4001: Anmeldung ungültig, 4002: woanders angemeldet, 4003: zu viele Nachrichten.
+  if (msg.code === 4001) {
+    forgetToken();
+    login.show('Your name was forgotten by the Beacon. Please sign in again.');
+    return;
+  }
+  if (msg.code === 4002) {
+    banner('You stepped into Kindle somewhere else. [ RELOAD ] to come back here.');
+    return;
+  }
+  retry++;
+  banner(`THE LINE TO KINDLE IS DOWN. RETRYING… (${retry})`);
+  setTimeout(() => connect(), Math.min(15000, 1000 * 2 ** Math.min(retry, 4)));
+}
+
+const TOKEN_KEY = 'overnight2.token';
+function getToken() { try { return localStorage.getItem(TOKEN_KEY); } catch { return null; } }
+function forgetToken() { try { localStorage.removeItem(TOKEN_KEY); } catch { /* egal */ } }
+
+function connect() {
+  const token = getToken();
+  if (!token) { login.show(); return; }
+  conn = new NetConnection(SERVER, token, onMessage);
+  conn.ws.addEventListener('open', () => { retry = 0; });
+}
+
+function playOffline() {
+  conn?.close();
+  conn = new LocalConnection(onMessage, { clock: gameDate });
+  login.hide();
+}
+
+const bannerEl = document.getElementById('banner');
+function banner(text) {
+  bannerEl.hidden = !text;
+  bannerEl.textContent = text || '';
+}
+bannerEl.addEventListener('click', () => location.reload());
+
+const login = createLogin(SERVER, {
+  onToken(token) {
+    try { localStorage.setItem(TOKEN_KEY, token); } catch { /* egal */ }
+    connect();
+  },
+  onOffline: playOffline,
+});
+
+document.getElementById('btn-leave').addEventListener('click', async () => {
+  const token = getToken();
+  forgetToken();
+  conn?.close();
+  conn = null;
+  if (token) login.logout(token);
+  login.show('You left Kindle. Your place by the fire is kept.');
+});
 
 // ---------- Eingabe ----------
 
@@ -156,13 +303,13 @@ function pick(clientX, clientY) {
   raycaster.setFromCamera(toNdc(clientX, clientY), camera);
   const targets = [];
   for (const v of visuals.values()) {
-    if (v.ent.kind === 'player' || (v.ent.dead)) continue;
+    if (v.ent.id === mirror.you || v.ent.dead) continue;
     targets.push(...v.sprite.meshes);
   }
   const hits = raycaster.intersectObjects([...targets, ...objects.pickables, terrain.mesh], true);
   for (const h of hits) {
     const ref = h.object.userData.ref;
-    if (ref) return { ref, name: findEntity(world, ref)?.name };
+    if (ref) return { ref };
     if (h.object.userData.kind && h.instanceId !== undefined) {
       return { kind: h.object.userData.kind, cell: h.object.userData.cells[h.instanceId] };
     }
@@ -173,16 +320,16 @@ function pick(clientX, clientY) {
   return null;
 }
 
-function objectName(o) {
-  return o.name || o.type;
-}
+const objectName = (o) => o.name || o.type;
 
 function describe(hit) {
   if (!hit) return null;
   if (hit.ref) {
-    const ent = findEntity(world, hit.ref);
+    const ent = findEntity(hit.ref);
+    if (!ent) return null;
     if (hit.ref.kind === 'mob') return { verb: 'Attack', noun: ent.name };
     if (hit.ref.kind === 'npc') return { verb: 'Talk-to', noun: ent.name };
+    if (hit.ref.kind === 'player') return { verb: '', noun: ent.name };
     const [, label] = objectActions(ent)[0];
     return { verb: label, noun: objectName(ent) };
   }
@@ -192,21 +339,25 @@ function describe(hit) {
 }
 
 function walkGround(tile) {
-  walkTo(world, tile.x, tile.y);
+  send({ t: 'walk', x: tile.x, y: tile.y });
   marker.visible = true;
   marker.position.set(tile.x + 0.5, terrain.heightAt(tile.x + 0.5, tile.y + 0.5) + 0.06, tile.y + 0.5);
   markerAge = 0;
+}
+
+function act(ref, action) {
+  send({ t: 'act', kind: ref.kind, id: ref.id, action });
 }
 
 function primary(hit) {
   if (!hit) return;
   ui.closeMenu();
   if (hit.ref) {
-    const ent = findEntity(world, hit.ref);
-    if (hit.ref.kind === 'mob') interact(world, hit.ref, 'attack');
-    else if (hit.ref.kind === 'npc') interact(world, hit.ref, 'talk');
-    else interact(world, hit.ref, objectActions(ent)[0][0]);
-    flushEvents(world.events.splice(0));
+    const ent = findEntity(hit.ref);
+    if (!ent) return;
+    if (hit.ref.kind === 'mob') act(hit.ref, 'attack');
+    else if (hit.ref.kind === 'npc') act(hit.ref, 'talk');
+    else if (hit.ref.kind === 'object') act(hit.ref, objectActions(ent)[0][0]);
   } else if (hit.kind) {
     ui.log(EXAMINE[hit.kind], 'sys');
   } else if (hit.ground) {
@@ -216,12 +367,12 @@ function primary(hit) {
 
 function contextMenu(hit, x, y) {
   const entries = [];
-  if (hit?.ref) {
-    const ent = findEntity(world, hit.ref);
-    const run = (action) => () => { interact(world, hit.ref, action); flushEvents(world.events.splice(0)); };
+  const ent = hit?.ref && findEntity(hit.ref);
+  if (ent) {
+    const run = (action) => () => act(hit.ref, action);
     if (hit.ref.kind === 'mob') entries.push({ verb: 'Attack', noun: ent.name, fn: run('attack') }, { verb: 'Examine', noun: ent.name, fn: run('examine') });
     else if (hit.ref.kind === 'npc') entries.push({ verb: 'Talk-to', noun: ent.name, fn: run('talk') }, { verb: 'Examine', noun: ent.name, fn: run('examine') });
-    else for (const [action, label] of objectActions(ent)) entries.push({ verb: label, noun: objectName(ent), fn: run(action) });
+    else if (hit.ref.kind === 'object') for (const [action, label] of objectActions(ent)) entries.push({ verb: label, noun: objectName(ent), fn: run(action) });
   } else if (hit?.kind) {
     entries.push({ verb: 'Examine', noun: hit.kind === 'tree' ? 'Tree' : 'Rock', fn: () => ui.log(EXAMINE[hit.kind], 'sys') });
   }
@@ -309,19 +460,19 @@ window.addEventListener('keydown', (e) => {
   const k = e.key;
   if (k === 'Tab') {
     e.preventDefault();
-    cycleTarget(world);
+    send({ t: 'cycle' });
     return;
   }
   if (k === 'Escape') {
     if (ui.menuOpen()) ui.closeMenu();
     else if (ui.dialogNpc) ui.closeDialog();
-    else setTarget(world, null);
+    else send({ t: 'target', id: null });
     return;
   }
   if (/^[1-9]$/.test(k)) {
     if (!ui.dialogKey(Number(k))) {
       const i = Number(k) - 1;
-      if (DEFAULT_BAR[i]) { useAbility(world, DEFAULT_BAR[i]); ui.flashSlot(i); }
+      if (DEFAULT_BAR[i]) { send({ t: 'ability', id: DEFAULT_BAR[i] }); ui.flashSlot(i); }
     }
     return;
   }
@@ -340,6 +491,7 @@ for (const id of ['cam-left', 'cam-right']) {
 // ---------- Tag und Nacht ----------
 
 // Zum Ausprobieren: ?hour=17.5 setzt die Berliner Uhrzeit, ?speed=600 lässt die Zeit schneller laufen.
+// Das ändert nur das Bild; online rechnet der Server mit der echten Uhrzeit.
 const params = new URLSearchParams(location.search);
 const startReal = Date.now();
 let clockOffset = 0;
@@ -348,7 +500,9 @@ if (params.has('hour')) {
   clockOffset = (Number(params.get('hour')) - (h + m / 60)) * 3600000;
 }
 const speed = Number(params.get('speed')) || 1;
-const gameDate = () => new Date(startReal + (Date.now() - startReal) * speed + clockOffset);
+function gameDate() {
+  return new Date(startReal + (Date.now() - startReal) * speed + clockOffset);
+}
 
 const PHASE_LINES = {
   DAWN: ['Dawn. The Grey thins a little.', 'good'],
@@ -363,7 +517,6 @@ function updateSky(now) {
   lastSky = now;
   const date = gameDate();
   const sky = skyState(date);
-  world.daylight = sky.day;
   view.setSky(sky.day, sky.dusk);
   const mins = minutesToMidnight(date);
   const note = sky.phase === 'NIGHT' || sky.phase === 'DUSK'
@@ -377,7 +530,6 @@ function updateSky(now) {
 
 // ---------- Schleife ----------
 
-let acc = 0;
 let last = performance.now();
 const camTarget = new THREE.Vector3();
 
@@ -395,12 +547,7 @@ function frame(now) {
   updateSky(now);
   const dt = Math.min(0.1, (now - last) / 1000);
   last = now;
-  acc += dt * 1000;
-  while (acc >= TICK_MS) {
-    acc -= TICK_MS;
-    flushEvents(step(world));
-  }
-  const alpha = acc / TICK_MS;
+  const alpha = Math.min(1, (now - mirror.arrivedAt) / TICK_MS);
   const t = now / 1000;
 
   // Kamera drehen
@@ -428,22 +575,34 @@ function frame(now) {
     v.sprite.group.rotation.y = rig.yaw;
     v.sprite.group.scale.set(v.flip, 1, 1);
     // Greylinge schweben leicht
-    if (e.type === 'greyling') v.sprite.group.position.y += 0.08 + Math.sin(t * 3 + e.home.x) * 0.06;
+    if (e.type === 'greyling') v.sprite.group.position.y += 0.08 + Math.sin(t * 3 + v.bob) * 0.06;
     v.shadow.position.set(v.pos.x, v.pos.y + 0.03, v.pos.z);
   }
 
-  // Kamera folgt dem Spieler weich
-  camTarget.copy(playerVis.pos);
-  if (snapCamera) { rig.target.copy(camTarget); snapCamera = false; }
-  rig.target.lerp(camTarget, 1 - Math.pow(0.002, dt));
+  const self = mirror.ents.get(mirror.you);
+  const selfVis = visuals.get(mirror.you);
+  const me = mirror.me;
 
-  // Licht: feste Quellen flackern, dazu die eigene Laterne
-  const p = world.player;
-  const flare = now < flareUntil ? 1 + (flareUntil - now) / 450 * 1.6 : 1;
-  const lights = world.lights.map((l, i) => ({ x: l.x, y: l.y, r: l.r * (1 + Math.sin(t * 7 + i * 3) * 0.02 + Math.sin(t * 13 + i) * 0.015), w: 1 }));
-  lights.push({ x: playerVis.pos.x, y: playerVis.pos.z, r: lanternRadius(p.oil) * flare * (1 + Math.sin(t * 9) * 0.03), w: 1 });
+  // Kamera folgt dem Spieler weich
+  if (selfVis) {
+    camTarget.copy(selfVis.pos);
+    if (snapCamera) { rig.target.copy(camTarget); snapCamera = false; }
+    rig.target.lerp(camTarget, 1 - Math.pow(0.002, dt));
+  }
+
+  // Licht: feste Quellen flackern, dazu die Laternen aller Spieler (die eigene zuerst)
+  const lights = mirror.objects
+    .filter((o) => o.light && o.lit)
+    .map((o, i) => ({ x: o.x + o.w / 2, y: o.y + o.d / 2, r: o.light * (1 + Math.sin(t * 7 + i * 3) * 0.02 + Math.sin(t * 13 + i) * 0.015), w: 1 }));
+  if (selfVis && me) {
+    const flare = now < flareUntil ? 1 + (flareUntil - now) / 450 * 1.6 : 1;
+    lights.unshift({ x: selfVis.pos.x, y: selfVis.pos.z, r: lanternRadius(me.oil) * flare * (1 + Math.sin(t * 9) * 0.03), w: 1 });
+  }
+  for (const v of visuals.values()) {
+    if (v.ent.kind === 'player' && v.ent.id !== mirror.you) lights.push({ x: v.pos.x, y: v.pos.z, r: 4, w: 0.9 });
+  }
   setLights(lights, t);
-  lightUniforms.uSee.value.copy(playerVis.pos);
+  if (selfVis) lightUniforms.uSee.value.copy(selfVis.pos);
 
   // Flammen drehen sich wie die Figuren zur Kamera.
   for (const f of objects.flames) {
@@ -452,19 +611,17 @@ function frame(now) {
   }
 
   // Zielring
-  const target = p.target ? world.mobs.find((m) => m.id === p.target) : null;
-  ring.visible = !!target && !target.dead;
+  const target = me?.target ? mirror.ents.get(me.target) : null;
+  ring.visible = !!target && !target.dead && visuals.has(target.id);
   if (ring.visible) {
     const tv = visuals.get(target.id);
     ring.position.set(tv.pos.x, tv.pos.y + 0.05, tv.pos.z);
-    ring.material.color.set(p.engaged ? '#ff6b4a' : '#ffb347');
+    ring.material.color.set(me.engaged ? '#ff6b4a' : '#ffb347');
   }
   let note = '';
-  if (target) {
-    const lit = staticLightAt(world, target.x, target.y);
-    if (world.tick < target.scaredUntil) note = 'DAZZLED';
-    else if (lit < 0.2 && p.oil <= 0) note = 'BOLD IN THE DARK';
-    else if (cheb(p.x, p.y, target.x, target.y) > 1) note = 'OUT OF REACH';
+  if (target && self) {
+    if (target.dazzled) note = 'DAZZLED';
+    else if (cheb(self.x, self.y, target.x, target.y) > 1) note = 'OUT OF REACH';
   }
   ui.updateTarget(target && !target.dead ? target : null, note);
 
@@ -480,35 +637,45 @@ function frame(now) {
   }
 
   // Dialog schließt, wenn man wegläuft
-  if (ui.dialogNpc) {
-    const n = world.npcs.find((x) => x.id === ui.dialogNpc);
-    if (cheb(n.x, n.y, p.x, p.y) > 2) ui.closeDialog();
+  if (ui.dialogNpc && self) {
+    const n = mirror.ents.get(ui.dialogNpc);
+    if (!n || cheb(n.x, n.y, self.x, self.y) > 2) ui.closeDialog();
   }
 
   view.render();
 
   // HP-Balken über verletzten Wesen
-  for (const m of world.mobs) {
-    const v = visuals.get(m.id);
-    if (m.dead || m.hp >= m.maxHp) { ui.overhead(m.id, 0, 0, null); continue; }
+  for (const v of visuals.values()) {
+    const e = v.ent;
+    if (e.kind !== 'mob') continue;
+    if (e.dead || e.hp >= e.maxHp) { ui.overhead(e.id, 0, 0, null); continue; }
     const s = screenOf(v, 0.15);
-    ui.overhead(m.id, s.x, s.y, s.visible ? m.hp / m.maxHp : null);
+    ui.overhead(e.id, s.x, s.y, s.visible ? e.hp / e.maxHp : null);
   }
 
   // Zeigertext (Maus)
   if (hoverAt && !drag && !ui.menuOpen()) {
     const d = describe(pick(hoverAt.x, hoverAt.y));
     ui.setHover(d ? `${d.verb} ${d.noun}`.trim() : null, hoverAt.x, hoverAt.y);
-    canvas.style.cursor = d && d.verb !== 'Walk here' ? 'pointer' : 'crosshair';
+    canvas.style.cursor = d && d.verb && d.verb !== 'Walk here' ? 'pointer' : 'crosshair';
   } else if (!hoverAt) {
     ui.setHover(null);
   }
 
-  ui.updateStatus(p, REGION.name);
-  ui.updateBar(p, world.tick, alpha);
+  if (me) {
+    ui.updateStatus(me, REGION.name);
+    ui.updateBar(me, mirror.tick, alpha);
+  }
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
 
+// ---------- Start ----------
+
+ui.log('OVERNIGHT 2 // PROTOTYPE // DAY 0', 'sys');
+if (OFFLINE) playOffline();
+else if (getToken()) connect();
+else login.show();
+
 // Für Tests und Neugierige
-window.__overnight = { world, view };
+window.__overnight = { mirror, view, get conn() { return conn; } };

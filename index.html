@@ -36,7 +36,27 @@
   <div class="topbuttons">
     <button type="button" id="btn-crt">[ CRT: ON ]</button>
     <button type="button" id="btn-help">[ ? ]</button>
+    <button type="button" id="btn-leave" hidden>[ LEAVE ]</button>
   </div>
+
+  <!-- Anmelden -->
+  <section class="window login" id="login" hidden aria-labelledby="login-title">
+    <h2 class="wtitle" id="login-title">[ KINDLE // WHO GOES THERE? ]</h2>
+    <p id="login-note">Give a name and a password. The Beacon remembers both.</p>
+    <form id="login-form" autocomplete="on">
+      <label for="login-name">NAME</label>
+      <input id="login-name" name="username" autocomplete="username" minlength="3" maxlength="16" pattern="[A-Za-z][A-Za-z0-9_\-]{2,15}" required spellcheck="false">
+      <label for="login-pass">PASSWORD</label>
+      <input id="login-pass" name="password" type="password" autocomplete="current-password" minlength="8" maxlength="128" required>
+      <div class="login-buttons">
+        <button type="submit" value="login">[ ENTER ]</button>
+        <button type="submit" value="register">[ NEW TRAVELLER ]</button>
+      </div>
+    </form>
+    <p class="login-error" id="login-error" aria-live="polite"></p>
+    <button type="button" id="login-offline">[ PLAY OFFLINE ]</button>
+  </section>
+  <div class="banner" id="banner" hidden aria-live="polite"></div>
 
   <!-- Log unten links -->
   <section class="window log" id="log-window" aria-label="Log">
