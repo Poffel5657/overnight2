@@ -9,6 +9,7 @@ import { PROFESSIONS, MAX_PROFESSIONS } from '../content/professions.js';
 import { cheb } from './path.js';
 import { tell, emit } from './events.js';
 import * as P from './player.js';
+import { placeBet } from './races.js';
 
 export const TALK_RANGE = 2;
 
@@ -27,7 +28,8 @@ function questMatches(p, want) {
   return true;
 }
 
-export function conditionHolds(p, cond = {}) {
+// world ist optional: Der Browser prüft ohne Welt (für ! und ?), dann zählen night/day nicht.
+export function conditionHolds(p, cond = {}, world = null) {
   if (cond.quest && !questMatches(p, cond.quest)) return false;
   if (cond.noClass && p.cls) return false;
   if (cond.hasClass && !p.cls) return false;
@@ -39,6 +41,10 @@ export function conditionHolds(p, cond = {}) {
   if (cond.noProf && p.profs[cond.noProf]) return false;
   if (cond.profSlot && Object.keys(p.profs).length >= MAX_PROFESSIONS) return false;
   if (cond.has && !P.hasAll(p, cond.has)) return false;
+  if (cond.gold && (p.gold ?? 0) < cond.gold) return false;
+  // Tageszeit: night = nach Einbruch der Dunkelheit (wie bei Quest-Schritten mit night)
+  if (world && cond.night && world.daylight >= 0.5) return false;
+  if (world && cond.day && world.daylight < 0.5) return false;
   // Spezialisierung: specLevel = aktive Klasse hat SPEC_LEVEL erreicht; noSpec / hasSpec für die aktive Klasse
   if (cond.specLevel && P.classLevel(p) < SPEC_LEVEL) return false;
   if (cond.noSpec && p.specs?.[p.cls]) return false;
@@ -46,14 +52,14 @@ export function conditionHolds(p, cond = {}) {
   return true;
 }
 
-export function visibleOptions(p, npcId, pageKey) {
+export function visibleOptions(p, npcId, pageKey, world = null) {
   const page = TALK[npcId]?.[pageKey];
   if (!page) return [];
-  return page.options.map((o, i) => (conditionHolds(p, o.if) ? i : -1)).filter((i) => i >= 0);
+  return page.options.map((o, i) => (conditionHolds(p, o.if, world) ? i : -1)).filter((i) => i >= 0);
 }
 
 export function openTalk(world, p, npcId, pageKey = 'start') {
-  const options = visibleOptions(p, npcId, pageKey);
+  const options = visibleOptions(p, npcId, pageKey, world);
   if (!options.length) return closeTalk(world, p);
   p.dialog = { npc: npcId, page: pageKey, options };
   emit(world, { to: p.id, type: 'dialog', npc: npcId, page: pageKey, options });
@@ -73,7 +79,7 @@ export function say(world, p, i) {
   if (!npc || cheb(npc.x, npc.y, p.x, p.y) > TALK_RANGE) return closeTalk(world, p);
   const opt = TALK[d.npc][d.page].options[i];
   // Bedingungen noch einmal prüfen: zwischen Anzeigen und Klicken kann sich der Beutel geändert haben.
-  if (!conditionHolds(p, opt.if)) return openTalk(world, p, d.npc, d.page);
+  if (!conditionHolds(p, opt.if, world)) return openTalk(world, p, d.npc, d.page);
   for (const eff of opt.do || []) applyEffect(world, p, eff);
   if (opt.to) openTalk(world, p, d.npc, opt.to);
   else closeTalk(world, p);
@@ -126,6 +132,7 @@ function applyEffect(world, p, eff) {
     questEvent(world, p, 'action', { action: 'refill' });
   }
   if (eff.shop) emit(world, { to: p.id, type: 'shop', shop: eff.shop });
+  if (eff.bet) placeBet(world, p, eff.bet[0], eff.bet[1]);
 }
 
 // ---------- Quests ----------

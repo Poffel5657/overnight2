@@ -137,7 +137,13 @@ export function craft(world, p, objId, recipeId, n = 1) {
 function nearShop(world, p, shopId) {
   const shop = SHOPS[shopId];
   const npc = shop && world.npcs.find((x) => x.id === shop.npc);
-  return npc && cheb(npc.x, npc.y, p.x, p.y) <= TALK_RANGE ? shop : null;
+  if (!npc || cheb(npc.x, npc.y, p.x, p.y) > TALK_RANGE) return null;
+  // Der Nachtmarkt hat nur im Dunkeln offen.
+  if (shop.night && world.daylight >= 0.5) {
+    tell(world, p.id, `${shop.name} is shuttered. It opens after dark.`, 'sys');
+    return null;
+  }
+  return shop;
 }
 
 export function buy(world, p, shopId, itemId, n = 1) {

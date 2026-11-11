@@ -6,7 +6,8 @@ Welche Andockpunkte in den nächsten Nächten wachsen, damit große Wünsche üb
 
 - **Berufe vertiefen:** Jeder der sechs Berufe bekommt Rezepte bis Stufe 30 und mindestens eine Fundstelle pro Gebiet.
 - **Gruppen-Inhalte:** Wesen und Gefallen, die man zu viert besser schafft (die Gruppen-Funktion ist da).
-- **Kindle wächst:** Gebäude mit Innenraum bekommen Bewohner und kleine Aufgaben.
+- **Kindle wächst:** Gebäude mit Innenraum bekommen Bewohner und kleine Aufgaben. (Tag 1: Nachtmarkt, Schneckenrennen, Karte.)
+- **Inhalt für 40+:** Wesen, Gebiete und Ausrüstung wachsen mit den Klassen.
 
 ## Bald
 
@@ -24,7 +25,7 @@ Welche Andockpunkte in den nächsten Nächten wachsen, damit große Wünsche üb
 
 | Klasse | Fähigkeiten bis Stufe | Spezialisierungen (ab 50) |
 |---|---|---|
-| Warden | 8 | noch keine |
+| Warden | 16 (Stand Fast 12, Beacon Slam 16) | noch keine |
 | Mender | 9 | noch keine |
 | Flarecaster | 7 | noch keine |
 | Drifter | 8 | noch keine |

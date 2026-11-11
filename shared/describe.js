@@ -28,7 +28,12 @@ export function describeAbility(id) {
       effect = `Pick a creature up to ${tiles(a.range)} away: everything within ${tiles(a.radius)} of it takes ${dmg}.`;
       break;
     case 'burst':
-      effect = `Everything within ${tiles(a.radius)} of you takes ${dmg} and flees for ${secs(a.scare)}. Their charged attacks fizzle.`;
+      effect = [
+        `Everything within ${tiles(a.radius)} of you takes ${dmg}.`,
+        a.scare ? `It flees for ${secs(a.scare)} and its charged attacks fizzle.` : '',
+        a.dazzle ? `It cannot attack for ${secs(a.dazzle)}.` : '',
+        a.hold ? 'It turns on you for 3.6s.' : '',
+      ].filter(Boolean).join(' ');
       break;
     case 'self':
       effect = [a.heal ? `Heal yourself for ${a.heal}.` : '', a.brace ? `Take half damage for ${secs(a.brace)}.` : ''].filter(Boolean).join(' ');

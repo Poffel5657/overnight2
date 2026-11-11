@@ -29,6 +29,8 @@ export const REGION = {
   respawn: ARRIVE.respawn,
   // Im Lichtkreis des Leuchtfeuers brennt kein Öl, und hier wechselt man die Klasse.
   safeRadius: 10,
+  // Nur Darstellung: ein warmer Schein über dem Nordrand, nachts sichtbar (der Bogen „The Second Light“).
+  farLight: { x: 40, y: -1, h: 3 },
   objects: [
     {type: 'beacon', x: 49, y: 49, w: 2, d: 2, light: 11, name: 'the Beacon'},
     {type: 'chapel', x: 41, y: 38, w: 5, d: 6, name: 'the Chapel', inside: inside('chapel')},
@@ -106,6 +108,10 @@ export const REGION = {
     {type: 'signal', x: 50, y: 80, light: 5, name: 'a signal fire'},
     {type: 'signal', x: 80, y: 56, light: 5, name: 'a signal fire'},
     {type: 'door', to: 'drowned_chapel', tx: 18, ty: 36, x: 50, y: 93, name: 'stairs into the ruins', look: 'stairs', needs: {quest: {older_prayer: 'done'}}, locked: 'A cold that is not water fills the stairwell. Brother Tallow might know more.'},
+    // Nachtmarkt am Rand des Lichtkreises (Händler Mothwick öffnet nur im Dunkeln)
+    {type: 'stall', x: 60, y: 45, w: 3, d: 2, name: 'the Night Market', awning: '#3a2a5a', light: 3, text: 'A stall with a purple awning and a lot of little lanterns. During the day it is just a stall. After dark it is a market.'},
+    // Die kalte Laterne am Nordrand von Hushwood (Quest „Not From Here“)
+    {type: 'shrine', look: 'cold_lantern', x: 39, y: 3, name: 'a cold lantern', gives: 'cold_glass', quest: 'not_from_here', step: 0, text: 'An old lantern on a post, facing north. The glass is green and thick. It is cold, but it was lit not long ago.', empty: 'The lantern is empty now. Its glass faces north, toward a glow you can almost see.'},
     {type: 'door', to: 'drift', tx: 32, ty: 58, x: 50, y: 3, name: 'a tear in the Grey', look: 'rift'},
   ],
   npcs: [
@@ -119,6 +125,12 @@ export const REGION = {
     {id: 'marrow', name: 'Marrow', sprite: 'marrow', x: 42, y: 46},
     {id: 'haskel', name: 'Haskel', sprite: 'haskel', x: 53, y: 19},
     {id: 'brack', name: 'Brack', sprite: 'brack', x: 86, y: 50},
+    {id: 'mothwick', name: 'Mothwick', sprite: 'mothwick', x: 61, y: 47},
+    // Schneckenrennen: Mabb nimmt Wetten an, die Schnecken laufen von x 42 nach x 48 (content/races.js)
+    {id: 'mabb', name: 'Mabb', sprite: 'mabb', x: 41, y: 59},
+    {id: 'snail_bramble', name: 'Bramble', sprite: 'snail_bramble', x: 42, y: 58},
+    {id: 'snail_pebble', name: 'Pebble', sprite: 'snail_pebble', x: 42, y: 59},
+    {id: 'snail_tom', name: 'Old Tom', sprite: 'snail_tom', x: 42, y: 60},
   ],
   mobs: [
     {type: 'greyling', x: 35, y: 29},

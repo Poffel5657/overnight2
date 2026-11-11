@@ -20,7 +20,7 @@ Jede Nacht weicht der Grey ein Stück zurück, und am Morgen steht dort etwas, d
 
 | Ort | Stufe | Kurz |
 |---|---|---|
-| **Kindle** | Dorf | Leuchtfeuer, Kapelle, Lagerfeuer (Aufwachpunkt), Lager, Markt, Werkstatt, Ausrufer, Anschlagbrett |
+| **Kindle** | Dorf | Leuchtfeuer, Kapelle, Lagerfeuer (Aufwachpunkt), Lager, Markt, Werkstatt, Ausrufer, Anschlagbrett; seit Tag 1 Nachtmarkt (Ostrand) und Schneckenbahn (Westweg) |
 | **Fernmeadow** | 1–10 | Wiesen und Bach rund ums Dorf. Krähen, Nebelratten, erste Greylinge. Kräuter, Treibholz, erste Signalfeuer. |
 | **Hushwood** | 10–25 | Stiller Wald im Norden, in dem man die eigenen Schritte nicht hört. Wölfe, Moosgeister, Holzfällerlager. |
 | **Copperdeep** | 15–35 | Offene Mine im Osten, halb verschüttet, Erz und Schrott zum Bergen. Steinkäfer, ein verlassener Vorarbeiter. |
@@ -40,7 +40,9 @@ Im Grey sieht man nur so weit, wie das eigene Licht reicht. Laternen, Fackeln un
 - **Pell the Crier**, der Ausrufer am Markt. Er erzählt jeden Morgen, was letzte Nacht geschah, laut und mit Übertreibung.
 - **Old Rook**, Tüftler in der Werkstatt. Er bringt Salvage und Tinkering bei und mag niemanden, außer gutem Messing.
 - **Fen**, ein Kind, das immer in den Nebel will. Bei ihm gibt es Quests und Gefallen.
-- **The Stranger**, ein Fremder, der an Tag 0 schon da ist und nicht sagt, woher. (Faden des ersten Bogens.)
+- **The Stranger**, ein Fremder, der an Tag 0 schon da ist und nicht sagt, woher. (Faden des ersten Bogens.) Seit Tag 1 hat er ein Stück fremdes grünes Glas und sagt, da draußen sei „ein Feuer, das hungert“.
+- **Mothwick** (seit Tag 1), Händlerin des Nachtmarkts am Ostrand des Lichtkreises. Verkauft nur im Dunkeln, „meine Ware mag nicht von der Sonne angesehen werden“. Folgt Lichtern, weil Lichter Kunden bringen; kam aus dem Norden, weil dort ein neues, helles Licht brennt.
+- **Mabb** (seit Tag 1), Schneckenhalter am Westweg, nimmt Wetten an. Seine Schnecken: Bramble (stetig), Pebble (schnell, wenn sie daran denkt), Old Tom (meist schlafend, manchmal eine Rakete). „Ich bin kein Dieb“: Wer Kindle verlässt, bekommt den Einsatz zurück.
 
 ## Offene Fäden (Startmaterial)
 
@@ -48,6 +50,7 @@ Im Grey sieht man nur so weit, wie das eigene Licht reicht. Laternen, Fackeln un
 - Woher kommt der Stranger, und warum hat er keinen Schatten im Leuchtfeuerlicht?
 - Wer hat die Drowned Chapel gebaut, und zu wem wurde dort gebetet?
 - Das „falsche Licht“ des Lamplighters: Gibt es noch andere Leuchtfeuer im Grey?
+- Seit Tag 1: Nachts glüht ein warmer Schein über dem Nordrand von Hushwood, jede Woche heller (Haskel, Mothwick). Am Nordrand steht eine kalte Laterne aus dickem grünem Glas, das niemand in Kindle so gießt (Wren). Fen will es auf die Karte malen.
 
 ## Erster Bogen (nur die Richtung, Details privat)
 
@@ -56,3 +59,4 @@ Im Grey sieht man nur so weit, wie das eigene Licht reicht. Laternen, Fackeln un
 ## Zeitleiste
 
 - Tag 0: Kindle steht in der Lichtung, das Leuchtfeuer brennt, die Kapelle hört Gebete. Der Stranger ist schon da.
+- Tag 1: Der Nachtmarkt öffnet nach Einbruch der Dunkelheit, Mabb lässt Schnecken um Gold laufen, Fen hat eine Karte gezeichnet, und über dem Norden glüht ein fremdes Licht.
