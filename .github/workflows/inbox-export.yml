@@ -47,8 +47,13 @@ jobs:
           if [ "$FORCE" != "true" ] && [ "$hour" != "23" ]; then echo "Nicht 23 Uhr in Berlin ($hour), nichts zu tun."; exit 0; fi
           today=$(TZ=Europe/Berlin date +%F)
 
-          # Bis wohin hat der letzte Export gelesen? (Feld until in der neuesten Datei)
-          latest=$(gh api "repos/$INBOX/contents/v2/inbox" --jq '[.[] | select(.name | test("^[0-9-]+\\.json$")) | .name] | sort | last // empty' 2>/dev/null || true)
+          # Zugang zum Inbox-Repo zuerst prüfen, damit ein falscher Token eine klare Meldung gibt.
+          gh api "repos/$INBOX" --jq .full_name > /dev/null || { echo "::error::INBOX_TOKEN hat keinen Zugriff auf $INBOX (leer, abgelaufen oder falsches Repo)."; exit 1; }
+          # Bis wohin hat der letzte Export gelesen? (Feld until in der neuesten Datei; Ordner fehlt beim ersten Mal)
+          latest=""
+          if listing=$(gh api "repos/$INBOX/contents/v2/inbox" 2>/dev/null); then
+            latest=$(echo "$listing" | jq -r '[.[] | select(.name | test("^[0-9-]+\\.json$")) | .name] | sort | last // empty')
+          fi
           since=0
           if [ -n "$latest" ]; then
             since=$(gh api "repos/$INBOX/contents/v2/inbox/$latest" -H 'Accept: application/vnd.github.raw' | jq '.until // 0')
