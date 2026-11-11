@@ -52,3 +52,7 @@ Im Grey sieht man nur so weit, wie das eigene Licht reicht. Laternen, Fackeln un
 ## Erster Bogen (nur die Richtung, Details privat)
 
 **„The Second Light.“** Weit draußen im Grey brennt ein zweites Licht, und es kommt näher. Der Bogen beginnt mit Andeutungen (der Stranger, Lichtschein am Horizont, nervöse Tiere) und führt zu Weltproblemen (das Leuchtfeuer braucht mehr Brennstoff, Wege müssen gesichert werden). An einem Wendepunkt stimmt die Gemeinschaft ab, ob man dem Licht entgegengeht oder das Dorf befestigt. Den Ernstfall entscheidet, wie gut alle vorbereitet sind.
+
+## Zeitleiste
+
+- Tag 0: Kindle steht in der Lichtung, das Leuchtfeuer brennt, die Kapelle hört Gebete. Der Stranger ist schon da.

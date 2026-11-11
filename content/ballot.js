@@ -1,4 +1,4 @@
-// Stimmzettel in der Kapelle: Jeder Opferstock steht für eine Idee. Gespendetes Gold zählt als Stimme.
+// Stimmzettel am Altar: ein weißer Stimmstein pro Spieler und Tag für eine der Ideen (Gold zählt nicht).
 // Der Nightwright füllt den Zettel jede Nacht neu (Ideen aus Gebeten, in eigenen Worten).
 // day: Nummer des Zettels.  options: { id, text } (Text englisch, höchstens 90 Zeichen).
 export const BALLOT = {

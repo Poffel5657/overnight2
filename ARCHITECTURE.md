@@ -166,3 +166,12 @@ Uhrzeit testen: `?hour=16.7` setzt die Berliner Uhrzeit, `?speed=600` lässt die
 PS1-Stil: Die Szene wird etwa 240 Pixel hoch gerendert, Eckpunkte springen auf dieses Raster
 (`uSnap` in `render/light.js`, das typische Wackeln), Farben auf 5 Bit pro Kanal ohne Dithering
 (`ps1()` im CRT-Shader). Tag und Nacht ändern Nebelfarbe, Sichtweite und Sonne (`setSky`).
+
+## Betrieb: Nachtlauf und Deploy (Phase 6)
+
+- **Nachtlauf:** Eine Routine startet um Mitternacht (Berlin) und folgt `CLAUDE.md`. Sie arbeitet auf `claude/day-NNN` und öffnet einen PR.
+- **Inbox:** `.github/workflows/inbox-export.yml` holt um 23:40 Uhr Gebete und Stimmen über `/api/admin/inbox` (Secret `ADMIN_KEY`) und schreibt `v2/inbox/YYYY-MM-DD.json` ins private Repo `overnight-inbox` (Secret `INBOX_TOKEN`). Der geheime Bogen liegt dort in `v2/arc.md`.
+- **Gate:** `.github/workflows/gate.yml` (pull_request_target) prüft Branch, geschützte Pfade, Pflichtdateien, Nachttest, Noreply-Adressen; dann `npm test`, `npm run check` und den Rauchtest `npm run smoke` (Bilder als Artefakt). Danach Merge per Rebase, Tag `day-NNN`, erhörte Gebete markieren (`/api/admin/answer`) und `deploy.yml` starten. Notschalter: Repo-Variable `AUTO_MERGE=false`.
+- **Deploy:** `.github/workflows/deploy.yml` (push auf `main` oder vom Gate): Tests, dann Worker (`wrangler deploy`, Secrets `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`), dann Pages mit versionierten Pfaden `v/<commit>/`. So ist der Server nie älter als die Seite.
+- **Wache:** `.github/workflows/night-watch.yml` öffnet um 1:30 Uhr ein Issue, wenn die Nacht fehlt (aktiv ab Repo-Variable `NIGHTS_LIVE=true`).
+- **Tests:** `tests/unit/` (Kern, geschützt), `tests/night/` (ein Spielweg-Test pro Nacht), `tools/check-world.mjs` (Inhalt), `tools/smoke.mjs` (Browser, PC und Handy).

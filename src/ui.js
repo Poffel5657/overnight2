@@ -531,7 +531,12 @@ export function createUI(handlers) {
         name.textContent = `${m.id === party.leader ? '★ ' : ''}${m.name}${m.id === me ? ' (you)' : ''}`;
         const bar = document.createElement('div');
         bar.className = 'bar hp';
-        bar.innerHTML = '<div class="bar-track"><div class="bar-fill"></div></div>';
+        const track = document.createElement('div');
+        track.className = 'bar-track';
+        const fill = document.createElement('div');
+        fill.className = 'bar-fill';
+        track.append(fill);
+        bar.append(track);
         const where = document.createElement('span');
         where.className = 'pwhere muted small';
         li.append(img, name, bar, where);

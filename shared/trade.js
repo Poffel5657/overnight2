@@ -4,7 +4,7 @@ import { ITEMS } from '../content/items.js';
 import { NODES } from '../content/nodes.js';
 import { RECIPES } from '../content/recipes.js';
 import { PROFESSIONS } from '../content/professions.js';
-import { SHOPS } from '../content/shops.js';
+import { SHOPS, buyPrice } from '../content/shops.js';
 import { CLASSES } from '../content/classes.js';
 import { cheb } from './path.js';
 import { tell, emit, float } from './events.js';
@@ -145,13 +145,14 @@ export function buy(world, p, shopId, itemId, n = 1) {
   if (!shop || !shop.sells.includes(itemId)) return;
   const def = ITEMS[itemId];
   const k = Math.max(1, Math.min(20, n | 0));
-  const cost = def.value * k;
+  const each = buyPrice(def.value);
+  const cost = each * k;
   if (p.gold < cost) return tell(world, p.id, `That costs ${cost} gold. You have ${p.gold}.`, 'sys');
   const lost = P.addItem(p, itemId, k);
   const got = k - lost;
   if (!got) return tell(world, p.id, 'Your bag is full.', 'hurt');
-  p.gold -= def.value * got;
-  tell(world, p.id, `You buy ${def.name}${got > 1 ? ` x${got}` : ''} for ${def.value * got} gold.`, 'good');
+  p.gold -= each * got;
+  tell(world, p.id, `You buy ${def.name}${got > 1 ? ` x${got}` : ''} for ${each * got} gold.`, 'good');
   checkHave(world, p);
 }
 

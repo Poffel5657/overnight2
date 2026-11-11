@@ -8,7 +8,7 @@ import { ABILITIES } from '../content/abilities.js';
 import { PROFESSIONS, MAX_PROFESSIONS } from '../content/professions.js';
 import { QUESTS } from '../content/quests.js';
 import { RECIPES } from '../content/recipes.js';
-import { SHOPS } from '../content/shops.js';
+import { SHOPS, buyPrice } from '../content/shops.js';
 import { allNpcs } from '../content/regions/index.js';
 import { xpForLevel } from '../shared/player.js';
 import { keyLabel } from './ui.js';
@@ -379,9 +379,10 @@ export function createWindows(handlers) {
       if (!state) return { heading: s.name.toUpperCase(), content: h('p', {}, '...') };
       const buy = s.sells.map((id) => {
         const it = ITEMS[id];
-        return h('li', { 'data-item': id }, iconEl('item', id, it.glyph, 'icon small'), ` ${it.name} `, h('span', { class: 'muted' }, `${it.value}G `),
-          btn('BUY', () => handlers.buy(shop, id, 1), { disabled: state.gold < it.value }),
-          it.stack ? btn('x5', () => handlers.buy(shop, id, 5), { disabled: state.gold < it.value * 5 }) : null);
+        const price = buyPrice(it.value);
+        return h('li', { 'data-item': id }, iconEl('item', id, it.glyph, 'icon small'), ` ${it.name} `, h('span', { class: 'muted' }, `${price}G `),
+          btn('BUY', () => handlers.buy(shop, id, 1), { disabled: state.gold < price }),
+          it.stack ? btn('x5', () => handlers.buy(shop, id, 5), { disabled: state.gold < price * 5 }) : null);
       });
       const sell = state.bag.map((slot, i) => {
         if (!slot || !ITEMS[slot.id].value) return null;

@@ -1,0 +1,159 @@
+# Prüft den PR des Nachtlaufs und veröffentlicht ihn automatisch.
+# pull_request_target: Die Definition kommt immer von main, ein PR kann seine Prüfung nicht umschreiben.
+# Fremder Code läuft nur im Job "test", dort ohne Schreibrechte und ohne Secrets.
+name: Gate
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: gate-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    # Nur Branches aus diesem Repo, also keine Fork-PRs. Pushen können hier nur Chris und der Nachtlauf.
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      startsWith(github.event.pull_request.head.ref, 'claude/day-') &&
+      github.event.pull_request.draft == false
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+    outputs:
+      day: ${{ steps.check.outputs.day }}
+      big_issue: ${{ steps.check.outputs.big_issue }}
+      answered: ${{ steps.check.outputs.answered }}
+      note: ${{ steps.check.outputs.note }}
+    steps:
+      - id: check
+        name: Pfade, Pflichtdateien und Tagesnummer prüfen
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+        run: |
+          set -euo pipefail
+          fail() { echo "::error::$1"; exit 1; }
+
+          [[ "$HEAD_REF" =~ ^claude/day-([0-9]{3})$ ]] || fail "Branch muss claude/day-NNN heißen."
+          day="${BASH_REMATCH[1]}"
+
+          behind=$(gh api "repos/$REPO/compare/$BASE_REF...$HEAD_SHA" --jq .behind_by)
+          [ "$behind" = "0" ] || fail "Branch ist nicht auf dem aktuellen main aufgebaut."
+
+          # Keine privaten Adressen in die öffentliche Historie.
+          bad=$(gh api --paginate "repos/$REPO/pulls/$PR/commits?per_page=100" --jq '.[] | .commit.author.email, .commit.committer.email' | grep -vE '@users\.noreply\.github\.com$|^noreply@github\.com$' || true)
+          [ -z "$bad" ] || fail "Commit ohne Noreply-Adresse."
+
+          gh api --paginate "repos/$REPO/pulls/$PR/files?per_page=100" --jq '.[]' > files.jsonl
+          jq -r '.filename, (.previous_filename // empty)' files.jsonl | sort -u > paths.txt
+
+          # Kern: Netzwerk, Server, Datenbank, Prüfwerkzeuge, Kern-Tests, Abhängigkeiten.
+          protected='^(\.github/|CLAUDE\.md$|worker/|migrations/|tools/|tests/unit/|vendor/|src/net\.js$|src/config\.js$|src/login\.js$|shared/protocol\.js$|shared/version\.js$|package\.json$|package-lock\.json$|wrangler\.toml$)'
+          if grep -E "$protected" paths.txt; then fail "PR ändert geschützte Pfade."; fi
+
+          grep -qx 'PLAN.md' paths.txt || fail "PLAN.md wurde nicht aktualisiert."
+          grep -qx 'CHRONICLE.md' paths.txt || fail "CHRONICLE.md wurde nicht aktualisiert."
+          grep -qx 'content/chronicle.js' paths.txt || fail "content/chronicle.js wurde nicht aktualisiert."
+          grep -qE "^tests/night/$day-" paths.txt || fail "Kein Spielweg-Test tests/night/$day-*.test.mjs."
+
+          gh api "repos/$REPO/pulls/$PR" --jq '.body // ""' > body.txt
+          # Großer Umbau: Nennt die PR-Beschreibung ein big-change-Issue, muss Chris es freigegeben haben.
+          big_issue=$(grep -oE '^Big-Change: #[0-9]+' body.txt | grep -oE '[0-9]+' | head -1 || true)
+          if [ -n "$big_issue" ]; then
+            gh api "repos/$REPO/issues/$big_issue" --jq 'select(.state == "open" and .pull_request == null and ([.labels[].name] | index("big-change"))) | .number' > issue.txt
+            [ -s issue.txt ] || fail "Issue #$big_issue ist kein offenes big-change-Issue."
+            gh api --paginate "repos/$REPO/issues/$big_issue/comments?per_page=100" --jq '.[] | select(.user.login == "Poffel5657" and .author_association == "OWNER" and .performed_via_github_app == null and (.body | test("^\\s*ja\\b"; "i"))) | .id' > approved.txt
+            [ -s approved.txt ] || fail "Issue #$big_issue hat keine Freigabe von Chris."
+          fi
+          echo "big_issue=$big_issue" >> "$GITHUB_OUTPUT"
+
+          # Erhörte Gebete: "Answered-Prayers: 3, 7" und "Answered-Note: <Satz>" in der PR-Beschreibung.
+          answered=$(grep -oE '^Answered-Prayers: *[0-9, ]+' body.txt | head -1 | sed 's/^Answered-Prayers: *//' | tr -cd '0-9,' || true)
+          note=$(grep -oE '^Answered-Note: .{1,200}' body.txt | head -1 | sed 's/^Answered-Note: //' | tr -d '\r"\\' || true)
+          echo "answered=$answered" >> "$GITHUB_OUTPUT"
+          echo "note=$note" >> "$GITHUB_OUTPUT"
+
+          gh api "repos/$REPO/contents/content/chronicle.js?ref=$HEAD_SHA" -H 'Accept: application/vnd.github.raw' > chronicle.js
+          last=$(grep -oE '\bday: *[0-9]+' chronicle.js | tail -1 | grep -oE '[0-9]+')
+          [ "$((10#$day))" = "$last" ] || fail "Letzter Chronik-Eintrag ist Tag $last, Branch ist Tag $day."
+          echo "day=$day" >> "$GITHUB_OUTPUT"
+
+  test:
+    needs: gate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts
+      - name: Unit- und Nachttests
+        run: npm test
+      - name: Content-Prüfer (Erreichbarkeit, Referenzen, Prüfsumme)
+        run: npm run check
+      - run: npx playwright install --with-deps chromium
+      - name: Rauchtest im Browser (PC und Handy)
+        run: npm run smoke
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: smoke-screenshots
+          path: smoke/
+          if-no-files-found: ignore
+
+  publish:
+    needs: [gate, test]
+    # Notschalter: Repo-Variable AUTO_MERGE auf false setzen, dann bleibt jeder PR liegen.
+    if: vars.AUTO_MERGE != 'false'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: write
+      statuses: write
+      actions: write
+      issues: write
+    steps:
+      - name: Mergen, taggen, Deploy starten, Gebete als erhört markieren
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          DAY: ${{ needs.gate.outputs.day }}
+          BIG_ISSUE: ${{ needs.gate.outputs.big_issue }}
+          ANSWERED: ${{ needs.gate.outputs.answered }}
+          NOTE: ${{ needs.gate.outputs.note }}
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          SERVER: https://overnight2.overnight-rpg.workers.dev
+        run: |
+          set -euo pipefail
+          gh api "repos/$REPO/statuses/$HEAD_SHA" -f state=success -f context=overnight-gate -f description="Gate und Tests bestanden" > /dev/null
+          # Rebase statt Squash: Squash würde den Klarnamen und die Mail des Kontos als Autor eintragen.
+          gh pr merge "$PR" --repo "$REPO" --rebase --delete-branch --match-head-commit "$HEAD_SHA"
+          merged=$(gh api "repos/$REPO/commits/main" --jq .sha)
+          gh api "repos/$REPO/git/refs" -f ref="refs/tags/day-$DAY" -f sha="$merged" > /dev/null
+          # Erst Worker, dann Seite (deploy.yml).
+          gh workflow run deploy.yml --repo "$REPO" --ref main
+          if [ -n "$BIG_ISSUE" ]; then gh issue close "$BIG_ISSUE" --repo "$REPO" --comment "Gebaut an Tag $DAY."; fi
+          if [ -n "$ANSWERED" ] && [ -n "$ADMIN_KEY" ]; then
+            ids=$(echo "$ANSWERED" | tr ',' '\n' | grep -E '^[0-9]+$' | head -100 | jq -s -c '.')
+            jq -n --argjson ids "$ids" --arg note "$NOTE" '{ ids: $ids, note: $note }' > answer.json
+            curl -fsS -X POST -H "X-Admin-Key: $ADMIN_KEY" -H 'Content-Type: application/json' --data @answer.json "$SERVER/api/admin/answer"
+          fi

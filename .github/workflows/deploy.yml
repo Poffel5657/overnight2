@@ -1,0 +1,92 @@
+# Bringt main live: erst Tests, dann der Worker, dann die Seite. So ist der Server nie älter als die Seite
+# (sonst sieht die Versionsprüfung eine fremde Prüfsumme). Die Seite legt CSS und Skripte jeder Version
+# unter v/<commit>/ ab, damit Browser nie alte und neue Dateien mischen.
+# Braucht die Secrets CLOUDFLARE_API_TOKEN (Vorlage "Edit Cloudflare Workers") und CLOUDFLARE_ACCOUNT_ID,
+# und Pages mit Quelle "GitHub Actions". Der Nachtlauf merged mit dem GITHUB_TOKEN, das löst kein push aus:
+# gate.yml startet diesen Workflow deshalb selbst.
+name: Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: npm run check
+
+  worker:
+    needs: test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts
+      - name: Worker deployen
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy
+
+  pages:
+    needs: worker
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 10
+          persist-credentials: false
+      - name: Seite zusammenstellen
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          cp -r index.html style.css src content shared fonts sounds vendor _site/
+          # Versionierte Kopien (die letzten fünf), index.html zeigt auf die aktuelle.
+          for sha in $(git rev-list -n 5 HEAD); do
+            v="_site/v/${sha::10}"
+            mkdir -p "$v"
+            git archive "$sha" $(git ls-tree --name-only "$sha" style.css src content shared fonts) | tar -x -C "$v"
+          done
+          current="v/${GITHUB_SHA::10}"
+          grep -q 'href="style.css"' _site/index.html && grep -q 'src="src/main.js"' _site/index.html
+          sed -i "s#href=\"style.css\"#href=\"$current/style.css\"#; s#src=\"src/main.js\"#src=\"$current/src/main.js\"#" _site/index.html
+          grep -q "$current/src/main.js" _site/index.html
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

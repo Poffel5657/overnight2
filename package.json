@@ -5,11 +5,13 @@
   "scripts": {
     "check": "node tools/check-world.mjs",
     "sig": "node tools/build-sig.mjs",
-    "test": "node --test tests/unit/",
+    "test": "node --test tests/",
     "dev:server": "wrangler dev --port 8787 --local",
-    "dev:db": "wrangler d1 migrations apply overnight2 --local"
+    "dev:db": "wrangler d1 migrations apply overnight2 --local",
+    "smoke": "node tools/smoke.mjs"
   },
   "devDependencies": {
-    "wrangler": "4.153.0"
+    "wrangler": "4.153.0",
+    "playwright": "1.56.1"
   }
 }

@@ -1,0 +1,64 @@
+# Wacht über den Nachtlauf: Ist um 1:30 Uhr Berliner Zeit die Nacht nicht auf main angekommen,
+# öffnet dieser Workflow ein Issue und erwähnt Chris, damit GitHub ihn benachrichtigt.
+name: Night watch
+
+on:
+  schedule:
+    # 00:30 und 23:30 UTC, je nach Sommer- oder Winterzeit ist eins davon 1:30 Uhr in Berlin.
+    - cron: '30 0 * * *'
+    - cron: '30 23 * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Uhrzeit nicht prüfen (zum Testen)'
+        type: boolean
+        default: false
+
+permissions: {}
+
+jobs:
+  watch:
+    # Erst scharf, wenn die Nacht-Routine läuft (Repo-Variable NIGHTS_LIVE = true).
+    if: vars.NIGHTS_LIVE == 'true' || inputs.force
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
+      actions: read
+    steps:
+      - name: Ist die Nacht angekommen?
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          FORCE: ${{ inputs.force || 'false' }}
+        run: |
+          set -euo pipefail
+          hour=$(TZ=Europe/Berlin date +%H)
+          today=$(TZ=Europe/Berlin date +%F)
+          if [ "$FORCE" != "true" ] && { [ "$hour" -lt 1 ] || [ "$hour" -gt 11 ]; }; then echo "Nicht zwischen 1 und 12 Uhr in Berlin ($hour), nichts zu tun."; exit 0; fi
+
+          gh api "repos/$REPO/contents/content/chronicle.js?ref=main" -H 'Accept: application/vnd.github.raw' > chronicle.js
+          last=$(grep -oE "date: *'[0-9-]+'" chronicle.js | tail -1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}')
+          lastday=$(grep -oE '\bday: *[0-9]+' chronicle.js | tail -1 | grep -oE '[0-9]+')
+          if [ "$last" = "$today" ]; then echo "Nacht $lastday ist da."; exit 0; fi
+
+          title="Night of $today did not arrive"
+          if gh issue list --repo "$REPO" --state open --search "in:title \"$title\"" --json number --jq '.[].number' | grep -q .; then
+            echo "Issue gibt es schon."; exit 0
+          fi
+
+          day=$(printf '%03d' $((lastday + 1)))
+          {
+            echo "@Poffel5657 Day $((lastday + 1)) is not on \`main\` yet (last night on main: day $lastday, $last)."
+            echo
+            echo "**Pull requests for \`claude/day-$day\`:**"
+            gh pr list --repo "$REPO" --state all --head "claude/day-$day" --json number,state,url --jq '.[] | "- #\(.number) \(.state): \(.url)"' || true
+            echo
+            echo "**Latest gate runs:**"
+            gh run list --repo "$REPO" --workflow gate.yml --limit 3 --json displayTitle,conclusion,status,url --jq '.[] | "- \(.displayTitle): \(.conclusion // .status) (\(.url))"' || true
+            echo
+            echo "If there is no PR at all, the routine did not run or failed before opening one: check the routine runs on claude.ai."
+          } > body.md
+          cat body.md
+          gh issue create --repo "$REPO" --title "$title" --body-file body.md

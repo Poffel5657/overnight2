@@ -9,6 +9,8 @@ import { CLASSES, UNLOCK_LEVEL } from '../../content/classes.js';
 import * as S from '../../shared/sim.js';
 import * as P from '../../shared/player.js';
 import { SPRITES } from '../../content/sprites.js';
+import { buyPrice } from '../../content/shops.js';
+import { ITEMS } from '../../content/items.js';
 import { applyParty } from '../../shared/party.js';
 import { parseIntent, applyIntent, tickFor, welcomeFor } from '../../shared/protocol.js';
 
@@ -347,8 +349,12 @@ test('Sammeln, Herstellen, Verkaufen, Kaufen', () => {
   const gold = p.gold;
   applyIntent(w, 'a', { t: 'sell', shop: 'marrow', slot, n: 1 });
   assert.ok(p.gold > gold);
+  // Händler verkaufen teurer, als sie ankaufen (BUY_MARKUP)
+  p.gold = 20;
   applyIntent(w, 'a', { t: 'buy', shop: 'marrow', item: 'bread', n: 1 });
   assert.ok(P.countItem(p, 'bread') >= 1);
+  assert.equal(p.gold, 20 - buyPrice(ITEMS.bread.value));
+  assert.ok(buyPrice(ITEMS.bread.value) > ITEMS.bread.value * 2, 'deutlich über dem Wert');
   applyIntent(w, 'a', { t: 'buy', shop: 'marrow', item: 'brass_lens', n: 1 });
   assert.equal(P.countItem(p, 'brass_lens'), 0, 'nicht im Sortiment');
 });
