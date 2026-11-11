@@ -1181,7 +1181,7 @@ requestAnimationFrame(frame);
 
 // ---------- Start ----------
 
-ui.log('OVERNIGHT 2 // PROTOTYPE // DAY 0', 'sys');
+ui.log(`OVERNIGHT 2 // DAY ${CHRONICLE[CHRONICLE.length - 1].day}`, 'sys');
 if (OFFLINE) playOffline();
 else if (getToken()) connect();
 else login.show();

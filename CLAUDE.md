@@ -8,7 +8,7 @@ Diese Datei ist geschützt. Ein PR, der sie ändert, wird nicht gemergt.
 
 ## Zeitplan
 
-- Die Routine startet um **23:00 Uhr Berlin**. Du baust die Nacht, solange du brauchst.
+- Die Routine startet um **23:00 Uhr Berlin**. Du baust die Nacht, solange du brauchst, aber **mindestens bis 23:40 Uhr Berlin** (`TZ=Europe/Berlin date +%H:%M`). Bist du vorher mit den Pflichtteilen fertig, ist die Nacht nicht fertig: Bau weiter (siehe „Nachschlag“). Tag 1 war nach 17 Minuten fertig, das war Chris zu wenig.
 - Die Nacht gehört zum **kommenden Tag**: Das Datum für `content/chronicle.js` ist das Berliner Datum nach Mitternacht (`TZ=Europe/Berlin date -d '+1 hour' +%F` liefert es ab 23 Uhr).
 - Öffne den PR, sobald alles fertig und getestet ist. Das Gate testet sofort, **wartet dann bis 0:00 Uhr Berlin** und bringt die Nacht erst dann live (Merge, Server, Seite). Spieler, die um Mitternacht online sind, sehen dann den Hinweis zum Neuladen.
 - Wird es nach Mitternacht, ist das kein Problem: Das Gate gibt dann sofort frei.
@@ -32,6 +32,8 @@ Jede Nacht besteht aus **drei Teilen**, die ein Spieler bemerkt (Ort, Wesen, Que
 3. **Vom Nightwright:** mindestens eine eigene Idee mit **spielbarem Inhalt**. Hier treibst du den Bogen voran (siehe „Der lange Bogen“) und machst die Welt dichter: Inhalte, die die vorhandenen Systeme nutzen und verbinden.
 
 - **Es gibt keine Zeilengrenze.** Eine Nacht mit 100 Zeilen ist meistens zu wenig. Das Spiel soll jede Nacht deutlich mehr werden.
+- **Nachschlag (Pflicht):** Nach den drei Teilen und dem Klassen-Ausbau kommen **mindestens zwei weitere Teile**, die ein Spieler bemerkt. Gute Nachschläge: ein neuer Ort oder Gebietsteil mit eigenen Wesen und Beute, eine Quest-Kette (3+ Schritte) für Stufen ohne Inhalt, ein Rezept-Strang für einen Beruf, eine zweite Klasse ausbauen, ein Wunsch aus „Ideen für später“ oder aus älteren Gebeten, neue Gespräche und Rufe für Figuren. Danach weiter bis 23:40, solange Teile fertig werden. Jeder Nachschlag steht in `CHRONICLE.md` unter „Nachschlag“.
+- Maßstab: Ein Spieler, der am Morgen einloggt, soll **eine Stunde neuen Inhalt** finden, nicht fünf Minuten.
 - Alles, was live geht, ist fertig und getestet. Lieber zwei fertige Teile als drei halbe; fehlt einer, begründe es in `CHRONICLE.md`. **Fertig heißt: Ein Spieler kann es finden, verstehen, benutzen, und es lohnt sich.**
 - Die Welt nimmt die Neuerung wahr: Pell ruft die Nacht aus (das passiert über `content/chronicle.js` von selbst), eine passende Figur sagt etwas dazu, eine Quest führt hin. Spieltexte sind Englisch und folgen dem Ton aus `DESIGN.md`.
 
