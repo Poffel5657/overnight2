@@ -2,12 +2,13 @@
 // bevor sie die Simulation erreicht: feste Typen, ganze Zahlen, kurze IDs; Freitext nur für
 // Gebet und Sprechen, beides wird in community.js bereinigt und begrenzt.
 
-import { walkTo, interact, useAbility, setTarget, cycleTarget, setBar, lightBonusOf } from './sim.js';
+import { walkTo, interact, useAbility, setTarget, cycleTarget, setBar, lightBonusOf, TICK_MS } from './sim.js';
 import { say, closeTalk } from './talk.js';
 import { handIn, feedBeacon, pray, vote, chat, PRAYER_MAX, CHAT_MAX } from './community.js';
 import { useSlot, unequip, dropSlot, craft, buy, sell } from './trade.js';
 import { stateOf } from './player.js';
 import { askTrade, answerTrade, setOffer, confirmTrade, cancelTrade, TRADE_MAX_KINDS } from './barter.js';
+import { invite, answer as answerParty, leave as leaveParty, kick, partyView } from './party.js';
 import { SLOTS } from '../content/items.js';
 import { CONTENT_SIG } from './version.js';
 
@@ -56,6 +57,10 @@ export function parseIntent(raw) {
       return { t: 'tradeSet', items: Object.fromEntries(entries), gold: m.gold };
     }
     case 'tradeOk': return { t: 'tradeOk' };
+    case 'partyInvite': return ID.test(String(m.id)) ? { t: 'partyInvite', id: m.id } : null;
+    case 'partyAnswer': return ID.test(String(m.from)) && typeof m.yes === 'boolean' ? { t: 'partyAnswer', from: m.from, yes: m.yes } : null;
+    case 'partyLeave': return { t: 'partyLeave' };
+    case 'partyKick': return ID.test(String(m.id)) ? { t: 'partyKick', id: m.id } : null;
     case 'tradeCancel': return { t: 'tradeCancel' };
     case 'ping': return { t: 'ping' };
     default: return null;
@@ -86,6 +91,10 @@ export function applyIntent(world, pid, m) {
     case 'vote': vote(world, p, m.option); break;
     case 'chat': chat(world, p, m.text); break;
     case 'tradeAsk': askTrade(world, p, m.id); break;
+    case 'partyInvite': invite(world, p, m.id); break;
+    case 'partyAnswer': answerParty(world, p, m.from, m.yes); break;
+    case 'partyLeave': leaveParty(world, p); break;
+    case 'partyKick': kick(world, p, m.id); break;
     case 'tradeAnswer': answerTrade(world, p, m.from, m.yes); break;
     case 'tradeSet': setOffer(world, p, m.items, m.gold); break;
     case 'tradeOk': confirmTrade(world, p); break;
@@ -113,7 +122,7 @@ export function welcomeFor(world, pid) {
     tick: world.tick,
     lit: world.objects.filter((o) => o.lit).map((o) => o.id),
     depleted: world.objects.filter((o) => o.type === 'node' && o.left <= 0).map((o) => o.id),
-    telegraphs: world.telegraphs.map((t) => ({ id: t.id, tiles: t.tiles })),
+    telegraphs: world.telegraphs.map((t) => ({ id: t.id, tiles: t.tiles, ms: Math.max(0, t.at - world.tick) * TICK_MS })),
     community: world.community,
     date: world.date,
     sig: CONTENT_SIG,
@@ -156,7 +165,7 @@ export function tickFor(world, pid, known) {
   }
   let state;
   if (p) {
-    const s = JSON.stringify(stateOf(p));
+    const s = JSON.stringify({ ...stateOf(p), party: partyView(world, p) });
     if (s !== known.lastState) {
       known.lastState = s;
       state = JSON.parse(s);

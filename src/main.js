@@ -141,10 +141,15 @@ function tileQuad(x, y, lift = 0.05) {
   g.setAttribute('position', new THREE.Float32BufferAttribute([0, 3, 2, 0, 2, 1].flatMap((i) => p[i]), 3));
   return g;
 }
+// Angekündigter Angriff: Fläche füllt sich bis zum Einschlag (eigenes Material pro Angriff)
 function addTelegraph(t) {
   const g = new THREE.Group();
-  for (const tile of t.tiles) g.add(new THREE.Mesh(tileQuad(tile.x, tile.y), teleMat));
+  const mat = teleMat.clone();
+  for (const tile of t.tiles) g.add(new THREE.Mesh(tileQuad(tile.x, tile.y), mat));
   g.renderOrder = 3;
+  g.userData.start = performance.now();
+  g.userData.ms = t.ms || 900;
+  g.userData.mat = mat;
   scene.add(g);
   telegraphs.set(t.id, g);
 }
@@ -153,6 +158,7 @@ function removeTelegraph(id) {
   if (!g) return;
   scene.remove(g);
   g.traverse((c) => c.geometry?.dispose());
+  g.userData.mat?.dispose();
   telegraphs.delete(id);
 }
 
@@ -181,6 +187,8 @@ const ui = createUI({
   say(i) { send({ t: 'say', i }); },
   bye() { send({ t: 'bye' }); },
   crt(on) { view.setCrt(on); },
+  partyLeave() { send({ t: 'partyLeave' }); },
+  partyKick(id) { send({ t: 'partyKick', id }); },
 });
 
 const windows = createWindows({
@@ -216,6 +224,7 @@ const windows = createWindows({
   tradeAnswer(from, yes) { send({ t: 'tradeAnswer', from, yes }); },
   tradeSet(items, gold) { send({ t: 'tradeSet', items, gold }); },
   tradeOk() { send({ t: 'tradeOk' }); },
+  partyAnswer(from, yes) { send({ t: 'partyAnswer', from, yes }); },
   tradeCancel() { send({ t: 'tradeCancel' }); },
   music() { return music.volume; },
   setMusic(v) { music.setVolume(v); },
@@ -382,6 +391,7 @@ function flushEvents(events) {
     }
     else if (e.type === 'community') { community = e.community; windows.setCommunity(e.community); }
     else if (e.type === 'tradeAsk') { windows.open('tradeask', { from: e.from, name: e.name }); sfx.ui(); }
+    else if (e.type === 'partyInvite') { windows.open('partyask', { from: e.from, name: e.name }); sfx.ui(); }
     else if (e.type === 'trade') windows.open('trade', e);
     else if (e.type === 'tradeEnd') {
       windows.close('tradeask');
@@ -678,7 +688,10 @@ function contextMenu(hit, x, y) {
     if (hit.ref.kind === 'mob') entries.push({ verb: 'Attack', noun: ent.name, fn: run('attack') }, { verb: 'Examine', noun: ent.name, fn: run('examine') });
     else if (hit.ref.kind === 'npc') entries.push({ verb: 'Talk-to', noun: ent.name, fn: run('talk') }, { verb: 'Examine', noun: ent.name, fn: run('examine') });
     else if (hit.ref.kind === 'object') for (const [action, label] of objectActions(ent)) entries.push({ verb: label, noun: objectName(ent), fn: run(action) });
-    else if (ent.kind === 'player' && ent.id !== mirror.you) entries.push({ verb: 'Trade with', noun: ent.name, fn: () => send({ t: 'tradeAsk', id: ent.id }) });
+    else if (ent.kind === 'player' && ent.id !== mirror.you) {
+      entries.push({ verb: 'Trade with', noun: ent.name, fn: () => send({ t: 'tradeAsk', id: ent.id }) });
+      if (!mirror.state?.party?.members.some((m) => m.id === ent.id)) entries.push({ verb: 'Invite to party', noun: ent.name, fn: () => send({ t: 'partyInvite', id: ent.id }) });
+    }
   } else if (hit?.kind) {
     entries.push({ verb: 'Examine', noun: hit.kind === 'tree' ? 'Tree' : 'Rock', fn: () => ui.log(EXAMINE[hit.kind], 'sys') });
   }
@@ -954,7 +967,12 @@ function frame(now) {
   ui.updateTarget(target && !target.dead ? target : null, note);
 
   // Angekündigte Felder pulsieren
-  teleMat.opacity = 0.3 + 0.25 * (0.5 + 0.5 * Math.sin(t * 14));
+  for (const g of telegraphs.values()) {
+    const k = Math.min(1, (performance.now() - g.userData.start) / g.userData.ms);
+    // Erst blass, dann kräftiger; kurz vor dem Einschlag schnelles Flackern
+    const flick = k > 0.8 ? 0.15 * Math.sin(t * 40) : 0.05 * Math.sin(t * 10);
+    g.userData.mat.opacity = 0.15 + 0.55 * k + flick;
+  }
 
   // Klickmarke verblasst
   if (marker.visible) {
@@ -1005,6 +1023,7 @@ function frame(now) {
   });
   barks(now);
   placeDailyMarks();
+  ui.updateParty(mirror.state?.party ?? null, mirror.ents, mirror.you);
 
   // Zeigertext (Maus)
   if (hoverAt && !drag && !ui.menuOpen()) {

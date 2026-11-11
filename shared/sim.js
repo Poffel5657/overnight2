@@ -19,6 +19,7 @@ import { startGather, tickGather, tickNodes, consume, inVillage } from './trade.
 import { onKill, dailyOf } from './community.js';
 import { berlinDate } from './daylight.js';
 import { tickTrade, cancelTrade } from './barter.js';
+import { partyHere, tickParty } from './party.js';
 
 export { saveOf, xpForLevel, MAX_LEVEL } from './player.js';
 
@@ -476,6 +477,7 @@ function updatePlayer(world, p) {
 
   tickGather(world, p);
   tickTrade(world, p);
+  tickParty(world, p);
   // have-Schritte von Quests: egal, wie die Dinge in den Beutel kamen.
   checkHave(world, p);
 
@@ -721,10 +723,17 @@ function hitMob(world, p, m, dmg) {
     resetBoss(world, m);
     emit(world, { type: 'log', text: boss.deathText, cls: 'good' });
   }
-  // Alle, die mitgekämpft haben und in der Nähe sind, bekommen Erfahrung und Quest-Fortschritt.
+  // Alle, die mitgekämpft haben, und ihre Gruppe in der Nähe bekommen Erfahrung und Quest-Fortschritt
+  // (so zählt es auch für Heiler und Beschützer, die selbst nicht zuschlagen).
+  const credit = new Set();
   for (const pid of m.hitters) {
     const q = world.players.get(pid);
-    if (!q || cheb(q.x, q.y, m.x, m.y) > SHARE_RANGE) continue;
+    if (!q) continue;
+    credit.add(q);
+    for (const r of partyHere(world, q)) credit.add(r);
+  }
+  for (const q of credit) {
+    if (cheb(q.x, q.y, m.x, m.y) > SHARE_RANGE) continue;
     tell(world, q.id, m.type === 'greyling' ? 'The Greyling comes apart into fog.' : `${theName(m.name)} falls.`, 'good');
     grantXp(world, q, m.def.xp);
     questEvent(world, q, 'kill', { mob: m.type });
@@ -936,7 +945,7 @@ function updateMob(world, m) {
     const tiles = specialTiles(world, m, p, sp.pattern);
     const t = { id: world.nextTelegraph++, mob: m.id, victim: p.id, tiles, at: world.tick + sp.delay, hit: sp.hit, name: def.name };
     world.telegraphs.push(t);
-    emit(world, { type: 'telegraph', t: { id: t.id, tiles } });
+    emit(world, { type: 'telegraph', t: { id: t.id, tiles, ms: sp.delay * TICK_MS } });
     tell(world, p.id, sp.text, 'hurt');
     m.nextAttack = world.tick + sp.delay + def.attackEvery;
     return;

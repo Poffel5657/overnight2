@@ -7,6 +7,7 @@ import { regionFor, REGION_IDS, HOME_REGION } from '../content/regions/index.js'
 import { ARRIVE } from '../content/regions/kindle.js';
 import { TICK_MS, createWorld, step, addPlayer, removePlayer, saveFor, drainEvents, travel } from '../shared/sim.js';
 import { parseIntent, applyIntent, welcomeFor, tickFor } from '../shared/protocol.js';
+import { applyParty } from '../shared/party.js';
 import { regionDaylight, berlinDate } from '../shared/daylight.js';
 import { BALLOT } from '../content/ballot.js';
 import { accountForToken } from './auth.js';
@@ -19,6 +20,7 @@ const bestLevel = (save) => Math.max(1, ...Object.values(save.classes || {}).map
 const totalXp = (save) => Object.values(save.classes || {}).reduce((s, c) => s + c.xp, 0);
 const HELLO_TIMEOUT_MS = 10000;
 const SAVE_EVERY_TICKS = 100;
+const PARTY_REFRESH_TICKS = 33; // etwa 10 Sekunden
 // Token-Bucket pro Verbindung: so viele Nachrichten auf einmal, danach BUCKET_RATE pro Sekunde.
 const BUCKET_SIZE = 30;
 const BUCKET_RATE = 15;
@@ -66,6 +68,19 @@ export class RegionRoom {
           ON CONFLICT(key) DO UPDATE SET value = value + excluded.value, updated_at = excluded.updated_at`).bind(`beacon:${o.date}`, o.add, now));
       } else if (o.kind === 'prayer' && conn) {
         stmts.push(this.env.DB.prepare('INSERT INTO prayers (account_id, date, text, created_at) VALUES (?, ?, ?, ?)').bind(conn.accountId, o.date, o.text, now));
+      } else if (o.kind === 'party') {
+        // Gruppe speichern; Mitglieder-IDs sind 'p' + Konto
+        const acc = (pid) => Number(String(pid).slice(1));
+        if (o.left) stmts.push(this.env.DB.prepare('DELETE FROM party_members WHERE account_id = ?').bind(acc(o.left)));
+        if (o.disband) {
+          stmts.push(this.env.DB.prepare('DELETE FROM party_members WHERE party_id = ?').bind(o.disband));
+          stmts.push(this.env.DB.prepare('DELETE FROM parties WHERE id = ?').bind(o.disband));
+        } else if (o.party) {
+          stmts.push(this.env.DB.prepare('INSERT INTO parties (id, data, updated_at) VALUES (?, ?, ?) ON CONFLICT(id) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at').bind(o.party.id, JSON.stringify(o.party), now));
+          for (const m of o.party.members) {
+            stmts.push(this.env.DB.prepare('INSERT INTO party_members (account_id, party_id) VALUES (?, ?) ON CONFLICT(account_id) DO UPDATE SET party_id = excluded.party_id').bind(acc(m.id), o.party.id));
+          }
+        }
       } else if (o.kind === 'vote' && conn) {
         // Tabelle heißt historisch donations; jede Zeile ist jetzt genau eine Stimme (gold = 1).
         stmts.push(this.env.DB.prepare('INSERT INTO donations (account_id, ballot, option, gold, created_at) VALUES (?, ?, ?, 1, ?)').bind(conn.accountId, o.ballot, o.option, now));
@@ -176,9 +191,15 @@ export class RegionRoom {
     const pid = `p${account.id}`;
     conn.pid = pid;
     conn.accountId = account.id;
-    addPlayer(world, pid, account.name, save);
+    const p = addPlayer(world, pid, account.name, save);
+    // Gruppe aus der Datenbank (sie gilt über Gebiete hinweg)
+    try {
+      const prow = await this.env.DB.prepare('SELECT p.data FROM party_members m JOIN parties p ON p.id = m.party_id WHERE m.account_id = ?').bind(account.id).first();
+      applyParty(world, p, prow ? JSON.parse(prow.data) : null);
+    } catch (err) { console.error('party load failed', err); }
     ws.send(JSON.stringify(welcomeFor(world, pid)));
-    world.events.push({ type: 'log', text: `${account.name} steps into the light of the Beacon.`, cls: 'sys' });
+    // Drinnen kommt man herein; draußen tritt man ins Licht des Leuchtfeuers
+    world.events.push({ type: 'log', text: world.region.sheltered ? `${account.name} comes in.` : `${account.name} steps into the light of the Beacon.`, cls: 'sys' });
     this.start();
     this.answeredFor(ws, account.id).catch((err) => console.error('answered failed', err));
   }
@@ -222,6 +243,8 @@ export class RegionRoom {
     }
     drainEvents(world);
     this.flushOutbox(world).catch((err) => console.error('outbox failed', err));
+    // Gruppen auffrischen (Änderungen aus anderen Gebieten), alle 10 Sekunden
+    if (world.tick % PARTY_REFRESH_TICKS === 0) this.refreshParties(world).catch((err) => console.error('party refresh failed', err));
     // Reisende speichern und trennen; der Browser verbindet sich mit dem Zielgebiet.
     for (const [ws, conn] of [...this.conns]) {
       const p = conn.pid && world.players.get(conn.pid);
@@ -232,6 +255,22 @@ export class RegionRoom {
     if (world.tick % SAVE_EVERY_TICKS === 0 || respawned.size) {
       const which = world.tick % SAVE_EVERY_TICKS === 0 ? null : respawned;
       this.saveAll(which).catch((err) => console.error('save failed', err));
+    }
+  }
+
+  async refreshParties(world) {
+    const conns = [...this.conns.values()].filter((c) => c.pid && world.players.has(c.pid));
+    if (!conns.length) return;
+    const { results } = await this.env.DB.prepare(
+      `SELECT m.account_id, p.data FROM party_members m JOIN parties p ON p.id = m.party_id WHERE m.account_id IN (${conns.map(() => '?').join(',')})`,
+    ).bind(...conns.map((c) => c.accountId)).all();
+    const byAcc = new Map(results.map((r) => [r.account_id, r.data]));
+    for (const c of conns) {
+      const p = world.players.get(c.pid);
+      if (!p) continue;
+      let data = null;
+      try { data = byAcc.has(c.accountId) ? JSON.parse(byAcc.get(c.accountId)) : null; } catch { data = null; }
+      applyParty(world, p, data);
     }
   }
 

@@ -409,6 +409,55 @@ export function createUI(handlers) {
     el.style.top = `${y}px`;
   }
 
+  // ---------- Gruppe ----------
+  // party: { leader, members: [{ id, name }] } oder null. ents: Figuren im Gebiet (für Leben und Klasse).
+  let partySig = '';
+  function updateParty(party, ents, me) {
+    const box = $('party');
+    if (!party) { box.hidden = true; partySig = ''; return; }
+    box.hidden = false;
+    const list = $('party-list');
+    const sig = JSON.stringify(party);
+    if (sig !== partySig) {
+      partySig = sig;
+      list.replaceChildren(...party.members.map((m) => {
+        const li = document.createElement('li');
+        li.dataset.id = m.id;
+        li.className = 'party-member';
+        const img = document.createElement('img');
+        img.className = 'mini';
+        img.alt = '';
+        const name = document.createElement('span');
+        name.className = 'pname';
+        name.textContent = `${m.id === party.leader ? '★ ' : ''}${m.name}${m.id === me ? ' (you)' : ''}`;
+        const bar = document.createElement('div');
+        bar.className = 'bar hp';
+        bar.innerHTML = '<div class="bar-track"><div class="bar-fill"></div></div>';
+        const where = document.createElement('span');
+        where.className = 'pwhere muted small';
+        li.append(img, name, bar, where);
+        // Anführer: Rechtsklick auf ein Mitglied entfernt es aus der Gruppe
+        li.addEventListener('contextmenu', (e) => {
+          e.preventDefault();
+          if (party.leader !== me || m.id === me) return;
+          openMenu(e.clientX, e.clientY, [{ verb: 'Remove from party', noun: m.name, fn: () => handlers.partyKick(m.id) }, { verb: 'Cancel' }]);
+        });
+        return li;
+      }));
+    }
+    for (const li of list.children) {
+      const e = ents.get(li.dataset.id);
+      const img = li.querySelector('img');
+      const url = e ? spriteURL(e.sprite) : spriteURL('player');
+      if (img.getAttribute('src') !== url) img.src = url;
+      li.classList.toggle('away', !e);
+      li.querySelector('.bar').hidden = !e;
+      li.querySelector('.pwhere').textContent = e ? '' : 'elsewhere';
+      if (e) li.querySelector('.bar-fill').style.width = `${(Math.max(0, e.hp) / Math.max(1, e.maxHp)) * 100}%`;
+    }
+  }
+  $('party-leave').addEventListener('click', () => handlers.partyLeave());
+
   // Tagesaufgaben in der Statusanzeige: Kerze (beten) und Münze (opfern), hell = erledigt
   function setToday(t) {
     const el = $('st-today');
@@ -437,6 +486,7 @@ export function createUI(handlers) {
   makeDraggable(document.querySelector('.status'), 'status', document.querySelector('.status .wtitle'));
   makeDraggable($('log-window'), 'log', document.querySelector('#log-window .wtitle'));
   makeDraggable($('target'), 'target', $('target-name'));
+  makeDraggable($('party'), 'party', document.querySelector('#party .wtitle'));
   makeDraggable($('menubar'), 'menubar', $('menubar'));
   makeDraggable(dialog, 'dialog', dialog.querySelector('.wtitle'));
 
@@ -471,6 +521,6 @@ export function createUI(handlers) {
     updateStatus, updateSky, updateTarget,
     openMenu, closeMenu, menuOpen, openDialog, closeDialog, dialogKey,
     get dialogNpc() { return dialogNpc; },
-    setHover, floater, overhead, nameTag, bubble, placeBubbles, marker, setToday,
+    setHover, floater, overhead, nameTag, bubble, placeBubbles, marker, setToday, updateParty,
   };
 }

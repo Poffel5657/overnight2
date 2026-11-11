@@ -485,6 +485,19 @@ export function createWindows(handlers) {
       };
     },
 
+    // Einladung in eine Gruppe
+    partyask({ from, name }) {
+      return {
+        heading: 'PARTY?',
+        content: [
+          h('p', {}, `${name} asks you to join their party. Together you share experience and quest progress for creatures beaten nearby.`),
+          h('div', { class: 'row-buttons' },
+            h('button', { type: 'button', class: 'plaque', onclick: () => { handlers.partyAnswer(from, true); close('partyask'); } }, 'Join'),
+            h('button', { type: 'button', class: 'plaque', onclick: () => { handlers.partyAnswer(from, false); close('partyask'); } }, 'Not now')),
+        ],
+      };
+    },
+
     // Anfrage eines anderen Spielers
     tradeask({ from, name }) {
       return {

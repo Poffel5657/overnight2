@@ -9,6 +9,7 @@ import { CLASSES, UNLOCK_LEVEL } from '../../content/classes.js';
 import * as S from '../../shared/sim.js';
 import * as P from '../../shared/player.js';
 import { SPRITES } from '../../content/sprites.js';
+import { applyParty } from '../../shared/party.js';
 import { parseIntent, applyIntent, tickFor, welcomeFor } from '../../shared/protocol.js';
 
 // ---------- Helfer: spielen wie ein Spieler ----------
@@ -470,6 +471,39 @@ test('Handel: fragen, anbieten, beide sagen zu, alles wechselt auf einmal', () =
   assert.equal(a.trade, null);
   assert.equal(b.trade, null);
   assert.equal(parseIntent(JSON.stringify({ t: 'tradeSet', items: { 'BAD ID': 1 }, gold: 0 })), null);
+});
+
+test('Gruppe: einladen, annehmen, Erfahrung teilen, verlassen, über Gebiete wiederherstellen', () => {
+  const w = S.createWorld(REGION, 41);
+  const a = newcomer(w, 'a', 'warden');
+  const b = newcomer(w, 'b', 'mender');
+  const send = (pid, m) => { const x = parseIntent(JSON.stringify(m)); assert.ok(x, JSON.stringify(m)); applyIntent(w, pid, x); };
+  send('a', { t: 'partyInvite', id: 'b' });
+  assert.ok(w.events.some((e) => e.type === 'partyInvite' && e.to === 'b'));
+  send('b', { t: 'partyAnswer', from: 'a', yes: true });
+  assert.ok(a.partyId && a.partyId === b.partyId);
+  const saved = w.outbox.filter((o) => o.kind === 'party').pop();
+  assert.deepEqual(saved.party.members.map((m) => m.id), ['a', 'b']);
+  assert.equal(tickFor(w, 'b', new Set()).state.party.leader, 'a');
+  // a schlägt, b heilt nur und steht daneben: beide bekommen Erfahrung
+  const g = w.mobs.find((m) => m.type === 'greyling');
+  a.x = g.x + 1; a.y = g.y; b.x = g.x + 2; b.y = g.y;
+  const xpB = b.classes.mender.xp;
+  g.hp = 1;
+  applyIntent(w, 'a', { t: 'act', kind: 'mob', id: g.id, action: 'attack' });
+  run(w, 30);
+  assert.ok(g.dead);
+  assert.ok(b.classes.mender.xp > xpB, 'Gruppe teilt Erfahrung');
+  // In einem anderen Gebiet: gespeicherte Gruppe wird übernommen
+  const w2 = S.createWorld(INSIDE, 42);
+  const b2 = S.addPlayer(w2, 'b', 'b');
+  applyParty(w2, b2, saved.party);
+  assert.equal(b2.partyId, saved.party.id);
+  // Verlassen: allein übrig -> Gruppe aufgelöst
+  send('b', { t: 'partyLeave' });
+  assert.equal(a.partyId, null);
+  assert.equal(b.partyId, null);
+  assert.ok(w.outbox.some((o) => o.kind === 'party' && o.disband));
 });
 
 test('Protokoll lehnt Unsinn ab', () => {
