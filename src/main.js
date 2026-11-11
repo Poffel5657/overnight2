@@ -8,6 +8,8 @@ import { EXAMINE } from '../content/npcs.js';
 import { TICK_MS, objectActions, lanternRadius, regionObjects } from '../shared/sim.js';
 import { cheb } from '../shared/path.js';
 import { TILE_TYPES } from '../content/tiles.js';
+import { NODES } from '../content/nodes.js';
+import { PROFESSIONS } from '../content/professions.js';
 import { skyState, berlinClock, minutesToMidnight, berlinDate } from '../shared/daylight.js';
 import { createView, buildGreyWall } from './render/view.js';
 import { buildTerrain } from './render/terrain.js';
@@ -650,10 +652,40 @@ function pick(clientX, clientY) {
       return { kind: h.object.userData.kind, cell: h.object.userData.cells[h.instanceId] };
     }
     if (h.object === terrain.mesh) {
-      return { ground: { x: Math.floor(h.point.x), y: Math.floor(h.point.z) } };
+      const x = Math.floor(h.point.x);
+      const y = Math.floor(h.point.z);
+      // Das ganze Feld zählt: Wer oder was dort steht, ist gemeint (nicht nur die Figur selbst).
+      return tileOccupant(x, y) || { ground: { x, y } };
     }
   }
   return null;
+}
+
+// Was steht auf dem Feld? Lebende Wesen vor Figuren vor anderen Spielern vor Objekten.
+const OCCUPANT_ORDER = { mob: 0, npc: 1, player: 2 };
+function tileOccupant(x, y) {
+  let best = null;
+  for (const e of mirror.ents.values()) {
+    if (e.id === mirror.you || e.dead || e.x !== x || e.y !== y) continue;
+    if (!best || OCCUPANT_ORDER[e.kind] < OCCUPANT_ORDER[best.kind]) best = e;
+  }
+  if (best) return { ref: { kind: best.kind, id: best.id } };
+  const o = mirror.objects.find((ob) => x >= ob.x && x < ob.x + ob.w && y >= ob.y && y < ob.y + ob.d);
+  return o ? { ref: { kind: 'object', id: o.id } } : null;
+}
+
+// Fundstellen und Werkbänke der eigenen Berufe leuchten leicht
+let glowSig = '';
+function updateProfessionGlow() {
+  const profs = mirror.state?.profs || {};
+  const sig = `${region?.id}|${Object.keys(profs).sort().join(',')}`;
+  if (sig === glowSig || !objects) return;
+  glowSig = sig;
+  const stations = new Set(Object.keys(profs).map((p) => PROFESSIONS[p]?.station).filter(Boolean));
+  for (const o of mirror.objects) {
+    const mine = (o.type === 'node' && profs[NODES[o.node]?.prof]) || (o.type === 'station' && stations.has(o.station));
+    objects.setGlow(o.id, !!mine);
+  }
 }
 
 const objectName = (o) => o.name || o.type;
@@ -1013,6 +1045,8 @@ function frame(now) {
   if (selfVis) lightUniforms.uSee.value.copy(selfVis.pos);
 
   // Flammen drehen sich wie die Figuren zur Kamera.
+  updateProfessionGlow();
+  objects.pulseGlow(t);
   for (const f of objects.flames) {
     f.setFrame(Math.floor(t * 5 + f.group.id) % 2);
     f.group.rotation.y = rig.yaw;

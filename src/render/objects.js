@@ -435,5 +435,30 @@ export function buildObjects(world, region, heightAt) {
 
   root.add(trunks, crowns, rockMesh, wallMesh);
   pickables.push(trunks, crowns, rockMesh);
-  return { root, pickables, flames, flameByObject, setDepleted };
+  // Leuchten für Dinge des eigenen Berufs: ein weicher Lichtring am Boden um die Grundfläche.
+  const profGlowMat = new THREE.MeshBasicMaterial({ color: '#ffcf6a', transparent: true, opacity: 0.35, depthWrite: false, side: THREE.DoubleSide, blending: THREE.AdditiveBlending });
+  const glows = new Map();
+  function setGlow(id, on) {
+    let ring = glows.get(id);
+    if (!on) { if (ring) ring.visible = false; return; }
+    if (!ring) {
+      const o = world.objects.find((x) => x.id === id);
+      const g = groupByObject.get(id);
+      if (!o || !g) return;
+      const r = Math.max(o.w, o.d) * 0.5;
+      ring = new THREE.Mesh(new THREE.RingGeometry(r * 0.75, r * 1.15, 24).rotateX(-Math.PI / 2), profGlowMat);
+      ring.position.y = 0.04;
+      ring.renderOrder = 2;
+      ring.raycast = () => {};
+      g.add(ring);
+      glows.set(id, ring);
+    }
+    ring.visible = true;
+  }
+  // Jedes Bild: sanftes Pulsieren
+  function pulseGlow(t) {
+    profGlowMat.opacity = 0.22 + 0.18 * (0.5 + 0.5 * Math.sin(t * 2.2));
+  }
+
+  return { root, pickables, flames, flameByObject, setDepleted, setGlow, pulseGlow };
 }
