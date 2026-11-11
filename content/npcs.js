@@ -6,12 +6,14 @@
 //       classLevel: n (beste Klasse mindestens n)   below: n (beste Klasse unter n)
 //       unlocked / locked: '<klasse>'
 //       prof / noProf: '<beruf>'   profSlot: true (noch ein Beruf frei)   has: { item: n }
+//       gold: n (mindestens so viel Gold)   night / day: true (Tageszeit; der Browser prüft das nicht)
 //   do: Wirkungen der Reihe nach: start, advance (Quest), chooseClass, give, take, learn, unlearn,
-//       refill, shop ('<händler>')
+//       refill, shop ('<händler>'), bet (['<schnecke>', gold], Schneckenrennen in shared/races.js)
 // Seiten werden nur gezeigt, wenn mindestens eine Antwort übrig bleibt (sonst endet das Gespräch).
 
 import { PROFESSIONS } from './professions.js';
 import { CLASSES, UNLOCK_LEVEL } from './classes.js';
+import { RACE } from './races.js';
 
 const BYE = { text: 'Bye.' };
 
@@ -149,6 +151,9 @@ const fen = (() => {
       options: [
         { text: 'Do you need anything?', to: 'f_offer', if: { quest: { fens_quills: 'none' } }, do: [{ start: 'fens_quills' }] },
         { text: 'Feathers, as promised.', to: 'f_done', if: { quest: { fens_quills: 1 }, has: { crow_feather: 4 } }, do: [{ take: { crow_feather: 4 } }, { advance: 'fens_quills' }] },
+        { text: 'You keep staring north.', to: 'nf_offer', if: { quest: { not_from_here: 'none' }, classLevel: 10 }, do: [{ start: 'not_from_here' }] },
+        { text: 'You keep staring north.', to: 'nf_early', if: { quest: { not_from_here: 'none' }, below: 10 } },
+        { text: 'About the light in the north...', to: 'nf_done', if: { quest: { not_from_here: 3 } }, do: [{ advance: 'not_from_here' }] },
         ...c.options,
         { text: 'A bit scary.', to: 'scary' }, BYE,
       ],
@@ -156,6 +161,9 @@ const fen = (() => {
     f_offer: { text: 'Quills! For maps! Crows have the best feathers and they will not share. Four, please. Four is a good number.', options: [{ text: 'Four feathers.' }] },
     f_done: { text: 'These are perfect. Here, my best survey notes. I measured a goose. It moved.', options: [{ text: 'Thanks, Fen.' }] },
     scary: { text: 'Take me next time. I will hold the lantern. I am very good at holding things.', options: [{ text: 'Maybe.' }] },
+    nf_offer: { text: 'At night there is a light past Hushwood. Not ours. Haskel says it is a woodfire. Woodfires do not move. Go to the north edge, past the woodcutters. There is an old lantern on a post up there. If the light left anything behind, bring it back.', options: [{ text: 'I will look.' }] },
+    nf_early: { text: 'There is something out there. In the north. I will tell you when you are bigger. Level 10 bigger.', options: [{ text: 'Fine.' }] },
+    nf_done: { text: 'Wren says the glass is not ours, and the Stranger went all quiet? Then I am right. There is someone out there with a light. I am going to draw it on my map. In pencil, in case it moves.', options: [{ text: 'Stay home, Fen.' }] },
     ...c.pages,
   };
 })();
@@ -168,8 +176,12 @@ const wren = (() => {
   return {
     start: {
       text: 'Wren. I grind lenses. Mind the glass dust, it gets everywhere, including into opinions.',
-      options: [...t.options, ...l.options, BYE],
+      options: [
+        { text: 'What do you make of this glass?', to: 'nf_glass', if: { quest: { not_from_here: 1 }, has: { cold_glass: 1 } }, do: [{ advance: 'not_from_here' }] },
+        ...t.options, ...l.options, BYE,
+      ],
     },
+    nf_glass: { text: 'Green, poured thick, full of tiny bubbles. Nobody in Kindle pours glass like this, and I would know. Whoever made it had sand, a hot fire and no patience. Show the Stranger. He looks at lanterns like he misses one.', options: [{ text: 'I will.' }] },
     ...l.pages, ...t.pages,
   };
 })();
@@ -184,11 +196,13 @@ const stranger = (() => {
       options: [
         { text: 'There is a lamp under the ruins.', to: 'fl_offer', if: { quest: { older_prayer: 'done', false_light: 'none' } }, do: [{ start: 'false_light' }] },
         { text: 'The False Light is out.', to: 'fl_done', if: { quest: { false_light: 1 } }, do: [{ advance: 'false_light' }] },
+        { text: 'This glass came from the north.', to: 'nf_hungry', if: { quest: { not_from_here: 2 }, has: { cold_glass: 1 } }, do: [{ take: { cold_glass: 1 } }, { advance: 'not_from_here' }] },
         ...t.options, { text: 'Where are you from?', to: 'from' }, BYE,
       ],
     },
     fl_offer: { text: '"I know. I followed it here." A long pause. "It goes out, or this village does. Take friends. When he puts the lights out, put them back."', options: [{ text: 'We will.' }] },
     fl_done: { text: '"Good." For the first time, the Stranger smiles. It does not help. "There are more lamps out there. This was the nearest."', options: [{ text: '...more?' }] },
+    nf_hungry: { text: 'The Stranger turns the glass in his fingers for a long time. "There is a fire out there that is hungry. This held a little of it, once." He keeps the glass. "Tell the child to stay home."', options: [{ text: '...hungry?' }] },
     from: { text: 'Further out than you have been. There is another light out there. Keep your wick trimmed.', options: [BYE] },
     ...t.pages,
   };
@@ -202,12 +216,14 @@ const haskel = {
       { text: 'What is biting?', to: 'h_early', if: { quest: { wolves_woodline: 'none' }, below: 8 } },
       { text: 'The woodline is quiet.', to: 'h_done', if: { quest: { wolves_woodline: 1 } }, do: [{ advance: 'wolves_woodline' }] },
       { text: 'Why is it so quiet in here?', to: 'h_quiet' },
+      { text: 'Seen anything odd lately?', to: 'h_light' },
       BYE,
     ],
   },
   h_offer: { text: 'Wolves. Grey ones, quiet ones. Six of them sit between me and the good trees. Make it zero.', options: [{ text: 'Six wolves.' }] },
   h_early: { text: 'You? No offence, but they would use you as a toothpick. Come back with a few more levels on you.', options: [{ text: 'Fair.' }] },
   h_done: { text: 'Quiet. Properly quiet, not Hushwood quiet. Here, salve from my sister. She says it fixes anything but manners.', options: [{ text: 'Thanks, Haskel.' }] },
+  h_light: { text: 'Past the trees, at night, there is a glow. I tell myself it is somebody\'s woodfire. It is a big woodfire. And it was not there last week.', options: [BYE] },
   h_quiet: { text: 'Hushwood eats sound. Shout in here and nobody hears it, not even you. Handy for wolves. Less handy for me.', options: [BYE] },
 };
 
@@ -228,10 +244,64 @@ const brack = {
   b_deep: { text: 'Brass, glimmer, the odd worm. Further in, the Grey. We do not dig that way.', options: [BYE] },
 };
 
+// Mabb und die Schneckenrennen (shared/races.js, Zahlen in content/races.js).
+const mabb = (() => {
+  const S = RACE.snails;
+  const bets = [];
+  for (const stake of RACE.stakes) {
+    for (const [id, sn] of Object.entries(S)) {
+      bets.push({ text: `${stake} gold on ${sn.name}. (pays ${stake * sn.odds})`, if: { gold: stake }, do: [{ bet: [id, stake] }] });
+    }
+  }
+  return {
+    start: {
+      text: 'Mabb. I keep snails. Racing snails. Do not laugh, they can hear you.',
+      options: [
+        { text: 'You look like you could use a hand.', to: 'q_offer', if: { quest: { kindling: 'done', off_to_races: 'none' } }, do: [{ start: 'off_to_races' }] },
+        { text: 'I watched my snail race.', to: 'q_done', if: { quest: { off_to_races: 2 } }, do: [{ advance: 'off_to_races' }] },
+        { text: 'I want to place a bet.', to: 'stake', if: { gold: Math.min(...RACE.stakes) } },
+        { text: 'Who is racing?', to: 'field' },
+        { text: 'How does this work?', to: 'how' },
+        BYE,
+      ],
+    },
+    q_offer: { text: 'Business is slow. The snails think nobody believes in them. Put a bet on one, any one, and watch the race to the end. It does wonders for their confidence.', options: [{ text: 'I will place a bet.', to: 'stake', if: { gold: Math.min(...RACE.stakes) } }, { text: 'Later.' }] },
+    q_done: { text: 'There. Did you see Bramble\'s face? Neither did I, but I could tell. Here, for your trouble. Come back any time, the snails always run.', options: [{ text: 'Thanks, Mabb.' }] },
+    stake: { text: `Who do you fancy? ${S.bramble.name} pays double, ${S.pebble.name} three times, ${S.tom.name} four. One bet a race.`, options: [...bets, { text: 'Not today.' }] },
+    field: { text: `${S.bramble.name}: ${S.bramble.text} ${S.pebble.name}: ${S.pebble.text} ${S.tom.name}: ${S.tom.text}`, options: [{ text: 'I want to bet.', to: 'stake', if: { gold: Math.min(...RACE.stakes) } }, BYE] },
+    how: { text: 'A race every few minutes, from the stones to the grass line. Bet before the bell, watch them crawl, collect if you were right. If you were wrong, the snails thank you for your support.', options: [BYE] },
+  };
+})();
+
+const snail = (id) => ({
+  start: { text: `${RACE.snails[id].name}. ${RACE.snails[id].text}`, options: [{ text: 'Good luck.' }] },
+});
+
+// Der Nachtmarkt: Mothwick verkauft nur im Dunkeln (Händler mit night: true in content/shops.js).
+const mothwick = {
+  start: {
+    text: 'Mothwick. The market opens when the lamps do.',
+    options: [
+      { text: 'Show me your wares.', if: { night: true }, do: [{ shop: 'mothwick' }] },
+      { text: 'Show me your wares.', to: 'closed', if: { day: true } },
+      { text: 'Do you need anything?', to: 'w_offer', if: { night: true, quest: { wisps_for_wicks: 'none' } }, do: [{ start: 'wisps_for_wicks' }] },
+      { text: 'Three wisps, as asked.', to: 'w_done', if: { night: true, quest: { wisps_for_wicks: 1 }, has: { grey_wisp: 3 } }, do: [{ take: { grey_wisp: 3 } }, { advance: 'wisps_for_wicks' }] },
+      { text: 'Where do you come from?', to: 'from' },
+      BYE,
+    ],
+  },
+  closed: { text: 'Not in daylight, dear. My goods do not like being looked at by the sun. Come back after dark, when the lamps are lit.', options: [BYE] },
+  w_offer: { text: 'My moonwicks need a little Grey spun into them, or they burn like any old string. Three grey wisps. The Greylings carry them; ask them nicely, with a stick.', options: [{ text: 'Three wisps.' }] },
+  w_done: { text: 'Lovely. Still wriggling. Here, two wicks of your own and a candle to go with them. A lampwright could do a lot with those.', options: [{ text: 'Thank you.' }] },
+  from: { text: 'North, mostly. I follow lights, and lights bring customers. There is a new one past Hushwood these nights, brighter every week. I came here first. Nobody buys lanterns where it is that bright.', options: [{ text: 'A light in the north?', to: 'north' }, BYE] },
+  north: { text: 'Big, and warm-coloured, and hungry-looking. Like a hearth that has not been fed. Ask the woodcutter, he sees it every night and pretends not to.', options: [BYE] },
+};
+
 export const TALK = {
-  ama, tallow, rook, fen, wren, stranger, haskel, brack,
+  ama, tallow, rook, fen, wren, stranger, haskel, brack, mabb, mothwick,
+  snail_bramble: snail('bramble'), snail_pebble: snail('pebble'), snail_tom: snail('tom'),
   pell: {
-    start: { text: 'HEAR YE! Last night the world began! That is all! It was a very big night!', options: [{ text: 'Anything else?', to: 'more' }, BYE] },
+    start: { text: 'HEAR YE! A market that only opens after dark! Snails that race for gold! Kindle has never been so exciting!', options: [{ text: 'Anything else?', to: 'more' }, BYE] },
     more: { text: 'Tomorrow I will have more to shout. I can feel it in my bell.', options: [BYE] },
   },
   marrow: {
@@ -264,5 +334,6 @@ export const EXAMINE = {
   brazier: 'A brazier. Its light keeps the Grey, and the things in it, at a polite distance.',
   false_light: 'A lamp that burns without oil. The light is wrong somehow, like a smile with too many teeth.',
   board: 'The Notice Board. Favours, gossip, and a list of the brave.',
+  track: 'A strip of short grass between two lines of pebbles. The snails call it home. The snails do not call it anything.',
   altar: 'A stone altar with a box of white stones. People pray here, and drop one stone a day for the idea they like.',
 };

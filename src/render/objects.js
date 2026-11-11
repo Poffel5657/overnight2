@@ -170,6 +170,15 @@ const BUILDERS = {
     g.add(box(0.1, 0.12, 0.05, '#c8a040', 0, 0.36, 0.24));
   },
   shrine(o, g) {
+    if (o.look === 'cold_lantern') {
+      // Ein Pfosten mit einer fremden Laterne aus grünem Glas, nach Norden gedreht
+      g.add(box(0.12, 1.7, 0.12, '#4a3a2a', 0, 0.85, 0));
+      g.add(box(0.5, 0.08, 0.1, '#4a3a2a', 0, 1.6, -0.2));
+      g.add(box(0.3, 0.38, 0.3, '#3a5a48', 0, 1.35, -0.38));
+      g.add(box(0.36, 0.06, 0.36, '#2a2a2a', 0, 1.56, -0.38));
+      g.add(box(0.14, 0.14, 0.14, glimmerMat, 0, 1.34, -0.38));
+      return;
+    }
     g.add(box(0.8, 0.5, 0.5, '#6a6a60', 0, 0.25, 0));
     g.add(box(0.6, 0.9, 0.12, '#5a5a52', 0, 0.9, -0.15));
     for (const x of [-0.25, 0, 0.25]) g.add(box(0.06, 0.14, 0.06, '#e8dcc0', x, 0.57, 0.1));
@@ -304,6 +313,13 @@ const BUILDERS = {
     g.add(a);
     g.add(box(0.3, 0.2, 0.3, '#c8a040', -0.5, 0.8, 0));
     g.add(box(0.25, 0.25, 0.25, '#7a8a40', 0.4, 0.82, 0.05));
+    // Ein Stand mit eigenem Licht (Nachtmarkt): kleine Laternen unter der Markise
+    if (o.light) {
+      for (const x of [-0.9, 0, 0.9]) {
+        g.add(box(0.03, 0.25, 0.03, '#2a2a2a', x, 1.38, o.d / 2 - 0.3));
+        g.add(box(0.16, 0.2, 0.16, glowMat, x, 1.2, o.d / 2 - 0.3));
+      }
+    }
   },
   beacon(o, g, ctx) {
     g.add(new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.15, 0.7, 8), mat('#7a746a')).translateY(0.35));

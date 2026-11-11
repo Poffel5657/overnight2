@@ -20,6 +20,7 @@ import { onKill, dailyOf } from './community.js';
 import { berlinDate } from './daylight.js';
 import { tickTrade, cancelTrade } from './barter.js';
 import { partyHere, tickParty } from './party.js';
+import { tickRace, refundBet } from './races.js';
 
 export { saveOf, xpForLevel, MAX_LEVEL } from './player.js';
 
@@ -156,6 +157,8 @@ export function saveFor(world, id) {
 export function removePlayer(world, id) {
   const p = world.players.get(id);
   if (!p) return null;
+  // Eine offene Wette beim Schneckenrennen geht zurück, wer geht, verliert nichts.
+  refundBet(world, p);
   const save = saveFor(world, id);
   if (p.trade) cancelTrade(world, p, `${p.name} has left. The trade is off.`);
   world.players.delete(id);
@@ -374,6 +377,7 @@ export function step(world) {
   for (const n of world.npcs) updateNpc(world, n);
   resolveTelegraphs(world);
   tickNodes(world);
+  tickRace(world);
   return world.events;
 }
 
@@ -548,7 +552,7 @@ function doAction(world, p, goal) {
   } else if (goal.action === 'enter' && t.inside) {
     travel(world, p, { region: t.inside.region, x: t.inside.x, y: t.inside.y });
   } else if (goal.action === 'enter' && t.type === 'door') {
-    if (t.needs && !conditionHolds(p, t.needs)) {
+    if (t.needs && !conditionHolds(p, t.needs, world)) {
       tell(world, p.id, t.locked || 'The way is shut.', 'sys');
       return;
     }
@@ -570,7 +574,7 @@ function doAction(world, p, goal) {
       P.addItem(p, t.gives, 1);
       tell(world, p.id, `Under the old candles you find ${ITEMS[t.gives].name}.`, 'good');
     } else {
-      tell(world, p.id, 'Old candles, cold wax, and the feeling of being listened to.', 'sys');
+      tell(world, p.id, t.empty || 'Old candles, cold wax, and the feeling of being listened to.', 'sys');
     }
   } else if (goal.action === 'read' && t.type === 'board') {
     dailyOf(world, p);
@@ -638,8 +642,17 @@ function castAbility(world, p, id) {
     case 'burst':
       for (const m of world.mobs) {
         if (m.dead || Math.hypot(m.x - p.x, m.y - p.y) > a.radius) continue;
-        m.scaredUntil = world.tick + a.scare;
-        dropTelegraphs(world, (t) => t.mob === m.id);
+        if (a.scare) {
+          m.scaredUntil = world.tick + a.scare;
+          dropTelegraphs(world, (t) => t.mob === m.id);
+        }
+        // Geblendet: kann kurz nicht angreifen, angekündigte Angriffe verpuffen.
+        if (a.dazzle) m.dazzleUntil = world.tick + a.dazzle;
+        // hold: Wer getroffen wird, hält sich an den Werfer (wie Taunt), gut für Beschützer.
+        if (a.hold) {
+          m.angryAt = p.id;
+          m.tauntUntil = world.tick + 12;
+        }
         hitMob(world, p, m, abilityDamage(world, p, a));
       }
       break;

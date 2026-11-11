@@ -58,6 +58,27 @@ let objects = null;
 let greyWall = null;
 const REGION_KEY = 'overnight2.region';
 
+// Ein ferner Lichtschein über dem Rand der Welt (nur Darstellung, nachts sichtbar).
+let farLight = null;
+function makeFarLight(f) {
+  const c = document.createElement('canvas');
+  c.width = c.height = 64;
+  const g = c.getContext('2d');
+  const grad = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  grad.addColorStop(0, 'rgba(255, 226, 160, 1)');
+  grad.addColorStop(0.3, 'rgba(255, 150, 60, 0.55)');
+  grad.addColorStop(1, 'rgba(255, 110, 40, 0)');
+  g.fillStyle = grad;
+  g.fillRect(0, 0, 64, 64);
+  const mat = new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending, fog: false, opacity: 0 });
+  const s = new THREE.Sprite(mat);
+  s.scale.set(22, 11, 1);
+  s.position.set(f.x, f.h, f.y);
+  s.renderOrder = 5;
+  s.raycast = () => {};
+  return s;
+}
+
 function loadRegion(id, date) {
   const r = regionFor(id, date || berlinDate(new Date()));
   if (!r) return;
@@ -68,7 +89,9 @@ function loadRegion(id, date) {
       obj.traverse((c) => c.geometry?.dispose());
     }
   }
+  if (farLight) { scene.remove(farLight); farLight.material.map.dispose(); farLight.material.dispose(); farLight = null; }
   region = r;
+  if (r.farLight) { farLight = makeFarLight(r.farLight); scene.add(farLight); }
   mirror.objects = regionObjects(r);
   terrain = buildTerrain(r, mirror.objects);
   greyWall = buildGreyWall(terrain.W, terrain.H);
@@ -221,6 +244,8 @@ const windows = createWindows({
   online() { return conn ? !conn.offline : false; },
   leave() { document.getElementById('btn-leave').click(); },
   me() { return mirror.me; },
+  mapData() { return { region, objects: mirror.objects, ents: [...mirror.ents.values()], you: mirror.you, markers }; },
+  walk(x, y) { walkGround({ x, y }); },
   scale() { return ui.scale; },
   setScale(v) { ui.setScale(v); },
   crt() { return ui.crt; },
@@ -904,6 +929,7 @@ window.addEventListener('keydown', (e) => {
   if (key === 'b' || key === 'i') { windows.toggle('bag'); return; }
   if (key === 'j') { windows.toggle('quests'); return; }
   if (key === 'o') { windows.toggle('settings'); return; }
+  if (key === 'm') { windows.toggle('map'); return; }
   held.add(k.toLowerCase());
 });
 window.addEventListener('keyup', (e) => held.delete(e.key.toLowerCase()));
@@ -950,6 +976,7 @@ function updateSky(now) {
   else if (region?.indoor) view.setSky(0, 0);
   else if (region?.murk !== undefined) view.setSky(Math.min(sky.day, region.murk), sky.dusk * 0.3);
   else view.setSky(sky.day, sky.dusk);
+  if (farLight) farLight.material.opacity = 0.85 * Math.max(0, 1 - sky.day * 1.6);
   const mins = minutesToMidnight(date);
   const note = sky.phase === 'NIGHT' || sky.phase === 'DUSK'
     ? `MIDNIGHT ${mins >= 60 ? `${Math.floor(mins / 60)}H ` : ''}${mins % 60}M`
@@ -981,8 +1008,11 @@ function entPos(v, alpha, out) {
   return out.set(x, y, z);
 }
 
+let mapAt = 0;
 function frame(now) {
   updateSky(now);
+  // Die Karte zeigt, wo man gerade steht: zweimal pro Sekunde neu zeichnen.
+  if (now - mapAt > 500 && windows.isOpen('map')) { mapAt = now; windows.refresh('map'); }
   const dt = Math.min(0.1, (now - last) / 1000);
   last = now;
   const alpha = Math.min(1, (now - mirror.arrivedAt) / TICK_MS);

@@ -19,6 +19,7 @@ import { FAVOURS, BEACON_FUEL, BEACON_GOAL } from '../content/dailies.js';
 import { BALLOT } from '../content/ballot.js';
 import { CHRONICLE } from '../content/chronicle.js';
 import { favoursFor, PRAYER_MAX } from '../shared/community.js';
+import { TILE_TYPES } from '../content/tiles.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -197,6 +198,98 @@ export function createWindows(handlers) {
     const cells = [];
     for (let i = 0; i < BAG_SIZE; i++) cells.push(itemCell(state.bag[i], i, { onclick }));
     return h('div', { class: 'grid' }, cells);
+  }
+
+
+  // ---------- Karte (Taste M) ----------
+  // Grund aus dem Gelände, einmal pro Gebiet gezeichnet; darüber Gebäude, Feuer, Türen, Figuren und man selbst.
+  // Ein Tipp auf die Karte schickt die Figur dorthin.
+  const MAP_PX = 300;
+  let mapBase = null;
+  const OBJ_COLOR = { beacon: '#ffb347', campfire: '#ff8a3a', signal: '#ff8a3a', brazier: '#ff8a3a', door: '#9fe0ff', station: '#c8a040', board: '#e8dcc0', altar: '#e8dcc0', stall: '#c86a8a', shrine: '#b0d0a0', chest: '#c8a040' };
+  function mapBaseFor(region) {
+    const key = `${region.id}:${region.date ?? ''}`;
+    if (mapBase?.key === key) return mapBase;
+    const H = region.tiles.length;
+    const W = region.tiles[0].length;
+    const s = Math.max(2, Math.floor(MAP_PX / Math.max(W, H)));
+    const c = document.createElement('canvas');
+    c.width = W * s;
+    c.height = H * s;
+    const g = c.getContext('2d');
+    for (let y = 0; y < H; y++) {
+      for (let x = 0; x < W; x++) {
+        const t = TILE_TYPES[region.tiles[y][x]];
+        g.fillStyle = t?.object === 'tree' ? '#2f5a34' : t?.object === 'rock' ? '#7a6a58' : t?.color ?? '#050403';
+        g.fillRect(x * s, y * s, s, s);
+      }
+    }
+    // Gegenden beschriften (Mitte aller Felder mit demselben Namen)
+    const labels = [];
+    if (region.zoneAt) {
+      const acc = new Map();
+      for (let y = 0; y < H; y += 3) for (let x = 0; x < W; x += 3) {
+        const z = region.zoneAt(x, y);
+        if (!z) continue;
+        const a = acc.get(z) || { x: 0, y: 0, n: 0 };
+        a.x += x; a.y += y; a.n++;
+        acc.set(z, a);
+      }
+      for (const [name, a] of acc) labels.push({ name, x: a.x / a.n, y: a.y / a.n });
+    }
+    mapBase = { key, canvas: c, s, W, H, labels };
+    return mapBase;
+  }
+
+  function mapCanvas(d) {
+    const base = mapBaseFor(d.region);
+    const { s, W, H } = base;
+    const c = h('canvas', { class: 'map-canvas', width: W * s, height: H * s, 'aria-label': 'Map. Tap to walk there.' });
+    const g = c.getContext('2d');
+    g.drawImage(base.canvas, 0, 0);
+    for (const o of d.objects) {
+      const big = o.inside || ['house', 'chapel', 'workshop'].includes(o.type);
+      if (big) { g.fillStyle = '#5a3a26'; g.fillRect(o.x * s, o.y * s, o.w * s, o.d * s); continue; }
+      const col = OBJ_COLOR[o.type];
+      if (!col) continue;
+      g.globalAlpha = (o.type === 'signal' || o.type === 'brazier') && !o.lit ? 0.45 : 1;
+      g.fillStyle = col;
+      g.fillRect(o.x * s - 1, o.y * s - 1, o.w * s + 2, o.d * s + 2);
+      g.globalAlpha = 1;
+    }
+    g.font = `${Math.max(10, s * 4)}px VT323, monospace`;
+    g.textAlign = 'center';
+    g.fillStyle = 'rgba(255, 236, 200, 0.75)';
+    for (const l of base.labels) g.fillText(l.name, l.x * s, l.y * s);
+    for (const e of d.ents) {
+      if (e.kind === 'mob') continue;
+      const me = e.id === d.you;
+      if (e.kind === 'player' && !me) { g.fillStyle = '#9fe0ff'; g.fillRect(e.x * s - 1, e.y * s - 1, s + 2, s + 2); continue; }
+      if (me) continue;
+      g.fillStyle = '#ffe08a';
+      g.fillRect(e.x * s - 1, e.y * s - 1, s + 2, s + 2);
+      const mark = d.markers.get(e.id);
+      if (mark) {
+        g.fillStyle = mark === '?' ? '#9fe0ff' : '#ffd23a';
+        g.fillText(mark, e.x * s + s / 2, e.y * s - 2);
+      }
+    }
+    const self = d.ents.find((e) => e.id === d.you);
+    if (self) {
+      const r = s * 2;
+      g.fillStyle = '#ffffff';
+      g.strokeStyle = '#000000';
+      g.lineWidth = 2;
+      g.strokeRect(self.x * s - r / 2, self.y * s - r / 2, r + s, r + s);
+      g.fillRect(self.x * s - r / 2, self.y * s - r / 2, r + s, r + s);
+    }
+    c.addEventListener('click', (ev) => {
+      const rect = c.getBoundingClientRect();
+      const x = Math.floor(((ev.clientX - rect.left) / rect.width) * W);
+      const y = Math.floor(((ev.clientY - rect.top) / rect.height) * H);
+      if (x >= 0 && y >= 0 && x < W && y < H) handlers.walk(x, y);
+    });
+    return c;
   }
 
   // ---------- Fenster ----------
@@ -572,6 +665,24 @@ export function createWindows(handlers) {
       };
     },
 
+    map() {
+      const d = handlers.mapData?.();
+      if (!d?.region) return { heading: 'MAP', content: h('p', {}, '...') };
+      return {
+        heading: `MAP // ${d.region.name || d.region.id}`,
+        content: [
+          mapCanvas(d),
+          h('p', { class: 'muted small map-legend' },
+            h('span', { class: 'key-you' }, '■ you'), '  ',
+            h('span', { class: 'key-npc' }, '■ people'), '  ',
+            h('span', { class: 'key-fire' }, '■ lights'), '  ',
+            h('span', { class: 'key-door' }, '■ ways out'), '  ',
+            '! new quest  ? hand in'),
+          h('p', { class: 'muted small' }, 'Tap the map to walk there. Fen drew most of it.'),
+        ],
+      };
+    },
+
     keys() {
       const keys = handlers.keys();
       const rows = keys.map((k, i) => h('li', {}, `SLOT ${i + 1}  `, btn(waitingFor === i ? 'PRESS A KEY...' : keyLabel(k), () => { waitingFor = i; render(); })));
@@ -608,6 +719,7 @@ export function createWindows(handlers) {
 
   return {
     open, close, closeAll, toggle, setState, setCommunity,
+    refresh(kind) { const w = wins.get(kind); if (w) renderOne(w); },
     isOpen: (kind) => wins.has(kind),
     optsOf: (kind) => wins.get(kind)?.opts ?? null,
     get any() { return wins.size > 0; },

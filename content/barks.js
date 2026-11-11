@@ -11,6 +11,16 @@ export const BARKS = {
       'HEAR YE! Feed the Beacon before midnight!',
       'Favours on the notice board! Gold for honest work!',
       'Pray at the chapel, and the world may answer!',
+      'The Night Market opens at dusk! Bring gold, and a lantern!',
+      'Snail races by the west path! Mabb takes bets!',
+    ],
+  },
+  mabb: {
+    range: 10, every: 45,
+    lines: [
+      'Bets on the snails! Five gold, twenty gold!',
+      'Bramble is in fine form today. Probably.',
+      'Old Tom is not asleep. He is thinking.',
     ],
   },
 };
@@ -28,5 +38,7 @@ export const HAILS = {
   marrow: 'Oi! Business for you, if you want it.',
   haskel: 'Over here! I could use some help.',
   brack: 'Hold up, wanderer. I have work.',
+  mabb: 'You there! Fancy a flutter on a snail?',
+  mothwick: 'Psst. Wicks, lanterns, night things. Only while it lasts.',
 };
 export const HAIL_DEFAULT = 'You there! A word?';

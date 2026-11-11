@@ -74,6 +74,36 @@ export const QUESTS = {
     ],
     reward: { xp: 1500, gold: 150, items: { greyglass: 3 } },
   },
+  off_to_races: {
+    name: 'Off to the Races', giver: 'mabb',
+    text: 'Mabb wants someone to bet on a snail, so the snails feel appreciated.',
+    steps: [
+      { type: 'action', action: 'bet', text: 'Put a bet on a snail with Mabb.' },
+      { type: 'action', action: 'race', text: 'Watch your snail race to the end.' },
+      { type: 'talk', npc: 'mabb', text: 'Tell Mabb how it went.' },
+    ],
+    reward: { xp: 45, gold: 10, items: { bread: 2 } },
+  },
+  wisps_for_wicks: {
+    name: 'Wisps for the Wicks', giver: 'mothwick',
+    text: 'Mothwick spins wicks that burn at night. The secret ingredient is a little bit of the Grey.',
+    steps: [
+      { type: 'have', item: 'grey_wisp', n: 3, text: 'Get three grey wisps from Greylings.' },
+      { type: 'talk', npc: 'mothwick', text: 'Bring them to Mothwick at the Night Market, after dark.' },
+    ],
+    reward: { xp: 70, gold: 12, items: { moonwick: 2, moon_candle: 1 } },
+  },
+  not_from_here: {
+    name: 'Not From Here', giver: 'fen',
+    text: 'At night Fen sees a light past Hushwood. Fen wants proof that it is real.',
+    steps: [
+      { type: 'have', item: 'cold_glass', n: 1, text: 'Search the cold lantern at the northern edge of Hushwood.' },
+      { type: 'talk', npc: 'wren', text: 'Ask Wren about the glass.' },
+      { type: 'talk', npc: 'stranger', text: 'Show the glass to the Stranger.' },
+      { type: 'talk', npc: 'fen', text: 'Tell Fen what you found out.' },
+    ],
+    reward: { xp: 420, gold: 30, items: { dusk_draught: 2 } },
+  },
   trial_warden: {
     name: 'The Warden\'s Trial', giver: 'ama',
     text: 'Ama will teach you to stand in front, if you show you can stand at all.',

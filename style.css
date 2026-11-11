@@ -854,3 +854,10 @@ button:disabled { color: var(--brass-dim); cursor: default; text-shadow: none; }
   @keyframes fade { 70% { opacity: 1; } 100% { opacity: 0; } }
   .wtitle, .lamp, .nametag.marker, .qmark, .beacon-row .bar-fill, .beacon-float .bar-fill { animation: none; }
 }
+
+/* Karte (Taste M): pixelig skaliert, passt am Handy in die Breite */
+.map-canvas { display: block; width: 100%; max-width: 420px; height: auto; margin: 0.3rem auto 0; image-rendering: pixelated; border: 1px solid var(--brass); cursor: crosshair; touch-action: manipulation; }
+.map-legend .key-you { color: #ffffff; }
+.map-legend .key-npc { color: #ffe08a; }
+.map-legend .key-fire { color: #ff8a3a; }
+.map-legend .key-door { color: #9fe0ff; }

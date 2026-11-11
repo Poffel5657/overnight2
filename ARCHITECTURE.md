@@ -13,13 +13,14 @@ content/                  Alles, was Inhalt ist, als Daten. Hier wächst das Spi
   chests.js               Beutetabellen für Truhen (einmal am Tag pro Spieler)
   sprites.js              Pixel-Sprites als Text mit Palette ('!' = leuchtet im Dunkeln)
   mobs.js                 Wesen (Werte, Beute, angekündigte Angriffe)
-  abilities.js            Fähigkeiten (Wirkungsarten: melee, ranged, burst, aura, hot, taunt, dash, snare, fade, zone)
+  abilities.js            Fähigkeiten (Wirkungsarten: melee, ranged, burst, aura, hot, taunt, dash, snare, fade, zone; burst kann scare, dazzle, hold)
   classes.js              Vier Klassen: Lehrer, Startwaffe, Prüfung, Fähigkeiten pro Stufe
   items.js                Gegenstände (Platz, Klasse der Waffe, Werte, Wirkung, Preis)
   professions.js          Sechs Berufe, höchstens zwei pro Spieler
   nodes.js, recipes.js    Fundstellen für Sammelberufe, Rezepte für Herstellberufe
   quests.js               Quests als Schritte (talk, kill, have, action, flag) mit Belohnung
-  shops.js                Händler
+  shops.js                Händler (night: true = nur im Dunkeln offen, z. B. der Nachtmarkt)
+  races.js                Schneckenrennen: Bahn, Takt, Einsätze, Schnecken mit Quote und Tempo
   npcs.js                 Gespräche mit Bedingungen (if) und Wirkungen (do), Beschreibungen
 shared/                   Reine Spiellogik ohne DOM, läuft auf dem Server und offline im Browser
   sim.js                  Welt eines Gebiets im Takt (300 ms): Spieler, Laufen, Kampf, Licht/Öl, Wesen
@@ -31,12 +32,13 @@ shared/                   Reine Spiellogik ohne DOM, läuft auf dem Server und o
   trade.js                Sammeln, Herstellen, Kaufen, Verkaufen, Benutzen, Anlegen, Klassenwechsel
   events.js               tell/emit/float: Ereignisse an Spieler
   community.js            Gefallen, Leuchtfeuer füttern, Beten, Abstimmen, Sprechen (schreibt in world.outbox)
+  races.js                Schneckenrennen in Kindle (world.race): Wetten über Gesprächswirkung bet, Takt in step()
 src/                      Browser
   main.js                 Spiegelwelt aus den Server-Nachrichten, Darstellung, Eingabe
   net.js                  NetConnection (WebSocket) und LocalConnection (offline, gleiche Nachrichten)
   login.js, config.js     Anmelden, Server-Adresse (?server=, ?offline=1)
   ui.js                   Status, Leiste (Belegung, Tasten), Menü, Gespräch, Zahlen, Namen, Markierungen
-  windows.js              Fenster CHAR, BAG, QUESTS, Herstellen, Händler, Tasten
+  windows.js              Fenster CHAR, BAG, QUESTS, MAP (Taste M, Tipp = hinlaufen), Herstellen, Händler, Tasten
   render/view.js          Renderer, Kamera, CRT-Shader, Nebelwand
   render/light.js         Licht und Nebel als Shader-Zusatz für alle Materialien
   render/terrain.js       Gelände aus dem Raster (Vertex-Farben, flach schattiert)
@@ -83,6 +85,13 @@ haben sie nicht).
   Quest-Fortschritt; Beute bekommt, wer den letzten Schlag setzt.
 - **Gespräche:** Der Server führt sie (`talk.js`). Der Browser bekommt Seite und sichtbare Antworten und
   schickt nur die Nummer. `!`/`?` über Figuren rechnet der Browser mit derselben `conditionHolds`.
+- **Bedingungen mit Welt:** `conditionHolds(p, cond, world)`. `night`/`day` brauchen die Welt (Tageslicht); der Browser
+  prüft ohne Welt (für `!`/`?`), dann zählen sie nicht. `gold: n` prüft das Gold des Spielers.
+- **Schneckenrennen** (`shared/races.js`, Tag 1): Zustand in `world.race` (open → run → done). Die Schnecken sind Figuren
+  (`snail_<id>`), deren x das Rennen setzt. Gespräch mit Mabb: Wirkung `{ bet: [schnecke, gold] }`. `removePlayer`
+  gibt offene Einsätze zurück, bevor gespeichert wird. Quest-Aktionen `bet` und `race`.
+- **Darstellung im Gebiet:** `farLight: { x, y, h }` zeichnet nachts einen fernen Schein (nur Browser). Ein `shrine`
+  kann `look` (z. B. `cold_lantern`), `text` (Untersuchen) und `empty` (Text, wenn nichts mehr zu finden ist) haben.
 - **Charakterstand:** `stateOf(p)` geht nur bei Änderung mit dem Takt mit (`tickFor`, `known.lastState`).
 
 ## Gemeinschaft (Phase 4)

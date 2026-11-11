@@ -44,6 +44,7 @@ export const ITEMS = {
   brass_lantern: { name: 'Brass Lantern', slot: 'lantern', light: 1.5, burn: 0.7, value: 45, glyph: 'i', text: 'Brighter and thriftier. Wren polished the reflector with a map.' },
   glim_lantern: { name: 'Glimsteel Lantern', slot: 'lantern', light: 2.5, burn: 0.55, value: 120, glyph: 'i', text: 'The glimmer holds some light back for later.' },
   shard_lantern: { name: 'Shard Lantern', slot: 'lantern', light: 4.5, burn: 0.3, value: 500, glyph: 'i', text: 'Built around a shard of the False Light. It burns for you now. Mostly.' },
+  moth_lantern: { name: 'Moth Lantern', slot: 'lantern', light: 2, burn: 0.6, value: 90, glyph: 'i', text: 'Paper-thin glass, soft light. Moths love it. So do people walking home late.' },
   greyglass_lantern: { name: 'Greyglass Lantern', slot: 'lantern', light: 3.5, burn: 0.4, value: 280, glyph: 'i', text: 'It burns brightest where the Grey is thickest. Nobody likes to think about why.' },
 
   // ---------- Verbrauch ----------
@@ -54,6 +55,8 @@ export const ITEMS = {
   dusk_draught: { name: 'Dusk Draught', stack: true, use: { glow: 200, oil: 30 }, value: 24, glyph: '!', text: 'Brewed from nightcaps. You glow, and so does your lantern.' },
   flare_candle: { name: 'Flare Candle', stack: true, use: { glow: 150, oil: 20 }, value: 18, glyph: '!', text: 'A fat candle with a glimmer wick. Burns white.' },
   lily_oil: { name: 'Lily Oil', stack: true, use: { oil: 80 }, value: 14, glyph: '!', text: 'Pressed from bog lilies. Burns clean and long.' },
+  night_bread: { name: 'Night Bread', stack: true, use: { heal: 30 }, value: 7, glyph: 'n', text: 'Dark rye baked after midnight. It stays warm until morning, out of spite.' },
+  moon_candle: { name: 'Moon Candle', stack: true, use: { glow: 240, oil: 35 }, value: 20, glyph: '!', text: 'Wax and moonwick. It burns pale and slow, and the Grey finds it rude.' },
   glow_draught: { name: 'Glow Draught', stack: true, use: { glow: 100, oil: 15 }, value: 14, glyph: '!', text: 'You glow a little. Greylings find this rude.' },
 
   // ---------- Rohstoffe ----------
@@ -73,6 +76,8 @@ export const ITEMS = {
   beetle_shell: { name: 'Beetle Shell', stack: true, value: 10, glyph: ')', text: 'A plate of stone-hard shell. Rook wants these.' },
   lamp_shard: { name: 'Lamp Shard', stack: true, value: 60, glyph: '*', text: 'A piece of the False Light. Still warm. Still wrong.' },
   prayer_tablet: { name: 'Prayer Tablet', stack: true, value: 0, glyph: '=', text: 'A cracked stone tablet. The prayer on it is not addressed to the Nightwright.' },
+  moonwick: { name: 'Moonwick', stack: true, value: 8, glyph: '~', text: 'A wick spun from something that only comes out at night. Lampwrights pay well for it.' },
+  cold_glass: { name: 'Cold Lantern Glass', stack: true, value: 0, glyph: '*', text: 'Thick, greenish glass from a lantern. Nobody in Kindle makes glass like this.' },
   crow_feather: { name: 'Crow Feather', stack: true, value: 1, glyph: '/', text: 'Glossy and judgemental. Fen collects them for quills.' },
 };
 

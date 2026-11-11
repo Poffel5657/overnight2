@@ -1,7 +1,8 @@
 // Fähigkeiten für die Leiste 1-9. Welche Klasse was lernt, steht in content/classes.js.
 // cd und gcd in Takten (300 ms). oil: kostet Lampenöl. Wirkungen (kind):
 //   melee   Ziel daneben, Schaden hit[]           ranged  Ziel bis range Felder entfernt
-//   burst   alles im Umkreis radius, scare = flieht   self   heal / brace (halber Schaden) auf sich
+//   burst   alles im Umkreis radius, scare = flieht, dazzle = kann kurz nicht angreifen, hold = greift dich an
+//   self    heal / brace (halber Schaden) auf sich
 //   aura    Heilung/brace für sich und Verbündete im Umkreis   hot  Heilung über Zeit (heal pro 2 Takte)
 //   taunt   Wesen im Umkreis greifen dich an      dash   springt dist Felder vom Ziel weg
 //   snare   Ziel steckt fest (root Takte)          fade   Wesen verlieren dich (Takte), außer im Licht
@@ -20,6 +21,8 @@ export const ABILITIES = {
   brace: { name: 'Brace', desc: "Plant your feet and let the shield take it.", glyph: '#', kind: 'self', brace: 10, cd: 30, text: 'You brace behind your shield.' },
   taunt: { name: 'Taunt', desc: "Bang the shield. Everything nearby forgets the others.", glyph: '!', kind: 'taunt', radius: 4, cd: 20, text: 'You bang your shield. Everything looks at you.' },
   lantern_ward: { name: 'Lantern Ward', desc: "Your lantern's steady light hardens everyone close.", glyph: 'O', kind: 'aura', radius: 3, brace: 8, oil: 6, cd: 40, text: 'Your lantern spreads a ring of steady light.' },
+  stand_fast: { name: 'Stand Fast', desc: "Dig in behind the shield and get your breath back.", glyph: 'H', kind: 'self', heal: 18, brace: 8, cd: 36, text: 'You dig in. The shield holds, and so do you.' },
+  beacon_slam: { name: 'Beacon Slam', desc: "Slam the lantern into the shield. The flash rings every head nearby.", glyph: '*', kind: 'burst', radius: 1.5, hit: [7, 10], dazzle: 5, hold: true, oil: 5, cd: 24, text: 'Lantern meets shield. Everything close sees stars.' },
   shield_slam: { name: 'Shield Slam', desc: "A heavy slam that rings the target's head.", glyph: ']', kind: 'melee', hit: [6, 9], dazzle: 4, cd: 16, power: true },
 
   // Mender

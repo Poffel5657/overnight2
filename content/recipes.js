@@ -40,6 +40,7 @@ export const RECIPES = {
   l_cracked_lens: { prof: 'lampwright', level: 1, inputs: { scrap: 2, grey_wisp: 1 }, out: ['cracked_lens', 1], xp: 12 },
   l_ember_staff: { prof: 'lampwright', level: 2, inputs: { scrap: 1, wax_comb: 1 }, out: ['ember_staff', 1], xp: 14 },
   l_brass_lantern: { prof: 'lampwright', level: 5, inputs: { brass_bits: 3, survey_notes: 2 }, out: ['brass_lantern', 1], xp: 30 },
+  l_moon_candle: { prof: 'lampwright', level: 11, inputs: { moonwick: 1, wax_comb: 1 }, out: ['moon_candle', 2], xp: 46 },
   l_brass_lens: { prof: 'lampwright', level: 9, inputs: { brass_bits: 2, glimmer: 1 }, out: ['brass_lens', 1], xp: 40 },
   l_brass_staff: { prof: 'lampwright', level: 9, inputs: { brass_bits: 2, emberroot: 2 }, out: ['brass_staff', 1], xp: 40 },
   l_glim_lantern: { prof: 'lampwright', level: 13, inputs: { brass_bits: 3, glimmer: 2, survey_notes: 2 }, out: ['glim_lantern', 1], xp: 56 },
