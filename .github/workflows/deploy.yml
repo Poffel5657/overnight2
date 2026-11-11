@@ -85,6 +85,10 @@ jobs:
           grep -q 'href="style.css"' _site/index.html && grep -q 'src="src/main.js"' _site/index.html
           sed -i "s#href=\"style.css\"#href=\"$current/style.css\"#; s#src=\"src/main.js\"#src=\"$current/src/main.js\"#" _site/index.html
           grep -q "$current/src/main.js" _site/index.html
+          # Versionskennung für src/update.js: Meta-Tag in index.html und build.json zum Abfragen.
+          sed -i "s#<meta charset=\"utf-8\">#<meta charset=\"utf-8\">\n  <meta name=\"build\" content=\"${GITHUB_SHA::10}\">#" _site/index.html
+          grep -q "name=\"build\" content=\"${GITHUB_SHA::10}\"" _site/index.html
+          printf '{"sha":"%s"}\n' "${GITHUB_SHA::10}" > _site/build.json
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: _site

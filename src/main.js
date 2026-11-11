@@ -31,6 +31,7 @@ import { LocalConnection, NetConnection } from './net.js';
 import { createLogin } from './login.js';
 import { SERVER, OFFLINE } from './config.js';
 import { CONTENT_SIG } from '../shared/version.js';
+import { watchUpdates } from './update.js';
 
 const canvas = document.getElementById('view');
 const view = createView(canvas);
@@ -446,6 +447,8 @@ function flushEvents(events) {
       if (e.done) sfx.play?.('coin');
     }
     else if (e.type === 'chat') {
+      // Figuren (z. B. Mabb beim Schneckenrennen) rufen nur als Blase, der Chat-Tab gehört den Spielern.
+      if (mirror.ents.get(e.ent)?.kind === 'npc') { ui.bubble(e.ent, e.text, 5000, 'npc shout'); continue; }
       ui.bubble(e.ent, e.text, 5000, e.ent === mirror.you ? 'me' : '');
       ui.chatLine(e.ent === mirror.you ? 'You' : mirror.ents.get(e.ent)?.name ?? 'Someone', e.text, e.ent === mirror.you);
       sfx.ui();
@@ -466,7 +469,8 @@ function flushEvents(events) {
 
 function onMessage(msg) {
   if (msg.t === 'welcome') {
-    if (msg.sig && msg.sig !== CONTENT_SIG) banner('KINDLE HAS CHANGED. TAP HERE TO RELOAD.');
+    if (msg.sig && msg.sig !== CONTENT_SIG) updates.serverAhead();
+    else updates.check();
     loadRegion(msg.region, msg.regionDate);
     rememberRegion(msg.region);
     mirror.you = msg.you;
@@ -624,6 +628,8 @@ function banner(text) {
   bannerEl.textContent = text || '';
 }
 bannerEl.addEventListener('click', () => location.reload());
+// Neue Version auf der Seite: von selbst neu laden (src/update.js).
+const updates = watchUpdates({ banner, beforeReload: () => conn?.close() });
 
 const login = createLogin(SERVER, {
   onToken(token) {
