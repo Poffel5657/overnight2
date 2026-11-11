@@ -74,7 +74,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p _site
-          cp -r index.html style.css src content shared fonts sounds vendor _site/
+          cp -r index.html style.css src content shared fonts sounds vendor icons _site/
           # Versionierte Kopien (die letzten fünf), index.html zeigt auf die aktuelle.
           for sha in $(git rev-list -n 5 HEAD); do
             v="_site/v/${sha::10}"
