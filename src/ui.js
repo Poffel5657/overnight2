@@ -7,6 +7,7 @@ import { ITEMS } from '../content/items.js';
 import { TALK } from '../content/npcs.js';
 import { iconEl, spriteURL } from './icons.js';
 import { markerURL } from './markers.js';
+import { describeAbility } from '../shared/describe.js';
 import { makeDraggable } from './drag.js';
 import { TICK_MS } from '../shared/sim.js';
 
@@ -68,7 +69,44 @@ export function createUI(handlers) {
     while (logEl.children.length > 80) logEl.firstChild.remove();
     logEl.scrollTop = logEl.scrollHeight;
   }
-  $('btn-log').addEventListener('click', () => $('log-window').classList.toggle('collapsed'));
+  // Tabs: Log (Spiel) und Chat (was gesagt wurde). Ein Klick auf den offenen Tab klappt das Fenster ein.
+  let tab = 'log';
+  function showTab(t) {
+    const win = $('log-window');
+    if (t === tab && !win.classList.contains('collapsed')) { win.classList.add('collapsed'); return; }
+    win.classList.remove('collapsed');
+    tab = t;
+    $('log').hidden = t !== 'log';
+    $('chat-log').hidden = t !== 'chat';
+    for (const [id, name] of [['btn-log', 'log'], ['btn-chat', 'chat']]) {
+      $(id).classList.toggle('on', name === t);
+      $(id).setAttribute('aria-selected', String(name === t));
+    }
+    if (t === 'chat') {
+      $('btn-chat').querySelector('.unread').hidden = true;
+      $('chat-log').scrollTop = $('chat-log').scrollHeight;
+    }
+  }
+  $('btn-log').addEventListener('click', () => showTab('log'));
+  $('btn-chat').addEventListener('click', () => showTab('chat'));
+
+  // Eine Zeile im Chat-Tab: Uhrzeit, Name, Text. mine = selbst gesagt.
+  function chatLine(name, text, mine = false) {
+    const el = $('chat-log');
+    const li = document.createElement('li');
+    if (mine) li.className = 'mine';
+    const time = document.createElement('span');
+    time.className = 'ctime';
+    time.textContent = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    const who = document.createElement('span');
+    who.className = 'cname';
+    who.textContent = name;
+    li.append(time, who, document.createTextNode(text));
+    el.append(li);
+    while (el.children.length > 100) el.firstChild.remove();
+    if (tab === 'chat' && !$('log-window').classList.contains('collapsed')) el.scrollTop = el.scrollHeight;
+    else if (!mine) $('btn-chat').querySelector('.unread').hidden = false;
+  }
 
   // ---------- Leiste ----------
   function slotButton(i) {
@@ -109,7 +147,15 @@ export function createUI(handlers) {
         const b = el.children[i];
         const entry = barEntry(id);
         b.classList.toggle('empty', !entry);
-        b.title = entry ? `${entry.name} (${keyLabel(keys[i])})` : `Empty (${keyLabel(keys[i])}). Right-click a bag item or an ability to place it here.`;
+        b.removeAttribute('title');
+        // Tooltip: Fähigkeit über data-ability, Gegenstand über data-item, leeres Feld als Hinweis
+        delete b.dataset.ability;
+        delete b.dataset.item;
+        delete b.dataset.tip;
+        if (entry?.item) b.dataset.item = entry.item;
+        else if (entry) b.dataset.ability = id;
+        else b.dataset.tip = `Empty slot (${keyLabel(keys[i])}). Right-click a bag item, or use "To bar" in the Character window.`;
+        b.dataset.key = keyLabel(keys[i]);
         b.querySelector('.key').textContent = keyLabel(keys[i]);
         b.querySelector('.glyph').replaceChildren(entry ? iconEl(entry.item ? 'item' : 'ability', entry.item || id, entry.glyph) : '·');
         b.querySelector('.name').textContent = entry ? entry.name.toUpperCase() : '';
@@ -409,6 +455,56 @@ export function createUI(handlers) {
     el.style.top = `${y}px`;
   }
 
+  // ---------- Tooltip (Fähigkeiten, Gegenstände, Hinweise) ----------
+  // Elemente mit data-ability, data-item oder data-tip zeigen beim Darüberfahren eine Karte im UI-Stil.
+  const tip = document.createElement('div');
+  tip.className = 'tip window';
+  tip.hidden = true;
+  document.body.append(tip);
+  function tipContent(el) {
+    const parts = [];
+    const add = (cls, text) => { if (!text) return; const d = document.createElement('div'); d.className = cls; d.textContent = text; parts.push(d); };
+    if (el.dataset.ability) {
+      const d = describeAbility(el.dataset.ability);
+      if (!d) return null;
+      add('tip-title', `${d.name}${el.dataset.key ? `  [${el.dataset.key}]` : ''}`);
+      add('tip-flavor', d.flavor);
+      add('tip-effect', d.effect);
+      add('tip-cost', d.cost);
+    } else if (el.dataset.item) {
+      const it = ITEMS[el.dataset.item];
+      if (!it) return null;
+      add('tip-title', `${it.name}${el.dataset.key ? `  [${el.dataset.key}]` : ''}`);
+      add('tip-flavor', it.text);
+      if (it.use?.heal) add('tip-effect', `Heals ${it.use.heal}.`);
+      if (it.use?.oil) add('tip-effect', `Refills ${it.use.oil} oil.`);
+    } else if (el.dataset.tip) {
+      add('tip-effect', el.dataset.tip);
+    }
+    return parts.length ? parts : null;
+  }
+  function placeTip(el) {
+    const r = el.getBoundingClientRect();
+    const t = tip.getBoundingClientRect();
+    let x = r.left + r.width / 2 - t.width / 2;
+    let y = r.top - t.height - 8;
+    if (y < 4) y = r.bottom + 8;
+    x = Math.max(4, Math.min(window.innerWidth - t.width - 4, x));
+    tip.style.left = `${x}px`;
+    tip.style.top = `${y}px`;
+  }
+  document.addEventListener('pointerover', (e) => {
+    if (e.pointerType && e.pointerType !== 'mouse') return;
+    const el = e.target.closest?.('[data-ability], [data-item], [data-tip]');
+    if (!el) { tip.hidden = true; return; }
+    const c = tipContent(el);
+    if (!c) { tip.hidden = true; return; }
+    tip.replaceChildren(...c);
+    tip.hidden = false;
+    placeTip(el);
+  });
+  document.addEventListener('pointerdown', () => { tip.hidden = true; }, true);
+
   // ---------- Gruppe ----------
   // party: { leader, members: [{ id, name }] } oder null. ents: Figuren im Gebiet (für Leben und Klasse).
   let partySig = '';
@@ -521,6 +617,6 @@ export function createUI(handlers) {
     updateStatus, updateSky, updateTarget,
     openMenu, closeMenu, menuOpen, openDialog, closeDialog, dialogKey,
     get dialogNpc() { return dialogNpc; },
-    setHover, floater, overhead, nameTag, bubble, placeBubbles, marker, setToday, updateParty,
+    setHover, floater, overhead, nameTag, bubble, placeBubbles, marker, setToday, updateParty, chatLine,
   };
 }

@@ -400,6 +400,7 @@ function flushEvents(events) {
     }
     else if (e.type === 'chat') {
       ui.bubble(e.ent, e.text, 5000, e.ent === mirror.you ? 'me' : '');
+      ui.chatLine(e.ent === mirror.you ? 'You' : mirror.ents.get(e.ent)?.name ?? 'Someone', e.text, e.ent === mirror.you);
       sfx.ui();
     }
     else if (e.type === 'telegraph') addTelegraph(e.t);

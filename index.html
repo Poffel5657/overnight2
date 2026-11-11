@@ -93,8 +93,15 @@
 
   <!-- Log unten links -->
   <section class="window log" id="log-window" aria-label="Log">
-    <h2 class="wtitle log-head"><button type="button" id="btn-log">Log</button><span class="grip" title="Drag to move" aria-hidden="true"></span></h2>
+    <h2 class="wtitle log-head">
+      <span class="log-tabs" role="tablist">
+        <button type="button" id="btn-log" class="log-tab on" role="tab" aria-selected="true">Log</button>
+        <button type="button" id="btn-chat" class="log-tab" role="tab" aria-selected="false">Chat<span class="unread" hidden></span></button>
+      </span>
+      <span class="grip" title="Drag to move" aria-hidden="true"></span>
+    </h2>
     <ol id="log" aria-live="polite"></ol>
+    <ol id="chat-log" hidden aria-live="polite"></ol>
   </section>
 
 

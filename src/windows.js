@@ -13,6 +13,7 @@ import { allNpcs } from '../content/regions/index.js';
 import { xpForLevel } from '../shared/player.js';
 import { keyLabel } from './ui.js';
 import { iconEl, spriteURL } from './icons.js';
+import { describeAbility } from '../shared/describe.js';
 import { makeDraggable, hasSaved, resetLayout, forget } from './drag.js';
 import { FAVOURS, BEACON_FUEL, BEACON_GOAL } from '../content/dailies.js';
 import { BALLOT } from '../content/ballot.js';
@@ -245,9 +246,12 @@ export function createWindows(handlers) {
         const a = ABILITIES[ab];
         const known = s.classes[s.cls].level >= need;
         const onBar = s.bar.includes(ab);
-        return h('li', { class: known ? '' : 'dim' },
-          iconEl('ability', ab, a.glyph, 'icon small'), ` ${a.name} `,
-          known ? (onBar ? h('span', { class: 'muted' }, 'on bar') : btn('To bar', () => handlers.assign(ab, a.name))) : h('span', { class: 'muted' }, `Lv ${need}`));
+        const d = describeAbility(ab);
+        return h('li', { class: `ability-row ${known ? '' : 'dim'}`, 'data-ability': ab },
+          h('div', {}, iconEl('ability', ab, a.glyph, 'icon small'), ` ${a.name} `,
+            known ? (onBar ? h('span', { class: 'muted' }, 'on bar') : btn('To bar', () => handlers.assign(ab, a.name))) : h('span', { class: 'muted' }, `Lv ${need}`)),
+          h('div', { class: 'ability-desc' }, d.effect),
+          h('div', { class: 'ability-cost' }, d.cost));
       }) : [h('li', { class: 'muted' }, 'Choose a calling with Warden Ama by the Beacon.')];
       const profRows = Object.entries(s.profs).map(([id, pr]) => h('li', {}, `${PROFESSIONS[id].name} · Lv ${pr.level}`, xpLine(pr.level, pr.xp)));
       const free = MAX_PROFESSIONS - Object.keys(s.profs).length;
