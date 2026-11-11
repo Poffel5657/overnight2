@@ -3,7 +3,7 @@
 
 import { TALK } from '../content/npcs.js';
 import { QUESTS } from '../content/quests.js';
-import { CLASSES } from '../content/classes.js';
+import { CLASSES, SPEC_LEVEL } from '../content/classes.js';
 import { ITEMS } from '../content/items.js';
 import { PROFESSIONS, MAX_PROFESSIONS } from '../content/professions.js';
 import { cheb } from './path.js';
@@ -39,6 +39,10 @@ export function conditionHolds(p, cond = {}) {
   if (cond.noProf && p.profs[cond.noProf]) return false;
   if (cond.profSlot && Object.keys(p.profs).length >= MAX_PROFESSIONS) return false;
   if (cond.has && !P.hasAll(p, cond.has)) return false;
+  // Spezialisierung: specLevel = aktive Klasse hat SPEC_LEVEL erreicht; noSpec / hasSpec für die aktive Klasse
+  if (cond.specLevel && P.classLevel(p) < SPEC_LEVEL) return false;
+  if (cond.noSpec && p.specs?.[p.cls]) return false;
+  if (cond.hasSpec && !p.specs?.[p.cls]) return false;
   return true;
 }
 
@@ -86,6 +90,9 @@ function giveItems(world, p, items) {
   }
 }
 
+// Für Tests: eine Gesprächswirkung direkt anwenden
+export function applyEffectForTest(world, p, eff) { applyEffect(world, p, eff); }
+
 function applyEffect(world, p, eff) {
   if (eff.start) startQuest(world, p, eff.start);
   if (eff.advance) advanceQuest(world, p, eff.advance);
@@ -98,6 +105,12 @@ function applyEffect(world, p, eff) {
     p.equip.main = CLASSES[cls].starter;
     p.hp = p.maxHp;
     tell(world, p.id, `You are a ${CLASSES[cls].name} now. ${CLASSES[cls].text}`, 'good');
+  }
+  if (eff.chooseSpec && p.cls && !p.specs?.[p.cls] && P.classLevel(p) >= SPEC_LEVEL && CLASSES[p.cls].specs?.[eff.chooseSpec]) {
+    p.specs = { ...(p.specs || {}), [p.cls]: eff.chooseSpec };
+    P.barOf(p);
+    const spec = CLASSES[p.cls].specs[eff.chooseSpec];
+    tell(world, p.id, `You walk the path of the ${spec.name} now. ${spec.text || ''}`.trim(), 'good');
   }
   if (eff.learn && P.canLearnProf(p, eff.learn)) {
     p.profs[eff.learn] = { level: 1, xp: 0 };

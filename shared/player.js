@@ -2,20 +2,22 @@
 // Reine Funktionen auf dem Spieler-Objekt. Der Spielstand (saveOf/loadInto) ist versioniert.
 
 import { ITEMS, SLOTS, BAG_SIZE, UNARMED_DELAY } from '../content/items.js';
-import { CLASSES, WANDERER } from '../content/classes.js';
+import { CLASSES, WANDERER, SPEC_LEVEL } from '../content/classes.js';
 import { ABILITIES } from '../content/abilities.js';
 import { PROFESSIONS, MAX_PROFESSIONS, PROF_MAX_LEVEL } from '../content/professions.js';
 import { QUESTS } from '../content/quests.js';
 
 export const SAVE_VERSION = 2;
-export const MAX_LEVEL = 50;
+export const MAX_LEVEL = 99;
 export const BAR_SIZE = 9;
 
-// Erfahrungskurve (seit 2026-11-11 steiler, Chris' Wunsch): Die Stufe L kostet
-// 40 * 1.1^(L-2) + 10 * (L-2) Erfahrung, frühe Stufen also etwa doppelt so viel wie vorher, späte bis zu
-// 17-mal so viel. xpForLevel(L) ist die Summe bis L (Stufe 50: gut 54.000). Gilt für Klassen und Berufe.
+// Erfahrungskurve (seit 2026-11-11 steiler, Chris' Wunsch): Die Stufe L kostet bis Stufe 50
+// 40 * 1.1^(L-2) + 10 * (L-2) Erfahrung (Stufe 50: gut 54.000 insgesamt). Danach wächst sie langsamer
+// (3 % pro Stufe), sonst wäre 99 unerreichbar: Stufe 99 braucht insgesamt gut 540.000. Gilt für Klassen und Berufe.
 export function xpStep(level) {
-  return level <= 1 ? 0 : Math.round(40 * Math.pow(1.1, level - 2) + 10 * (level - 2));
+  if (level <= 1) return 0;
+  if (level <= 50) return Math.round(40 * Math.pow(1.1, level - 2) + 10 * (level - 2));
+  return Math.round(xpStep(50) * Math.pow(1.03, level - 50));
 }
 const XP_TABLE = [0, 0];
 for (let l = 2; l <= 100; l++) XP_TABLE[l] = XP_TABLE[l - 1] + xpStep(l);
@@ -69,9 +71,16 @@ export function oilBurn(p) {
 }
 
 // Fähigkeiten, die die aktive Klasse auf ihrer Stufe kann.
+// Spezialisierung der aktiven Klasse (ab SPEC_LEVEL) oder null
+export function specOf(p) {
+  const id = p.cls && p.specs?.[p.cls];
+  return id ? CLASSES[p.cls]?.specs?.[id] ?? null : null;
+}
+
 export function knownAbilities(p) {
   const lvl = classLevel(p);
-  return classDef(p).abilities.filter(([, need]) => need <= lvl).map(([id]) => id);
+  const all = [...classDef(p).abilities, ...(specOf(p)?.abilities ?? [])];
+  return all.filter(([, need]) => need <= lvl).map(([id]) => id);
 }
 
 export function barKey(p) {
@@ -248,6 +257,11 @@ export function loadInto(p, raw) {
   if (!save) return;
   p.classes = cleanLevels(save.classes, CLASSES, MAX_LEVEL);
   p.cls = save.cls && p.classes[save.cls] ? save.cls : null;
+  // Spezialisierungen: nur bekannte, nur für Klassen ab SPEC_LEVEL
+  p.specs = {};
+  for (const [cls, id] of Object.entries(save.specs || {})) {
+    if (p.classes[cls]?.level >= SPEC_LEVEL && typeof id === 'string' && Object.hasOwn(CLASSES[cls]?.specs ?? {}, id)) p.specs[cls] = id;
+  }
   p.profs = cleanLevels(save.profs, PROFESSIONS, PROF_MAX_LEVEL);
   while (Object.keys(p.profs).length > MAX_PROFESSIONS) delete p.profs[Object.keys(p.profs).pop()];
   p.gold = clampInt(save.gold, 0, 1e9, 0);
@@ -304,7 +318,7 @@ export function saveOf(p) {
   return {
     v: SAVE_VERSION,
     x: p.x, y: p.y, hp: Math.max(1, p.hp), oil: Math.round(p.oil * 10) / 10, gold: p.gold,
-    cls: p.cls, classes: p.classes, bag: p.bag.filter(Boolean), equip: p.equip,
+    cls: p.cls, classes: p.classes, specs: p.specs ?? {}, bag: p.bag.filter(Boolean), equip: p.equip,
     profs: p.profs, quests: p.quests, bars: p.bars, daily: p.daily ?? null,
   };
 }
@@ -312,7 +326,7 @@ export function saveOf(p) {
 // Was der Browser über den eigenen Charakter wissen muss (für Fenster und Leiste).
 export function stateOf(p) {
   return {
-    cls: p.cls, classes: p.classes, bag: p.bag, equip: p.equip, gold: p.gold,
+    cls: p.cls, classes: p.classes, specs: p.specs ?? {}, bag: p.bag, equip: p.equip, gold: p.gold,
     profs: p.profs, quests: p.quests, bar: barOf(p), defence: defenceOf(p), power: weaponPower(p),
     daily: p.daily ?? null,
   };

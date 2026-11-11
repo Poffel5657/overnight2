@@ -127,7 +127,7 @@ export function addPlayer(world, id, name, save = null) {
     id, kind: 'player', name, sprite: 'player',
     x: 0, y: 0, px: 0, py: 0,
     hp: 30, maxHp: 30, oil: 100, gold: 0,
-    cls: null, classes: {}, bag: [], equip: {}, profs: {}, quests: {}, bars: {},
+    cls: null, classes: {}, specs: {}, bag: [], equip: {}, profs: {}, quests: {}, bars: {},
     path: [], goal: null, target: null, engaged: false,
     gcdUntil: 0, swingAt: 0, cds: {}, queued: null, queuedUntil: 0, braceUntil: 0,
     glowUntil: 0, fadeUntil: 0, hots: [], dialog: null, gather: null,
@@ -204,6 +204,20 @@ function resetBoss(world, m) {
   if (!m.def.boss) return;
   if (m.phase2 && m.def.boss.snuff) setAllLights(world, true);
   m.phase2 = false;
+  m.fightSince = 0;
+  m.enraged = false;
+}
+
+// Wut eines Bosses: Wie stark trifft er gerade? (1 = normal)
+function bossMult(world, m) {
+  const e = m.def.boss?.enrage;
+  if (!e || !m.fightSince) return 1;
+  if (world.tick - m.fightSince < e.after) return 1;
+  if (!m.enraged) {
+    m.enraged = true;
+    emit(world, { type: 'log', text: e.text, cls: 'hurt' });
+  }
+  return e.mult;
 }
 
 // Licht an einem Feld von festen Lichtquellen (ohne Laternen), 0 bis 1.
@@ -932,18 +946,20 @@ function updateMob(world, m) {
     return;
   }
   m.angryAt = p.id;
+  if (def.boss && !m.fightSince) m.fightSince = world.tick;
   if (cheb(m.x, m.y, p.x, p.y) > 1) {
     move(p.x, p.y);
     return;
   }
   if (world.tick < m.nextAttack || world.tick < m.dazzleUntil) return;
+  const mult = bossMult(world, m);
   m.attacks++;
   const specs = def.specials || (def.special ? [def.special] : []);
   const spEvery = def.specialEvery ?? def.special?.every ?? 0;
   const sp = spEvery && m.attacks % spEvery === 0 ? specs[(m.attacks / spEvery - 1) % specs.length] : null;
   if (sp) {
     const tiles = specialTiles(world, m, p, sp.pattern);
-    const t = { id: world.nextTelegraph++, mob: m.id, victim: p.id, tiles, at: world.tick + sp.delay, hit: sp.hit, name: def.name };
+    const t = { id: world.nextTelegraph++, mob: m.id, victim: p.id, tiles, at: world.tick + sp.delay, hit: sp.hit.map((h) => Math.round(h * mult)), name: def.name };
     world.telegraphs.push(t);
     emit(world, { type: 'telegraph', t: { id: t.id, tiles, ms: sp.delay * TICK_MS } });
     tell(world, p.id, sp.text, 'hurt');
@@ -955,7 +971,7 @@ function updateMob(world, m) {
     p.oil = Math.max(0, p.oil - def.drainOil);
     tell(world, p.id, `${theName(def.name)} drinks from your lantern. (-${def.drainOil} oil)`, 'hurt');
   }
-  hurtPlayer(world, p, roll(world, def.hit[0], def.hit[1]), aName(def.name));
+  hurtPlayer(world, p, Math.round(roll(world, def.hit[0], def.hit[1]) * mult), aName(def.name));
 }
 
 function updateNpc(world, n) {

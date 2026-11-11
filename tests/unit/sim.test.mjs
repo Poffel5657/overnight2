@@ -521,6 +521,30 @@ test('Gruppe: einladen, annehmen, Erfahrung teilen, verlassen, über Gebiete wie
   assert.ok(w.outbox.some((o) => o.kind === 'party' && o.disband));
 });
 
+test('Klassen bis 99, Spezialisierung ab Stufe 50 über ein Gespräch', async () => {
+  const { SPEC_LEVEL } = await import('../../content/classes.js');
+  const { applyEffectForTest } = await import('../../shared/talk.js');
+  assert.equal(P.MAX_LEVEL, 99);
+  assert.ok(Number.isFinite(P.xpForLevel(99)) && P.xpForLevel(99) < 1e6, 'Stufe 99 erreichbar');
+  const w = S.createWorld(REGION, 51);
+  const p = newcomer(w, 'a', 'warden');
+  // Testweise eine Spezialisierung anlegen (der Nightwright füllt die echten)
+  CLASSES.warden.specs.test_bulwark = { name: 'Bulwark', text: 'Test.', abilities: [['taunt', SPEC_LEVEL]] };
+  try {
+    applyEffectForTest(w, p, { chooseSpec: 'test_bulwark' });
+    assert.equal(p.specs.warden, undefined, 'unter Stufe 50 nicht wählbar');
+    p.classes.warden = { level: SPEC_LEVEL, xp: P.xpForLevel(SPEC_LEVEL) };
+    applyEffectForTest(w, p, { chooseSpec: 'test_bulwark' });
+    assert.equal(p.specs.warden, 'test_bulwark');
+    applyEffectForTest(w, p, { chooseSpec: 'other' });
+    assert.equal(p.specs.warden, 'test_bulwark', 'nur eine Wahl');
+    const q = S.addPlayer(w, 'b', 'b', JSON.parse(JSON.stringify(S.removePlayer(w, 'a'))));
+    assert.equal(q.specs.warden, 'test_bulwark', 'übersteht Speichern');
+  } finally {
+    delete CLASSES.warden.specs.test_bulwark;
+  }
+});
+
 test('Protokoll lehnt Unsinn ab', () => {
   assert.equal(parseIntent('{"t":"walk","x":1.5,"y":2}'), null);
   assert.equal(parseIntent('{"t":"walk","x":-1,"y":2}'), null);
@@ -775,7 +799,7 @@ test('The Older Prayer: Schrein, Tallow, dann öffnet sich der Abstieg', () => {
 
 test('Truhen öffnen sich einmal am Tag pro Spieler', () => {
   const d = S.createWorld(regionFor('drowned_chapel'), 43);
-  const p = S.addPlayer(d, 'a', 'a', { v: 2, cls: 'warden', classes: { warden: { level: 30, xp: 0 } }, equip: { main: 'scrap_shield' } });
+  const p = S.addPlayer(d, 'a', 'a', { v: 2, cls: 'warden', classes: { warden: { level: 30, xp: P.xpForLevel(30) } }, equip: { main: 'scrap_shield' } });
   const chest = d.objects.find((o) => o.type === 'chest');
   p.x = chest.x + 1; p.y = chest.y;
   if (!S.walkable(d, p.x, p.y)) { p.x = chest.x; p.y = chest.y + 1; }
@@ -794,7 +818,7 @@ function bossFight() {
   const d = S.createWorld(regionFor('drowned_chapel'), 50);
   const boss = d.mobs.find((m) => m.type === 'lamplighter');
   for (const m of d.mobs) if (m !== boss) { m.dead = true; m.deadUntil = 1e9; }
-  const p = S.addPlayer(d, 'a', 'a', { v: 2, cls: 'warden', classes: { warden: { level: 36, xp: 0 } }, equip: { main: 'greyglass_shield', body: 'greyglass_coat' }, quests: { false_light: { step: 0, n: 0 } } });
+  const p = S.addPlayer(d, 'a', 'a', { v: 2, cls: 'warden', classes: { warden: { level: 36, xp: P.xpForLevel(36) } }, equip: { main: 'greyglass_shield', body: 'greyglass_coat' }, quests: { false_light: { step: 0, n: 0 } } });
   p.x = boss.x + 1; p.y = boss.y;
   return { d, boss, p };
 }
@@ -822,6 +846,8 @@ test('Lamplighter: Phase 2 löscht alle Lichter, im Dunkeln ist er verhüllt', (
 
 test('Lamplighter: Sieg zündet die Lichter an und zählt für The False Light', () => {
   const { d, boss, p } = bossFight();
+  // Hier geht es um Licht, Quest und Beute nach dem Sieg, nicht um die Kampfdauer (Gruppen-Boss).
+  boss.hp = boss.maxHp = 650;
   boss.angryAt = 'a';
   S.interact(d, 'a', { kind: 'mob', id: boss.id }, 'attack');
   for (let i = 0; i < 3000 && !boss.dead; i++) {
@@ -835,6 +861,26 @@ test('Lamplighter: Sieg zündet die Lichter an und zählt für The False Light',
   assert.ok(d.lights.length >= 5, 'Lichter brennen wieder');
   assert.equal(p.quests.false_light.step, 1);
   assert.ok(P.countItem(p, 'lamp_shard') === 1);
+});
+
+test('Lamplighter ist ein Gruppen-Boss und wird nach 4 Minuten wütend', () => {
+  const { d, boss, p } = bossFight();
+  assert.ok(boss.maxHp >= 10000, 'zu zweit nicht in Sekunden zu legen');
+  p.hp = p.maxHp = 100000;
+  boss.angryAt = 'a';
+  S.interact(d, 'a', { kind: 'mob', id: boss.id }, 'attack');
+  const hits = [];
+  const before = MOBS.lamplighter.boss.enrage.after;
+  for (let i = 0; i < before + 120; i++) {
+    const hp = p.hp;
+    run(d, 1);
+    if (p.hp < hp) hits.push([d.tick, hp - p.hp]);
+    p.hp = p.maxHp;
+  }
+  assert.ok(boss.enraged, 'Wut nach enrage.after Takten');
+  const early = hits.filter(([t]) => t < before / 2).map(([, n]) => n);
+  const late = hits.slice(-5).map(([, n]) => n);
+  assert.ok(Math.max(...late) > Math.max(...early), 'schlägt in Wut härter');
 });
 
 test('Lamplighter heilt sich, wenn alle fliehen', () => {

@@ -3,7 +3,7 @@
 // Alles wird mit DOM-Funktionen gebaut, Texte nur über textContent.
 
 import { ITEMS, SLOTS, SLOT_NAMES, BAG_SIZE } from '../content/items.js';
-import { CLASSES, WANDERER, UNLOCK_LEVEL } from '../content/classes.js';
+import { CLASSES, WANDERER, UNLOCK_LEVEL, SPEC_LEVEL } from '../content/classes.js';
 import { ABILITIES } from '../content/abilities.js';
 import { PROFESSIONS, MAX_PROFESSIONS } from '../content/professions.js';
 import { QUESTS } from '../content/quests.js';
@@ -216,6 +216,9 @@ export function createWindows(handlers) {
         h('div', { class: 'char-id' },
           h('div', { class: 'char-class' }, def.name),
           h('div', { class: 'muted small' }, `Level ${lvl}${def.role ? ` · ${def.role.toLowerCase()}` : ''}`),
+          active ? h('div', { class: 'small spec-line' }, s.specs?.[s.cls] && active.specs?.[s.specs[s.cls]]
+            ? `Path: ${active.specs[s.specs[s.cls]].name}`
+            : lvl >= SPEC_LEVEL ? `A path awaits: talk to ${npcName(active.teacher)}.` : `Choose a path at level ${SPEC_LEVEL}.`) : null,
           active ? xpLine(lvl, s.classes[s.cls].xp) : h('div', { class: 'muted small' }, 'No calling yet.')));
 
       // Werte

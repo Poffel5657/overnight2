@@ -35,6 +35,15 @@ Jede Nacht besteht aus **drei Teilen**, die ein Spieler bemerkt (Ort, Wesen, Que
 - Alles, was live geht, ist fertig und getestet. Lieber zwei fertige Teile als drei halbe; fehlt einer, begründe es in `CHRONICLE.md`. **Fertig heißt: Ein Spieler kann es finden, verstehen, benutzen, und es lohnt sich.**
 - Die Welt nimmt die Neuerung wahr: Pell ruft die Nacht aus (das passiert über `content/chronicle.js` von selbst), eine passende Figur sagt etwas dazu, eine Quest führt hin. Spieltexte sind Englisch und folgen dem Ton aus `DESIGN.md`.
 
+### Dauerauftrag: Klassen ausbauen bis Stufe 99
+
+Die Klassen wachsen bis **Stufe 99** (Chris' Wunsch, freigegeben am 2026-11-11). Heute enden ihre Fähigkeiten bei Stufe 9; das reicht nicht. **Jede Nacht** baust du mindestens eine Klasse ein Stück aus (der Reihe nach: Warden, Mender, Flarecaster, Drifter), zusätzlich zu den drei Teilen:
+- eine neue Fähigkeit oder eine spürbare Verbesserung bei einer höheren Stufe, die zur Rolle passt (Tank, Heiler, Fernkampf, Nahkampf), mit Daten in `content/abilities.js` und Eintrag in `content/classes.js`. Neue Wirkungsarten brauchen Code in `shared/sim.js` (`castAbility`) und einen Test.
+- Ziel über die Wochen: etwa alle 4 bis 6 Stufen etwas Neues bis 99, damit jede Stufe sich lohnt.
+- **Spezialisierungen ab Stufe 50** (`SPEC_LEVEL`): Jede Klasse bekommt zwei Wege (`specs` in `content/classes.js`, Format steht dort), gewählt im Gespräch beim Lehrer der Klasse (Wirkung `chooseSpec`, Bedingungen `specLevel`, `noSpec`). Jeder Weg hat eigene Fähigkeiten von 50 bis 99 und einen eigenen Charakter. Baue sie als Ausbau über mehrere Nächte (`Ausbau läuft` in `PLAN.md`): erst Klasse für Klasse die zwei Wege mit je einer Fähigkeit, dann weiter nach oben.
+- Höhere Stufen brauchen Inhalt: Wesen, Gebiete, Ausrüstung und Quests für 40 bis 99 wachsen mit (Erfahrung der Wesen passend zur Kurve `xpStep`).
+- Halte den Stand in `ROADMAP.md` fest (Tabelle: Klasse, höchste Stufe mit Inhalt, Spezialisierungen).
+
 ### Wo eine Neuerung andockt
 
 Prüfe für jeden Wunsch in dieser Reihenfolge (siehe `DESIGN.md`, „Das Gerüst“):
@@ -121,6 +130,7 @@ Reicht die Nacht nicht für beides, haben die Neuerungen Vorrang. Im Chronik-Ein
 Es gibt noch keinen automatischen Probespieler. Bis dahin:
 - Jedes neue Wesen hat eine Rolle: nebenbei, normal, Boss (allein mit Einsatz), Gruppe (allein kaum, zu viert gut). Wähle Rolle und Gebietsstufe **vor** den Zahlen und orientiere dich an Wesen derselben Stufe in `content/mobs.js`.
 - Angekündigte Angriffe (`special`) müssen fair sein: Vorwarnung (`delay`) mindestens 4 Takte, Fläche so, dass man in der Zeit herauslaufen kann (ein Feld pro Takt). Bosse haben einen eigenen.
+- Für Bosse und Gruppen-Wesen: `node tools/boss-probe.mjs <wesen> <gebiet>` lässt Gruppen (2 bis 4 Spieler, verschiedene Stufen, mit und ohne Ausrüstung) in der echten Simulation kämpfen. Ein Gruppen-Boss muss zu viert auf seiner Stufe in 2 bis 4 Minuten fallen und zu zweit klar darunter scheitern. Ergänze die Gruppen im Skript nicht, sondern lies die Zeilen und passe die Zahlen des Wesens an.
 - Dein Spielweg-Test kämpft gegen jedes neue Wesen mit der Ausrüstung, die man dort realistisch hat, und prüft, dass ein Sieg möglich ist und etwas kostet.
 - Die Grundregeln des Kampfs (globale Abklingzeit `GCD`, Waffentakt, Rüstung fängt höchstens die Hälfte ab) und die Erfahrungskurve (`xpStep` in `shared/player.js`) ändert nur Chris. Belohnungen (Erfahrung von Wesen und Quests) passt du an diese Kurve an, nicht umgekehrt.
 

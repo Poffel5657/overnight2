@@ -70,12 +70,14 @@ export const MOBS = {
     examine: 'About the size of a cart, and twice as smug.',
   },
   lamplighter: {
-    name: 'The Lamplighter', sprite: 'lamplighter', level: 36, ai: 'beast',
-    hp: 650, hit: [14, 18], attackEvery: 4, aggro: 7, leash: 12, respawn: 900, xp: 900,
+    // Gruppen-Boss: gedacht für vier Spieler um Stufe 38 mit Ausrüstung (etwa zwei Minuten).
+    // Wer ihn zu zweit langsam zermürben will, erlebt nach 4 Minuten seine Wut (enrage).
+    name: 'The Lamplighter', sprite: 'lamplighter', level: 40, ai: 'beast',
+    hp: 14000, hit: [24, 30], attackEvery: 5, aggro: 7, leash: 12, respawn: 900, xp: 4000,
     drops: [['lamp_shard', 1, 1, 1], ['greyglass', 0.8, 2, 3]], gold: [80, 140],
     specials: [
-      { every: 1, delay: 6, pattern: 'ring', hit: [42, 51], text: 'The Lamplighter swings his lamp in a wide circle.' },
-      { every: 1, delay: 6, pattern: 'bigplus', hit: [38, 48], text: 'The Lamplighter raises his lamp. Light pools around you.' },
+      { every: 1, delay: 6, pattern: 'ring', hit: [60, 72], text: 'The Lamplighter swings his lamp in a wide circle.' },
+      { every: 1, delay: 6, pattern: 'bigplus', hit: [55, 68], text: 'The Lamplighter raises his lamp. Light pools around you.' },
     ],
     specialEvery: 3,
     boss: {
@@ -83,6 +85,8 @@ export const MOBS = {
       phase2Text: 'The Lamplighter breathes in. Every light in the chapel goes out.',
       snuff: true,
       shroud: 0.5,
+      // Nach enrage.after Takten Kampf schlägt er mult-mal so hart (normale Schläge und Flächen).
+      enrage: { after: 800, mult: 2, text: 'The Lamplighter\'s lamp burns white. He is done being patient.' },
       deathText: 'The False Light goes out. Somewhere far off in the Grey, another light flickers.',
     },
     examine: 'Tall, thin, patient. He tends a light that should not be burning.',

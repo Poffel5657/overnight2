@@ -19,3 +19,12 @@ Welche Andockpunkte in den nächsten Nächten wachsen, damit große Wünsche üb
 - Probespieler für die Balance (`tools/`).
 - Chat-Moderation.
 - Bank (geteiltes Lager zwischen Gebieten).
+
+## Klassen bis 99 (Dauerauftrag, jede Nacht ein Stück)
+
+| Klasse | Fähigkeiten bis Stufe | Spezialisierungen (ab 50) |
+|---|---|---|
+| Warden | 8 | noch keine |
+| Mender | 9 | noch keine |
+| Flarecaster | 7 | noch keine |
+| Drifter | 8 | noch keine |
