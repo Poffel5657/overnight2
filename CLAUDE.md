@@ -122,7 +122,7 @@ Es gibt noch keinen automatischen Probespieler. Bis dahin:
 - Jedes neue Wesen hat eine Rolle: nebenbei, normal, Boss (allein mit Einsatz), Gruppe (allein kaum, zu viert gut). Wähle Rolle und Gebietsstufe **vor** den Zahlen und orientiere dich an Wesen derselben Stufe in `content/mobs.js`.
 - Angekündigte Angriffe (`special`) müssen fair sein: Vorwarnung (`delay`) mindestens 4 Takte, Fläche so, dass man in der Zeit herauslaufen kann (ein Feld pro Takt). Bosse haben einen eigenen.
 - Dein Spielweg-Test kämpft gegen jedes neue Wesen mit der Ausrüstung, die man dort realistisch hat, und prüft, dass ein Sieg möglich ist und etwas kostet.
-- Die Grundregeln des Kampfs (globale Abklingzeit `GCD`, Waffentakt, Rüstung fängt höchstens die Hälfte ab) ändert nur Chris.
+- Die Grundregeln des Kampfs (globale Abklingzeit `GCD`, Waffentakt, Rüstung fängt höchstens die Hälfte ab) und die Erfahrungskurve (`xpStep` in `shared/player.js`) ändert nur Chris. Belohnungen (Erfahrung von Wesen und Quests) passt du an diese Kurve an, nicht umgekehrt.
 
 ## Spielstände und gemeinsame Welt
 

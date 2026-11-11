@@ -11,8 +11,23 @@ export const SAVE_VERSION = 2;
 export const MAX_LEVEL = 50;
 export const BAR_SIZE = 9;
 
+// Erfahrungskurve (seit 2026-11-11 steiler, Chris' Wunsch): Die Stufe L kostet
+// 40 * 1.1^(L-2) + 10 * (L-2) Erfahrung, frühe Stufen also etwa doppelt so viel wie vorher, späte bis zu
+// 17-mal so viel. xpForLevel(L) ist die Summe bis L (Stufe 50: gut 54.000). Gilt für Klassen und Berufe.
+export function xpStep(level) {
+  return level <= 1 ? 0 : Math.round(40 * Math.pow(1.1, level - 2) + 10 * (level - 2));
+}
+const XP_TABLE = [0, 0];
+for (let l = 2; l <= 100; l++) XP_TABLE[l] = XP_TABLE[l - 1] + xpStep(l);
 export function xpForLevel(level) {
-  return Math.round(20 * Math.pow(level - 1, 1.6));
+  if (level <= 1) return 0;
+  return XP_TABLE[Math.min(100, level)];
+}
+// Stufe, die zu einer Menge Erfahrung passt (beim Laden: die Stufe folgt immer der Erfahrung)
+export function levelForXp(xp, max) {
+  let l = 1;
+  while (l < max && xp >= xpForLevel(l + 1)) l++;
+  return l;
 }
 
 export const classDef = (p) => (p.cls ? CLASSES[p.cls] : WANDERER);
@@ -205,7 +220,9 @@ function cleanLevels(src, known, max) {
   if (!src || typeof src !== 'object') return out;
   for (const [k, v] of Object.entries(src)) {
     if (!Object.hasOwn(known, k)) continue;
-    out[k] = { level: clampInt(v?.level, 1, max, 1), xp: clampInt(v?.xp, 0, 1e9, 0) };
+    // Die Stufe wird aus der Erfahrung berechnet, damit Spielstände zur aktuellen Kurve passen.
+    const xp = clampInt(v?.xp, 0, 1e9, 0);
+    out[k] = { level: levelForXp(xp, max), xp };
   }
   return out;
 }
@@ -217,7 +234,7 @@ export function migrate(save) {
     // Version 1 (Prototyp): eine namenlose Kampfstufe. Sie wird zur Warden-Stufe.
     return {
       v: 2, x: save.x, y: save.y, hp: save.hp, oil: save.oil, gold: 0,
-      cls: 'warden', classes: { warden: { level: save.level ?? 1, xp: save.xp ?? 0 } },
+      cls: 'warden', classes: { warden: { level: save.level ?? 1, xp: Math.max(Number(save.xp) || 0, xpForLevel(save.level ?? 1)) } },
       bag: [], equip: { main: 'scrap_shield', lantern: 'tin_lantern' }, profs: {},
       quests: { kindling: { done: true } }, bars: {},
     };

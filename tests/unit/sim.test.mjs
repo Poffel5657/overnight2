@@ -103,10 +103,10 @@ test('Erste Klasse bei Ama: Waffe, Laterne, Leiste, Quest', () => {
 test('Spielstand übersteht Gehen und Wiederkommen', () => {
   const w = S.createWorld(REGION, 1);
   const p = newcomer(w, 'a', 'mender');
-  p.classes.mender = { level: 4, xp: 120 };
+  p.classes.mender = { level: 4, xp: P.xpForLevel(4) + 10 };
   P.addItem(p, 'bread', 3);
   p.gold = 17;
-  p.profs.salvage = { level: 3, xp: 50 };
+  p.profs.salvage = { level: 3, xp: P.xpForLevel(3) + 5 };
   const save = JSON.parse(JSON.stringify(S.removePlayer(w, 'a')));
   const q = S.addPlayer(w, 'a', 'a', save);
   assert.equal(q.cls, 'mender');
@@ -116,6 +116,15 @@ test('Spielstand übersteht Gehen und Wiederkommen', () => {
   assert.equal(q.gold, 17);
   assert.equal(q.profs.salvage.level, 3);
   assert.equal(q.quests.kindling.step, 1);
+});
+
+test('Stufe folgt beim Laden der Erfahrung (neue Kurve)', () => {
+  const w = S.createWorld(REGION, 1);
+  const xp = P.xpForLevel(20) + 1;
+  const q = S.addPlayer(w, 'a', 'a', { v: 2, x: 30, y: 30, hp: 20, oil: 50, gold: 0, cls: 'warden', classes: { warden: { level: 50, xp } }, bag: [], equip: {}, profs: {}, quests: {}, bars: {} });
+  assert.equal(q.classes.warden.level, 20);
+  assert.equal(q.classes.warden.xp, xp, 'Erfahrung bleibt erhalten');
+  assert.ok(P.xpStep(50) > P.xpStep(10) * 10, 'späte Stufen deutlich teurer');
 });
 
 test('Alter Spielstand (Version 1) wird übernommen', () => {
@@ -136,7 +145,7 @@ test('Kaputte oder gefälschte Spielstände werden abgefangen', () => {
     bars: { warden: ['__proto__', 'bash'] },
   });
   assert.equal(p.cls, null, 'unbekannte Klasse');
-  assert.equal(p.classes.warden.level, P.MAX_LEVEL);
+  assert.equal(p.classes.warden.level, 1, 'Stufe folgt der Erfahrung, nicht der behaupteten Stufe');
   assert.ok(!p.classes.god);
   assert.equal(p.gold, 0);
   assert.ok(p.oil >= 0);
