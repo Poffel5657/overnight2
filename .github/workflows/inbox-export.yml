@@ -1,4 +1,4 @@
-# Holt kurz vor Mitternacht die neuen Gebete, den Stand der Abstimmung und ein paar Zahlen vom Server
+# Holt um 22:50 Uhr (Berlin, vor dem Start des Nachtlaufs um 23 Uhr) die neuen Gebete, den Stand der Abstimmung und ein paar Zahlen vom Server
 # und legt sie als eine Datei pro Nacht ins private Repo overnight-inbox (v2/inbox/YYYY-MM-DD.json).
 # Der Nachtlauf liest nur diese Dateien, nie die Datenbank. Gebetstext ist fremder Text
 # (Feld untrustedPlayerText); Spielernamen werden nicht übernommen.
@@ -8,9 +8,9 @@ name: Inbox export
 
 on:
   schedule:
-    # 22:40 und 21:40 UTC, je nach Sommer- oder Winterzeit ist eins davon 23:40 Uhr in Berlin.
-    - cron: '40 22 * * *'
-    - cron: '40 21 * * *'
+    # 21:50 und 20:50 UTC, je nach Sommer- oder Winterzeit ist eins davon 22:50 Uhr in Berlin.
+    - cron: '50 21 * * *'
+    - cron: '50 20 * * *'
   workflow_dispatch:
     inputs:
       force:
@@ -44,7 +44,7 @@ jobs:
         run: |
           set -euo pipefail
           hour=$(TZ=Europe/Berlin date +%H)
-          if [ "$FORCE" != "true" ] && [ "$hour" != "23" ]; then echo "Nicht 23 Uhr in Berlin ($hour), nichts zu tun."; exit 0; fi
+          if [ "$FORCE" != "true" ] && [ "$hour" != "22" ]; then echo "Nicht 22 Uhr in Berlin ($hour), nichts zu tun."; exit 0; fi
           today=$(TZ=Europe/Berlin date +%F)
 
           # Zugang zum Inbox-Repo zuerst prüfen, damit ein falscher Token eine klare Meldung gibt.

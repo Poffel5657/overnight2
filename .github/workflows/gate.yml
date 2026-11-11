@@ -31,6 +31,7 @@ jobs:
       big_issue: ${{ steps.check.outputs.big_issue }}
       answered: ${{ steps.check.outputs.answered }}
       note: ${{ steps.check.outputs.note }}
+      release: ${{ steps.check.outputs.release }}
     steps:
       - id: check
         name: Pfade, Pflichtdateien und Tagesnummer prüfen
@@ -88,6 +89,10 @@ jobs:
           last=$(grep -oE '\bday: *[0-9]+' chronicle.js | tail -1 | grep -oE '[0-9]+')
           [ "$((10#$day))" = "$last" ] || fail "Letzter Chronik-Eintrag ist Tag $last, Branch ist Tag $day."
           echo "day=$day" >> "$GITHUB_OUTPUT"
+          # Freigabe-Datum = Datum des Chronik-Eintrags (der Nachtlauf beginnt um 23 Uhr und datiert auf den neuen Tag).
+          release=$(grep -oE "date: *'[0-9]{4}-[0-9]{2}-[0-9]{2}'" chronicle.js | tail -1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}')
+          [ -n "$release" ] || fail "Letzter Chronik-Eintrag hat kein Datum."
+          echo "release=$release" >> "$GITHUB_OUTPUT"
 
   test:
     needs: gate
@@ -123,6 +128,8 @@ jobs:
     # Notschalter: Repo-Variable AUTO_MERGE auf false setzen, dann bleibt jeder PR liegen.
     if: vars.AUTO_MERGE != 'false'
     runs-on: ubuntu-24.04
+    # Wartet bis Mitternacht in Berlin (höchstens gut drei Stunden), dann geht die Nacht live.
+    timeout-minutes: 240
     permissions:
       contents: write
       pull-requests: write
@@ -130,6 +137,19 @@ jobs:
       actions: write
       issues: write
     steps:
+      - name: Bis Mitternacht (Berlin) warten
+        env:
+          RELEASE: ${{ needs.gate.outputs.release }}
+        run: |
+          set -euo pipefail
+          today=$(TZ=Europe/Berlin date +%F)
+          if [[ "$today" > "$RELEASE" ]] || [ "$today" = "$RELEASE" ]; then echo "Freigabe $RELEASE ist erreicht."; exit 0; fi
+          # Nur einen Tag im Voraus: sonst stimmt etwas mit dem Datum nicht.
+          tomorrow=$(TZ=Europe/Berlin date -d tomorrow +%F)
+          [ "$RELEASE" = "$tomorrow" ] || { echo "::error::Chronik-Datum $RELEASE liegt nicht morgen ($tomorrow)."; exit 1; }
+          echo "Warte bis $RELEASE 00:00 Berlin ..."
+          while [ "$(TZ=Europe/Berlin date +%F)" != "$RELEASE" ]; do sleep 20; done
+          echo "Mitternacht. Die Nacht geht live."
       - name: Mergen, taggen, Deploy starten, Gebete als erhört markieren
         env:
           GH_TOKEN: ${{ github.token }}

@@ -6,6 +6,14 @@ Du erinnerst dich nicht an frühere Nächte. Alles, was du wissen musst, steht i
 
 Diese Datei ist geschützt. Ein PR, der sie ändert, wird nicht gemergt.
 
+## Zeitplan
+
+- Die Routine startet um **23:00 Uhr Berlin**. Du baust die Nacht, solange du brauchst.
+- Die Nacht gehört zum **kommenden Tag**: Das Datum für `content/chronicle.js` ist das Berliner Datum nach Mitternacht (`TZ=Europe/Berlin date -d '+1 hour' +%F` liefert es ab 23 Uhr).
+- Öffne den PR, sobald alles fertig und getestet ist. Das Gate testet sofort, **wartet dann bis 0:00 Uhr Berlin** und bringt die Nacht erst dann live (Merge, Server, Seite). Spieler, die um Mitternacht online sind, sehen dann den Hinweis zum Neuladen.
+- Wird es nach Mitternacht, ist das kein Problem: Das Gate gibt dann sofort frei.
+- Die Inbox-Datei des Abends entsteht um 22:50 Uhr und liegt also schon bereit.
+
 ## Tagesstart: in dieser Reihenfolge
 
 1. Lies `DESIGN.md`, `STORY.md`, `ARCHITECTURE.md`, `PLAN.md`, `ROADMAP.md`, die letzten fünf Einträge von `CHRONICLE.md` und deinen geheimen Bogen `v2/arc.md` im Inbox-Repo. Was dort für heute ansteht, gehört zur Planung der Nacht.
@@ -134,13 +142,13 @@ Vor dem PR, in dieser Reihenfolge, alles grün:
 
 ## Tagesende: Pflicht
 
-1. Eintrag in `content/chronicle.js`: `{ day, date, title, text }` (Datum Berlin, Titel und ein bis zwei Sätze für Spieler, Englisch). Pell ruft ihn aus, und beim Einloggen erscheint er als „Last night…“. Erwähne den Gewinner der Abstimmung.
+1. Eintrag in `content/chronicle.js`: `{ day, date, title, text }` (Datum des kommenden Tages, siehe „Zeitplan“; Titel und ein bis zwei Sätze für Spieler, Englisch). Pell ruft ihn aus, und beim Einloggen erscheint er als „Last night…“. Erwähne den Gewinner der Abstimmung.
 2. Eintrag in `CHRONICLE.md`: die drei Teile, warum genau das, Gebete (in eigenen Worten, mit IDs), „Gewünscht / Geliefert / Fehlt noch“, Abstimmungsergebnis, Balance-Notizen.
 3. `content/ballot.js` neu füllen (siehe „Abstimmung“).
 4. `STORY.md` ergänzen (siehe „Weltgedächtnis“), `ROADMAP.md` und `PLAN.md` aktualisieren (Erledigtes raus, nächste Nächte, Ideen für später, Inbox gelesen bis), `ARCHITECTURE.md`, wenn sich Aufbau oder Formate geändert haben.
 5. Commit auf den Branch `claude/day-NNN` (NNN dreistellig), pushen, PR nach `main` mit dem Titel `Day NNN: <Titel>`. In die Beschreibung: die drei Teile, `Answered-Prayers`/`Answered-Note` falls zutreffend, `Big-Change: #N` falls freigegeben. **Merge nie selbst**, das erledigt das Gate (`gate.yml`). Nach dem Merge bringt `deploy.yml` erst den Server, dann die Seite live. Du rufst nie `wrangler` auf.
 6. Geheimen Bogen fortschreiben (siehe „Der lange Bogen“).
-7. Schicke Chris eine Push-Nachricht, wenn dir das Werkzeug dafür zur Verfügung steht: ein bis zwei Sätze auf Deutsch mit Tagesnummer, den drei Teilen, Abstimmungsergebnis, PR-Link und allen Problemen.
+7. Schicke Chris eine Push-Nachricht, sobald der PR offen ist, wenn dir das Werkzeug dafür zur Verfügung steht: ein bis zwei Sätze auf Deutsch mit Tagesnummer, den drei Teilen, Abstimmungsergebnis, PR-Link, „geht um 0:00 live“ und allen Problemen.
 
 Das Gate verlangt: Branch `claude/day-NNN` auf aktuellem `main`, Änderungen an `PLAN.md`, `CHRONICLE.md` und `content/chronicle.js` (letzter Eintrag = Tagesnummer), einen Test `tests/night/NNN-*`, keine geschützten Pfade, nur Noreply-Adressen, dann grüne Tests, Prüfer und Rauchtest.
 
