@@ -69,6 +69,14 @@ export const MOBS = {
     special: { every: 3, delay: 6, pattern: 'bigplus', hit: [32, 42], text: 'The toad inflates. Everyone nearby should not be.' },
     examine: 'About the size of a cart, and twice as smug.',
   },
+  mire_lurker: {
+    // Lauert im tiefen Sumpf am Südrand von Sinkmarsh (Stufe 30-34, Brücke zur Drowned Chapel).
+    name: 'Mire Lurker', sprite: 'mire_lurker', level: 31, ai: 'beast', moveEvery: 2,
+    hp: 200, hit: [12, 15], attackEvery: 4, aggro: 3, leash: 7, respawn: 100, xp: 115,
+    drops: [['sodden_hymnal', 0.5, 1, 1], ['lily_bulb', 0.3, 1, 2], ['scrap', 0.3, 1, 3]], gold: [10, 18],
+    special: { every: 3, delay: 6, pattern: 'line', hit: [34, 42], text: 'The mire bulges. Something long is coming up through it.' },
+    examine: 'Mostly mouth, a little moss. It swallowed a choir book once and now it hums.',
+  },
   lamplighter: {
     // Gruppen-Boss: gedacht für vier Spieler um Stufe 38 mit Ausrüstung (etwa zwei Minuten).
     // Wer ihn zu zweit langsam zermürben will, erlebt nach 4 Minuten seine Wut (enrage).
@@ -94,7 +102,7 @@ export const MOBS = {
   drowned_pilgrim: {
     name: 'Drowned Pilgrim', sprite: 'drowned_pilgrim', level: 32, ai: 'grey',
     hp: 110, hit: [12, 15], attackEvery: 4, aggro: 5, leash: 9, respawn: 120, xp: 120,
-    drops: [['greyglass', 0.35, 1, 1], ['grey_wisp', 0.5, 1, 2]], gold: [10, 20],
+    drops: [['greyglass', 0.35, 1, 1], ['grey_wisp', 0.5, 1, 2], ['sodden_hymnal', 0.3, 1, 1]], gold: [10, 20],
     special: { every: 3, delay: 6, pattern: 'ring', hit: [35, 45], text: 'The pilgrim lifts its lamp. Water rises around it.' },
     examine: 'It came here to pray a long time ago. It is still praying, to something else.',
   },

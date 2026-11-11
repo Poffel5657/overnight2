@@ -543,7 +543,7 @@ export const ITEM_ICONS = {
   dusk_draught: ['potion', 'purple'], flare_candle: ['potion', 'pale'], lily_oil: ['potion', 'pale'],
   scrap: ['pile', 'scrap'], brass_bits: ['pile', 'brass'], glimmer: ['gem', 'glim'], greyglass: ['gem', 'greyglass'], lamp_shard: ['gem', 'shard'],
   bitterleaf: ['leaf', 'green'], moss_tuft: ['leaf', 'moss'], emberroot: ['root', 'red_root'], lily_bulb: ['root', 'pale'],
-  wax_comb: ['block', 'wax'], nightcap: ['mushroom', 'purple'], survey_notes: ['notes', 'paper'], prayer_tablet: ['notes', 'stone'],
+  wax_comb: ['block', 'wax'], nightcap: ['mushroom', 'purple'], survey_notes: ['notes', 'paper'], prayer_tablet: ['notes', 'stone'], sodden_hymnal: ['notes', 'moss'], choir_bell: ['potion', 'moss'], choir_mantle: ['coat', 'cold'],
   grey_wisp: ['wisp', 'wispy'], crow_feather: ['feather', 'black'], wolf_pelt: ['pelt', 'wolf'], beetle_shell: ['shell', 'stone'],
 };
 
@@ -551,7 +551,7 @@ export const ITEM_ICONS = {
 export const ABILITY_ICONS = {
   punch: ['fist', 'skin'],
   bash: ['shield', 'steel'], brace: ['shield', 'light'], taunt: ['bang', 'red'], lantern_ward: ['ring', 'light'], shield_slam: ['shield', 'red'], stand_fast: ['shield', 'warm'], beacon_slam: ['star', 'light'],
-  ember_touch: ['flame', 'ember'], staff_rap: ['staff', 'brass'], warmth: ['waves', 'warm'], glow: ['ring', 'warm'], kindle_burst: ['star', 'ember'],
+  ember_touch: ['flame', 'ember'], staff_rap: ['staff', 'brass'], warmth: ['waves', 'warm'], glow: ['ring', 'warm'], kindle_burst: ['star', 'ember'], cinder_flick: ['bolt', 'ember'], hearth_song: ['waves', 'light'], rekindle: ['flame', 'warm'],
   flare_bolt: ['bolt', 'light'], flare: ['star', 'light'], sear: ['beam', 'ember'], sunspot: ['sun', 'light'],
   slash: ['slash', 'steel'], dusk_step: ['arrow', 'dark'], snare: ['trap', 'steel'], fade: ['ghost', 'dark'], twin_cut: ['cross', 'steel'],
 };

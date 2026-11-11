@@ -26,7 +26,7 @@ export const CLASSES = {
     name: 'Mender', role: 'HEALER', teacher: 'tallow', starter: 'ember_staff', trial: 'trial_mender',
     hp: 30, hpPerLevel: 3,
     text: 'Keeps everyone warm. Warm people do not fall over.',
-    abilities: [['ember_touch', 1], ['staff_rap', 1], ['warmth', 3], ['glow', 6], ['kindle_burst', 9]],
+    abilities: [['ember_touch', 1], ['staff_rap', 1], ['warmth', 3], ['glow', 6], ['kindle_burst', 9], ['cinder_flick', 11], ['hearth_song', 13], ['rekindle', 16]],
     specs: {},
   },
   flarecaster: {

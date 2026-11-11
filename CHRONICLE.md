@@ -29,3 +29,10 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 **Balance-Notizen:** Keine neuen Wesen. Schneckenquoten per Monte-Carlo abgestimmt (Erwartung je Schnecke 0,90 bis 0,93, Test prüft 0,8 bis 1,0). Moth Lantern kostet 225 Gold beim Händler, liegt also zwischen Brass (selbst gebaut ab Lampwright 5) und Glimsteel. Quest-Erfahrung: „Not From Here“ 420 (Stufe 10+, etwa zwei Stufen 11), die anderen klein. Warden-Test: Stufe 16 mit Glimsteel-Schild gegen einen Hushwood-Wolf gewinnt und verliert dabei Leben.
 
 **Abstimmung neu:** Zettel 1 mit old-mill, fishing (zweite Nacht), north-lookout, beekeeper.
+
+**Nachschlag (am Tag nachgereicht von Chris und Claude, die Nacht war mit 17 Minuten zu kurz):**
+- **Mender bis Stufe 16:** Cinder Flick (11, Fernschlag mit Waffenkraft, damit Mender allein vorankommen), Hearth Song (13, Wärme über Zeit für alle im Umkreis 4), Rekindle (16, große Heilung mit Stemmen für die Gruppe, 12 Öl).
+- **Quest-Kette „The Drowned Choir“** (Tallow, ab Stufe 28, nach „The Older Prayer“): drei Sodden Hymnals von Mire Lurkern (neu, Stufe 31, fünf im tiefen Sinkmarsh am Süd- und Südostrand) oder Drowned Pilgrims, dann die Choir Bell aus einem versunkenen Glockenrahmen im Südwesten, dann sechs Drowned Pilgrims in der Drowned Chapel. Lohn: 2.400 EP, 90 Gold, Choir Mantle (Körper, Abwehr 8, Licht +1, besser als Greyglass) und drei Glow Draughts. Schließt die Lücke zwischen Bog Toads (28) und dem Lamplighter (40).
+- **Fehler behoben:** Statusfenster und Log zeigten fest „Day 0“; jetzt kommt die Tagesnummer aus der Chronik.
+
+**Balance-Notizen Nachschlag:** Mire Lurker 200 HP, Angriff 12–15, line-Special mit 6 Takten Vorwarnung. Ein Warden auf 30 mit Glimsteel braucht etwa 6 s; das liegt im Rahmen der Welt (Bog Toad 5 s, Wisp 2 s). Die Oberwelt ist ab Stufe 25 insgesamt zu leicht; das gehört in die große Balance-Runde, die Chris am Ende machen will.

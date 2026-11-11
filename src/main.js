@@ -1181,7 +1181,10 @@ requestAnimationFrame(frame);
 
 // ---------- Start ----------
 
-ui.log(`OVERNIGHT 2 // DAY ${CHRONICLE[CHRONICLE.length - 1].day}`, 'sys');
+// Tagesnummer aus der Chronik: im Statusfenster und im Log
+const DAY_NO = CHRONICLE[CHRONICLE.length - 1].day;
+document.getElementById('st-title').textContent = `Overnight · Day ${DAY_NO}`;
+ui.log(`OVERNIGHT 2 // DAY ${DAY_NO}`, 'sys');
 if (OFFLINE) playOffline();
 else if (getToken()) connect();
 else login.show();

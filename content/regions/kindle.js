@@ -112,6 +112,8 @@ export const REGION = {
     {type: 'stall', x: 60, y: 45, w: 3, d: 2, name: 'the Night Market', awning: '#3a2a5a', light: 3, text: 'A stall with a purple awning and a lot of little lanterns. During the day it is just a stall. After dark it is a market.'},
     // Die kalte Laterne am Nordrand von Hushwood (Quest „Not From Here“)
     {type: 'shrine', look: 'cold_lantern', x: 39, y: 3, name: 'a cold lantern', gives: 'cold_glass', quest: 'not_from_here', step: 0, text: 'An old lantern on a post, facing north. The glass is green and thick. It is cold, but it was lit not long ago.', empty: 'The lantern is empty now. Its glass faces north, toward a glow you can almost see.'},
+    // Der versunkene Glockenrahmen im Südwesten von Sinkmarsh (Quest „The Drowned Choir“)
+    {type: 'shrine', look: 'bell_frame', x: 14, y: 93, name: 'a sunken bell frame', gives: 'choir_bell', quest: 'drowned_choir', step: 2, text: 'A wooden frame, half under the water. One small bell still hangs in it, green with age.', empty: 'The frame creaks. The empty hook sways, though there is no wind.'},
     {type: 'door', to: 'drift', tx: 32, ty: 58, x: 50, y: 3, name: 'a tear in the Grey', look: 'rift'},
   ],
   npcs: [
@@ -177,5 +179,10 @@ export const REGION = {
     {type: 'bog_toad', x: 78, y: 90},
     {type: 'bog_toad', x: 46, y: 96},
     {type: 'bog_toad', x: 60, y: 80},
+    {type: 'mire_lurker', x: 12, y: 88},
+    {type: 'mire_lurker', x: 18, y: 96},
+    {type: 'mire_lurker', x: 26, y: 93},
+    {type: 'mire_lurker', x: 84, y: 95},
+    {type: 'mire_lurker', x: 88, y: 92},
   ],
 };

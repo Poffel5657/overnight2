@@ -26,6 +26,6 @@ Welche Andockpunkte in den nächsten Nächten wachsen, damit große Wünsche üb
 | Klasse | Fähigkeiten bis Stufe | Spezialisierungen (ab 50) |
 |---|---|---|
 | Warden | 16 (Stand Fast 12, Beacon Slam 16) | noch keine |
-| Mender | 9 | noch keine |
+| Mender | 16 (Cinder Flick 11, Hearth Song 13, Rekindle 16) | noch keine |
 | Flarecaster | 7 | noch keine |
 | Drifter | 8 | noch keine |

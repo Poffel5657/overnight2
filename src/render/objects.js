@@ -179,6 +179,19 @@ const BUILDERS = {
       g.add(box(0.14, 0.14, 0.14, glimmerMat, 0, 1.34, -0.38));
       return;
     }
+    if (o.look === 'bell_frame') {
+      // Ein schiefer Glockenrahmen, halb im Sumpf, mit einer kleinen grünen Glocke
+      const frame = new THREE.Group();
+      frame.add(box(0.12, 1.6, 0.12, '#3a3020', -0.45, 0.8, 0));
+      frame.add(box(0.12, 1.6, 0.12, '#3a3020', 0.45, 0.8, 0));
+      frame.add(box(1.1, 0.12, 0.14, '#4a3a26', 0, 1.6, 0));
+      frame.add(box(0.04, 0.2, 0.04, '#2a2a2a', 0, 1.45, 0));
+      frame.add(box(0.26, 0.26, 0.26, '#4a7a5a', 0, 1.25, 0));
+      frame.add(box(0.32, 0.06, 0.32, '#3a6a4a', 0, 1.12, 0));
+      frame.rotation.z = 0.12;
+      g.add(frame);
+      return;
+    }
     g.add(box(0.8, 0.5, 0.5, '#6a6a60', 0, 0.25, 0));
     g.add(box(0.6, 0.9, 0.12, '#5a5a52', 0, 0.9, -0.15));
     for (const x of [-0.25, 0, 0.25]) g.add(box(0.06, 0.14, 0.06, '#e8dcc0', x, 0.57, 0.1));

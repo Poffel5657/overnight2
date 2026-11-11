@@ -570,6 +570,23 @@ export const SPRITES = {
     ],
   },
 
+  mire_lurker: {
+    px: 1 / 10,
+    palette: { m: '#2e3a24', M: '#425236', g: '#5a6a3a', e: '!#c8ff70', t: '#d8d0b0', k: '#1a2010', w: '#2f4a4a' },
+    rows: [
+      '....gggg......',
+      '..ggMMMMgg....',
+      '.gMMeMMeMMg...',
+      'gMMMMMMMMMMg..',
+      'kttttttttttMg.',
+      'k..........Mg.',
+      'kttttttttttMMg',
+      '.gMMMMMMMMMMMg',
+      'wwmmmmmmmmmmww',
+      'wwwwwwwwwwwwww',
+    ],
+  },
+
   drowned_pilgrim: {
     px: 1 / 13,
     palette: { r: '#4a5a5a', R: '#3a4848', f: '#8a9a98', e: '!#9fe0ff', l: '!#ffd27a', h: '#5a5040', w: '#2f5a5a' },

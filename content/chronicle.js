@@ -11,6 +11,6 @@ export const CHRONICLE = [
     day: 1,
     date: '2026-11-12',
     title: 'Snails, moths and a light in the north',
-    text: 'The village voted, and now a Night Market opens at the edge of the light after dark. Mabb takes bets on snail races by the west path, Fen has drawn a map (press M), and at night something glows past Hushwood.',
+    text: 'The village voted, and now a Night Market opens at the edge of the light after dark. Mabb takes bets on snail races by the west path, Fen has drawn a map (press M), and at night something glows past Hushwood. Brother Tallow has found out the old chapel had a choir, and Menders learned three new tricks.',
   },
 ];

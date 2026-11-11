@@ -65,6 +65,18 @@ export const QUESTS = {
     ],
     reward: { xp: 600, gold: 50 },
   },
+  drowned_choir: {
+    name: 'The Drowned Choir', giver: 'tallow',
+    text: 'The old chapel had a choir. Tallow wants to know what it sang, and how to make it stop.',
+    steps: [
+      { type: 'have', item: 'sodden_hymnal', n: 3, text: 'Get three sodden hymnals (Mire Lurkers in deep Sinkmarsh, or Drowned Pilgrims).' },
+      { type: 'talk', npc: 'tallow', text: 'Bring the hymnals to Brother Tallow.' },
+      { type: 'have', item: 'choir_bell', n: 1, text: 'Find the choir bell in the sunken bell frame, south-west in Sinkmarsh.' },
+      { type: 'kill', mob: 'drowned_pilgrim', n: 6, text: 'Ring the bell in the Drowned Chapel and quiet six Drowned Pilgrims.' },
+      { type: 'talk', npc: 'tallow', text: 'Tell Brother Tallow the choir is quiet.' },
+    ],
+    reward: { xp: 2400, gold: 90, items: { choir_mantle: 1, glow_draught: 3 } },
+  },
   false_light: {
     name: 'The False Light', giver: 'stranger',
     text: 'The Stranger knows what burns under the ruins, and wants it put out.',

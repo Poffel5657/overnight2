@@ -48,7 +48,7 @@ Im Grey sieht man nur so weit, wie das eigene Licht reicht. Laternen, Fackeln un
 
 - Wer oder was ist der Nightwright? Brother Tallow ist sicher, Warden Ama nicht.
 - Woher kommt der Stranger, und warum hat er keinen Schatten im Leuchtfeuerlicht?
-- Wer hat die Drowned Chapel gebaut, und zu wem wurde dort gebetet?
+- Wer hat die Drowned Chapel gebaut, und zu wem wurde dort gebetet? (Tag 1: Dort sang ein Chor aus vierzig Stimmen für „the one who holds the lamp“, um etwas am Brennen zu halten. Jede Hymne endet mit einer Glocke. Tallow behält die Glocke und läutet sie nicht.)
 - Das „falsche Licht“ des Lamplighters: Gibt es noch andere Leuchtfeuer im Grey?
 - Seit Tag 1: Nachts glüht ein warmer Schein über dem Nordrand von Hushwood, jede Woche heller (Haskel, Mothwick). Am Nordrand steht eine kalte Laterne aus dickem grünem Glas, das niemand in Kindle so gießt (Wren). Fen will es auf die Karte malen.
 
@@ -59,4 +59,4 @@ Im Grey sieht man nur so weit, wie das eigene Licht reicht. Laternen, Fackeln un
 ## Zeitleiste
 
 - Tag 0: Kindle steht in der Lichtung, das Leuchtfeuer brennt, die Kapelle hört Gebete. Der Stranger ist schon da.
-- Tag 1: Der Nachtmarkt öffnet nach Einbruch der Dunkelheit, Mabb lässt Schnecken um Gold laufen, Fen hat eine Karte gezeichnet, und über dem Norden glüht ein fremdes Licht.
+- Tag 1: Der Nachtmarkt öffnet nach Einbruch der Dunkelheit, Mabb lässt Schnecken um Gold laufen, Fen hat eine Karte gezeichnet, und über dem Norden glüht ein fremdes Licht. Tallow liest die Hymnen des ertrunkenen Chors; im tiefen Sinkmarsh lauern Mire Lurker, die ihre Bücher verschluckt haben.

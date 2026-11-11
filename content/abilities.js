@@ -30,6 +30,9 @@ export const ABILITIES = {
   staff_rap: { name: 'Staff Rap', desc: "A smart rap with the staff. Menders are not helpless.", glyph: '|', kind: 'melee', hit: [1, 3], cd: 0, power: true },
   warmth: { name: 'Warmth', desc: "A slow, steady warmth that keeps working after you move on.", glyph: '~', kind: 'hot', radius: 3, heal: 3, ticks: 10, cd: 24, text: 'A slow warmth settles over everyone near.' },
   glow: { name: 'Glow', desc: "A soft glow that dulls every blow for a while.", glyph: 'o', kind: 'aura', radius: 3, brace: 8, oil: 6, cd: 40, text: 'A soft glow wraps your friends.' },
+  cinder_flick: { name: 'Cinder Flick', desc: "Flick a coal from the staff. Rude, but it works at a distance.", glyph: '.', kind: 'ranged', range: 4, hit: [4, 6], cd: 6, power: true },
+  hearth_song: { name: 'Hearth Song', desc: "Hum the old hearth tune. Everyone near feels it for a long while.", glyph: '~', kind: 'hot', radius: 4, heal: 5, ticks: 14, oil: 6, cd: 45, text: 'You hum. The cold steps back from everyone near.' },
+  rekindle: { name: 'Rekindle', desc: "Pour the ember into everyone close. For a moment, nobody is cold.", glyph: '+', kind: 'aura', radius: 3, heal: 24, brace: 6, oil: 12, cd: 60, text: 'The ember roars up. Every lantern near you burns brighter.' },
   kindle_burst: { name: 'Kindle Burst', desc: "The ember flares. Creatures flinch and run.", glyph: '*', kind: 'burst', radius: 2.5, hit: [3, 5], scare: 6, oil: 10, cd: 24, text: 'Your ember flares outward.' },
 
   // Flarecaster

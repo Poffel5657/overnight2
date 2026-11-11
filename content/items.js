@@ -36,6 +36,7 @@ export const ITEMS = {
   glim_boots: { name: 'Glimsteel Boots', slot: 'feet', defence: 3, value: 70, glyph: 'u', text: 'Quiet on stone, loud on Greylings.' },
   shell_coat: { name: 'Beetle-Shell Coat', slot: 'body', defence: 6, value: 150, glyph: 'M', text: 'Plates from Copperdeep beetles. They were not using them any more.' },
   greyglass_hood: { name: 'Greyglass Hood', slot: 'head', defence: 4, value: 160, glyph: '^', text: 'Your thoughts echo slightly inside it.' },
+  choir_mantle: { name: 'Choir Mantle', slot: 'body', defence: 8, light: 1, value: 300, glyph: 'M', text: 'A singer\'s mantle from the old chapel, dried out and stitched with greyglass. It still hums the low part.' },
   greyglass_coat: { name: 'Greyglass Coat', slot: 'body', defence: 7, value: 260, glyph: 'M', text: 'Cold to wear, colder to hit.' },
   greyglass_boots: { name: 'Greyglass Boots', slot: 'feet', defence: 4, value: 160, glyph: 'u', text: 'They leave no footprints. Fen finds this deeply upsetting.' },
 
@@ -77,6 +78,8 @@ export const ITEMS = {
   lamp_shard: { name: 'Lamp Shard', stack: true, value: 60, glyph: '*', text: 'A piece of the False Light. Still warm. Still wrong.' },
   prayer_tablet: { name: 'Prayer Tablet', stack: true, value: 0, glyph: '=', text: 'A cracked stone tablet. The prayer on it is not addressed to the Nightwright.' },
   moonwick: { name: 'Moonwick', stack: true, value: 8, glyph: '~', text: 'A wick spun from something that only comes out at night. Lampwrights pay well for it.' },
+  sodden_hymnal: { name: 'Sodden Hymnal', stack: true, value: 3, glyph: '=', text: 'A swollen choir book. The hymns are not for the Nightwright. Brother Tallow wants to read them.' },
+  choir_bell: { name: 'Choir Bell', stack: true, value: 0, glyph: 'A', text: 'A small green-bronze bell. When it rings, the water nearby goes very still.' },
   cold_glass: { name: 'Cold Lantern Glass', stack: true, value: 0, glyph: '*', text: 'Thick, greenish glass from a lantern. Nobody in Kindle makes glass like this.' },
   crow_feather: { name: 'Crow Feather', stack: true, value: 1, glyph: '/', text: 'Glossy and judgemental. Fen collects them for quills.' },
 };
