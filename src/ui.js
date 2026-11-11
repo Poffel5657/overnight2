@@ -562,6 +562,28 @@ export function createUI(handlers) {
   }
   $('party-leave').addEventListener('click', () => handlers.partyLeave());
 
+  // ---------- Leuchtfeuer: wie voll ist es heute? ----------
+  // frac 0..1, text z. B. "120 / 300". pos: Bildschirmpunkt über dem Feuer oder null.
+  function setBeacon(frac, text, pos) {
+    const known = frac !== null;
+    $('st-beacon').hidden = !known;
+    if (known) {
+      const pct = `${Math.round(frac * 100)}%`;
+      $('st-beacon-fill').style.width = pct;
+      if ($('st-beacon-text').textContent !== pct) $('st-beacon-text').textContent = pct;
+      $('st-beacon').classList.toggle('full', frac >= 1);
+    }
+    const f = $('beacon-float');
+    f.hidden = !known || !pos;
+    if (f.hidden) return;
+    $('beacon-float-fill').style.width = `${frac * 100}%`;
+    const t = frac >= 1 ? 'Blazing tonight!' : text;
+    if ($('beacon-float-text').textContent !== t) $('beacon-float-text').textContent = t;
+    f.classList.toggle('full', frac >= 1);
+    f.style.left = `${pos.x}px`;
+    f.style.top = `${pos.y}px`;
+  }
+
   // Tagesaufgaben in der Statusanzeige: Kerze (beten) und Münze (opfern), hell = erledigt
   function setToday(t) {
     const el = $('st-today');
@@ -625,6 +647,6 @@ export function createUI(handlers) {
     updateStatus, updateSky, updateTarget,
     openMenu, closeMenu, menuOpen, openDialog, closeDialog, dialogKey,
     get dialogNpc() { return dialogNpc; },
-    setHover, floater, overhead, nameTag, bubble, placeBubbles, marker, setToday, updateParty, chatLine,
+    setHover, floater, overhead, nameTag, bubble, placeBubbles, marker, setToday, updateParty, chatLine, setBeacon,
   };
 }

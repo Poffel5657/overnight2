@@ -188,6 +188,34 @@ button:disabled { color: var(--brass-dim); cursor: default; text-shadow: none; }
 .status-row span { overflow: hidden; text-overflow: ellipsis; }
 .status-row span:first-child { color: var(--text); }
 
+/* Leuchtfeuer im Statusfenster */
+.beacon-row { margin-top: 0.25rem; cursor: help; }
+.beacon-row .bar-track { height: 0.55rem; }
+.beacon-row.full .bar-fill { animation: blaze 1.2s ease-in-out infinite alternate; }
+
+/* Schwebender Balken über dem Leuchtfeuer */
+.beacon-float {
+  position: fixed;
+  z-index: 15;
+  transform: translate(-50%, -100%);
+  width: 8.5rem;
+  padding: 0.2rem 0.4rem 0.25rem;
+  text-align: center;
+  pointer-events: none;
+  background: linear-gradient(var(--panel-top), var(--panel-bot));
+  border: 1px solid var(--brass-dim);
+  border-radius: 3px;
+  box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.6), 0 0 1rem var(--halo);
+}
+.beacon-float .beacon-name { font-family: var(--title-font); font-size: 1rem; color: var(--flame); text-shadow: 0 0 0.35em var(--glow), 0 1px 0 #000; line-height: 1.1; }
+.beacon-float .bar-track { height: 0.5rem; margin: 0.15rem 0; }
+.beacon-float .bar-fill { background: linear-gradient(#ffe39a, var(--oil) 45%, var(--oil-dk)); box-shadow: 0 0 0.5rem var(--glow); transition: width 0.4s; }
+.beacon-float .beacon-num { font-size: 0.75rem; color: var(--text); }
+.beacon-float.full { border-color: var(--brass); }
+.beacon-float.full .bar-fill { animation: blaze 1.2s ease-in-out infinite alternate; }
+@keyframes blaze { from { filter: brightness(1); } to { filter: brightness(1.45); } }
+@media (max-width: 720px) { .beacon-float { width: 7rem; } }
+
 /* ---------- Leben und Öl (über der Leiste) ---------- */
 
 .vitals {
@@ -823,5 +851,5 @@ button:disabled { color: var(--brass-dim); cursor: default; text-shadow: none; }
   .talk-portrait img, .dialog.enter .talk-portrait, .dialog.speak .talk-portrait { animation: none !important; }
   .floater, .floater.dealt, .floater.taken, .floater.heal { animation: fade 1.2s forwards; }
   @keyframes fade { 70% { opacity: 1; } 100% { opacity: 0; } }
-  .wtitle, .lamp, .nametag.marker, .qmark { animation: none; }
+  .wtitle, .lamp, .nametag.marker, .qmark, .beacon-row .bar-fill, .beacon-float .bar-fill { animation: none; }
 }

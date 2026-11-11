@@ -272,6 +272,21 @@ function todayState() {
   const fresh = d && d.date === today;
   return { prayed: !!(fresh && d.prayed), voted: !!(fresh && d.voted), canPray: !!(conn && !conn.offline) };
 }
+// Leuchtfeuer-Balken: im Status immer, über dem Feuer, wenn es im Bild ist
+function placeBeacon() {
+  if (!community || typeof community.beacon !== 'number') { ui.setBeacon(null); return; }
+  const frac = Math.min(1, community.beacon / BEACON_GOAL);
+  const b = mirror.objects.find((o) => o.type === 'beacon');
+  let pos = null;
+  if (b) {
+    const cx = b.x + b.w / 2;
+    const cz = b.y + b.d / 2;
+    const s = screenAt(cx, terrain.heightAt(cx, cz) + 3.4, cz);
+    if (s.visible) pos = s;
+  }
+  ui.setBeacon(frac, `${community.beacon} / ${BEACON_GOAL}`, pos);
+}
+
 const MARK_LIFT = { chapel: 4.2, altar: 1.6 };
 function placeDailyMarks() {
   const t = todayState();
@@ -1075,6 +1090,7 @@ function frame(now) {
   });
   barks(now);
   placeDailyMarks();
+  placeBeacon();
   ui.updateParty(mirror.state?.party ?? null, mirror.ents, mirror.you);
 
   // Zeigertext (Maus)

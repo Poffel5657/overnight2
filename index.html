@@ -22,6 +22,9 @@
     <div class="status-row"><span id="st-place">KINDLE</span><span id="st-time">--:--</span></div>
     <div class="status-row"><span id="st-phase"></span></div>
     <div class="today" id="st-today" hidden><span class="muted">TODAY</span></div>
+    <div class="bar fuel beacon-row" id="st-beacon" hidden data-tip="The Beacon: everyone in Kindle feeds the same fire. Full by midnight, and the Grey steps back further tonight. Feed it at the fire in the middle of Kindle.">
+      <span class="bar-label">FIRE</span><div class="bar-track"><div class="bar-fill" id="st-beacon-fill"></div></div><span id="st-beacon-text">0%</span>
+    </div>
   </section>
 
   <!-- Leben und Öl (über der Leiste, einzeln verschiebbar) -->
@@ -137,6 +140,12 @@
   </section>
   <div class="hovertext" id="hovertext" hidden></div>
   <div id="floaters" aria-hidden="true"></div>
+  <!-- Balken über dem Leuchtfeuer: wie voll ist es heute? -->
+  <div class="beacon-float" id="beacon-float" hidden aria-hidden="true">
+    <div class="beacon-name">The Beacon</div>
+    <div class="bar-track"><div class="bar-fill" id="beacon-float-fill"></div></div>
+    <div class="beacon-num" id="beacon-float-text"></div>
+  </div>
 
   <script type="module" src="src/main.js"></script>
 </body>
