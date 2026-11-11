@@ -152,7 +152,8 @@ export function createWindows(handlers) {
     const cell = h('button', {
       type: 'button',
       class: 'cell',
-      title: `${def.name}. ${def.text}`,
+      'data-item': slot.id,
+      'data-hint': extra.hint ?? (def.slot ? 'Click: wear. Right-click: more.' : def.use ? 'Click: use. Right-click: more.' : 'Right-click: more.'),
       onclick: () => (extra.onclick ? extra.onclick(i, slot) : handlers.use(i)),
       oncontextmenu: (e) => { e.preventDefault(); itemMenu(e.clientX, e.clientY, i, slot); },
     }, iconEl('item', slot.id, def.glyph), slot.n > 1 ? h('span', { class: 'count' }, slot.n) : null);
@@ -230,7 +231,7 @@ export function createWindows(handlers) {
         const id = s.equip[slot];
         const it = id && ITEMS[id];
         const cell = it
-          ? h('button', { type: 'button', class: 'cell', title: `${it.name}. ${it.text}${slot === 'main' ? ' Hold another weapon to switch.' : ' Click to take off.'}`, onclick: () => handlers.unequip(slot) }, iconEl('item', id, it.glyph))
+          ? h('button', { type: 'button', class: 'cell', 'data-item': id, 'data-hint': slot === 'main' ? 'Hold another weapon to switch.' : 'Click to take off.', onclick: () => handlers.unequip(slot) }, iconEl('item', id, it.glyph))
           : h('button', { type: 'button', class: 'cell empty', disabled: true, title: `${SLOT_NAMES[slot]}: nothing` }, '·');
         return h('div', { class: 'gear-slot' }, cell, h('span', { class: 'gear-label' }, it ? it.name : SLOT_NAMES[slot]));
       }));
@@ -356,7 +357,7 @@ export function createWindows(handlers) {
         const canLevel = known && known.level >= r.level;
         const inputs = Object.entries(r.inputs).map(([id, n]) => `${ITEMS[id].name} ${count(id)}/${n}`).join(', ');
         const enough = Object.entries(r.inputs).every(([id, n]) => count(id) >= n);
-        return h('li', { class: canLevel ? '' : 'dim' },
+        return h('li', { class: canLevel ? '' : 'dim', 'data-item': r.out[0] },
           h('div', {}, iconEl('item', r.out[0], out.glyph, 'icon small'), ` ${out.name}${r.out[1] > 1 ? ` x${r.out[1]}` : ''} `, h('span', { class: 'muted' }, `LV ${r.level}`)),
           h('div', { class: 'muted small' }, inputs),
           canLevel ? h('div', { class: 'row-buttons' },
@@ -378,7 +379,7 @@ export function createWindows(handlers) {
       if (!state) return { heading: s.name.toUpperCase(), content: h('p', {}, '...') };
       const buy = s.sells.map((id) => {
         const it = ITEMS[id];
-        return h('li', {}, iconEl('item', id, it.glyph, 'icon small'), ` ${it.name} `, h('span', { class: 'muted' }, `${it.value}G `),
+        return h('li', { 'data-item': id }, iconEl('item', id, it.glyph, 'icon small'), ` ${it.name} `, h('span', { class: 'muted' }, `${it.value}G `),
           btn('BUY', () => handlers.buy(shop, id, 1), { disabled: state.gold < it.value }),
           it.stack ? btn('x5', () => handlers.buy(shop, id, 5), { disabled: state.gold < it.value * 5 }) : null);
       });
@@ -386,7 +387,7 @@ export function createWindows(handlers) {
         if (!slot || !ITEMS[slot.id].value) return null;
         const it = ITEMS[slot.id];
         const price = Math.max(1, Math.floor(it.value / 2));
-        return h('li', {}, iconEl('item', slot.id, it.glyph, 'icon small'), ` ${it.name}${slot.n > 1 ? ` x${slot.n}` : ''} `, h('span', { class: 'muted' }, `${price}G `),
+        return h('li', { 'data-item': slot.id }, iconEl('item', slot.id, it.glyph, 'icon small'), ` ${it.name}${slot.n > 1 ? ` x${slot.n}` : ''} `, h('span', { class: 'muted' }, `${price}G `),
           btn('SELL', () => handlers.sell(shop, i, 1)),
           slot.n > 1 ? btn('ALL', () => handlers.sell(shop, i, slot.n)) : null);
       }).filter(Boolean);
@@ -433,7 +434,7 @@ export function createWindows(handlers) {
       const fuels = Object.entries(BEACON_FUEL).map(([id, pts]) => {
         const it = ITEMS[id];
         const n = state ? state.bag.reduce((s, x) => s + (x && x.id === id ? x.n : 0), 0) : 0;
-        return h('li', {}, iconEl('item', id, it.glyph, 'icon small'), ` ${it.name} x${n} `, h('span', { class: 'muted' }, `(+${pts} each) `),
+        return h('li', { 'data-item': id }, iconEl('item', id, it.glyph, 'icon small'), ` ${it.name} x${n} `, h('span', { class: 'muted' }, `(+${pts} each) `),
           btn('GIVE 1', () => handlers.feed(id, 1), { disabled: n < 1 }), btn('ALL', () => handlers.feed(id, n), { disabled: n < 1 }));
       });
       return {
@@ -522,7 +523,7 @@ export function createWindows(handlers) {
       const offer = (items, gold) => handlers.tradeSet(items, gold);
       const mine = v.mine;
       const list = (items, editable) => {
-        const rows = Object.entries(items).map(([id, n]) => h('li', { class: 'trade-item' },
+        const rows = Object.entries(items).map(([id, n]) => h('li', { class: 'trade-item', 'data-item': id },
           iconEl('item', id, ITEMS[id]?.glyph, 'icon small'), ` ${ITEMS[id]?.name ?? id} x${n} `,
           editable ? btn('−', () => {
             const next = { ...mine.items };
@@ -537,6 +538,7 @@ export function createWindows(handlers) {
       for (let i = 0; i < BAG_SIZE; i++) {
         const slot = state.bag[i];
         cells.push(itemCell(slot, i, {
+          hint: 'Click: add one to your offer.',
           onclick: (_, sl) => {
             const cur = mine.items[sl.id] || 0;
             if (cur >= have(sl.id) || (!cur && Object.keys(mine.items).length >= 8)) return;

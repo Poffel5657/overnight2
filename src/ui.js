@@ -7,7 +7,7 @@ import { ITEMS } from '../content/items.js';
 import { TALK } from '../content/npcs.js';
 import { iconEl, spriteURL } from './icons.js';
 import { markerURL } from './markers.js';
-import { describeAbility } from '../shared/describe.js';
+import { describeAbility, describeItem } from '../shared/describe.js';
 import { makeDraggable } from './drag.js';
 import { TICK_MS } from '../shared/sim.js';
 
@@ -472,12 +472,15 @@ export function createUI(handlers) {
       add('tip-effect', d.effect);
       add('tip-cost', d.cost);
     } else if (el.dataset.item) {
-      const it = ITEMS[el.dataset.item];
-      if (!it) return null;
-      add('tip-title', `${it.name}${el.dataset.key ? `  [${el.dataset.key}]` : ''}`);
-      add('tip-flavor', it.text);
-      if (it.use?.heal) add('tip-effect', `Heals ${it.use.heal}.`);
-      if (it.use?.oil) add('tip-effect', `Refills ${it.use.oil} oil.`);
+      const d = describeItem(el.dataset.item);
+      if (!d) return null;
+      add('tip-title', `${d.name}${el.dataset.key ? `  [${el.dataset.key}]` : ''}`);
+      add('tip-kind', d.kind);
+      add('tip-flavor', d.flavor);
+      for (const s of d.stats) add('tip-effect', s);
+      for (const u of d.uses) add('tip-use', u);
+      add('tip-cost', d.value);
+      if (el.dataset.hint) add('tip-hint', el.dataset.hint);
     } else if (el.dataset.tip) {
       add('tip-effect', el.dataset.tip);
     }

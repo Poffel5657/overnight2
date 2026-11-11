@@ -15,6 +15,7 @@ import { buildObjects } from './render/objects.js';
 import { makeSprite } from './render/sprites.js';
 import { setLights, lightUniforms } from './render/light.js';
 import { createUI } from './ui.js';
+import { startNumerals } from './numerals.js';
 import { conditionHolds } from '../shared/talk.js';
 import { TALK } from '../content/npcs.js';
 import { createWindows } from './windows.js';
@@ -181,6 +182,9 @@ function useBarSlot(i) {
   send({ t: 'ability', id });
   ui.flashSlot(i);
 }
+
+// Zahlen überall in der Ziffern-Schrift
+startNumerals();
 
 const ui = createUI({
   ability: useBarSlot,

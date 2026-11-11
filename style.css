@@ -249,6 +249,9 @@ button:disabled { color: var(--brass-dim); cursor: default; text-shadow: none; }
 .bar-fill.xp { background: linear-gradient(var(--flame), var(--brass)); }
 
 /* ---------- Zahlen in klarer Pixel-Schrift ---------- */
+/* .num setzt src/numerals.js um jede Ziffernfolge; in Fraktur-Titeln etwas größer */
+.num { font-family: var(--num-font); font-size: 1.18em; line-height: 1; letter-spacing: 0.02em; font-weight: 400; }
+.wtitle .num, .tip-title .num, .char-class .num { font-size: 1.05em; }
 .bar span:last-child, #st-time, .slot .key, .slot .count, .slot .timer, .cell .count,
 .stat span:last-child, .scale-out, .trade-gold span, #chat-log .ctime, .num {
   font-family: var(--num-font);
@@ -281,6 +284,9 @@ button:disabled { color: var(--brass-dim); cursor: default; text-shadow: none; }
 .tip-flavor { color: var(--muted); font-style: italic; margin-bottom: 0.3rem; }
 .tip-effect { color: var(--bright); }
 .tip-cost { color: var(--brass); margin-top: 0.25rem; font-size: 0.8rem; }
+.tip-kind { color: var(--brass); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.2rem; }
+.tip-use { color: var(--muted); font-size: 0.8rem; margin-top: 0.15rem; }
+.tip-hint { color: var(--accent); font-size: 0.75rem; margin-top: 0.3rem; }
 .ability-row { padding: 0.25rem 0 0.35rem; border-bottom: 1px solid; border-image: linear-gradient(90deg, var(--brass-dim), transparent) 1; }
 .ability-desc { font-size: 0.8rem; color: var(--text); margin-top: 0.1rem; }
 .ability-cost { font-size: 0.72rem; color: var(--brass); }
