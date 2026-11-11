@@ -7,6 +7,12 @@
   src: url('fonts/jacquard12.woff2') format('woff2');
   font-display: swap;
 }
+/* Ziffern: VT323 hat klare Pixel-Zahlen (5/S, 0/O gut unterscheidbar) */
+@font-face {
+  font-family: 'VT323';
+  src: url('fonts/vt323.woff2') format('woff2');
+  font-display: swap;
+}
 @font-face {
   font-family: 'Pixelify Sans';
   src: url('fonts/pixelify.woff2') format('woff2');
@@ -40,6 +46,7 @@
   --oil-dk: #7a4a10;
   --title-font: 'Jacquard 12', 'Pixelify Sans', serif;
   --ui-font: 'Pixelify Sans', ui-monospace, "DejaVu Sans Mono", monospace;
+  --num-font: 'VT323', ui-monospace, monospace;
   --ui-scale: 1;
   --ui-auto: clamp(13px, min(1.05vw, 1.9vh), 24px);
   --gap: 0.6rem;
@@ -240,6 +247,24 @@ button:disabled { color: var(--brass-dim); cursor: default; text-shadow: none; }
 .fuel .bar-fill { background: linear-gradient(#ffe39a, var(--oil) 45%, var(--oil-dk)); box-shadow: 0 0 0.5rem var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
 .bar span:last-child { min-width: 2.8rem; text-align: right; font-size: 0.9rem; }
 .bar-fill.xp { background: linear-gradient(var(--flame), var(--brass)); }
+
+/* ---------- Zahlen in klarer Pixel-Schrift ---------- */
+.bar span:last-child, #st-time, .slot .key, .slot .count, .slot .timer, .cell .count,
+.stat span:last-child, .scale-out, .trade-gold span, #chat-log .ctime, .num {
+  font-family: var(--num-font);
+  font-size: 1.2em;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.slot .key, .slot .count { font-size: 0.95rem; }
+.slot .timer { font-size: 1.8rem; font-weight: 400; }
+.floater { font-family: var(--num-font); }
+.floater.dealt, .floater.taken, .floater.heal { font-weight: 400; letter-spacing: 0.03em; }
+.floater.dealt { font-size: 3rem; }
+.floater.dealt.big { font-size: 4rem; }
+.floater.taken { font-size: 3rem; }
+.floater.taken.big { font-size: 3.6rem; }
+.floater.heal { font-size: 2.6rem; }
 
 /* ---------- Tooltip ---------- */
 

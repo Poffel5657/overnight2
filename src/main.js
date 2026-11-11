@@ -7,6 +7,7 @@ import { regionFor, HOME_REGION } from '../content/regions/index.js';
 import { EXAMINE } from '../content/npcs.js';
 import { TICK_MS, objectActions, lanternRadius, regionObjects } from '../shared/sim.js';
 import { cheb } from '../shared/path.js';
+import { TILE_TYPES } from '../content/tiles.js';
 import { skyState, berlinClock, minutesToMidnight, berlinDate } from '../shared/daylight.js';
 import { createView, buildGreyWall } from './render/view.js';
 import { buildTerrain } from './render/terrain.js';
@@ -654,6 +655,50 @@ function describe(hit) {
   return null;
 }
 
+// Nur offline (Tests im Browser): eigene Lage und Kamera abfragen
+if (OFFLINE) window.overnightDebug = { me: () => { const e = mirror.ents.get(mirror.you); return e && { x: e.x, y: e.y }; }, yaw: () => rig.yaw };
+
+// ---------- WASD: laufen relativ zur Kamera ----------
+// W = auf dem Bildschirm nach oben. Gesendet wird ein Ziel zwei Felder voraus, solange die Tasten
+// gedrückt sind; beim Loslassen bleibt die Figur auf ihrem Feld stehen.
+function walkableHere(x, y) {
+  if (!region || y < 0 || x < 0 || y >= region.tiles.length || x >= region.tiles[0].length) return false;
+  if (!TILE_TYPES[region.tiles[y][x]]?.walk) return false;
+  return !mirror.objects.some((o) => x >= o.x && x < o.x + o.w && y >= o.y && y < o.y + o.d);
+}
+let wasdSent = 0;
+let wasdTarget = null;
+function wasd(now) {
+  const self = mirror.ents.get(mirror.you);
+  const ix = (held.has('d') ? 1 : 0) - (held.has('a') ? 1 : 0);
+  const iy = (held.has('w') ? 1 : 0) - (held.has('s') ? 1 : 0);
+  if (!self) return;
+  if (!ix && !iy) {
+    if (wasdTarget) { send({ t: 'walk', x: self.x, y: self.y }); wasdTarget = null; }
+    return;
+  }
+  // Bildschirm-Richtung in Welt-Richtung: rechts = (cos, -sin), vorn = (-sin, -cos)
+  const wx = ix * Math.cos(rig.yaw) - iy * Math.sin(rig.yaw);
+  const wz = -ix * Math.sin(rig.yaw) - iy * Math.cos(rig.yaw);
+  const ang = Math.atan2(wz, wx);
+  const dx = Math.round(Math.cos(ang));
+  const dz = Math.round(Math.sin(ang));
+  let tx = self.x + dx * 2;
+  let ty = self.y + dz * 2;
+  if (!walkableHere(tx, ty) || !walkableHere(self.x + dx, self.y + dz)) {
+    // diagonal blockiert: an der Kante entlang gleiten
+    const alt = [[dx, 0], [0, dz]].find(([ax, az]) => (ax || az) && walkableHere(self.x + ax, self.y + az));
+    if (!alt) return;
+    tx = self.x + alt[0];
+    ty = self.y + alt[1];
+  }
+  if (wasdTarget && wasdTarget.x === tx && wasdTarget.y === ty && now - wasdSent < 250) return;
+  wasdTarget = { x: tx, y: ty };
+  wasdSent = now;
+  send({ t: 'walk', x: tx, y: ty });
+  if (ui.dialogNpc) ui.closeDialog(true);
+}
+
 function walkGround(tile) {
   send({ t: 'walk', x: tile.x, y: tile.y });
   marker.visible = true;
@@ -898,6 +943,8 @@ function frame(now) {
   rig.yaw += turn * dt * 1.8;
   if (held.has('arrowup')) rig.pitch = Math.min(1.3, rig.pitch + dt);
   if (held.has('arrowdown')) rig.pitch = Math.max(0.45, rig.pitch - dt);
+
+  wasd(now);
 
   // Figuren setzen
   const right = new THREE.Vector3(Math.cos(rig.yaw), 0, -Math.sin(rig.yaw));
