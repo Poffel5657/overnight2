@@ -30,7 +30,7 @@ shared/                   Reine Spiellogik ohne DOM, läuft auf dem Server und o
   talk.js                 Gespräche und Quests (Bedingungen, Wirkungen, Fortschritt, Belohnungen)
   trade.js                Sammeln, Herstellen, Kaufen, Verkaufen, Benutzen, Anlegen, Klassenwechsel
   events.js               tell/emit/float: Ereignisse an Spieler
-  community.js            Gefallen, Leuchtfeuer füttern, Beten, Spenden (schreibt in world.outbox)
+  community.js            Gefallen, Leuchtfeuer füttern, Beten, Abstimmen, Sprechen (schreibt in world.outbox)
 src/                      Browser
   main.js                 Spiegelwelt aus den Server-Nachrichten, Darstellung, Eingabe
   net.js                  NetConnection (WebSocket) und LocalConnection (offline, gleiche Nachrichten)
@@ -92,7 +92,8 @@ haben sie nicht).
 - **Leuchtfeuer:** Brennstoff (`BEACON_FUEL`) am Leuchtfeuer spenden, Zähler für alle (`world.community.beacon`),
   Tagesziel `BEACON_GOAL`. Um Mitternacht zählt er von vorn. Der Nightwright liest den Stand.
 - **Kapelle:** Am Altar beten (einmal am Tag, Text bereinigt, höchstens 300 Zeichen; nur der Nightwright
-  liest ihn) und Gold in Opferstöcke für die Ideen auf `content/ballot.js` geben (höchstens `DONATE_CAP` pro Tag).
+  liest ihn) und für eine der Ideen auf `content/ballot.js` stimmen: eine Stimme pro Spieler und Tag, Gold zählt nicht
+  (Tabelle `donations` heißt historisch so, jede Zeile ist eine Stimme).
 - **Outbox:** Die Simulation legt Dauerhaftes in `world.outbox`; `RegionRoom.flushOutbox` schreibt es nach D1
   (`prayers`, `donations`, `world_state`).
 - **„Last night…“:** neuester Eintrag aus `content/chronicle.js`, einmal pro Eintrag beim Einloggen.

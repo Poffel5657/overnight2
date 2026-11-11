@@ -17,11 +17,15 @@ import { createUI } from './ui.js';
 import { conditionHolds } from '../shared/talk.js';
 import { TALK } from '../content/npcs.js';
 import { createWindows } from './windows.js';
+import { sfx, getVolume, setVolume } from './sfx.js';
+import { music } from './music.js';
+import { BARKS, HAILS, HAIL_DEFAULT, HAIL_RANGE, HAIL_COOLDOWN } from '../content/barks.js';
+import { CHRONICLE } from '../content/chronicle.js';
+import { BEACON_GOAL } from '../content/dailies.js';
 import { SHOPS } from '../content/shops.js';
 import { LocalConnection, NetConnection } from './net.js';
 import { createLogin } from './login.js';
 import { SERVER, OFFLINE } from './config.js';
-import { CHRONICLE } from '../content/chronicle.js';
 import { CONTENT_SIG } from '../shared/version.js';
 
 const canvas = document.getElementById('view');
@@ -113,6 +117,7 @@ function removeVisual(id) {
   visuals.delete(id);
   ui.overhead(id, 0, 0, null);
   ui.nameTag(id, 0, 0, null);
+  ui.marker(id, 0, 0, null);
 }
 
 // Zielring und Klickmarke
@@ -192,7 +197,7 @@ const windows = createWindows({
   setKeys(k) { ui.setKeys(k); },
   favour(id) { send({ t: 'favour', id }); },
   feed(item, n) { send({ t: 'feed', item, n }); },
-  donate(option, gold) { send({ t: 'donate', option, gold }); },
+  vote(option) { send({ t: 'vote', option }); },
   pray(text) {
     if (!text || text.trim().length < 3) { ui.log('A prayer needs a few words at least.', 'sys'); return false; }
     send({ t: 'pray', text });
@@ -200,13 +205,27 @@ const windows = createWindows({
   },
   online() { return conn ? !conn.offline : false; },
   leave() { document.getElementById('btn-leave').click(); },
+  me() { return mirror.me; },
+  scale() { return ui.scale; },
+  setScale(v) { ui.setScale(v); },
+  crt() { return ui.crt; },
+  setCrt(on) { ui.setCrt(on); },
+  volume() { return getVolume(); },
+  setVolume(v) { setVolume(v); sfx.ui(); },
+  click() { sfx.ui(); },
+  tradeAnswer(from, yes) { send({ t: 'tradeAnswer', from, yes }); },
+  tradeSet(items, gold) { send({ t: 'tradeSet', items, gold }); },
+  tradeOk() { send({ t: 'tradeOk' }); },
+  tradeCancel() { send({ t: 'tradeCancel' }); },
+  music() { return music.volume; },
+  setMusic(v) { music.setVolume(v); },
   async fetchBoard() {
     const res = await fetch(`${SERVER}/api/board`);
     return (await res.json()).top;
   },
 });
 try {
-  if (localStorage.getItem('overnight2.crt') === '0') document.getElementById('btn-crt').click();
+  if (localStorage.getItem('overnight2.crt') === '0') ui.setCrt(false);
 } catch { /* egal */ }
 
 let flareUntil = 0;
@@ -221,15 +240,135 @@ function screenOf(v, lift = 0) {
   return { x, y, visible: p.z < 1 && x > 0 && x < window.innerWidth && y > 0 && y < window.innerHeight };
 }
 
+const hitAvg = {};
+let community = null;
+let today = '';
+
+// Bildschirmpunkt eines Weltpunkts (für Symbole über Gebäuden)
+function screenAt(x, y, z) {
+  const p = new THREE.Vector3(x, y, z).project(camera);
+  const sx = (p.x * 0.5 + 0.5) * window.innerWidth;
+  const sy = (-p.y * 0.5 + 0.5) * window.innerHeight;
+  return { x: sx, y: sy, visible: p.z < 1 && sx > 0 && sx < window.innerWidth && sy > 0 && sy < window.innerHeight };
+}
+
+// Tagesaufgaben am Altar: beten (nur online) und Gold opfern
+function todayState() {
+  const d = mirror.state?.daily;
+  const fresh = d && d.date === today;
+  return { prayed: !!(fresh && d.prayed), voted: !!(fresh && d.voted), canPray: !!(conn && !conn.offline) };
+}
+const MARK_LIFT = { chapel: 4.2, altar: 1.6 };
+function placeDailyMarks() {
+  const t = todayState();
+  const due = (t.canPray && !t.prayed) || !t.voted;
+  for (const o of mirror.objects) {
+    if (!MARK_LIFT[o.type]) continue;
+    const cx = o.x + o.w / 2;
+    const cz = o.y + o.d / 2;
+    const s = due ? screenAt(cx, terrain.heightAt(cx, cz) + MARK_LIFT[o.type], cz) : null;
+    ui.marker(`obj:${o.id}`, s?.x ?? 0, s?.y ?? 0, s?.visible ? 'pray' : null);
+  }
+}
+
+// ---------- Rufe (content/barks.js) ----------
+const barkNext = new Map(); // npc -> Zeitpunkt des nächsten Rufs
+const barkIdx = new Map();  // npc -> nächste Zeile
+let barkCheck = 0;
+
+// Der Crier: zuerst die Nacht im Überblick, dann der Stand des Leuchtfeuers
+function newsLines() {
+  const last = CHRONICLE[CHRONICLE.length - 1];
+  const out = [];
+  if (last) {
+    out.push(`HEAR YE! Day ${last.day}: ${last.title}!`);
+    out.push(...String(last.text).split(/(?<=[.!?])\s+/).slice(0, 2));
+  }
+  if (community && typeof community.beacon === 'number') {
+    const pct = Math.min(100, Math.round((community.beacon / BEACON_GOAL) * 100));
+    out.push(pct >= 100 ? 'The Beacon BLAZES tonight! Well fed, Kindle!' : `The Beacon stands at ${pct}%! Bring it fuel before midnight!`);
+  }
+  return out;
+}
+
+function barks(now) {
+  if (now - barkCheck < 500) return;
+  barkCheck = now;
+  const self = mirror.ents.get(mirror.you);
+  if (!self) return;
+  for (const e of mirror.ents.values()) {
+    if (e.kind !== 'npc' || ui.dialogNpc === e.id) continue;
+    const dist = Math.max(Math.abs(e.x - self.x), Math.abs(e.y - self.y));
+    const next = barkNext.get(e.id) ?? 0;
+
+    // Crier: regelmäßig, solange man in Hörweite ist
+    const b = BARKS[e.id];
+    if (b) {
+      if (dist > b.range) continue;
+      if (!barkNext.has(e.id)) { barkNext.set(e.id, now + 2000 + Math.random() * 3000); continue; }
+      if (now < next) continue;
+      const lines = b.news ? [...newsLines(), ...b.lines] : b.lines;
+      const i = (barkIdx.get(e.id) ?? 0) % lines.length;
+      barkIdx.set(e.id, i + 1);
+      ui.bubble(e.id, lines[i], 5000, b.shout ? 'npc shout' : 'npc');
+      barkNext.set(e.id, now + b.every * 1000 * (0.85 + Math.random() * 0.3));
+      continue;
+    }
+
+    // Wer eine neue Quest hat ("!"), ruft einmal beim Vorbeigehen
+    if (markers.get(e.id) !== '!' || dist > HAIL_RANGE || now < next) continue;
+    ui.bubble(e.id, HAILS[e.id] ?? HAIL_DEFAULT, 5000, 'npc');
+    barkNext.set(e.id, now + HAIL_COOLDOWN * 1000);
+  }
+}
+
+// ---------- Sprechen: Enter öffnet die Zeile, Enter sendet, Esc bricht ab ----------
+const chatForm = document.getElementById('chat-form');
+const chatText = document.getElementById('chat-text');
+function openChat() {
+  chatForm.hidden = false;
+  chatText.value = '';
+  chatText.focus();
+}
+function closeChat() {
+  chatForm.hidden = true;
+  chatText.blur();
+}
+chatForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const text = chatText.value.trim();
+  if (text) send({ t: 'chat', text });
+  closeChat();
+});
+chatText.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') { e.preventDefault(); closeChat(); }
+  e.stopPropagation();
+});
+chatText.addEventListener('blur', () => { if (!chatText.value.trim()) chatForm.hidden = true; });
+
 function flushEvents(events) {
   for (const e of events) {
-    if (e.type === 'log') ui.log(e.text, e.cls);
+    if (e.type === 'log') { ui.log(e.text, e.cls); sfx.log(e.text, e.cls); }
     else if (e.type === 'float') {
       const v = visuals.get(e.ent);
-      if (v) { const s = screenOf(v); ui.floater(s.x, s.y, e.text, e.cls); }
+      if (v) {
+        const s = screenOf(v);
+        // Schadenszahlen ohne Klasse: eigener Schaden rot, ausgeteilter hell; große Treffer größer.
+        let cls = e.cls;
+        if (!cls && /^\d+$/.test(e.text)) {
+          // Groß: deutlich über dem gleitenden Schnitt der letzten Treffer dieser Art.
+          const kind = e.ent === mirror.you ? 'taken' : 'dealt';
+          const n = Number(e.text);
+          const avg = hitAvg[kind] ?? n;
+          cls = n >= avg * 1.5 && n >= 4 ? `${kind} big` : kind;
+          hitAvg[kind] = avg * 0.8 + n * 0.2;
+        }
+        ui.floater(s.x, s.y, e.text, cls);
+        sfx.float(e, cls, mirror.you);
+      }
     } else if (e.type === 'dialog') {
       const npc = mirror.ents.get(e.npc);
-      if (npc) ui.openDialog(npc.id, npc.name, e.page, e.options);
+      if (npc) ui.openDialog(npc.id, npc.name, e.page, e.options, npc.sprite, mirror.ents.get(mirror.you)?.sprite);
     } else if (e.type === 'dialogEnd') ui.closeDialog();
     else if (e.type === 'shop') { ui.closeDialog(); windows.open('shop', { shop: e.shop }); }
     else if (e.type === 'craft') windows.open('craft', { obj: e.obj, station: e.station });
@@ -237,14 +376,29 @@ function flushEvents(events) {
     else if (e.type === 'window') { ui.closeDialog(); windows.open(e.win); }
     else if (e.type === 'travel') {
       rememberRegion(e.region);
-      windows.close();
-      banner('THE WAY OPENS...');
+      windows.closeAll();
+      // Häuser betreten und verlassen ohne großes Zwischenbild
+      if (e.region !== 'kindle_inside' && region?.id !== 'kindle_inside') banner('THE WAY OPENS...');
     }
-    else if (e.type === 'community') windows.setCommunity(e.community);
+    else if (e.type === 'community') { community = e.community; windows.setCommunity(e.community); }
+    else if (e.type === 'tradeAsk') { windows.open('tradeask', { from: e.from, name: e.name }); sfx.ui(); }
+    else if (e.type === 'trade') windows.open('trade', e);
+    else if (e.type === 'tradeEnd') {
+      windows.close('tradeask');
+      if (windows.isOpen('trade')) windows.close('trade');
+      if (e.done) sfx.play?.('coin');
+    }
+    else if (e.type === 'chat') {
+      ui.bubble(e.ent, e.text, 5000, e.ent === mirror.you ? 'me' : '');
+      sfx.ui();
+    }
     else if (e.type === 'telegraph') addTelegraph(e.t);
     else if (e.type === 'telegraphEnd') removeTelegraph(e.id);
     else if (e.type === 'lit') setLit(e.id, e.lit !== false);
-    else if (e.type === 'cast' && e.id === 'flare' && e.by === mirror.you) flareUntil = performance.now() + 450;
+    else if (e.type === 'cast') {
+      sfx.cast(e, mirror.you);
+      if (e.id === 'flare' && e.by === mirror.you) flareUntil = performance.now() + 450;
+    }
     else if (e.type === 'respawn') {
       ui.closeDialog();
       snapCamera = true;
@@ -260,6 +414,8 @@ function onMessage(msg) {
     mirror.you = msg.you;
     for (const o of mirror.objects) setLit(o.id, msg.lit.includes(o.id));
     for (const o of mirror.objects) if (o.type === 'node') objects.setDepleted(o.id, msg.depleted.includes(o.id));
+    community = msg.community;
+    today = msg.date || today;
     windows.setCommunity(msg.community, msg.date);
     showNews();
     for (const id of [...telegraphs.keys()]) removeTelegraph(id);
@@ -277,6 +433,16 @@ function onMessage(msg) {
   }
   if (msg.t === 'tick') {
     for (const meta of msg.spawn) {
+      const old = mirror.ents.get(meta.id);
+      if (old && !old.fresh) {
+        // Bekannte Figur mit neuem Aussehen (Klassenwechsel): Bild austauschen, Lage behalten.
+        if (old.sprite !== meta.sprite) {
+          Object.assign(old, meta);
+          removeVisual(meta.id);
+          addVisual(old);
+        }
+        continue;
+      }
       const ent = { ...meta, x: 0, y: 0, px: 0, py: 0, hp: 0, dead: false, dazzled: false, fresh: true };
       mirror.ents.set(meta.id, ent);
     }
@@ -305,8 +471,14 @@ function onMessage(msg) {
       const first = !mirror.state;
       mirror.state = msg.state;
       windows.setState(msg.state);
+      ui.setToday(todayState());
       updateMarkers();
-      if (first && !msg.state.cls) ui.log('Warden Ama stands by the Beacon. Talk to her to begin. (Look for the !)', 'good');
+      if (first && !msg.state.cls) ui.log('Warden Ama stands by the Beacon. Talk to her to begin. (Look for the lantern above her head.)', 'good');
+      // Erinnerung beim Einloggen: Altar in der Kapelle (Kerze über der Kapelle)
+      const t = todayState();
+      if (first && msg.state.cls && ((t.canPray && !t.prayed) || !t.voted)) {
+        ui.log(`The altar in the Chapel is waiting: ${t.canPray && !t.prayed ? 'say a prayer' : ''}${t.canPray && !t.prayed && !t.voted ? ' and ' : ''}${!t.voted ? 'cast your vote' : ''} today. Follow the candle.`, 'good');
+      }
     }
     if (mirror.state) ui.setBar(mirror.state.bar, mirror.state);
     mirror.arrivedAt = performance.now();
@@ -363,7 +535,7 @@ function onClosed(msg) {
     return;
   }
   if (msg.code === 4002) {
-    banner('You stepped into Kindle somewhere else. [ RELOAD ] to come back here.');
+    banner('You stepped into Kindle somewhere else. Reload to come back here.');
     return;
   }
   retry++;
@@ -506,6 +678,7 @@ function contextMenu(hit, x, y) {
     if (hit.ref.kind === 'mob') entries.push({ verb: 'Attack', noun: ent.name, fn: run('attack') }, { verb: 'Examine', noun: ent.name, fn: run('examine') });
     else if (hit.ref.kind === 'npc') entries.push({ verb: 'Talk-to', noun: ent.name, fn: run('talk') }, { verb: 'Examine', noun: ent.name, fn: run('examine') });
     else if (hit.ref.kind === 'object') for (const [action, label] of objectActions(ent)) entries.push({ verb: label, noun: objectName(ent), fn: run(action) });
+    else if (ent.kind === 'player' && ent.id !== mirror.you) entries.push({ verb: 'Trade with', noun: ent.name, fn: () => send({ t: 'tradeAsk', id: ent.id }) });
   } else if (hit?.kind) {
     entries.push({ verb: 'Examine', noun: hit.kind === 'tree' ? 'Tree' : 'Rock', fn: () => ui.log(EXAMINE[hit.kind], 'sys') });
   }
@@ -571,7 +744,10 @@ function endPointer(e) {
   if (!drag) return;
   const d = drag;
   drag = null;
-  if (d.moved || e.type === 'pointercancel') return;
+  if (e.type === 'pointercancel') return;
+  // Nur echtes Kameraziehen (mittlere Taste, Finger) schluckt den Klick. Mit linker/rechter
+  // Maustaste zählt der Klick auch bei schneller Bewegung, und zwar dort, wo gedrückt wurde.
+  if (d.moved && (d.button === 1 || d.type !== 'mouse')) return;
   if (d.button === 2) contextMenu(pick(d.sx, d.sy), d.sx, d.sy);
   else if (d.button === 0) primary(pick(d.sx, d.sy));
 }
@@ -599,12 +775,13 @@ window.addEventListener('keydown', (e) => {
   if (k === 'Escape') {
     if (ui.menuOpen()) ui.closeMenu();
     else if (ui.assigning) ui.endAssign();
-    else if (windows.kind) windows.close();
+    else if (windows.any) windows.close();
     else if (ui.dialogNpc) ui.closeDialog(true);
     else send({ t: 'target', id: null });
     return;
   }
   if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (k === 'Enter') { e.preventDefault(); openChat(); return; }
   // Im Gespräch wählen Zahlen Antworten.
   if (/^[1-9]$/.test(k) && ui.dialogKey(Number(k))) return;
   const key = k.length === 1 ? k.toLowerCase() : k;
@@ -616,6 +793,7 @@ window.addEventListener('keydown', (e) => {
   if (key === 'c') { windows.toggle('char'); return; }
   if (key === 'b' || key === 'i') { windows.toggle('bag'); return; }
   if (key === 'j') { windows.toggle('quests'); return; }
+  if (key === 'o') { windows.toggle('settings'); return; }
   held.add(k.toLowerCase());
 });
 window.addEventListener('keyup', (e) => held.delete(e.key.toLowerCase()));
@@ -657,17 +835,25 @@ function updateSky(now) {
   const date = gameDate();
   const sky = skyState(date);
   // Unter der Erde gibt es keinen Himmel, im Drift nur einen trüben.
-  if (region?.indoor) view.setSky(0, 0);
+  // Häuser: warmes Dämmerlicht, dunkle Ecken statt Grey
+  if (region?.sheltered) view.setSky(0.5, 0.35, [0.05, 0.034, 0.022]);
+  else if (region?.indoor) view.setSky(0, 0);
   else if (region?.murk !== undefined) view.setSky(Math.min(sky.day, region.murk), sky.dusk * 0.3);
   else view.setSky(sky.day, sky.dusk);
   const mins = minutesToMidnight(date);
   const note = sky.phase === 'NIGHT' || sky.phase === 'DUSK'
     ? `MIDNIGHT ${mins >= 60 ? `${Math.floor(mins / 60)}H ` : ''}${mins % 60}M`
     : '';
-  ui.updateSky(berlinClock(date), region?.indoor ? 'UNDERGROUND' : region?.murk !== undefined ? 'IN THE GREY' : sky.phase, note);
+  let placeLabel = sky.phase;
+  if (region?.place) placeLabel = region.place;
+  else if (region?.indoor) placeLabel = 'UNDERGROUND';
+  else if (region?.murk !== undefined) placeLabel = 'IN THE GREY';
+  ui.updateSky(berlinClock(date), placeLabel, note);
   if (lastPhase && lastPhase !== sky.phase) ui.log(...PHASE_LINES[sky.phase]);
   if (!lastPhase) ui.log(`It is ${sky.phase.toLowerCase()} in Kindle. ${berlinClock(date)}, Kindle time.`, 'sys');
   lastPhase = sky.phase;
+  // Nachts, unter der Erde und im Grey klingt die Musik dunkler.
+  music.setNight(sky.phase === 'NIGHT' || !!region?.indoor || region?.murk !== undefined);
 }
 
 // ---------- Schleife ----------
@@ -779,16 +965,13 @@ function frame(now) {
   }
 
   // Herstell- und Händlerfenster schließen, wenn man wegläuft (Gespräche schließt der Server).
-  if (self && (windows.kind === 'craft' || windows.kind === 'shop')) {
-    let far = false;
-    if (windows.kind === 'craft') {
-      const o = mirror.objects.find((x) => x.id === windows.opts.obj);
-      far = !o || cheb(self.x, self.y, Math.max(o.x, Math.min(self.x, o.x + o.w - 1)), Math.max(o.y, Math.min(self.y, o.y + o.d - 1))) > 1;
-    } else {
-      const n = mirror.ents.get(SHOPS[windows.opts.shop]?.npc);
-      far = !n || cheb(n.x, n.y, self.x, self.y) > 2;
-    }
-    if (far) windows.close();
+  if (self && windows.isOpen('craft')) {
+    const o = mirror.objects.find((x) => x.id === windows.optsOf('craft').obj);
+    if (!o || cheb(self.x, self.y, Math.max(o.x, Math.min(self.x, o.x + o.w - 1)), Math.max(o.y, Math.min(self.y, o.y + o.d - 1))) > 1) windows.close('craft');
+  }
+  if (self && windows.isOpen('shop')) {
+    const n = mirror.ents.get(SHOPS[windows.optsOf('shop').shop]?.npc);
+    if (!n || cheb(n.x, n.y, self.x, self.y) > 2) windows.close('shop');
   }
 
   view.render();
@@ -804,7 +987,7 @@ function frame(now) {
     if (e.kind === 'npc') {
       const mark = markers.get(e.id);
       const s = screenOf(v, 0.1);
-      ui.nameTag(e.id, s.x, s.y, mark && s.visible ? mark : null, 'marker');
+      ui.marker(e.id, s.x, s.y, mark && s.visible ? (mark === '?' ? 'turnin' : 'quest') : null);
       continue;
     }
     if (e.kind !== 'mob') continue;
@@ -812,6 +995,16 @@ function frame(now) {
     const s = screenOf(v, 0.15);
     ui.overhead(e.id, s.x, s.y, s.visible ? e.hp / e.maxHp : null);
   }
+
+  // Sprechblasen folgen den Köpfen; Figuren in der Nähe rufen von selbst
+  ui.placeBubbles((id) => {
+    const v = visuals.get(id);
+    if (!v) return null;
+    const s = screenOf(v, 0.45);
+    return s.visible ? s : null;
+  });
+  barks(now);
+  placeDailyMarks();
 
   // Zeigertext (Maus)
   if (hoverAt && !drag && !ui.menuOpen()) {

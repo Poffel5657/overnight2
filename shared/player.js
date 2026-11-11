@@ -1,7 +1,7 @@
 // Alles am Spieler, was gespeichert wird: Klassen, Beutel, Ausrüstung, Gold, Berufe, Quests, Leisten.
 // Reine Funktionen auf dem Spieler-Objekt. Der Spielstand (saveOf/loadInto) ist versioniert.
 
-import { ITEMS, SLOTS, BAG_SIZE } from '../content/items.js';
+import { ITEMS, SLOTS, BAG_SIZE, UNARMED_DELAY } from '../content/items.js';
 import { CLASSES, WANDERER } from '../content/classes.js';
 import { ABILITIES } from '../content/abilities.js';
 import { PROFESSIONS, MAX_PROFESSIONS, PROF_MAX_LEVEL } from '../content/professions.js';
@@ -27,6 +27,12 @@ export function maxHpOf(p) {
 export function equipped(p, slot) {
   const id = p.equip[slot];
   return id ? ITEMS[id] : null;
+}
+
+// Takte zwischen zwei automatischen Angriffen (Tempo der Hauptwaffe).
+export function swingDelay(p) {
+  const w = p.equip?.main && ITEMS[p.equip.main];
+  return w?.delay ?? UNARMED_DELAY;
 }
 
 export function weaponPower(p) {
@@ -136,10 +142,16 @@ export function unlockClass(p, cls) {
   return true;
 }
 
+// Aussehen: Jede Klasse hat ein eigenes Sprite, ohne Klasse der Wanderer.
+export function spriteOf(p) {
+  return p.cls && CLASSES[p.cls] ? `player_${p.cls}` : 'player';
+}
+
 // Aktive Klasse wechseln (beim Anlegen einer Hauptwaffe). HP bleiben anteilig erhalten.
 export function setClass(p, cls) {
   const frac = p.maxHp ? p.hp / p.maxHp : 1;
   p.cls = cls;
+  p.sprite = spriteOf(p);
   p.maxHp = maxHpOf(p);
   p.hp = Math.max(1, Math.round(p.maxHp * frac));
   barOf(p);
@@ -261,7 +273,7 @@ export function loadInto(p, raw) {
       date: d.date,
       kills: Object.fromEntries(Object.entries(d.kills || {}).filter(([k]) => typeof k === 'string' && k.length < 32).map(([k, v]) => [k, clampInt(v, 0, 999, 0)])),
       done: Array.isArray(d.done) ? d.done.filter((x) => typeof x === 'string' && x.length < 32).slice(0, 10) : [],
-      donated: clampInt(d.donated, 0, 1e6, 0),
+      voted: typeof d.voted === 'string' && /^[a-z0-9-]{1,32}$/.test(d.voted) ? d.voted : null,
       prayed: !!d.prayed,
       chests: Array.isArray(d.chests) ? d.chests.filter((x) => typeof x === 'string' && x.length < 48).slice(0, 50) : [],
     };

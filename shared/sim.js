@@ -9,7 +9,7 @@ import { MOBS } from '../content/mobs.js';
 import { ABILITIES, GCD } from '../content/abilities.js';
 import { EXAMINE } from '../content/npcs.js';
 import { NODES } from '../content/nodes.js';
-import { ITEMS } from '../content/items.js';
+import { ITEMS, UNARMED_DELAY } from '../content/items.js';
 import { findPath, stepToward, cheb } from './path.js';
 import { tell, emit, float } from './events.js';
 import * as P from './player.js';
@@ -18,6 +18,7 @@ import { CHESTS } from '../content/chests.js';
 import { startGather, tickGather, tickNodes, consume, inVillage } from './trade.js';
 import { onKill, dailyOf } from './community.js';
 import { berlinDate } from './daylight.js';
+import { tickTrade, cancelTrade } from './barter.js';
 
 export { saveOf, xpForLevel, MAX_LEVEL } from './player.js';
 
@@ -127,12 +128,13 @@ export function addPlayer(world, id, name, save = null) {
     hp: 30, maxHp: 30, oil: 100, gold: 0,
     cls: null, classes: {}, bag: [], equip: {}, profs: {}, quests: {}, bars: {},
     path: [], goal: null, target: null, engaged: false,
-    gcdUntil: 0, cds: {}, queued: null, queuedUntil: 0, braceUntil: 0,
+    gcdUntil: 0, swingAt: 0, cds: {}, queued: null, queuedUntil: 0, braceUntil: 0,
     glowUntil: 0, fadeUntil: 0, hots: [], dialog: null, gather: null,
     warnedOil: 0,
   };
   if (save) P.loadInto(p, save);
   else P.barOf(p);
+  p.sprite = P.spriteOf(p);
   const at = save && walkable(world, save.x, save.y) ? save : nearestWalkable(world, r.start.x, r.start.y);
   p.x = p.px = at.x;
   p.y = p.py = at.y;
@@ -154,6 +156,7 @@ export function removePlayer(world, id) {
   const p = world.players.get(id);
   if (!p) return null;
   const save = saveFor(world, id);
+  if (p.trade) cancelTrade(world, p, `${p.name} has left. The trade is off.`);
   world.players.delete(id);
   for (const m of world.mobs) {
     if (m.angryAt === id) m.angryAt = null;
@@ -213,6 +216,8 @@ export function staticLightAt(world, x, y) {
 }
 
 export function objectActions(o) {
+  // Gebäude mit Innenraum (content/regions/kindle-inside.js)
+  if (o.inside) return [['enter', 'Enter'], ['examine', 'Examine']];
   switch (o.type) {
     case 'beacon': return [['refill', 'Fill lantern'], ['feed', 'Feed'], ['examine', 'Examine']];
     case 'board': return [['read', 'Read'], ['examine', 'Examine']];
@@ -220,7 +225,7 @@ export function objectActions(o) {
     case 'chest': return [['open', 'Open'], ['examine', 'Examine']];
     case 'shrine': return [['search', 'Search'], ['examine', 'Examine']];
     case 'find': return [['search', 'Look closer'], ['examine', 'Examine']];
-    case 'altar': return [['pray', 'Pray'], ['examine', 'Examine']];
+    case 'altar': return [['pray', 'Pray at'], ['examine', 'Examine']];
     case 'signal':
     case 'brazier': return o.lit ? [['examine', 'Examine']] : [['light', 'Light'], ['examine', 'Examine']];
     case 'campfire': return [['rest', 'Rest'], ['examine', 'Examine']];
@@ -263,7 +268,7 @@ export function interact(world, pid, ref, action) {
     else if (target.type === 'node') text = target.left > 0 ? `${NODES[target.node].name}. ${EXAMINE.node}` : EXAMINE.depleted;
     else if (target.type === 'station') text = EXAMINE[target.station];
     else if (target.type === 'find') text = `${target.name[0].toUpperCase()}${target.name.slice(1)}. Something about it is worth a closer look.`;
-    else text = EXAMINE[target.type];
+    else text = target.text || EXAMINE[target.type];
     tell(world, pid, text || 'Nothing remarkable.', 'sys');
     return;
   }
@@ -428,7 +433,18 @@ function updatePlayer(world, p) {
     }
   }
 
-  // Eine Handlung pro globaler Abklingzeit: zuerst das Vorgemerkte, sonst der normale Schlag.
+  // Automatischer Angriff im Takt der Waffe, unabhängig von der globalen Abklingzeit.
+  // Langsame Waffen treffen seltener, dafür härter (Schaden skaliert mit dem Tempo).
+  if (p.engaged && target && inReach && world.tick >= p.swingAt) {
+    const delay = P.swingDelay(p);
+    p.swingAt = world.tick + delay;
+    emit(world, { type: 'cast', id: 'swing', by: p.id, at: target.id });
+    const base = roll(world, 1, 3) + Math.ceil(P.weaponPower(p) / 2) + Math.floor(P.classLevel(p) / 3);
+    hitMob(world, p, target, Math.max(1, Math.round((base * delay) / UNARMED_DELAY)));
+  }
+
+  // Fähigkeiten und Gegenstände: eine pro globaler Abklingzeit. Starke Fähigkeiten haben
+  // zusätzlich eine eigene Abklingzeit (cd), die erst ablaufen muss.
   if (p.queued && world.tick > p.queuedUntil) p.queued = null;
   if (world.tick >= p.gcdUntil) {
     if (p.queued?.startsWith('item:')) {
@@ -444,10 +460,6 @@ function updatePlayer(world, p) {
         p.gcdUntil = world.tick + GCD;
         p.cds[id] = world.tick + Math.max(ABILITIES[id].cd, GCD);
       }
-    } else if (!p.queued && p.engaged && target && inReach) {
-      p.gcdUntil = world.tick + GCD;
-      emit(world, { type: 'cast', id: 'swing', by: p.id, at: target.id });
-      hitMob(world, p, target, roll(world, 1, 3) + Math.ceil(P.weaponPower(p) / 2) + Math.floor(P.classLevel(p) / 3));
     }
   }
 
@@ -463,6 +475,7 @@ function updatePlayer(world, p) {
   }
 
   tickGather(world, p);
+  tickTrade(world, p);
   // have-Schritte von Quests: egal, wie die Dinge in den Beutel kamen.
   checkHave(world, p);
 
@@ -516,6 +529,8 @@ function doAction(world, p, goal) {
     startGather(world, p, t);
   } else if (goal.action === 'use' && t.type === 'station') {
     emit(world, { to: p.id, type: 'craft', obj: t.id, station: t.station });
+  } else if (goal.action === 'enter' && t.inside) {
+    travel(world, p, { region: t.inside.region, x: t.inside.x, y: t.inside.y });
   } else if (goal.action === 'enter' && t.type === 'door') {
     if (t.needs && !conditionHolds(p, t.needs)) {
       tell(world, p.id, t.locked || 'The way is shut.', 'sys');
@@ -795,6 +810,7 @@ function hurtPlayer(world, p, dmg, by) {
 
 // Im Lichtkreis des Leuchtfeuers (Dorf)? Bestien kommen nicht hinein.
 function villageAt(world, x, y) {
+  if (world.region.sheltered) return true;
   const b = world.objects.find((o) => o.type === 'beacon');
   return !!b && Math.hypot(x + 0.5 - (b.x + b.w / 2), y + 0.5 - (b.y + b.d / 2)) <= world.region.safeRadius;
 }

@@ -1,11 +1,13 @@
 // Nachrichten zwischen Browser und Gebiets-Server. Der Server prüft jede Absicht hier,
-// bevor sie die Simulation erreicht: feste Typen, ganze Zahlen, kurze IDs, kein Freitext.
+// bevor sie die Simulation erreicht: feste Typen, ganze Zahlen, kurze IDs; Freitext nur für
+// Gebet und Sprechen, beides wird in community.js bereinigt und begrenzt.
 
 import { walkTo, interact, useAbility, setTarget, cycleTarget, setBar, lightBonusOf } from './sim.js';
 import { say, closeTalk } from './talk.js';
-import { handIn, feedBeacon, pray, donate, PRAYER_MAX } from './community.js';
+import { handIn, feedBeacon, pray, vote, chat, PRAYER_MAX, CHAT_MAX } from './community.js';
 import { useSlot, unequip, dropSlot, craft, buy, sell } from './trade.js';
 import { stateOf } from './player.js';
+import { askTrade, answerTrade, setOffer, confirmTrade, cancelTrade, TRADE_MAX_KINDS } from './barter.js';
 import { SLOTS } from '../content/items.js';
 import { CONTENT_SIG } from './version.js';
 
@@ -43,7 +45,18 @@ export function parseIntent(raw) {
     case 'favour': return ID.test(String(m.id)) ? { t: 'favour', id: m.id } : null;
     case 'feed': return ID.test(String(m.item)) && int(m.n, 1, 999) ? { t: 'feed', item: m.item, n: m.n } : null;
     case 'pray': return typeof m.text === 'string' && m.text.length <= PRAYER_MAX * 2 ? { t: 'pray', text: m.text } : null;
-    case 'donate': return OPTION.test(String(m.option)) && int(m.gold, 1, 1000) ? { t: 'donate', option: m.option, gold: m.gold } : null;
+    case 'vote': return OPTION.test(String(m.option)) ? { t: 'vote', option: m.option } : null;
+    case 'chat': return typeof m.text === 'string' && m.text.length <= CHAT_MAX * 3 ? { t: 'chat', text: m.text } : null;
+    case 'tradeAsk': return ID.test(String(m.id)) ? { t: 'tradeAsk', id: m.id } : null;
+    case 'tradeAnswer': return ID.test(String(m.from)) && typeof m.yes === 'boolean' ? { t: 'tradeAnswer', from: m.from, yes: m.yes } : null;
+    case 'tradeSet': {
+      if (!m.items || typeof m.items !== 'object' || Array.isArray(m.items) || !int(m.gold, 0, 1e9)) return null;
+      const entries = Object.entries(m.items);
+      if (entries.length > TRADE_MAX_KINDS || !entries.every(([id, n]) => ID.test(id) && int(n, 1, 9999))) return null;
+      return { t: 'tradeSet', items: Object.fromEntries(entries), gold: m.gold };
+    }
+    case 'tradeOk': return { t: 'tradeOk' };
+    case 'tradeCancel': return { t: 'tradeCancel' };
     case 'ping': return { t: 'ping' };
     default: return null;
   }
@@ -70,7 +83,13 @@ export function applyIntent(world, pid, m) {
     case 'favour': handIn(world, p, m.id); break;
     case 'feed': feedBeacon(world, p, m.item, m.n); break;
     case 'pray': pray(world, p, m.text); break;
-    case 'donate': donate(world, p, m.option, m.gold); break;
+    case 'vote': vote(world, p, m.option); break;
+    case 'chat': chat(world, p, m.text); break;
+    case 'tradeAsk': askTrade(world, p, m.id); break;
+    case 'tradeAnswer': answerTrade(world, p, m.from, m.yes); break;
+    case 'tradeSet': setOffer(world, p, m.items, m.gold); break;
+    case 'tradeOk': confirmTrade(world, p); break;
+    case 'tradeCancel': if (p.trade) cancelTrade(world, p, `${p.name} calls off the trade.`); break;
     default: break;
   }
 }
@@ -111,8 +130,11 @@ export function tickFor(world, pid, known) {
   const seen = new Set();
   for (const e of allEntities(world)) {
     seen.add(e.id);
-    if (!known.has(e.id)) {
+    // Neu oder mit neuem Aussehen (Klassenwechsel): Grunddaten (erneut) schicken.
+    known.sprites ??= new Map();
+    if (!known.has(e.id) || known.sprites.get(e.id) !== e.sprite) {
       known.add(e.id);
+      known.sprites.set(e.id, e.sprite);
       spawn.push(metaOf(e));
     }
     const flags = (e.dead ? 1 : 0) | (e.scaredUntil > world.tick || e.dazzleUntil > world.tick ? 2 : 0) | (e.rootUntil > world.tick ? 4 : 0);
@@ -122,6 +144,7 @@ export function tickFor(world, pid, known) {
   for (const id of known) {
     if (!seen.has(id)) {
       known.delete(id);
+      known.sprites?.delete(id);
       gone.push(id);
     }
   }

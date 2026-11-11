@@ -36,7 +36,7 @@ Im Grey sieht man nur so weit, wie das eigene Licht reicht. Laternen, Fackeln un
 ## Figuren in Kindle (Auswahl)
 
 - **Warden Ama** hütet das Leuchtfeuer. Sie ist trocken und praktisch und zählt jedes Holzscheit. Bei ihr laufen Gemeinschaftsaufgaben und Weltprobleme zusammen.
-- **Brother Tallow**, Priester der Kapelle. Er nimmt Gebete und Spenden an und verkündet, was erhört wurde. Er glaubt fest an den Nightwright und ist ein bisschen enttäuscht, dass der nie antwortet, außer durch Taten.
+- **Brother Tallow**, Priester der Kapelle. Er nimmt Gebete und die weißen Stimmsteine an (einer pro Kopf und Tag) und verkündet, was erhört wurde. Er glaubt fest an den Nightwright und ist ein bisschen enttäuscht, dass der nie antwortet, außer durch Taten.
 - **Pell the Crier**, der Ausrufer am Markt. Er erzählt jeden Morgen, was letzte Nacht geschah, laut und mit Übertreibung.
 - **Old Rook**, Tüftler in der Werkstatt. Er bringt Salvage und Tinkering bei und mag niemanden, außer gutem Messing.
 - **Fen**, ein Kind, das immer in den Nebel will. Bei ihm gibt es Quests und Gefallen.

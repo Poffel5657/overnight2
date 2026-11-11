@@ -5,8 +5,10 @@
 import { ABILITIES, GCD } from '../content/abilities.js';
 import { ITEMS } from '../content/items.js';
 import { TALK } from '../content/npcs.js';
-import { CLASSES, WANDERER } from '../content/classes.js';
-import { iconEl } from './icons.js';
+import { iconEl, spriteURL } from './icons.js';
+import { markerURL } from './markers.js';
+import { makeDraggable } from './drag.js';
+import { TICK_MS } from '../shared/sim.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -73,7 +75,7 @@ export function createUI(handlers) {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'slot';
-    for (const cls of ['key', 'glyph', 'name', 'count', 'cd']) {
+    for (const cls of ['key', 'glyph', 'name', 'count', 'cd', 'timer']) {
       const s = document.createElement('span');
       s.className = cls;
       b.append(s);
@@ -138,6 +140,11 @@ export function createUI(handlers) {
       const total = own > me.gcdUntil && a ? Math.max(a.cd, GCD) : GCD;
       const left = Math.max(0, until - now);
       cd.style.height = `${Math.min(100, (left / total) * 100)}%`;
+      // Eigene Abklingzeit (länger als die globale): Restsekunden groß auf dem Feld.
+      const ownLeft = Math.max(0, own - now);
+      const t = slots[i].querySelector('.timer');
+      const txt = ownLeft > GCD ? String(Math.ceil((ownLeft * TICK_MS) / 1000)) : '';
+      if (t.textContent !== txt) t.textContent = txt;
       slots[i].classList.toggle('queued', me.queued === id);
       if (a) slots[i].classList.toggle('unusable', !!a.oil && me.oil < a.oil);
     });
@@ -176,21 +183,20 @@ export function createUI(handlers) {
 
   function updateStatus(me, place) {
     $('st-place').textContent = place;
-    const def = me.cls ? CLASSES[me.cls] : WANDERER;
-    $('st-class').textContent = `${def.name.toUpperCase()} LV ${me.level}`;
-    $('st-gold').textContent = `${me.gold} GOLD`;
-    $('st-gather').textContent = me.gathering ? 'WORKING...' : '';
+    $('st-gather').textContent = me.gathering ? 'Working…' : '';
     $('hp-fill').style.width = `${(me.hp / me.maxHp) * 100}%`;
     $('hp-text').textContent = `${Math.max(0, me.hp)}/${me.maxHp}`;
     $('fuel-fill').style.width = `${me.oil}%`;
     $('fuel-text').textContent = String(Math.ceil(me.oil));
+    // Die Laterne im Statusfenster leuchtet so hell, wie Öl da ist.
+    $('st-lamp').style.setProperty('--lit', (Math.max(0, Math.min(100, me.oil)) / 100).toFixed(2));
   }
 
   function updateTarget(mob, note) {
     const el = $('target');
     if (!mob) { el.hidden = true; return; }
     el.hidden = false;
-    $('target-name').textContent = `[ ${mob.name.toUpperCase()}${mob.level ? ` LV ${mob.level}` : ''} ]`;
+    $('target-name').textContent = `${mob.name}${mob.level ? ` · Lv ${mob.level}` : ''}`;
     $('target-fill').style.width = `${(mob.hp / Math.max(1, mob.maxHp)) * 100}%`;
     $('target-text').textContent = `${mob.hp}/${mob.maxHp}`;
     $('target-note').textContent = note || '';
@@ -223,26 +229,68 @@ export function createUI(handlers) {
   const menuOpen = () => !menu.hidden;
 
   // ---------- Gespräch (der Server bestimmt Seite und sichtbare Antworten) ----------
-  function openDialog(npcId, name, pageKey, options) {
+  // sprite/meSprite: Bilder für die Porträts (Figur links, eigene Figur rechts)
+  function openDialog(npcId, name, pageKey, options, sprite, meSprite) {
     const page = TALK[npcId]?.[pageKey];
     if (!page) { closeDialog(); return; }
+    const fresh = dialog.hidden || dialogNpc !== npcId;
     dialogNpc = npcId;
     dialogOptions = options;
     dialog.hidden = false;
-    $('dialog-name').textContent = `[ ${name.toUpperCase()} ]`;
-    $('dialog-text').textContent = page.text;
+    $('dialog-name').textContent = name;
+    const npcImg = $('dialog-npc-img');
+    const meImg = $('dialog-me-img');
+    const nu = sprite && spriteURL(sprite);
+    const mu = meSprite && spriteURL(meSprite);
+    npcImg.hidden = !nu;
+    meImg.hidden = !mu;
+    if (nu && npcImg.getAttribute('src') !== nu) npcImg.src = nu;
+    if (mu && meImg.getAttribute('src') !== mu) meImg.src = mu;
+    // Neues Gespräch: Porträts gleiten herein; neue Seite: die Figur nickt kurz
+    dialog.classList.remove('enter', 'speak');
+    void dialog.offsetWidth;
+    dialog.classList.add(fresh ? 'enter' : 'speak');
+    dialog.classList.remove('me-turn');
+    typeText($('dialog-text'), page.text);
     const opts = $('dialog-options');
     opts.replaceChildren();
     options.forEach((i, n) => {
       const b = document.createElement('button');
       b.type = 'button';
-      b.textContent = `[ ${n + 1}. ${page.options[i].text} ]`;
+      const num = document.createElement('span');
+      num.className = 'num';
+      num.textContent = `${n + 1}.`;
+      b.append(num, page.options[i].text);
       b.addEventListener('click', () => handlers.say(i));
+      // Beim Zeigen auf eine Antwort tritt die eigene Figur nach vorn
+      b.addEventListener('pointerenter', () => dialog.classList.add('me-turn'));
+      b.addEventListener('pointerleave', () => dialog.classList.remove('me-turn'));
       opts.append(b);
     });
   }
+  // Text erscheint Zeichen für Zeichen; ein Klick in den Text zeigt ihn ganz.
+  let typing = null;
+  function typeText(el, text) {
+    clearInterval(typing);
+    el.textContent = '';
+    el.dataset.full = text;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = text; return; }
+    let i = 0;
+    typing = setInterval(() => {
+      i = Math.min(text.length, i + 2);
+      el.textContent = text.slice(0, i);
+      if (i >= text.length) { clearInterval(typing); typing = null; }
+    }, 22);
+  }
+  $('dialog-text').addEventListener('click', (e) => {
+    clearInterval(typing);
+    typing = null;
+    e.currentTarget.textContent = e.currentTarget.dataset.full || e.currentTarget.textContent;
+  });
+
   function closeDialog(tellServer = false) {
     if (dialog.hidden) return;
+    clearInterval(typing);
     dialog.hidden = true;
     dialogNpc = null;
     if (tellServer) handlers.bye();
@@ -268,10 +316,42 @@ export function createUI(handlers) {
     const d = document.createElement('div');
     d.className = 'floater' + (cls ? ' ' + cls : '');
     d.textContent = text;
-    d.style.left = `${x}px`;
+    // Leicht streuen, damit schnelle Treffer nicht übereinander liegen.
+    const jitter = /dealt|taken/.test(cls) ? (Math.random() - 0.5) * 36 : 0;
+    d.style.left = `${x + jitter}px`;
     d.style.top = `${y}px`;
     floaters.append(d);
-    setTimeout(() => d.remove(), 950);
+    setTimeout(() => d.remove(), 1300);
+  }
+
+  // ---------- Sprechblasen ----------
+  // Blase über einer Figur für ms Millisekunden; eine neue ersetzt die alte.
+  const bubbles = new Map(); // id -> { el, until }
+  function bubble(id, text, ms = 5000, cls = '') {
+    let b = bubbles.get(id);
+    if (!b) {
+      const el = document.createElement('div');
+      $('bubbles').append(el);
+      b = { el };
+      bubbles.set(id, b);
+    }
+    b.el.className = `bubble ${cls}`;
+    b.el.textContent = text;
+    b.until = performance.now() + ms;
+    b.el.hidden = true;
+  }
+  // posOf(id) -> { x, y } oder null (nicht zu sehen); jedes Bild aufrufen
+  function placeBubbles(posOf) {
+    const now = performance.now();
+    for (const [id, b] of bubbles) {
+      if (now > b.until) { b.el.remove(); bubbles.delete(id); continue; }
+      const p = posOf(id);
+      b.el.hidden = !p;
+      if (!p) continue;
+      b.el.classList.toggle('fading', b.until - now < 400);
+      b.el.style.left = `${p.x}px`;
+      b.el.style.top = `${p.y}px`;
+    }
   }
 
   const bars = new Map();
@@ -307,23 +387,90 @@ export function createUI(handlers) {
     el.style.top = `${y}px`;
   }
 
+  // Pixel-Symbol (src/markers.js) über einer Figur oder einem Gebäude; kind = null blendet aus.
+  const marks = new Map();
+  function marker(id, x, y, kind) {
+    let el = marks.get(id);
+    if (!kind) { if (el) el.hidden = true; return; }
+    if (!el) {
+      el = document.createElement('img');
+      el.alt = '';
+      el.draggable = false;
+      floaters.append(el);
+      marks.set(id, el);
+    }
+    if (el.dataset.kind !== kind) {
+      el.dataset.kind = kind;
+      el.className = `qmark ${kind}`;
+      el.src = markerURL(kind);
+    }
+    el.hidden = false;
+    el.style.left = `${x}px`;
+    el.style.top = `${y}px`;
+  }
+
+  // Tagesaufgaben in der Statusanzeige: Kerze (beten) und Münze (opfern), hell = erledigt
+  function setToday(t) {
+    const el = $('st-today');
+    if (!t) { el.hidden = true; return; }
+    el.hidden = false;
+    el.querySelector('.pray').classList.toggle('done', !!t.prayed);
+    el.querySelector('.pray').hidden = !t.canPray;
+    el.querySelector('.vote').classList.toggle('done', !!t.voted);
+    el.title = `${t.canPray ? (t.prayed ? 'Prayed today. ' : 'You have not prayed today. ') : ''}${t.voted ? 'Voted today.' : 'You have not voted today.'} Both happen at the altar in the Chapel.`;
+  }
+
   // ---------- Knöpfe ----------
-  $('btn-crt').addEventListener('click', () => {
-    const on = document.documentElement.classList.toggle('crt-on');
-    $('btn-crt').textContent = `[ CRT: ${on ? 'ON' : 'OFF'} ]`;
+  // CRT-Filter der Welt an/aus (Einstellung im Settings-Fenster)
+  function setCrt(on) {
+    document.documentElement.classList.toggle('crt-on', on);
     handlers.crt(on);
     try { localStorage.setItem('overnight2.crt', on ? '1' : '0'); } catch { /* egal */ }
-  });
+  }
   $('btn-help').addEventListener('click', () => { $('help').hidden = !$('help').hidden; });
   $('btn-help-close').addEventListener('click', () => { $('help').hidden = true; });
   $('dialog-close').addEventListener('click', () => closeDialog(true));
 
+  // Verschiebbar: Ort/Zeit, Log, Ziel, Leiste mit Leben/Öl, Menüleiste, Gespräch
+  makeDraggable($('vitals'), 'vitals', $('vitals'));
+  makeDraggable($('hotbar-box'), 'hotbar', $('hotbar-box'));
+  makeDraggable(document.querySelector('.status'), 'status', document.querySelector('.status .wtitle'));
+  makeDraggable($('log-window'), 'log', document.querySelector('#log-window .wtitle'));
+  makeDraggable($('target'), 'target', $('target-name'));
+  makeDraggable($('menubar'), 'menubar', $('menubar'));
+  makeDraggable(dialog, 'dialog', dialog.querySelector('.wtitle'));
+
+  // Laterne neben Leben und Öl (Pixel-Icon der Zinnlaterne)
+  $('st-lamp').append(iconEl('item', 'tin_lantern', '*'));
+  // Tagesaufgaben: Symbole einsetzen
+  for (const [cls, kind, label] of [['pray', 'pray', 'Pray'], ['vote', 'stone', 'Vote']]) {
+    const s = document.createElement('span');
+    s.className = `today-item ${cls}`;
+    const img = document.createElement('img');
+    img.src = markerURL(kind);
+    img.alt = '';
+    img.className = 'icon';
+    s.append(img, label);
+    $('st-today').append(s);
+  }
+
+  // Größe der Oberfläche: wächst mit dem Fenster, dazu 70–150 % im Settings-Fenster
+  let uiScale = 1;
+  try { uiScale = Number(localStorage.getItem('overnight2.ui-scale')) || 1; } catch { /* egal */ }
+  function setScale(v) {
+    uiScale = Math.round(Math.max(0.7, Math.min(1.5, v)) * 10) / 10;
+    document.documentElement.style.setProperty('--ui-scale', String(uiScale));
+    try { localStorage.setItem('overnight2.ui-scale', String(uiScale)); } catch { /* egal */ }
+  }
+  setScale(uiScale);
+
   return {
     log, setBar, updateBar, flashSlot, beginAssign, endAssign, setKeys,
     get keys() { return keys; }, get assigning() { return assigning; }, get bar() { return bar; },
+    setScale, get scale() { return uiScale; }, setCrt, get crt() { return document.documentElement.classList.contains('crt-on'); },
     updateStatus, updateSky, updateTarget,
     openMenu, closeMenu, menuOpen, openDialog, closeDialog, dialogKey,
     get dialogNpc() { return dialogNpc; },
-    setHover, floater, overhead, nameTag,
+    setHover, floater, overhead, nameTag, bubble, placeBubbles, marker, setToday,
   };
 }

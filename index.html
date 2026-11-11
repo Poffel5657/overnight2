@@ -16,33 +16,47 @@
   <canvas id="view" aria-label="The world"></canvas>
   <div class="scanlines" aria-hidden="true"></div>
 
-  <!-- Statusfenster oben links -->
-  <section class="window status" aria-label="Status">
-    <h2 class="wtitle">[ OVERNIGHT // DAY 0 ]</h2>
-    <div class="status-row"><span id="st-place">KINDLE</span><span id="st-class">WARDEN LV 1</span></div>
-    <div class="status-row"><span id="st-time">--:--</span><span id="st-phase"></span></div>
-    <div class="status-row"><span id="st-gold">0 GOLD</span><span id="st-gather"></span></div>
-    <div class="bar hp"><span class="bar-label">HP</span><div class="bar-track"><div class="bar-fill" id="hp-fill"></div></div><span id="hp-text">30/30</span></div>
-    <div class="bar fuel"><span class="bar-label">OIL</span><div class="bar-track"><div class="bar-fill" id="fuel-fill"></div></div><span id="fuel-text">100</span></div>
+  <!-- Ort und Zeit oben links -->
+  <section class="window status" aria-label="Place and time">
+    <h2 class="wtitle">Overnight · Day 0</h2>
+    <div class="status-row"><span id="st-place">KINDLE</span><span id="st-time">--:--</span></div>
+    <div class="status-row"><span id="st-phase"></span></div>
+    <div class="today" id="st-today" hidden><span class="muted">TODAY</span></div>
   </section>
+
+  <!-- Leben und Öl (über der Leiste, einzeln verschiebbar) -->
+  <section class="window vitals" id="vitals" aria-label="Health and oil" title="Drag to move">
+    <div class="lamp" id="st-lamp" aria-hidden="true"></div>
+    <div class="vital-bars">
+      <div class="bar hp"><span class="bar-label">HP</span><div class="bar-track"><div class="bar-fill" id="hp-fill"></div></div><span id="hp-text">30/30</span></div>
+      <div class="bar fuel"><span class="bar-label">OIL</span><div class="bar-track"><div class="bar-fill" id="fuel-fill"></div></div><span id="fuel-text">100</span></div>
+    </div>
+    <span class="gather" id="st-gather" aria-live="polite"></span>
+  </section>
+
+  <!-- Fähigkeitenleiste mit Griff -->
+  <div class="hotbar-box" id="hotbar-box">
+    <span class="grip" title="Drag to move" aria-hidden="true"></span>
+    <nav class="hotbar" id="hotbar" aria-label="Abilities"></nav>
+  </div>
+
+  <!-- Sprechen: Enter öffnet, Text erscheint 5 Sekunden als Blase über dem Kopf -->
+  <form class="chat-input window" id="chat-form" hidden autocomplete="off">
+    <label for="chat-text" class="muted small">SAY</label>
+    <input id="chat-text" maxlength="80" spellcheck="false" placeholder="Enter to speak, Esc to cancel">
+  </form>
+  <div id="bubbles" aria-live="polite"></div>
 
   <!-- Zielrahmen -->
   <section class="window target" id="target" hidden aria-live="polite">
-    <h2 class="wtitle" id="target-name">[ TARGET ]</h2>
+    <h2 class="wtitle" id="target-name">Target</h2>
     <div class="bar hp"><div class="bar-track"><div class="bar-fill" id="target-fill"></div></div><span id="target-text"></span></div>
     <div class="target-note" id="target-note"></div>
   </section>
 
-  <!-- Knöpfe oben rechts -->
-  <div class="topbuttons">
-    <button type="button" id="btn-crt">[ CRT: ON ]</button>
-    <button type="button" id="btn-help">[ ? ]</button>
-    <button type="button" id="btn-leave" hidden>[ LEAVE ]</button>
-  </div>
-
   <!-- Anmelden -->
   <section class="window login" id="login" hidden aria-labelledby="login-title">
-    <h2 class="wtitle" id="login-title">[ KINDLE // WHO GOES THERE? ]</h2>
+    <h2 class="wtitle" id="login-title">Who Goes There?</h2>
     <p id="login-note">Give a name and a password. The Beacon remembers both.</p>
     <form id="login-form" autocomplete="on">
       <label for="login-name">NAME</label>
@@ -50,34 +64,33 @@
       <label for="login-pass">PASSWORD</label>
       <input id="login-pass" name="password" type="password" autocomplete="current-password" minlength="8" maxlength="128" required>
       <div class="login-buttons">
-        <button type="submit" value="login">[ ENTER ]</button>
-        <button type="submit" value="register">[ NEW TRAVELLER ]</button>
+        <button type="submit" value="login" class="plaque">Enter</button>
+        <button type="submit" value="register" class="plaque">New Traveller</button>
       </div>
     </form>
     <p class="login-error" id="login-error" aria-live="polite"></p>
-    <button type="button" id="login-offline">[ PLAY OFFLINE ]</button>
+    <button type="button" id="login-offline">Play offline</button>
   </section>
   <div class="banner" id="banner" hidden aria-live="polite"></div>
 
   <!-- Fenster-Knöpfe und das Fenster selbst (src/windows.js) -->
-  <nav class="menubar" aria-label="Windows">
-    <button type="button" data-win="char" title="Character (C)">[ C<span class="long">HAR</span> ]</button>
-    <button type="button" data-win="bag" title="Bag (B)">[ B<span class="long">AG</span> ]</button>
-    <button type="button" data-win="quests" title="Quests (J)">[ Q<span class="long">UESTS</span> ]</button>
+  <nav class="menubar window" id="menubar" aria-label="Windows">
+    <span class="grip" title="Drag to move" aria-hidden="true"></span>
+    <button type="button" data-win="char" title="Character (C)"><span class="long">Character</span><span class="short">Char</span></button>
+    <button type="button" data-win="bag" title="Bag (B)">Bag</button>
+    <button type="button" data-win="quests" title="Quests (J)">Quests</button>
+    <span class="sep" aria-hidden="true"></span>
+    <button type="button" data-win="settings" title="Settings (O)" aria-label="Settings"><svg class="pix-ico" viewBox="0 0 12 12" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M5 0h1v1h-1zM6 0h1v1h-1zM1 1h1v1h-1zM2 1h1v1h-1zM5 1h1v1h-1zM6 1h1v1h-1zM9 1h1v1h-1zM10 1h1v1h-1zM1 2h1v1h-1zM2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM5 2h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM8 2h1v1h-1zM9 2h1v1h-1zM10 2h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM7 3h1v1h-1zM8 3h1v1h-1zM9 3h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM8 4h1v1h-1zM9 4h1v1h-1zM0 5h1v1h-1zM1 5h1v1h-1zM2 5h1v1h-1zM3 5h1v1h-1zM8 5h1v1h-1zM9 5h1v1h-1zM10 5h1v1h-1zM11 5h1v1h-1zM0 6h1v1h-1zM1 6h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM8 6h1v1h-1zM9 6h1v1h-1zM10 6h1v1h-1zM11 6h1v1h-1zM2 7h1v1h-1zM3 7h1v1h-1zM8 7h1v1h-1zM9 7h1v1h-1zM2 8h1v1h-1zM3 8h1v1h-1zM4 8h1v1h-1zM7 8h1v1h-1zM8 8h1v1h-1zM9 8h1v1h-1zM1 9h1v1h-1zM2 9h1v1h-1zM3 9h1v1h-1zM4 9h1v1h-1zM5 9h1v1h-1zM6 9h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM9 9h1v1h-1zM10 9h1v1h-1zM1 10h1v1h-1zM2 10h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM9 10h1v1h-1zM10 10h1v1h-1zM5 11h1v1h-1zM6 11h1v1h-1z"/></svg></button>
+    <button type="button" id="btn-help" title="How to play" aria-label="Help">?</button>
+    <button type="button" id="btn-leave" hidden>Leave</button>
   </nav>
-  <section class="window panel" id="panel" hidden aria-live="polite">
-    <h2 class="wtitle panel-head"><span id="panel-title"></span><button type="button" id="panel-close" aria-label="Close">[ X ]</button></h2>
-    <div class="panel-body" id="panel-body"></div>
-  </section>
 
   <!-- Log unten links -->
   <section class="window log" id="log-window" aria-label="Log">
-    <h2 class="wtitle"><button type="button" id="btn-log">[ LOG ]</button></h2>
+    <h2 class="wtitle log-head"><button type="button" id="btn-log">Log</button><span class="grip" title="Drag to move" aria-hidden="true"></span></h2>
     <ol id="log" aria-live="polite"></ol>
   </section>
 
-  <!-- Fähigkeitenleiste -->
-  <nav class="hotbar" id="hotbar" aria-label="Abilities"></nav>
 
   <!-- Kamera am Handy -->
   <div class="camera-buttons" aria-label="Camera">
@@ -87,21 +100,27 @@
 
   <!-- Rechtsklick-Menü, Dialog, Hilfe, Mauszeigertext -->
   <div class="menu window" id="menu" hidden role="menu"></div>
-  <section class="window dialog" id="dialog" hidden aria-live="polite">
-    <h2 class="wtitle panel-head"><span id="dialog-name"></span><button type="button" id="dialog-close" aria-label="Close">[ X ]</button></h2>
-    <p id="dialog-text"></p>
-    <div class="dialog-options" id="dialog-options"></div>
+  <section class="dialog" id="dialog" hidden aria-live="polite">
+    <!-- Porträts im Persona-Stil hinter der Box: links wer spricht, rechts man selbst -->
+    <div class="talk-portrait npc" aria-hidden="true"><img id="dialog-npc-img" alt="" draggable="false"></div>
+    <div class="talk-portrait me" aria-hidden="true"><img id="dialog-me-img" alt="" draggable="false"></div>
+    <div class="window dialog-box">
+      <h2 class="wtitle panel-head"><span id="dialog-name"></span><button type="button" id="dialog-close" class="close" aria-label="Close">×</button></h2>
+      <p id="dialog-text"></p>
+      <div class="dialog-options" id="dialog-options"></div>
+    </div>
   </section>
   <section class="window help" id="help" hidden>
-    <h2 class="wtitle">[ HOW TO PLAY ]</h2>
+    <h2 class="wtitle">How to Play</h2>
     <p>CLICK: walk, talk, attack. RIGHT-CLICK / HOLD: all actions.</p>
     <p>TAB: next target. 1-9: abilities (change keys under CHAR > KEYS). ARROWS / Q E / MIDDLE-DRAG: turn camera. WHEEL: zoom.</p>
-    <p>C: character. B: bag. J: quests. Talk to Warden Ama by the Beacon to begin.</p>
+    <p>C: character. B: bag. J: quests. ENTER: say something (a bubble over your head, gone after 5 seconds). Talk to Warden Ama by the Beacon to begin.</p>
     <p>Your lantern burns oil out in the Grey at night. Fill it at the Beacon.</p>
     <p>Day and night follow the real clock in Kindle (Berlin time). At midnight the world grows.</p>
     <p>Greylings are bold in the dark. Light makes them shy.</p>
     <p>PROTOTYPE. Nothing is saved yet.</p>
-    <button type="button" id="btn-help-close">[ OK ]</button>
+    <p class="muted">UI size, sound and CRT: Settings (gear button or O). Drag windows by their title to move them.</p>
+    <button type="button" id="btn-help-close" class="plaque">Got it</button>
   </section>
   <div class="hovertext" id="hovertext" hidden></div>
   <div id="floaters" aria-hidden="true"></div>

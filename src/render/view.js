@@ -118,8 +118,9 @@ export function createView(canvas) {
   const duskColor = new THREE.Color('#ffa060');
   const dayColor = new THREE.Color('#fff4e0');
   const nightColor = new THREE.Color('#8090c0');
-  function setSky(day, dusk) {
-    const fog = skyFog(day, dusk);
+  // fogRGB: eigene Nebelfarbe (z. B. drinnen: dunkles Braun statt grauem Grey)
+  function setSky(day, dusk, fogRGB = null) {
+    const fog = fogRGB || skyFog(day, dusk);
     lightUniforms.uFog.value.set(...fog);
     lightUniforms.uDay.value = day;
     scene.background.setRGB(fog[0] * 0.8, fog[1] * 0.8, fog[2] * 0.8);

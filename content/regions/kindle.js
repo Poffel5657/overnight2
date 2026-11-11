@@ -2,6 +2,10 @@
 // Hushwood im Norden (Stufe 10-25), Copperdeep im Osten (15-35), Sinkmarsh mit Ruinen im Süden (25-40).
 // Koordinaten: x = Spalte, y = Reihe im Raster aus kindle-terrain.js.
 import { TILES, HEIGHTS } from './kindle-terrain.js';
+import { INSIDE } from './kindle-inside.js';
+
+// Gebäude mit Innenraum: "Enter" führt in das Gebiet kindle_inside.
+const inside = (key) => ({ region: 'kindle_inside', ...INSIDE[key] });
 
 // Wo man ankommt, wenn man aus der Drowned Chapel oder dem Drift zurückkehrt, und wo man aufwacht.
 export const ARRIVE = { stairs: { x: 50, y: 92 }, rift: { x: 50, y: 4 }, respawn: { x: 52, y: 58 } };
@@ -27,12 +31,12 @@ export const REGION = {
   safeRadius: 10,
   objects: [
     {type: 'beacon', x: 49, y: 49, w: 2, d: 2, light: 11, name: 'the Beacon'},
-    {type: 'chapel', x: 41, y: 38, w: 5, d: 6, name: 'the Chapel'},
-    {type: 'house', x: 54, y: 38, w: 4, d: 4, roof: '#7a3b26'},
-    {type: 'house', x: 57, y: 43, w: 3, d: 3, roof: '#6b4a2a'},
-    {type: 'house', x: 39, y: 54, w: 3, d: 3, roof: '#5f4a3a'},
-    {type: 'house', x: 55, y: 55, w: 3, d: 3, roof: '#7a3b26'},
-    {type: 'workshop', x: 59, y: 51, w: 4, d: 3, name: 'the Workshop'},
+    {type: 'chapel', x: 41, y: 38, w: 5, d: 6, name: 'the Chapel', inside: inside('chapel')},
+    {type: 'house', x: 54, y: 38, w: 4, d: 4, roof: '#7a3b26', name: 'a house', inside: inside('house1')},
+    {type: 'house', x: 57, y: 43, w: 3, d: 3, roof: '#6b4a2a', name: 'a house', inside: inside('house2')},
+    {type: 'house', x: 39, y: 54, w: 3, d: 3, roof: '#5f4a3a', name: 'a house', inside: inside('house3')},
+    {type: 'house', x: 55, y: 55, w: 3, d: 3, roof: '#7a3b26', name: 'a house', inside: inside('house4')},
+    {type: 'workshop', x: 59, y: 51, w: 4, d: 3, name: 'the Workshop', inside: inside('workshop')},
     {type: 'stall', x: 38, y: 45, w: 3, d: 2, name: 'a market stall', awning: '#8a2f2f'},
     {type: 'stall', x: 38, y: 51, w: 3, d: 2, name: 'a market stall', awning: '#2f5a8a'},
     {type: 'campfire', x: 53, y: 59, light: 3.5, name: 'the Campfire'},
@@ -41,7 +45,6 @@ export const REGION = {
     {type: 'signal', x: 25, y: 48, light: 5, name: 'a signal fire'},
     {type: 'signal', x: 52, y: 73, light: 5, name: 'a signal fire'},
     {type: 'board', x: 46, y: 54, w: 1, d: 1, name: 'the Notice Board'},
-    {type: 'altar', x: 42, y: 45, w: 2, d: 1, name: 'the Altar'},
     {type: 'station', station: 'workbench', x: 63, y: 52, w: 1, d: 2, name: 'the Workbench'},
     {type: 'station', station: 'lampbench', x: 58, y: 50, w: 1, d: 1, name: 'the Lamp Bench'},
     {type: 'station', station: 'still', x: 47, y: 39, w: 1, d: 1, name: 'the Still'},

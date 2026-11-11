@@ -115,7 +115,7 @@ async function admin(req, env, url) {
     const prayers = await env.DB.prepare(
       'SELECT p.id, p.date, p.text, p.created_at, a.name FROM prayers p JOIN accounts a ON a.id = p.account_id WHERE p.created_at > ? ORDER BY p.created_at LIMIT 500',
     ).bind(since).all();
-    const votes = await env.DB.prepare('SELECT option, SUM(gold) AS gold, COUNT(DISTINCT account_id) AS donors FROM donations WHERE ballot = ? GROUP BY option').bind(ballot).all();
+    const votes = await env.DB.prepare('SELECT option, COUNT(*) AS votes, COUNT(DISTINCT account_id) AS voters FROM donations WHERE ballot = ? GROUP BY option').bind(ballot).all();
     const beacon = await env.DB.prepare("SELECT key, value FROM world_state WHERE key LIKE 'beacon:%' ORDER BY key DESC LIMIT 7").all();
     const players = await env.DB.prepare('SELECT COUNT(*) AS n, SUM(updated_at > ?) AS active FROM characters').bind(Date.now() - 86400000).first();
     return plain({ prayers: prayers.results, votes: votes.results, beacon: beacon.results, players });

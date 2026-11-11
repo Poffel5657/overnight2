@@ -175,7 +175,13 @@ const BUILDERS = {
     for (const x of [-0.25, 0, 0.25]) g.add(box(0.06, 0.14, 0.06, '#e8dcc0', x, 0.57, 0.1));
   },
   door(o, g, ctx) {
-    if (o.look === 'stairs') {
+    if (o.look === 'door') {
+      // Holztür in der Wand, mit Lichtspalt unten
+      g.add(box(0.9, 1.5, 0.12, '#4a3220', 0, 0.75, 0.3));
+      g.add(box(0.75, 1.35, 0.06, '#6a4a2a', 0, 0.7, 0.38));
+      g.add(box(0.08, 0.08, 0.06, '#c8a040', 0.25, 0.7, 0.42));
+      g.add(box(0.7, 0.04, 0.04, glowMat, 0, 0.03, 0.4));
+    } else if (o.look === 'stairs') {
       for (let i = 0; i < 4; i++) g.add(box(0.9, 0.12, 0.25, '#6a6660', 0, 0.06 + i * 0.12, 0.35 - i * 0.22));
       g.add(box(1.1, 1.6, 0.15, '#4a4844', 0, 0.8, -0.45));
       g.add(box(0.5, 0.9, 0.05, '#0a0a0c', 0, 0.45, -0.37));
@@ -197,6 +203,48 @@ const BUILDERS = {
     const lamp = new THREE.Mesh(new THREE.OctahedronGeometry(0.3, 0), riftMat);
     lamp.position.y = 2.5;
     g.add(lamp);
+  },
+  // ---------- Einrichtung (Innenräume) ----------
+  pew(o, g) {
+    g.add(box(o.w - 0.2, 0.08, 0.45, '#5a3c22', 0, 0.42, 0));
+    g.add(box(o.w - 0.2, 0.5, 0.08, '#4a3020', 0, 0.7, -0.22));
+    for (const sx of [-1, 1]) g.add(box(0.08, 0.42, 0.45, '#3e2818', sx * (o.w / 2 - 0.15), 0.21, 0));
+  },
+  candles(o, g, ctx) {
+    g.add(box(0.7, 0.5, 0.5, '#5a5048', 0, 0.25, 0));
+    for (const [x, z, h] of [[-0.2, -0.1, 0.25], [0, 0.1, 0.35], [0.2, -0.05, 0.2], [-0.05, -0.15, 0.3], [0.15, 0.12, 0.18]]) {
+      g.add(box(0.07, h, 0.07, '#efe4c8', x, 0.5 + h / 2, z));
+      g.add(box(0.05, 0.06, 0.05, glowMat, x, 0.53 + h, z));
+    }
+    ctx.flame(g, 0.35, 0.75);
+  },
+  hearth(o, g, ctx) {
+    g.add(box(0.95, 0.9, 0.7, '#6a645a', 0, 0.45, -0.1));
+    g.add(box(0.6, 0.45, 0.3, '#1a1412', 0, 0.3, 0.12));
+    g.add(box(1.05, 0.1, 0.8, '#5a4a3a', 0, 0.95, -0.1));
+    g.add(box(0.4, 1.0, 0.4, '#5a5650', 0, 1.45, -0.25));
+    ctx.flame(g, 0.55, 0.12);
+  },
+  table(o, g) {
+    g.add(box(o.w - 0.15, 0.08, o.d - 0.25, '#7a5a34', 0, 0.62, 0));
+    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) g.add(box(0.07, 0.6, 0.07, '#5a4028', sx * (o.w / 2 - 0.15), 0.3, sz * (o.d / 2 - 0.2)));
+    g.add(box(0.18, 0.08, 0.18, '#c8b090', -0.15, 0.7, 0.05));
+    g.add(box(0.12, 0.16, 0.12, '#8a5a30', 0.2, 0.74, -0.05));
+  },
+  shelf(o, g) {
+    g.add(box(0.9, 1.6, 0.35, '#5a3c22', 0, 0.8, -0.25));
+    for (const y of [0.45, 0.9, 1.35]) g.add(box(0.85, 0.05, 0.38, '#7a5a34', 0, y, -0.22));
+    for (const [x, y, c] of [[-0.25, 0.55, '#8a6a3a'], [0.05, 0.56, '#4a6a5a'], [0.25, 1.0, '#c8a040'], [-0.15, 1.45, '#7a4a3a']]) g.add(box(0.14, 0.18, 0.14, c, x, y, -0.15));
+  },
+  bed(o, g) {
+    g.add(box(o.w - 0.2, 0.35, 0.85, '#5a3c22', 0, 0.18, 0));
+    g.add(box(o.w - 0.3, 0.12, 0.8, '#8a4a3a', 0.05, 0.42, 0));
+    g.add(box(0.35, 0.12, 0.6, '#e8dcc0', -(o.w / 2) + 0.35, 0.5, 0));
+    g.add(box(0.1, 0.7, 0.9, '#4a3020', -(o.w / 2) + 0.12, 0.35, 0));
+  },
+  barrel(o, g) {
+    g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.75, 8), mat('#6a4a2a')).translateY(0.38));
+    for (const y of [0.15, 0.6]) g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.315, 0.315, 0.06, 8), mat('#3a3434')).translateY(y));
   },
   board(o, g) {
     for (const x of [-0.35, 0.35]) g.add(box(0.08, 1.4, 0.08, '#5a4028', x, 0.7, 0));

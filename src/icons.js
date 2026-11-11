@@ -1,5 +1,6 @@
 // Malt Pixel-Icons aus content/icons.js einmal in ein kleines Bild und gibt es als <img> heraus.
 import { SHAPES, PALETTES, ITEM_ICONS, ABILITY_ICONS } from '../content/icons.js';
+import { SPRITES } from '../content/sprites.js';
 
 const cache = new Map();
 
@@ -43,4 +44,31 @@ export function iconEl(kind, id, fallback = '?', cls = 'icon') {
   img.alt = '';
   img.draggable = false;
   return img;
+}
+
+// Bild eines Figuren-Sprites (erstes Bild) für Fenster, z. B. das Porträt im Charakterfenster.
+
+export function spriteURL(id) {
+  const key = `sprite:${id}`;
+  if (cache.has(key)) return cache.get(key);
+  const def = SPRITES[id];
+  let url = null;
+  if (def) {
+    const w = Math.max(...def.rows.map((r) => r.length));
+    const c = document.createElement('canvas');
+    c.width = w;
+    c.height = def.rows.length;
+    const ctx = c.getContext('2d');
+    def.rows.forEach((row, y) => {
+      [...row].forEach((ch, x) => {
+        const col = def.palette[ch];
+        if (!col) return;
+        ctx.fillStyle = col.startsWith('!') ? col.slice(1) : col;
+        ctx.fillRect(x, y, 1, 1);
+      });
+    });
+    url = c.toDataURL();
+  }
+  cache.set(key, url);
+  return url;
 }

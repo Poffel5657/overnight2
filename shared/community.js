@@ -3,7 +3,7 @@
 // der Server schreibt es in die Datenbank. Gebetstext ist fremder Text: Er wird nur gespeichert und
 // anderen Spielern nie gezeigt.
 
-import { FAVOURS, FAVOURS_PER_DAY, BEACON_FUEL, BEACON_GOAL, DONATE_CAP } from '../content/dailies.js';
+import { FAVOURS, FAVOURS_PER_DAY, BEACON_FUEL, BEACON_GOAL } from '../content/dailies.js';
 import { BALLOT } from '../content/ballot.js';
 import { ITEMS } from '../content/items.js';
 import { tell, emit } from './events.js';
@@ -37,7 +37,7 @@ export function favoursFor(date) {
 // Tagesstand des Spielers; ein neuer Tag fängt frisch an.
 export function dailyOf(world, p) {
   if (!p.daily || p.daily.date !== world.date) {
-    p.daily = { date: world.date, kills: {}, done: [], donated: 0, prayed: false };
+    p.daily = { date: world.date, kills: {}, done: [], voted: null, prayed: false };
   }
   return p.daily;
 }
@@ -103,6 +103,20 @@ export function cleanPrayer(text) {
   return t.slice(0, PRAYER_MAX);
 }
 
+// ---------- Sprechen ----------
+// Kein Chatverlauf: Gesagtes erscheint nur kurz als Blase über dem Kopf (alle im Gebiet sehen es).
+export const CHAT_MAX = 80;
+const CHAT_GAP = 6; // Takte zwischen zwei Sätzen (1,8 s)
+
+export function chat(world, p, text) {
+  if (typeof text !== 'string') return;
+  const t = text.replace(CONTROL, ' ').replace(/\s+/g, ' ').trim().slice(0, CHAT_MAX);
+  if (!t) return;
+  if (world.tick < (p.chatAt || 0)) return tell(world, p.id, 'Not so fast. Let the last words settle.', 'sys');
+  p.chatAt = world.tick + CHAT_GAP;
+  emit(world, { type: 'chat', ent: p.id, text: t });
+}
+
 export function pray(world, p, text) {
   if (!near(world, p, 'altar')) return;
   const d = dailyOf(world, p);
@@ -114,18 +128,15 @@ export function pray(world, p, text) {
   tell(world, p.id, 'Your prayer goes up with the smoke. If it is answered, you will hear of it.', 'good');
 }
 
-export function donate(world, p, option, gold) {
+// Abstimmen am Altar: eine Stimme pro Spieler und Tag. Gold kauft keine Stimmen.
+export function vote(world, p, option) {
   if (!near(world, p, 'altar')) return;
   if (!BALLOT.options.some((o) => o.id === option)) return;
   const d = dailyOf(world, p);
-  const g = Math.min(gold, DONATE_CAP - d.donated, p.gold);
-  if (g < 1) {
-    return tell(world, p.id, d.donated >= DONATE_CAP ? `You have given ${DONATE_CAP} gold today. Tallow says that is plenty.` : 'You have no gold to give.', 'sys');
-  }
-  p.gold -= g;
-  d.donated += g;
-  world.community.ballot[option] = (world.community.ballot[option] || 0) + g;
-  world.outbox.push({ kind: 'donation', pid: p.id, ballot: BALLOT.day, option, gold: g });
-  tell(world, p.id, `You drop ${g} gold into the box. It clinks hopefully.`, 'good');
+  if (d.voted) return tell(world, p.id, 'You have spoken today. One voice a day, for everyone. Come back tomorrow.', 'sys');
+  d.voted = option;
+  world.community.ballot[option] = (world.community.ballot[option] || 0) + 1;
+  world.outbox.push({ kind: 'vote', pid: p.id, ballot: BALLOT.day, option });
+  tell(world, p.id, 'You drop a white stone into the box. One voice, heard like any other.', 'good');
   emit(world, { type: 'community', community: world.community });
 }

@@ -7,22 +7,22 @@
 
 export const ITEMS = {
   // ---------- Hauptwaffen: die Klasse kommt aus der Hand ----------
-  scrap_shield: { name: 'Scrap Shield', slot: 'main', cls: 'warden', power: 2, defence: 2, value: 12, glyph: ']', text: 'Half a door and a lantern hook. Wardens swear by it.' },
-  brass_shield: { name: 'Brass Shield', slot: 'main', cls: 'warden', power: 4, defence: 4, value: 60, glyph: ']', text: 'It rings when things hit it. Things hit it less after that.' },
-  ember_staff: { name: 'Ember Staff', slot: 'main', cls: 'mender', power: 1, heal: 2, value: 12, glyph: '|', text: 'A stick with a coal that never quite goes out.' },
-  brass_staff: { name: 'Brass Ember Staff', slot: 'main', cls: 'mender', power: 2, heal: 5, value: 60, glyph: '|', text: 'The coal sits in a brass cup and hums a little.' },
-  cracked_lens: { name: 'Cracked Lens', slot: 'main', cls: 'flarecaster', power: 2, value: 12, glyph: 'o', text: 'Gathers lantern light into a point. The crack makes it angry.' },
-  brass_lens: { name: 'Ground Brass Lens', slot: 'main', cls: 'flarecaster', power: 5, value: 60, glyph: 'o', text: 'Wren ground it for a week. It focuses light, and grudges.' },
-  glim_shield: { name: 'Glimsteel Shield', slot: 'main', cls: 'warden', power: 7, defence: 6, value: 140, glyph: ']', text: 'Brass folded around glimmer. It hums when the Grey is near.' },
-  greyglass_shield: { name: 'Greyglass Shield', slot: 'main', cls: 'warden', power: 10, defence: 8, value: 320, glyph: ']', text: 'You can see through it, a little. Things on the other side cannot see you.' },
-  glim_staff: { name: 'Glimsteel Staff', slot: 'main', cls: 'mender', power: 4, heal: 8, value: 140, glyph: '|', text: 'The ember sits in a cage of glimmer and never cools.' },
-  greyglass_staff: { name: 'Greyglass Staff', slot: 'main', cls: 'mender', power: 6, heal: 12, value: 320, glyph: '|', text: 'Light pools in it like water in a cupped hand.' },
-  glim_lens: { name: 'Glimsteel Lens', slot: 'main', cls: 'flarecaster', power: 8, value: 140, glyph: 'o', text: 'Ground so fine it sings when it focuses.' },
-  greyglass_lens: { name: 'Greyglass Lens', slot: 'main', cls: 'flarecaster', power: 12, value: 320, glyph: 'o', text: 'Made from the Grey itself. It hates its relatives.' },
-  scrap_shivs: { name: 'Scrap Shivs', slot: 'main', cls: 'drifter', power: 3, value: 12, glyph: 'x', text: 'Two sharp bits of something that used to be useful.' },
-  brass_shivs: { name: 'Brass Shivs', slot: 'main', cls: 'drifter', power: 6, value: 60, glyph: 'x', text: 'They do not reflect light. Nobody knows how.' },
-  glim_shivs: { name: 'Glimsteel Shivs', slot: 'main', cls: 'drifter', power: 9, value: 140, glyph: 'x', text: 'Two thin glints, gone before you see them.' },
-  greyglass_shivs: { name: 'Greyglass Shivs', slot: 'main', cls: 'drifter', power: 13, value: 320, glyph: 'x', text: 'They cut the dark itself. The dark complains.' },
+  scrap_shield: { name: 'Scrap Shield', slot: 'main', cls: 'warden', delay: 9, power: 2, defence: 2, value: 12, glyph: ']', text: 'Half a door and a lantern hook. Wardens swear by it.' },
+  brass_shield: { name: 'Brass Shield', slot: 'main', cls: 'warden', delay: 9, power: 4, defence: 4, value: 60, glyph: ']', text: 'It rings when things hit it. Things hit it less after that.' },
+  ember_staff: { name: 'Ember Staff', slot: 'main', cls: 'mender', delay: 10, power: 1, heal: 2, value: 12, glyph: '|', text: 'A stick with a coal that never quite goes out.' },
+  brass_staff: { name: 'Brass Ember Staff', slot: 'main', cls: 'mender', delay: 10, power: 2, heal: 5, value: 60, glyph: '|', text: 'The coal sits in a brass cup and hums a little.' },
+  cracked_lens: { name: 'Cracked Lens', slot: 'main', cls: 'flarecaster', delay: 10, power: 2, value: 12, glyph: 'o', text: 'Gathers lantern light into a point. The crack makes it angry.' },
+  brass_lens: { name: 'Ground Brass Lens', slot: 'main', cls: 'flarecaster', delay: 10, power: 5, value: 60, glyph: 'o', text: 'Wren ground it for a week. It focuses light, and grudges.' },
+  glim_shield: { name: 'Glimsteel Shield', slot: 'main', cls: 'warden', delay: 9, power: 7, defence: 6, value: 140, glyph: ']', text: 'Brass folded around glimmer. It hums when the Grey is near.' },
+  greyglass_shield: { name: 'Greyglass Shield', slot: 'main', cls: 'warden', delay: 9, power: 10, defence: 8, value: 320, glyph: ']', text: 'You can see through it, a little. Things on the other side cannot see you.' },
+  glim_staff: { name: 'Glimsteel Staff', slot: 'main', cls: 'mender', delay: 10, power: 4, heal: 8, value: 140, glyph: '|', text: 'The ember sits in a cage of glimmer and never cools.' },
+  greyglass_staff: { name: 'Greyglass Staff', slot: 'main', cls: 'mender', delay: 10, power: 6, heal: 12, value: 320, glyph: '|', text: 'Light pools in it like water in a cupped hand.' },
+  glim_lens: { name: 'Glimsteel Lens', slot: 'main', cls: 'flarecaster', delay: 10, power: 8, value: 140, glyph: 'o', text: 'Ground so fine it sings when it focuses.' },
+  greyglass_lens: { name: 'Greyglass Lens', slot: 'main', cls: 'flarecaster', delay: 10, power: 12, value: 320, glyph: 'o', text: 'Made from the Grey itself. It hates its relatives.' },
+  scrap_shivs: { name: 'Scrap Shivs', slot: 'main', cls: 'drifter', delay: 7, power: 3, value: 12, glyph: 'x', text: 'Two sharp bits of something that used to be useful.' },
+  brass_shivs: { name: 'Brass Shivs', slot: 'main', cls: 'drifter', delay: 7, power: 6, value: 60, glyph: 'x', text: 'They do not reflect light. Nobody knows how.' },
+  glim_shivs: { name: 'Glimsteel Shivs', slot: 'main', cls: 'drifter', delay: 7, power: 9, value: 140, glyph: 'x', text: 'Two thin glints, gone before you see them.' },
+  greyglass_shivs: { name: 'Greyglass Shivs', slot: 'main', cls: 'drifter', delay: 7, power: 13, value: 320, glyph: 'x', text: 'They cut the dark itself. The dark complains.' },
 
   // ---------- Rüstung ----------
   scrap_hood: { name: 'Scrap Hood', slot: 'head', defence: 1, value: 6, glyph: '^', text: 'Keeps the drizzle and some of the teeth off.' },
@@ -77,6 +77,9 @@ export const ITEMS = {
 };
 
 // Ausrüstungsplätze in der Reihenfolge, in der das Fenster sie zeigt.
+// delay: Waffentempo in Takten (300 ms) für den automatischen Angriff. Ohne Waffe: UNARMED_DELAY.
+export const UNARMED_DELAY = 8;
+
 export const SLOTS = ['main', 'head', 'body', 'feet', 'lantern'];
 export const SLOT_NAMES = { main: 'HAND', head: 'HEAD', body: 'BODY', feet: 'FEET', lantern: 'LANTERN' };
 export const BAG_SIZE = 24;

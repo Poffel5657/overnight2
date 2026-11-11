@@ -264,5 +264,5 @@ export const EXAMINE = {
   brazier: 'A brazier. Its light keeps the Grey, and the things in it, at a polite distance.',
   false_light: 'A lamp that burns without oil. The light is wrong somehow, like a smile with too many teeth.',
   board: 'The Notice Board. Favours, gossip, and a list of the brave.',
-  altar: 'A stone altar with offering boxes. People pray here, and leave gold for the ideas they like.',
+  altar: 'A stone altar with a box of white stones. People pray here, and drop one stone a day for the idea they like.',
 };

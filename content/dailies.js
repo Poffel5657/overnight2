@@ -1,6 +1,6 @@
 // Tägliche Gefallen am Anschlagbrett. Jeden Tag (Berliner Datum) zieht das Spiel FAVOURS_PER_DAY davon,
 // für alle Spieler dieselben. Arten: bring (Gegenstände am Brett abgeben), kill (Wesen besiegen).
-// reward: gold und xp (aktive Klasse). Gold braucht man zum Spenden in der Kapelle.
+// reward: gold und xp (aktive Klasse). Gold braucht man beim Händler und beim Handel; abgestimmt wird ohne Gold (eine Stimme pro Tag).
 
 export const FAVOURS_PER_DAY = 3;
 
@@ -19,5 +19,3 @@ export const FAVOURS = {
 export const BEACON_FUEL = { lamp_oil: 5, wax_comb: 2, grey_wisp: 1 };
 export const BEACON_GOAL = 300;
 
-// Spenden in der Kapelle: höchstens so viel Gold pro Tag und Person.
-export const DONATE_CAP = 50;

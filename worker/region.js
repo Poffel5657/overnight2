@@ -49,8 +49,8 @@ export class RegionRoom {
   // Gemeinschaftsstand des Tages aus D1 (Leuchtfeuer, Spenden für den aktuellen Zettel).
   async loadCommunity(world) {
     const beacon = await this.env.DB.prepare('SELECT value FROM world_state WHERE key = ?').bind(`beacon:${world.date}`).first();
-    const { results } = await this.env.DB.prepare('SELECT option, SUM(gold) AS gold FROM donations WHERE ballot = ? GROUP BY option').bind(BALLOT.day).all();
-    world.community = { beacon: beacon?.value ?? 0, ballot: Object.fromEntries(results.map((r) => [r.option, r.gold])) };
+    const { results } = await this.env.DB.prepare('SELECT option, COUNT(*) AS votes FROM donations WHERE ballot = ? GROUP BY option').bind(BALLOT.day).all();
+    world.community = { beacon: beacon?.value ?? 0, ballot: Object.fromEntries(results.map((r) => [r.option, r.votes])) };
   }
 
   // Was die Simulation dauerhaft festhalten will.
@@ -66,8 +66,9 @@ export class RegionRoom {
           ON CONFLICT(key) DO UPDATE SET value = value + excluded.value, updated_at = excluded.updated_at`).bind(`beacon:${o.date}`, o.add, now));
       } else if (o.kind === 'prayer' && conn) {
         stmts.push(this.env.DB.prepare('INSERT INTO prayers (account_id, date, text, created_at) VALUES (?, ?, ?, ?)').bind(conn.accountId, o.date, o.text, now));
-      } else if (o.kind === 'donation' && conn) {
-        stmts.push(this.env.DB.prepare('INSERT INTO donations (account_id, ballot, option, gold, created_at) VALUES (?, ?, ?, ?, ?)').bind(conn.accountId, o.ballot, o.option, o.gold, now));
+      } else if (o.kind === 'vote' && conn) {
+        // Tabelle heißt historisch donations; jede Zeile ist jetzt genau eine Stimme (gold = 1).
+        stmts.push(this.env.DB.prepare('INSERT INTO donations (account_id, ballot, option, gold, created_at) VALUES (?, ?, ?, 1, ?)').bind(conn.accountId, o.ballot, o.option, now));
       }
     }
     if (stmts.length) await this.env.DB.batch(stmts);

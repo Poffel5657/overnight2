@@ -14,6 +14,8 @@ export const TILE_TYPES = {
   'f': { name: 'flagstone', color: '#6a6660', walk: true },
   'F': { name: 'mossy flagstone', color: '#56604e', walk: true },
   'w': { name: 'shallow water', color: '#2f5a5a', walk: true },
+  'p': { name: 'planks', color: '#6e5034', walk: true },
+  ' ': { name: 'nothing', color: '#050403', walk: false },
   '#': { name: 'wall', color: '#4a4844', walk: false, object: 'wall' },
   // Hügel und Mine
   's': { name: 'stone', color: '#7a7268', walk: true },

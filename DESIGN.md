@@ -93,7 +93,7 @@ Jede Neuerung dockt an ein vorhandenes Gerüst an (Tabelle der Andockpunkte im P
 ## Die Kapelle
 
 - **Pray** am Altar: Idee einreichen.
-- **Donate** an den Opferstöcken: Gold für eine Option des Stimmzettels oder einer Story-Abstimmung spenden. Pro Tag gibt es eine Obergrenze.
+- **Vote** am Altar: ein weißer Stimmstein pro Spieler und Tag für eine Option des Stimmzettels oder einer Story-Abstimmung. Gold kauft keine Stimmen: Reiche sollen nicht bestimmen, was gebaut wird.
 - **Erhört:** Wer eine gebaute Idee eingereicht hat, bekommt beim nächsten Login eine Nachricht, einen Titel und einen Eintrag in der Chronik.
 
 ## Der lange Bogen

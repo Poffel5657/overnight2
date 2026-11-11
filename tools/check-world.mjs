@@ -98,9 +98,12 @@ function check(region) {
 
   // Zu Fuß erreichbar: Figuren, Fundstellen, Stationen, Feuer (ein Nachbarfeld muss erreichbar sein).
   const w = createWorld(region);
-  const s0 = region.start;
-  const reach = (tx, ty, tw = 1, td = 1) => findPath(w.w, w.h, (a, b) => walkable(w, a, b), s0.x, s0.y,
-    (a, b) => a >= tx - 1 && a <= tx + tw && b >= ty - 1 && b <= ty + td, tx, ty, 20000) !== null;
+  // Erreichbar von irgendeinem Eingang (Start und Ankunftsfelder der Türen aus anderen Gebieten),
+  // denn Innenräume sind getrennte Räume mit eigener Tür.
+  const entries = [region.start, ...Object.values(STATIC_REGIONS).flatMap((r) => r.objects)
+    .flatMap((o) => (o.type === 'door' && o.to === region.id ? [{ x: o.tx, y: o.ty }] : o.inside?.region === region.id ? [o.inside] : []))];
+  const reach = (tx, ty, tw = 1, td = 1) => entries.some((s0) => findPath(w.w, w.h, (a, b) => walkable(w, a, b), s0.x, s0.y,
+    (a, b) => a >= tx - 1 && a <= tx + tw && b >= ty - 1 && b <= ty + td, tx, ty, 20000) !== null);
   for (const o of w.objects) if (o.type !== 'house' && o.type !== 'chapel' && !reach(o.x, o.y, o.w, o.d)) err(`${o.type} ${o.node || o.station || ''} bei ${o.x},${o.y} ist nicht erreichbar`);
   for (const n of w.npcs) if (!reach(n.x, n.y)) err(`Figur ${n.id} bei ${n.x},${n.y} ist nicht erreichbar`);
   for (const m of w.mobs) if (!reach(m.x, m.y)) err(`Wesen ${m.type} bei ${m.home.x},${m.home.y} ist nicht erreichbar`);
@@ -214,7 +217,8 @@ function checkContent(regions) {
   }
   if (Object.keys(FAVOURS).length < FAVOURS_PER_DAY) err('weniger Gefallen als pro Tag gezogen werden');
   for (const i of Object.keys(BEACON_FUEL)) item(i, 'Brennstoff');
-  for (const t of ['board', 'altar', 'beacon']) if (!STATIC_REGIONS.kindle.objects.some((o) => o.type === t)) err(`kindle: ${t} fehlt`);
+  for (const t of ['board', 'beacon']) if (!STATIC_REGIONS.kindle.objects.some((o) => o.type === t)) err(`kindle: ${t} fehlt`);
+  if (!Object.values(STATIC_REGIONS).some((r) => r.objects.some((o) => o.type === 'altar'))) err('kein Altar in irgendeinem Gebiet');
   if (!Array.isArray(BALLOT.options) || BALLOT.options.length < 2) err('Stimmzettel braucht mindestens zwei Ideen');
   for (const o of BALLOT.options) {
     if (!/^[a-z0-9-]{1,32}$/.test(o.id)) err(`Stimmzettel: ID ${o.id} ungültig`);

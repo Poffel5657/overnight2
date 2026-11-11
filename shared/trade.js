@@ -17,6 +17,8 @@ export const MAX_CRAFT = 10;
 
 // Steht der Spieler im Dorf (Lichtkreis des Leuchtfeuers)? Nur dort wechselt man die Klasse.
 export function inVillage(world, p) {
+  // Drinnen (Häuser, Kapelle) zählt wie das Dorf: kein Öl, Klassenwechsel erlaubt.
+  if (world.region.sheltered) return true;
   const b = world.objects.find((o) => o.type === 'beacon');
   if (!b) return false;
   return Math.hypot(p.x + 0.5 - (b.x + b.w / 2), p.y + 0.5 - (b.y + b.d / 2)) <= world.region.safeRadius;

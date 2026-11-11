@@ -2,11 +2,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { REGION } from '../../content/regions/kindle.js';
+import { REGION as INSIDE } from '../../content/regions/kindle-inside.js';
 import { MOBS } from '../../content/mobs.js';
 import { TALK } from '../../content/npcs.js';
 import { CLASSES, UNLOCK_LEVEL } from '../../content/classes.js';
 import * as S from '../../shared/sim.js';
 import * as P from '../../shared/player.js';
+import { SPRITES } from '../../content/sprites.js';
 import { parseIntent, applyIntent, tickFor, welcomeFor } from '../../shared/protocol.js';
 
 // ---------- Helfer: spielen wie ein Spieler ----------
@@ -392,6 +394,84 @@ test('Takt-Nachricht: Metadaten und Charakterstand nur bei Änderung', () => {
   assert.equal(welcomeFor(w, 'a').you, 'a');
 });
 
+test('Klassenwechsel: neues Sprite, Grunddaten kommen erneut', () => {
+  const w = S.createWorld(REGION, 5);
+  const a = S.addPlayer(w, 'a', 'A');
+  assert.equal(a.sprite, 'player', 'ohne Klasse: Wanderer');
+  const known = new Set();
+  tickFor(w, 'a', known);
+  assert.equal(tickFor(w, 'a', known).spawn.length, 0);
+  P.unlockClass(a, 'drifter');
+  P.setClass(a, 'drifter');
+  assert.equal(a.sprite, 'player_drifter');
+  const t = tickFor(w, 'a', known);
+  assert.deepEqual(t.spawn.map((m) => [m.id, m.sprite]), [['a', 'player_drifter']]);
+  assert.equal(tickFor(w, 'a', known).spawn.length, 0, 'nur einmal');
+  for (const id of Object.keys(CLASSES)) assert.ok(SPRITES[`player_${id}`], `Sprite für ${id}`);
+});
+
+test('Sprechen: bereinigt, gekürzt, gebremst, an alle im Gebiet', () => {
+  const w = S.createWorld(REGION, 7);
+  S.addPlayer(w, 'a', 'A');
+  S.addPlayer(w, 'b', 'B');
+  const m = parseIntent(JSON.stringify({ t: 'chat', text: '  hallo\u0000  welt  ' + 'x'.repeat(200) }));
+  assert.ok(m);
+  applyIntent(w, 'a', m);
+  const said = w.events.filter((e) => e.type === 'chat');
+  assert.equal(said.length, 1);
+  assert.equal(said[0].ent, 'a');
+  assert.ok(said[0].text.startsWith('hallo welt x'));
+  assert.ok(said[0].text.length <= 80);
+  assert.equal(said[0].to, undefined, 'alle sehen es');
+  S.drainEvents(w);
+  applyIntent(w, 'a', { t: 'chat', text: 'gleich nochmal' });
+  assert.equal(w.events.filter((e) => e.type === 'chat').length, 0, 'zu schnell');
+  assert.equal(parseIntent(JSON.stringify({ t: 'chat', text: 5 })), null);
+});
+
+test('Handel: fragen, anbieten, beide sagen zu, alles wechselt auf einmal', () => {
+  const w = S.createWorld(REGION, 31);
+  const a = S.addPlayer(w, 'a', 'Ann');
+  const b = S.addPlayer(w, 'b', 'Bo');
+  b.x = a.x + 1; b.y = a.y;
+  P.addItem(a, 'bread', 5);
+  a.gold = 10;
+  P.addItem(b, 'lamp_oil', 2);
+  const send = (pid, m) => { const x = parseIntent(JSON.stringify(m)); assert.ok(x, JSON.stringify(m)); applyIntent(w, pid, x); };
+  send('a', { t: 'tradeAsk', id: 'b' });
+  assert.ok(w.events.some((e) => e.type === 'tradeAsk' && e.to === 'b'));
+  send('b', { t: 'tradeAnswer', from: 'a', yes: true });
+  assert.ok(a.trade?.open && b.trade?.open);
+  send('a', { t: 'tradeSet', items: { bread: 99 }, gold: 4 });
+  assert.equal(a.trade.items.bread, 5, 'gekappt auf Besitz');
+  send('b', { t: 'tradeSet', items: { lamp_oil: 2 }, gold: 0 });
+  send('a', { t: 'tradeOk' });
+  // Änderung hebt Zusagen auf
+  send('b', { t: 'tradeSet', items: { lamp_oil: 1 }, gold: 0 });
+  assert.equal(a.trade.ok, false);
+  send('a', { t: 'tradeOk' });
+  send('b', { t: 'tradeOk' });
+  assert.equal(a.trade, null);
+  assert.equal(P.countItem(a, 'bread'), 0);
+  assert.equal(P.countItem(b, 'bread'), 5);
+  assert.equal(P.countItem(a, 'lamp_oil'), 1);
+  assert.equal(P.countItem(b, 'lamp_oil'), 1);
+  assert.equal(a.gold, 6);
+  assert.equal(b.gold, 4);
+  // Zu weit weg: Anfrage geht nicht; offener Handel bricht ab, wenn man sich entfernt
+  b.x = a.x + 10;
+  send('a', { t: 'tradeAsk', id: 'b' });
+  assert.equal(a.trade, null);
+  b.x = a.x + 1;
+  send('a', { t: 'tradeAsk', id: 'b' });
+  send('b', { t: 'tradeAnswer', from: 'a', yes: true });
+  b.x = a.x + 20;
+  run(w, 1);
+  assert.equal(a.trade, null);
+  assert.equal(b.trade, null);
+  assert.equal(parseIntent(JSON.stringify({ t: 'tradeSet', items: { 'BAD ID': 1 }, gold: 0 })), null);
+});
+
 test('Protokoll lehnt Unsinn ab', () => {
   assert.equal(parseIntent('{"t":"walk","x":1.5,"y":2}'), null);
   assert.equal(parseIntent('{"t":"walk","x":-1,"y":2}'), null);
@@ -419,7 +499,7 @@ test('Antworten, die gerade nicht angeboten werden, wirken nicht', () => {
 // ---------- Gemeinschaft ----------
 
 import { favoursFor, cleanPrayer } from '../../shared/community.js';
-import { FAVOURS, BEACON_FUEL, DONATE_CAP } from '../../content/dailies.js';
+import { FAVOURS, BEACON_FUEL } from '../../content/dailies.js';
 import { BALLOT } from '../../content/ballot.js';
 
 function nearObject(w, p, type) {
@@ -427,6 +507,30 @@ function nearObject(w, p, type) {
   p.x = o.x + o.w; p.y = o.y + o.d;
   if (!S.walkable(w, p.x, p.y)) { p.x = o.x - 1; p.y = o.y; }
 }
+
+test('Gebäude betreten und wieder verlassen; drinnen brennt kein Öl', () => {
+  const w = S.createWorld(REGION, 25);
+  const p = newcomer(w, 'a', 'warden');
+  const chapel = w.objects.find((o) => o.type === 'chapel');
+  assert.deepEqual(S.objectActions(chapel)[0], ['enter', 'Enter']);
+  p.x = chapel.x + 2; p.y = chapel.y + chapel.d;
+  applyIntent(w, 'a', { t: 'act', kind: 'object', id: chapel.id, action: 'enter' });
+  run(w, 3);
+  assert.equal(p.travel?.region, 'kindle_inside');
+  // Drinnen: Tür führt zurück vor die Kapelle, Öl bleibt
+  const w2 = S.createWorld(INSIDE, 26);
+  const q = S.addPlayer(w2, 'b', 'b');
+  q.x = p.travel.x; q.y = p.travel.y;
+  w2.daylight = 0;
+  const oil = q.oil;
+  run(w2, 20);
+  assert.equal(q.oil, oil, 'kein Ölverbrauch drinnen');
+  const door = w2.objects.find((o) => o.type === 'door' && o.tx === chapel.x + 2);
+  applyIntent(w2, 'b', { t: 'act', kind: 'object', id: door.id, action: 'enter' });
+  run(w2, 3);
+  assert.equal(q.travel?.region, 'kindle');
+  assert.ok(S.walkable(w, q.travel.x, q.travel.y), 'Ausgang draußen begehbar');
+});
 
 test('Gefallen: für alle gleich, jeden Tag andere', () => {
   const a = favoursFor('2026-11-10');
@@ -480,8 +584,8 @@ test('Leuchtfeuer füttern zählt für alle und landet in der Outbox', () => {
 });
 
 test('Beten: einmal am Tag, nur am Altar, Text wird bereinigt', () => {
-  const w = S.createWorld(REGION, 22);
-  const p = newcomer(w, 'a', 'warden');
+  const w = S.createWorld(INSIDE, 22);
+  const p = S.addPlayer(w, 'a', 'a');
   applyIntent(w, 'a', { t: 'pray', text: 'A lighthouse in the Grey.' });
   assert.equal(w.outbox.length, 0, 'nicht am Altar');
   nearObject(w, p, 'altar');
@@ -494,33 +598,33 @@ test('Beten: einmal am Tag, nur am Altar, Text wird bereinigt', () => {
   assert.equal(cleanPrayer('  '), null);
 });
 
-test('Spenden: Gold wird zur Stimme, gedeckelt pro Tag', () => {
-  const w = S.createWorld(REGION, 23);
-  const p = newcomer(w, 'a', 'warden');
-  p.gold = 200;
+test('Abstimmen: eine Stimme pro Tag, Gold zählt nicht', () => {
+  const w = S.createWorld(INSIDE, 23);
+  const p = S.addPlayer(w, 'a', 'a');
+  p.gold = 9999;
   nearObject(w, p, 'altar');
   const opt = BALLOT.options[0].id;
-  applyIntent(w, 'a', { t: 'donate', option: opt, gold: 25 });
-  applyIntent(w, 'a', { t: 'donate', option: opt, gold: 25 });
-  applyIntent(w, 'a', { t: 'donate', option: opt, gold: 25 });
-  assert.equal(w.community.ballot[opt], DONATE_CAP);
-  assert.equal(p.gold, 200 - DONATE_CAP);
-  applyIntent(w, 'a', { t: 'donate', option: 'nope', gold: 5 });
-  assert.equal(p.gold, 200 - DONATE_CAP);
-  // Neuer Tag: wieder spenden
+  applyIntent(w, 'a', { t: 'vote', option: opt });
+  applyIntent(w, 'a', { t: 'vote', option: opt });
+  applyIntent(w, 'a', { t: 'vote', option: BALLOT.options[1]?.id ?? opt });
+  assert.equal(w.community.ballot[opt], 1, 'nur eine Stimme');
+  assert.equal(p.gold, 9999, 'kein Gold verbraucht');
+  assert.equal(w.outbox.filter((o) => o.kind === 'vote').length, 1);
+  applyIntent(w, 'a', { t: 'vote', option: 'nope' });
+  assert.equal(parseIntent(JSON.stringify({ t: 'donate', option: opt, gold: 5 })), null, 'Spenden gibt es nicht mehr');
+  // Neuer Tag: wieder eine Stimme
   w.date = '2099-01-01';
-  applyIntent(w, 'a', { t: 'donate', option: opt, gold: 5 });
-  assert.equal(p.gold, 200 - DONATE_CAP - 5);
+  applyIntent(w, 'a', { t: 'vote', option: opt });
+  assert.equal(w.community.ballot[opt], 2);
 });
 
 test('Tagesstand übersteht Speichern', () => {
-  const w = S.createWorld(REGION, 24);
-  const p = newcomer(w, 'a', 'warden');
-  p.gold = 30;
+  const w = S.createWorld(INSIDE, 24);
+  const p = S.addPlayer(w, 'a', 'a');
   nearObject(w, p, 'altar');
-  applyIntent(w, 'a', { t: 'donate', option: BALLOT.options[0].id, gold: 10 });
+  applyIntent(w, 'a', { t: 'vote', option: BALLOT.options[0].id });
   const q = S.addPlayer(w, 'b', 'b', JSON.parse(JSON.stringify(S.removePlayer(w, 'a'))));
-  assert.equal(q.daily.donated, 10);
+  assert.equal(q.daily.voted, BALLOT.options[0].id);
   assert.equal(q.daily.date, w.date);
 });
 
@@ -712,8 +816,30 @@ test('Eine Handlung pro globaler Abklingzeit, Vorgemerktes geht vor und geht nic
   assert.equal(p.queued, 'item:bread');
   run(w, GCD * 3, (ev) => casts.push(...ev.filter((e) => e.type === 'cast' && e.by === 'a').map((e) => [w.tick, e.id])));
   assert.equal(P.countItem(p, 'bread'), 4, 'Brot gegessen');
-  // Zwischen zwei Handlungen liegen mindestens GCD Takte.
-  for (let i = 1; i < casts.length; i++) assert.ok(casts[i][0] - casts[i - 1][0] >= GCD, `Abstand ${casts[i][0] - casts[i - 1][0]}`);
+  // Zwischen zwei Handlungen liegen mindestens GCD Takte (der automatische Angriff zählt nicht).
+  const acts = casts.filter(([, id]) => id !== 'swing');
+  for (let i = 1; i < acts.length; i++) assert.ok(acts[i][0] - acts[i - 1][0] >= GCD, `Abstand ${acts[i][0] - acts[i - 1][0]}`);
+});
+
+test('Automatischer Angriff im Waffentakt, auch während Fähigkeiten', async () => {
+  const { GCD } = await import('../../content/abilities.js');
+  const w = S.createWorld(REGION, 62);
+  const p = newcomer(w, 'a', 'drifter');
+  const g = w.mobs.find((m) => m.type === 'greyling');
+  g.hp = g.maxHp = 9999;
+  p.x = g.x + 1; p.y = g.y; p.hp = p.maxHp = 999;
+  applyIntent(w, 'a', { t: 'act', kind: 'mob', id: g.id, action: 'attack' });
+  const casts = [];
+  const watch = (ev) => casts.push(...ev.filter((e) => e.type === 'cast' && e.by === 'a').map((e) => [w.tick, e.id]));
+  run(w, 2, watch);
+  applyIntent(w, 'a', { t: 'ability', id: 'slash' });
+  run(w, 40, watch);
+  const swings = casts.filter(([, id]) => id === 'swing').map(([t]) => t);
+  const delay = P.swingDelay(p);
+  assert.ok(swings.length >= 5, `genug Schläge (${swings.length})`);
+  for (let i = 1; i < swings.length; i++) assert.equal(swings[i] - swings[i - 1], delay, 'Abstand = Waffentempo');
+  assert.ok(casts.some(([, id]) => id === 'slash'), 'Fähigkeit trotzdem ausgeführt');
+  assert.ok(delay !== GCD, 'Waffentempo unabhängig von der GCD');
 });
 
 test('Fähigkeit auf Abklingzeit wird nicht vorgemerkt, sondern gemeldet', () => {

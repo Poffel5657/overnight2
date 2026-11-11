@@ -3,10 +3,11 @@
 // regionFor(id, date) liefert das Gebiet; der Drift wird jeden Tag aus dem Datum neu gewürfelt.
 import { REGION as kindle } from './kindle.js';
 import { REGION as drownedChapel } from './drowned-chapel.js';
+import { REGION as kindleInside } from './kindle-inside.js';
 import { driftFor } from './drift.js';
 
-export const STATIC_REGIONS = { kindle, drowned_chapel: drownedChapel };
-export const REGION_IDS = ['kindle', 'drowned_chapel', 'drift'];
+export const STATIC_REGIONS = { kindle, kindle_inside: kindleInside, drowned_chapel: drownedChapel };
+export const REGION_IDS = ['kindle', 'kindle_inside', 'drowned_chapel', 'drift'];
 export const HOME_REGION = 'kindle';
 
 export function regionFor(id, date) {
