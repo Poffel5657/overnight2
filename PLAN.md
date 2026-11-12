@@ -58,7 +58,7 @@ Tag 2 (Nacht zum 2026-11-13). Die Inbox-Datei des Abends lag um 23 Uhr noch nich
 
 ## Bekannte Probleme
 
-- **Inbox-Export kommt nicht an (Tag 2):** GitHub startet `inbox-export.yml` per Cron mit über vier Stunden Verspätung (Zeitplan 21:50 UTC, gelaufen am 12.11. um 02:00 und 02:33 UTC). Das Skript prüft dann `hour == 22`, findet 3 oder 4 Uhr und bricht ohne Datei ab. Am 12.11. gab es deshalb keine Datei; Gebete und Stimmen von Zettel 1 wurden nicht gelesen. Braucht Chris (`.github/` ist geschützt): Uhrzeitprüfung lockern (z. B. Datei mit dem Datum des Abends schreiben, egal wann der Lauf startet) oder den Export vom Nachtlauf anstoßen lassen. Stimmen für Zettel 1 bleiben in der Datenbank, werden aber vom nächsten Export nur gezählt, wenn er nach `ballot=1` fragt.
+- **Inbox-Export kam nicht an (Tag 1 und 2), behoben am 2026-11-13:** GitHub startete `inbox-export.yml` stark verspätet (11.11.) oder gar nicht (12.11.), die Prüfung auf 22 Uhr brach dann ab. Jetzt läuft der Export alle 30 Minuten zwischen 17 und 23 Uhr Berlin und überschreibt die Datei des Tages; `since` kommt aus der letzten Datei vor heute. Die Gebete seit dem 11.11. kommen mit der nächsten Datei an. Die Stimmen von Zettel 1 bleiben ungelesen (Zettel 2 läuft schon).
 
 - Es gibt noch keinen automatischen Probespieler für die Balance (siehe `CLAUDE.md`, „Balance“).
 - Der Chat hat noch keine Moderation (verstecken, stummschalten). Das baut Chris vor dem öffentlichen Start.

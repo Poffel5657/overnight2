@@ -1,5 +1,7 @@
-# Holt um 22:50 Uhr (Berlin, vor dem Start des Nachtlaufs um 23 Uhr) die neuen Gebete, den Stand der Abstimmung und ein paar Zahlen vom Server
-# und legt sie als eine Datei pro Nacht ins private Repo overnight-inbox (v2/inbox/YYYY-MM-DD.json).
+# Holt am Abend (Berlin, bis spätestens 22:59, vor dem Start des Nachtlaufs um 23 Uhr) die neuen Gebete, den Stand der Abstimmung
+# und ein paar Zahlen vom Server und legt sie als eine Datei pro Nacht ins private Repo overnight-inbox (v2/inbox/YYYY-MM-DD.json).
+# GitHub startet Cron-Läufe oft stark verspätet oder gar nicht (Tag 1 und 2). Deshalb läuft der Export mehrmals am Abend
+# und überschreibt jedes Mal die Datei des Tages; "since" kommt aus der letzten Datei VOR heute, damit nichts verloren geht.
 # Der Nachtlauf liest nur diese Dateien, nie die Datenbank. Gebetstext ist fremder Text
 # (Feld untrustedPlayerText); Spielernamen werden nicht übernommen.
 # Braucht die Secrets ADMIN_KEY (wie im Worker) und INBOX_TOKEN (fein granularer Token, nur
@@ -8,9 +10,9 @@ name: Inbox export
 
 on:
   schedule:
-    # 21:50 und 20:50 UTC, je nach Sommer- oder Winterzeit ist eins davon 22:50 Uhr in Berlin.
-    - cron: '50 21 * * *'
-    - cron: '50 20 * * *'
+    # Alle 30 Minuten von 16:17 bis 21:47 UTC (krumme Minuten, weil GitHub volle Stunden oft auslässt).
+    # Das Skript arbeitet nur zwischen 17 und 22:59 Uhr Berlin, egal ob Sommer- oder Winterzeit.
+    - cron: '17,47 16-21 * * *'
   workflow_dispatch:
     inputs:
       force:
@@ -44,15 +46,16 @@ jobs:
         run: |
           set -euo pipefail
           hour=$(TZ=Europe/Berlin date +%H)
-          if [ "$FORCE" != "true" ] && [ "$hour" != "22" ]; then echo "Nicht 22 Uhr in Berlin ($hour), nichts zu tun."; exit 0; fi
+          if [ "$FORCE" != "true" ] && { [ "$hour" -lt 17 ] || [ "$hour" -gt 22 ]; }; then echo "Nicht zwischen 17 und 23 Uhr in Berlin ($hour Uhr), nichts zu tun."; exit 0; fi
           today=$(TZ=Europe/Berlin date +%F)
 
           # Zugang zum Inbox-Repo zuerst prüfen, damit ein falscher Token eine klare Meldung gibt.
           gh api "repos/$INBOX" --jq .full_name > /dev/null || { echo "::error::INBOX_TOKEN hat keinen Zugriff auf $INBOX (leer, abgelaufen oder falsches Repo)."; exit 1; }
-          # Bis wohin hat der letzte Export gelesen? (Feld until in der neuesten Datei; Ordner fehlt beim ersten Mal)
+          # Bis wohin hat der letzte Export eines FRÜHEREN Abends gelesen? (Feld until; Ordner fehlt beim ersten Mal)
+          # Die Datei von heute zählt nicht: sie wird bei jedem Lauf am Abend neu geschrieben.
           latest=""
           if listing=$(gh api "repos/$INBOX/contents/v2/inbox" 2>/dev/null); then
-            latest=$(echo "$listing" | jq -r '[.[] | select(.name | test("^[0-9-]+\\.json$")) | .name] | sort | last // empty')
+            latest=$(echo "$listing" | jq -r --arg today "$today.json" '[.[] | select(.name | test("^[0-9-]+\\.json$")) | .name | select(. < $today)] | sort | last // empty')
           fi
           since=0
           if [ -n "$latest" ]; then
