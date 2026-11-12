@@ -8,7 +8,7 @@
 
 import { RegionRoom } from './region.js';
 import { hashPassword, sameHex, createSession, accountForToken, tokenHash } from './auth.js';
-import { REGION_IDS, HOME_REGION } from '../content/regions/index.js';
+import { isRegionId, HOME_REGION } from '../content/regions/index.js';
 
 export { RegionRoom };
 
@@ -192,7 +192,7 @@ export default {
       // Ein Raum pro Gebiet. Das Gebiet nennt der Browser; der Raum prüft beim Anmelden, ob der
       // Charakter wirklich dort steht, und schickt ihn sonst an den richtigen Ort.
       const wanted = url.searchParams.get('region');
-      const regionId = REGION_IDS.includes(wanted) ? wanted : HOME_REGION;
+      const regionId = isRegionId(wanted) ? wanted : HOME_REGION;
       const room = env.REGION.get(env.REGION.idFromName(regionId));
       const fwd = new Request(req);
       fwd.headers.set('X-Region', regionId);

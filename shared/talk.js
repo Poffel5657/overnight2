@@ -12,6 +12,7 @@ import * as P from './player.js';
 import { placeBet } from './races.js';
 import { INN } from '../content/tavern.js';
 import { shopStock } from '../content/shops.js';
+import { mazeStart, mazeId } from '../content/regions/maze.js';
 
 export const TALK_RANGE = 2;
 
@@ -51,6 +52,9 @@ export function conditionHolds(p, cond = {}, world = null) {
   if (cond.specLevel && P.classLevel(p) < SPEC_LEVEL) return false;
   if (cond.noSpec && p.specs?.[p.cls]) return false;
   if (cond.hasSpec && !p.specs?.[p.cls]) return false;
+  // Unending Maze: maze = darf mindestens bis zu diesem Stockwerk, mazeBelow = noch nicht so tief
+  if (cond.maze && (p.mazeDeep ?? 1) < cond.maze) return false;
+  if (cond.mazeBelow && (p.mazeDeep ?? 1) >= cond.mazeBelow) return false;
   return true;
 }
 
@@ -135,6 +139,17 @@ function applyEffect(world, p, eff) {
   }
   if (eff.shop) emit(world, { to: p.id, type: 'shop', shop: eff.shop, stock: shopStock(eff.shop, world.date) });
   if (eff.bet) placeBet(world, p, eff.bet[0], eff.bet[1]);
+  // Unending Maze: Sorrel lässt einen an einem Stockwerk einsteigen, das man schon erreicht hat
+  if (eff.descend && (p.mazeDeep ?? 1) >= eff.descend) {
+    const start = mazeStart(eff.descend);
+    p.travel = { region: mazeId(eff.descend), x: start.x, y: start.y };
+    p.path = [];
+    p.goal = null;
+    p.target = null;
+    p.engaged = false;
+    closeTalk(world, p);
+    emit(world, { to: p.id, type: 'travel', region: p.travel.region });
+  }
 }
 
 // ---------- Quests ----------

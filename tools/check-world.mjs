@@ -4,7 +4,7 @@
 //  - Gegenstände: jeder hat einen Fundort und einen Zweck
 //  - Quests, Gespräche, Klassen, Berufe, Rezepte: alles verweist auf Existierendes und ist spielbar
 
-import { STATIC_REGIONS, REGION_IDS, regionFor } from '../content/regions/index.js';
+import { STATIC_REGIONS, isRegionId, regionFor } from '../content/regions/index.js';
 import { TILE_TYPES } from '../content/tiles.js';
 import { SPRITES } from '../content/sprites.js';
 import { MOBS } from '../content/mobs.js';
@@ -130,7 +130,7 @@ function check(region) {
 
   for (const o of region.objects) {
     if (o.type === 'door') {
-      const target = REGION_IDS.includes(o.to) && regionFor(o.to, '2026-11-10');
+      const target = isRegionId(o.to) && regionFor(o.to, '2026-11-10');
       if (!target) err(`Tür bei ${o.x},${o.y} führt in unbekanntes Gebiet '${o.to}'`);
       else if (!TILE_TYPES[target.tiles[o.ty]?.[o.tx]]?.walk || target.objects.some((t) => o.tx >= t.x && o.tx < t.x + (t.w || 1) && o.ty >= t.y && o.ty < t.y + (t.d || 1))) {
         err(`Tür bei ${o.x},${o.y} landet in ${o.to} auf ${o.tx},${o.ty}, das ist nicht begehbar`);
@@ -275,6 +275,8 @@ function checkContent(regions) {
   for (const i of Object.keys(BEACON_FUEL)) purposes.add(i);
   for (const r of Object.values(RECIPES)) for (const i of Object.keys(r.inputs)) purposes.add(i);
   for (const q of Object.values(QUESTS)) for (const st of q.steps) if (st.type === 'have') purposes.add(st.item);
+  // Tausch im Gespräch (z. B. Turnstones gegen Ausrüstung bei Hesk)
+  for (const e of effects) for (const i of Object.keys(e.take || {})) purposes.add(i);
   for (const [id, def] of Object.entries(ITEMS)) {
     if (!sources.has(id)) err(`Gegenstand ${id} hat keinen Fundort (Rezept, Fundstelle, Beute, Händler, Quest)`);
     if (!def.slot && !def.use && !purposes.has(id)) err(`Gegenstand ${id} hat keinen Zweck (anlegen, benutzen, Rezept, Quest)`);
@@ -310,7 +312,9 @@ const regions = Object.values(STATIC_REGIONS);
 for (const r of regions) check(r);
 // Der Drift wird jeden Tag neu gewürfelt: mehrere Tage prüfen.
 for (const d of ['2026-11-10', '2026-11-11', '2026-12-24', '2027-01-01', '2027-03-15', '2027-07-04']) check(regionFor('drift', d));
-checkContent([...regions, regionFor('drift', '2026-11-10')]);
+// Das Unending Maze: jedes Stockwerk jeden Tag anders. Stichproben über Tiefe und Datum.
+for (const d of ['2026-11-13', '2026-12-24', '2027-03-15']) for (const f of [1, 2, 3, 5, 9, 10, 25, 48, 60, 99]) check(regionFor(`maze_${f}`, d));
+checkContent([...regions, regionFor('drift', '2026-11-10'), regionFor('maze_1', '2026-11-13'), regionFor('maze_20', '2026-11-13'), regionFor('maze_60', '2026-11-13')]);
 if (errors.length) {
   console.error(errors.map((e) => `FEHLER ${e}`).join('\n'));
   process.exit(1);

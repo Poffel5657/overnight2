@@ -406,10 +406,18 @@ const hollis = {
 const band_corra = {
   start: {
     text: 'Corra puts down her fiddle. "Requests cost one ale. Complaints cost two."',
-    options: [{ text: 'Who are you lot?', to: 'who' }, { text: 'What is that tune?', to: 'tune' }, BYE],
+    options: [
+      { text: 'Who are you lot?', to: 'who' }, { text: 'What is that tune?', to: 'tune' },
+      // Seit 2026-11-13: der alte Weg ist zurück, Corra kennt das Dorf an seinem Ende
+      { text: 'The old road is back, they say.', to: 'road', if: { quest: { old_road_west: 'none' } }, do: [{ start: 'old_road_west' }] },
+      { text: 'Tell me about Cinderford.', to: 'cinder', if: { quest: { old_road_west: 'done' } } },
+      BYE,
+    ],
   },
   who: { text: '"We are the Damp Socks. Me on fiddle, Oswin on drum, Pip on the pipe. We played every village on the old road until the Grey ate the road. Now we play here, and the Beacon claps."', options: [BYE] },
   tune: { text: '"The Lark\'s Jig. Hollis\'s grandmother wrote it. Or stole it. In Kindle that is the same thing."', options: [BYE] },
+  road: { text: 'Corra goes very still. "The west road? Back?" She grins. "Then Cinderford is still at the end of it. A town in a quarry, under the hill, full of people who go down into a maze for fun. Go and see. Ask for Sorrel, the Delvemaster. Tell her I still owe her a song."', options: [{ text: 'West, to Cinderford.' }] },
+  cinder: { text: '"They live under the hill, where the Grey cannot get a good grip. They dug for stone and found a maze that rebuilds itself every night. They think that is normal. They are lovely people. Never play cards with them."', options: [BYE] },
 };
 
 const band_oswin = {
@@ -437,8 +445,83 @@ const band_pip = {
   song: { text: '"A song about the light in the north. I have two lines now! \'There is a light in the north, and Brindle is watching it.\' The rest depends on what it is. And on what rhymes with Brindle."', options: [BYE] },
 };
 
+// ---------- Cinderford (seit 2026-11-13, Gebet 4) ----------
+// Sorrel schickt einen an Einstiegs-Stockwerke: das erste, und jedes nach einem großen Keeper (6, 11, 16, …),
+// das man schon erreicht hat. Sichtbar sind nur die drei tiefsten, damit die Liste kurz bleibt.
+const ORDINAL = (n) => `${n}${n % 100 >= 11 && n % 100 <= 13 ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] || 'th'}`;
+const DESCENT = [{ text: 'The first turn.', do: [{ descend: 1 }] }];
+for (let f = 6; f <= 96; f += 5) DESCENT.push({ text: `The ${ORDINAL(f)} turn.`, if: { maze: f, mazeBelow: f + 15 }, do: [{ descend: f }] });
+
+const sorrel = {
+  start: {
+    text: 'Sorrel taps a long brass key against her palm. "Delvemaster. I count who goes down and who comes back up. The second number is the important one."',
+    options: [
+      { text: 'Corra sent me, from Kindle.', to: 'orw_done', if: { quest: { old_road_west: 0 } }, do: [{ advance: 'old_road_west' }] },
+      { text: 'What is down there?', to: 'maze' },
+      { text: 'Send me down.', to: 'down' },
+      { text: 'Any work for me?', to: 'ft_offer', if: { quest: { first_turn: 'none' }, classLevel: 5 }, do: [{ start: 'first_turn' }] },
+      { text: 'Any work for me?', to: 'ft_early', if: { quest: { first_turn: 'none' }, below: 5 } },
+      { text: 'The Keeper fell.', to: 'ft_done', if: { quest: { first_turn: 1 } }, do: [{ advance: 'first_turn' }] },
+      { text: 'Any more work?', to: 'ds_offer', if: { quest: { first_turn: 'done', deeper_still: 'none' }, classLevel: 12 }, do: [{ start: 'deeper_still' }] },
+      { text: 'Any more work?', to: 'ds_early', if: { quest: { first_turn: 'done', deeper_still: 'none' }, below: 12 } },
+      { text: 'The great Keeper fell.', to: 'ds_done', if: { quest: { deeper_still: 1 } }, do: [{ advance: 'deeper_still' }] },
+      BYE,
+    ],
+  },
+  orw_done: { text: '"Corra? With the fiddle? She owes me a song." Sorrel looks you up and down. "Welcome to Cinderford, Kindle. We thought the Grey had eaten you all. Turns out it only ate the road."', options: [{ text: 'What is this place?', to: 'maze' }, BYE] },
+  maze: { text: '"The Unending Maze. The quarrymen cut into it two hundred years ago looking for good stone, and found corridors instead. Every night the walls turn, and every morning it is a different maze. At the bottom of every turn sits a Keeper, guarding the stairs down. Nobody has found the last stair."', options: [{ text: 'Why go down at all?', to: 'why' }, BYE] },
+  why: { text: '"Turnstones. Every Keeper carries a few, and Hesk turns them into the best gear this side of the Grey. And the stairs only open for those who stood against the Keeper. Some of us like to see how far they go." She shrugs. "Mostly the turnstones."', options: [BYE] },
+  down: { text: '"Where to? The first turn, or any turn just past a great Keeper you stood against. Every fifth Keeper is a great one. Take oil. The Maze is dark, and the Lost Lamps are thirsty."', options: [...DESCENT, { text: 'Not yet.' }] },
+  ft_offer: { text: '"Good. Down the Maze Mouth, find your way to the bottom of the first turn, and stand against its Keeper. It will be something strange. It always is. Come back and tell me what it was."', options: [{ text: 'Down I go.' }] },
+  ft_early: { text: '"Not yet. Even the first turn has teeth. Get some experience in the fields around Kindle and come back. (Level 5)"', options: [BYE] },
+  ft_done: { text: '"Hah. They never look the same twice." She chalks a mark on the Turn Board. "The stairs will open for you now. Here: turnstones and cake. Hesk will tell you what the stones are worth."', options: [{ text: 'Thanks, Sorrel.' }] },
+  ds_offer: { text: '"Every fifth turn the Keeper is a great one: bigger, angrier and stranger. Get down to the fifth turn and bring its great Keeper down. Take friends. I mean it."', options: [{ text: 'The fifth turn.' }] },
+  ds_early: { text: '"You did the first turn. Good. The fifth one would eat you. Come back with a few more levels. (Level 12)"', options: [BYE] },
+  ds_done: { text: 'Sorrel writes your name on the Turn Board, low down, in small letters. "A great Keeper. Not bad, Kindle." She hands you a pouch. "From now on I can send you straight down to the sixth turn. Go and see how far it goes."', options: [{ text: 'Thanks, Sorrel.' }] },
+};
+
+const GEAR = [['delvers_hood', 4, 'Hood'], ['delvers_boots', 6, 'Boots'], ['delvers_coat', 10, 'Coat'], ['keepers_lantern', 25, 'Keeper\'s Lantern']];
+const hesk = {
+  start: {
+    text: 'Hesk is counting rope. "Oil, chalk, cake, rope. And gear, for turnstones. Gold is for people who stay upstairs."',
+    options: [
+      { text: 'Show me your wares.', do: [{ shop: 'hesk' }] },
+      { text: 'What do turnstones buy?', to: 'gear' },
+      { text: 'What are turnstones?', to: 'stones' },
+      BYE,
+    ],
+  },
+  stones: { text: '"Little stones the Keepers carry. Warm on one side. The warm side always faces the way out, wherever you are. Delvers sew them into their coats so they never get lost." He taps his chest. "I have nine."', options: [{ text: 'And you trade gear for them?', to: 'gear' }, BYE] },
+  gear: {
+    text: '"Hood, four stones. Boots, six. Coat, ten. And if you ever bring me twenty-five, the Keeper\'s Lantern. I only made one. I will make another."',
+    options: [
+      ...GEAR.map(([id, n, name]) => ({ text: `The ${name}, for ${n} turnstones.`, to: 'bought', if: { has: { turnstone: n } }, do: [{ take: { turnstone: n } }, { give: { [id]: 1 } }] })),
+      { text: 'Not yet.' },
+    ],
+  },
+  bought: { text: 'He drops the stones into a jar one at a time, listening to each. "Good stones. Wear it well, and come back up in it."', options: [{ text: 'What else?', to: 'gear' }, BYE] },
+};
+
+const ivy = {
+  start: {
+    text: 'Old Ivy does not look up from her maps. "Wrong. Wrong. Also wrong. Oh. Hello."',
+    options: [
+      { text: 'Can I help?', to: 'cs_offer', if: { quest: { chalk_and_string: 'none' }, classLevel: 6 }, do: [{ start: 'chalk_and_string' }] },
+      { text: 'Can I help?', to: 'cs_early', if: { quest: { chalk_and_string: 'none' }, below: 6 } },
+      { text: 'Five sticks of turn chalk.', to: 'cs_done', if: { quest: { chalk_and_string: 1 }, has: { turn_chalk: 5 } }, do: [{ take: { turn_chalk: 5 } }, { advance: 'chalk_and_string' }] },
+      { text: 'Why map it, if it changes?', to: 'why' },
+      BYE,
+    ],
+  },
+  why: { text: '"Because it does not change all of it. The rooms move, the walls turn, but some things stay: Keepers at the bottom, the rope at the top. One day I will find the rule." She taps a map. "Fifty years now. Any day."', options: [BYE] },
+  cs_offer: { text: '"I need chalk. Not any chalk: turn chalk, the stuff the things down there carry around. It holds a mark in the Maze until morning, which is longer than mine does. Five sticks. The Turnlings drop it, and the Crawlers, and the Lamps."', options: [{ text: 'Five sticks of turn chalk.' }] },
+  cs_early: { text: '"Help? You would get lost on the stairs. Come back with a bit more experience. (Level 6)"', options: [BYE] },
+  cs_done: { text: 'She snaps a stick and draws a long line on today\'s map. It does not fade. "Ha! There. Here: my old lamp. It was made for corners. It does not light far, but it lights round them."', options: [{ text: 'Thank you, Ivy.' }] },
+};
+
 export const TALK = {
   ama, tallow, rook, fen, wren, stranger, haskel, brack, brindle, mabb, mothwick, hollis, band_corra, band_oswin, band_pip,
+  sorrel, hesk, ivy,
   snail_bramble: snail('bramble'), snail_pebble: snail('pebble'), snail_tom: snail('tom'),
   pell: {
     start: { text: 'HEAR YE! Wolves on the fields! Ama wants them sent home! And every calling has new tricks, and the Flarecasters set things on fire on purpose now!', options: [

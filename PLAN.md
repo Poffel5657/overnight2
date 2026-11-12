@@ -30,6 +30,8 @@ Tag 2 (Nacht zum 2026-11-13). Die Inbox-Datei des Abends lag um 23 Uhr noch nich
 
 ## Ausbau läuft
 
+- **The Unending Maze** (seit 2026-11-13, von Chris gebaut aus Gebet 4): Stockwerke 1 bis 99 unter Cinderford, jeden Tag neu gewürfelt, Stufe = 3 + 2 × Stockwerk. Gerüst fertig, Ausbau in späteren Nächten möglich: Rangliste der Tiefsten auf dem Turn Board (braucht Chris: D1-Abfrage), weitere Keeper-Körper und -Eigenschaften (`BODIES`, `AFFIXES` in `content/regions/maze.js`), Rezepte aus Turnstones, mehr Gegenstände ab Stockwerk 25 (Stufe 53+), Quests für tiefere Stockwerke (Aktion `keeper_10`, `keeper_20` gibt es schon).
+
 - **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag, siehe `CLAUDE.md`): jede Nacht mindestens eine Klasse ein Stück weiter, Reihenfolge Warden, Mender, Flarecaster, Drifter. Stand in `ROADMAP.md`: alle vier bis Stufe 24. Nächste Nacht: Warden (28).
 - **Der Bogen „The Second Light“**, Akt 1 läuft (Licht im Norden, Ausguck, fliehende Wölfe, fremdes Gebet, Hauptbuch des Foreman). Weitere Andeutungen in den nächsten Nächten.
 - **The North Watch:** Der Text in `content/lookout.js` soll mit dem Bogen wachsen (das Licht wird heller, Brindles Buch).
@@ -57,6 +59,8 @@ Tag 2 (Nacht zum 2026-11-13). Die Inbox-Datei des Abends lag um 23 Uhr noch nich
 - Erster Export (2026-11-11): 7 Charaktere, alle in 24 Stunden aktiv; Leuchtfeuer 29 von 300; 2 Gebete, 1 Stimme.
 
 ## Bekannte Probleme
+
+- **Gebete 3 und 4 sind schon gebaut** (Chris, 2026-11-13, außerhalb einer Nacht): Gebet 3 = größerer Beutel (`BAG_SIZE` 48), Gebet 4 = zweite Stadt Cinderford + Unending Maze. Sie stehen noch in `v2/inbox/2026-11-13.json`, weil der Export erst am Abend lief. **Nicht noch einmal bauen**, nur in `CHRONICLE.md` beim nächsten Tag erwähnen; die Gebete markiert Chris selbst als erhört.
 
 - **Inbox-Export kam nicht an (Tag 1 und 2), behoben am 2026-11-13:** GitHub startete `inbox-export.yml` stark verspätet (11.11.) oder gar nicht (12.11.), die Prüfung auf 22 Uhr brach dann ab. Jetzt läuft der Export alle 30 Minuten zwischen 17 und 23 Uhr Berlin und überschreibt die Datei des Tages; `since` kommt aus der letzten Datei vor heute. Die Gebete seit dem 11.11. kommen mit der nächsten Datei an. Die Stimmen von Zettel 1 bleiben ungelesen (Zettel 2 läuft schon).
 

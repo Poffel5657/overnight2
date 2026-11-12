@@ -3,17 +3,20 @@
 // Koordinaten: x = Spalte, y = Reihe im Raster aus kindle-terrain.js.
 import { TILES, HEIGHTS } from './kindle-terrain.js';
 import { INSIDE } from './kindle-inside.js';
+import { CINDER } from './maze.js';
 
 // Gebäude mit Innenraum: "Enter" führt in das Gebiet kindle_inside.
 const inside = (key) => ({ region: 'kindle_inside', ...INSIDE[key] });
 
 // Wo man ankommt, wenn man aus der Drowned Chapel oder dem Drift zurückkehrt, und wo man aufwacht.
-export const ARRIVE = { stairs: { x: 50, y: 92 }, rift: { x: 50, y: 4 }, respawn: { x: 52, y: 58 } };
+// west: am Ende des alten Wegs, wenn man aus Cinderford heraufkommt.
+export const ARRIVE = { stairs: { x: 50, y: 92 }, rift: { x: 50, y: 4 }, respawn: { x: 52, y: 58 }, west: { x: 3, y: 50 } };
 
 // Name der Gegend an einer Stelle (Statusanzeige und Meldung beim Betreten).
 function zoneAt(x, y) {
   if (Math.hypot(x - 49.5, y - 49.5) <= 10) return 'KINDLE';
   if (Math.hypot(x - 44.5, y - 6.5) <= 4) return 'THE NORTH WATCH';
+  if (x < 8 && Math.abs(y - 50) <= 3) return 'THE OLD ROAD WEST';
   if (y < 26) return 'HUSHWOOD';
   if (y > 76) return 'SINKMARSH';
   if (x > 74) return 'COPPERDEEP';
@@ -116,6 +119,8 @@ export const REGION = {
     {type: 'shrine', look: 'cold_lantern', x: 39, y: 3, name: 'a cold lantern', gives: 'cold_glass', quest: 'not_from_here', step: 0, text: 'An old lantern on a post, facing north. The glass is green and thick. It is cold, but it was lit not long ago.', empty: 'The lantern is empty now. Its glass faces north, toward a glow you can almost see.'},
     // Der versunkene Glockenrahmen im Südwesten von Sinkmarsh (Quest „The Drowned Choir“)
     {type: 'shrine', look: 'bell_frame', x: 14, y: 93, name: 'a sunken bell frame', gives: 'choir_bell', quest: 'drowned_choir', step: 2, text: 'A wooden frame, half under the water. One small bell still hangs in it, green with age.', empty: 'The frame creaks. The empty hook sways, though there is no wind.'},
+    // Seit 2026-11-13: der alte Weg nach Westen ist wieder da und führt hinunter nach Cinderford
+    {type: 'door', to: 'cinderford', tx: CINDER.arrive.x, ty: CINDER.arrive.y, x: 1, y: 50, name: 'the old road west, down to Cinderford', look: 'stairs'},
     {type: 'door', to: 'drift', tx: 32, ty: 58, x: 50, y: 3, name: 'a tear in the Grey', look: 'rift'},
     // Seit Tag 2: der alte Schacht des Foreman im Nordosten von Copperdeep (Salvage 26)
     {type: 'node', node: 'old_shaft', x: 95, y: 27},

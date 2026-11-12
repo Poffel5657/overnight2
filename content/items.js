@@ -97,6 +97,16 @@ export const ITEMS = {
   singed_tuft: { name: 'Singed Tuft', stack: true, value: 2, glyph: '&', text: 'A tuft of wolf fur, burnt at the tips. It smells of woodsmoke, and the wood was not from here.' },
   prayer_slip: { name: 'Folded Prayer', stack: true, value: 0, glyph: '=', text: 'A strip of pale bark paper, folded small. The writing is neat, brown and not from Kindle.' },
   crow_feather: { name: 'Crow Feather', stack: true, value: 1, glyph: '/', text: 'Glossy and judgemental. Fen collects them for quills.' },
+
+  // ---------- The Unending Maze und Cinderford (seit 2026-11-13, Gebet 4) ----------
+  turn_chalk: { name: 'Turn Chalk', stack: true, value: 3, glyph: '/', text: 'Delvers mark the turns with it. By morning the Maze has rubbed every mark off.' },
+  turnstone: { name: 'Turnstone', stack: true, value: 20, glyph: '*', text: 'A small stone, warm on one side. Every Keeper carries some. Hesk in Cinderford trades gear for them.' },
+  cinder_cake: { name: 'Cinder Cake', stack: true, use: { heal: 60 }, value: 12, glyph: 'n', text: 'Baked on the quarry stones. Black on the outside, which is the point.' },
+  delvers_lamp: { name: 'Delver\'s Lamp', slot: 'lantern', light: 1.8, burn: 0.7, value: 120, glyph: 'i', text: 'A squat lamp with a chalk-white shade. Ivy says it was made for corners.' },
+  delvers_hood: { name: 'Delver\'s Hood', slot: 'head', defence: 4, light: 0.5, value: 140, glyph: '^', text: 'Padded leather with a candle stub over the brow. Built for low ceilings.' },
+  delvers_boots: { name: 'Delver\'s Boots', slot: 'feet', defence: 5, value: 160, glyph: 'u', text: 'Hobnailed. They leave scratches the Maze cannot quite rub out.' },
+  delvers_coat: { name: 'Delver\'s Coat', slot: 'body', defence: 9, value: 300, glyph: 'M', text: 'A long coat sewn with turnstone buttons. Each one is warm on the side facing the way out.' },
+  keepers_lantern: { name: 'Keeper\'s Lantern', slot: 'lantern', light: 4, burn: 0.35, value: 600, glyph: 'i', text: 'Made from the lamp of a Keeper. It lights every corner at once, and seems to enjoy it.' },
 };
 
 // Ausrüstungsplätze in der Reihenfolge, in der das Fenster sie zeigt.
@@ -105,4 +115,5 @@ export const UNARMED_DELAY = 8;
 
 export const SLOTS = ['main', 'head', 'body', 'feet', 'lantern'];
 export const SLOT_NAMES = { main: 'HAND', head: 'HEAD', body: 'BODY', feet: 'FEET', lantern: 'LANTERN' };
-export const BAG_SIZE = 24;
+// Seit 2026-11-13 (Gebet 3): doppelt so groß wie am Anfang.
+export const BAG_SIZE = 48;

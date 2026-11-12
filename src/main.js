@@ -53,6 +53,18 @@ const mirror = {
 let lastSky = -1;
 let greeted = false;
 let lastZone = null;
+// Unending Maze: Die Karte zeigt nur, was man schon gesehen hat (region.mapFog). Pro Gebiet und Tag.
+let seen = { key: null, cells: new Set(), at: null };
+function noteSeen(x, y) {
+  const key = `${region.id}:${region.date ?? ''}`;
+  if (seen.key !== key) seen = { key, cells: new Set(), at: null };
+  const at = `${Math.round(x)},${Math.round(y)}`;
+  if (seen.at === at) return;
+  seen.at = at;
+  const cx = Math.round(x);
+  const cy = Math.round(y);
+  for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++) if (dx * dx + dy * dy <= 18) seen.cells.add(`${cx + dx},${cy + dy}`);
+}
 let region = null;
 let terrain = null;
 let objects = null;
@@ -268,7 +280,7 @@ const windows = createWindows({
   online() { return conn ? !conn.offline : false; },
   leave() { document.getElementById('btn-leave').click(); },
   me() { return mirror.me; },
-  mapData() { return { region, objects: mirror.objects, ents: [...mirror.ents.values()], you: mirror.you, markers }; },
+  mapData() { return { region, objects: mirror.objects, ents: [...mirror.ents.values()], you: mirror.you, markers, seen: region?.mapFog ? seen.cells : null }; },
   walk(x, y) { walkGround({ x, y }); },
   scale() { return ui.scale; },
   setScale(v) { ui.setScale(v); },
@@ -1201,6 +1213,7 @@ function frame(now) {
 
   if (me) {
     const zone = self && region.zoneAt ? region.zoneAt(self.x, self.y) : region.name;
+    if (self && region.mapFog) noteSeen(self.x, self.y);
     if (zone !== lastZone) {
       if (lastZone && zone !== 'KINDLE') ui.log(`You enter: ${zone}.`, 'sys');
       lastZone = zone;

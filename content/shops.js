@@ -14,6 +14,8 @@ export const SHOPS = {
     rotating: { perDay: 2, pool: ['glow_draught', 'dusk_draught', 'moss_salve', 'flare_candle', 'lily_oil', 'nightcap', 'emberroot', 'survey_notes', 'glimmer', 'green_shard', 'wisp_core'] },
   },
   hollis: { name: 'The Lantern & Lark', npc: 'hollis', sells: ['hearth_stew', 'ember_ale', 'bread', 'lamp_oil'] },
+  // Seit 2026-11-13: Hesk in Cinderford (Ausrüstung gegen Turnstones im Gespräch)
+  hesk: { name: "Hesk's Stall", npc: 'hesk', sells: ['lamp_oil', 'cinder_cake', 'bitter_tonic', 'moss_salve'] },
   marrow: { name: "Marrow's Stall", npc: 'marrow', sells: ['bread', 'lamp_oil', 'tin_lantern', 'scrap_hood', 'scrap_boots'] },
 };
 

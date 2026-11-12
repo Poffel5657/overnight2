@@ -139,4 +139,39 @@ export const MOBS = {
     special: { every: 3, delay: 6, pattern: 'ring', hit: [35, 45], text: 'The pilgrim lifts its lamp. Water rises around it.' },
     examine: 'It came here to pray a long time ago. It is still praying, to something else.',
   },
+  // ---------- The Unending Maze (seit 2026-11-13, Gebet 4) ----------
+  // Vorlagen: Die echten Werte rechnet content/regions/maze.js nach dem Stockwerk aus (maze: Faktoren auf die
+  // Grundwerte der Stufe). Die Zahlen hier gelten für das erste Stockwerk (Stufe 5).
+  turnling: {
+    name: 'Turnling', sprite: 'turnling', level: 5, ai: 'grey',
+    hp: 39, hit: [3, 5], attackEvery: 4, aggro: 5, leash: 8, respawn: 150, xp: 17,
+    drops: [['turn_chalk', 0.3, 1, 1]], gold: [1, 3],
+    special: { every: 3, delay: 6, pattern: 'plus', hit: [10, 13], text: 'The Turnling folds itself into a corner, and the corner points at you.' },
+    maze: { hp: 1, hit: 1, xp: 1 },
+    examine: 'A Greyling that got lost in a corner of the Maze and grew corners of its own.',
+  },
+  wallcrawler: {
+    name: 'Wallcrawler', sprite: 'wallcrawler', level: 7, ai: 'beast',
+    hp: 60, hit: [4, 6], attackEvery: 4, aggro: 6, leash: 8, respawn: 150, xp: 25,
+    drops: [['turn_chalk', 0.3, 1, 1], ['scrap', 0.3, 1, 2]], gold: [2, 4],
+    special: { every: 3, delay: 6, pattern: 'line', hit: [12, 16], text: 'The Wallcrawler flattens itself against the stone. It is going to lunge.' },
+    maze: { hp: 1.25, hit: 1.05, xp: 1.15 },
+    examine: 'Long, flat and patient. It lives in the joins between the stones, where the walls turn at night.',
+  },
+  lostlamp: {
+    name: 'Lost Lamp', sprite: 'lostlamp', level: 9, ai: 'grey',
+    hp: 50, hit: [4, 6], attackEvery: 4, aggro: 6, leash: 8, respawn: 150, xp: 30, drainOil: 3,
+    drops: [['turn_chalk', 0.3, 1, 1], ['lamp_oil', 0.4, 1, 1]], gold: [2, 5],
+    special: { every: 3, delay: 6, pattern: 'ring', hit: [12, 15], text: 'The Lost Lamp flares. Its light turns hot and white.' },
+    maze: { hp: 0.9, hit: 1.1, xp: 1.2 },
+    examine: 'A lantern on thin brass legs, looking for whoever dropped it. It drinks the oil of anyone who is not them.',
+  },
+  maze_keeper: {
+    // Vorlage für die zufälligen Bosse am Ende jedes Stockwerks (keeperFor in content/regions/maze.js).
+    name: 'The Keeper', sprite: 'turnling', level: 7, ai: 'grey', moveEvery: 2,
+    hp: 270, hit: [4, 6], attackEvery: 4, aggro: 5, leash: 9, respawn: 400, xp: 160,
+    drops: [['turnstone', 1, 1, 1]], gold: [7, 17],
+    boss: { deathText: 'The Keeper comes apart like wet paper. Somewhere below, stairs grind open.' },
+    examine: 'Every turn of the Maze has a Keeper. No two are alike, and none of them are friendly.',
+  },
 };

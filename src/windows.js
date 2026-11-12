@@ -287,6 +287,11 @@ export function createWindows(handlers) {
         g.fillText(mark, e.x * s + s / 2, e.y * s - 2);
       }
     }
+    // Unending Maze: Unbekanntes bleibt schwarz (die Karte zeichnet man selbst, beim Laufen).
+    if (d.seen) {
+      g.fillStyle = '#050403';
+      for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (!d.seen.has(`${x},${y}`)) g.fillRect(x * s, y * s, s, s);
+    }
     const self = d.ents.find((e) => e.id === d.you);
     if (self) {
       const r = s * 2;
@@ -334,7 +339,9 @@ export function createWindows(handlers) {
         stat('Power', s.power),
         stat('Defence', s.defence),
         stat('Gold', s.gold),
-        s.rested ? stat('Rested', `${s.rested} fights +${Math.round(INN.bonus * 100)}%`) : null);
+        s.rested ? stat('Rested', `${s.rested} fights +${Math.round(INN.bonus * 100)}%`) : null,
+        // Unending Maze: bis zu welchem Stockwerk die Treppen offen sind
+        (s.mazeDeep ?? 1) > 1 ? stat('Maze', `down to turn ${s.mazeDeep}`) : null);
 
       // Ausrüstung als Icons; Klick legt ab
       const gear = h('div', { class: 'gear' }, SLOTS.map((slot) => {

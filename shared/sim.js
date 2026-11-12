@@ -23,6 +23,7 @@ import { partyHere, tickParty } from './party.js';
 import { tickRace, refundBet } from './races.js';
 import { INN } from '../content/tavern.js';
 import { LOOKOUT } from '../content/lookout.js';
+import { keeperFell } from './delve.js';
 
 export { saveOf, xpForLevel, MAX_LEVEL } from './player.js';
 
@@ -111,7 +112,8 @@ export function createWorld(region, seed = 1234) {
   });
   world.mobs = region.mobs.map((m, i) => {
     const p = nearestWalkable(world, m.x, m.y);
-    const def = MOBS[m.type];
+    // Ein Gebiet kann eigene Werte mitgeben (Labyrinth: nach Stockwerk gerechnet, zufällige Keeper).
+    const def = m.def ?? MOBS[m.type];
     return {
       id: 'm' + i, kind: 'mob', type: m.type, def, name: def.name, sprite: def.sprite,
       x: p.x, y: p.y, px: p.x, py: p.y, home: p,
@@ -133,7 +135,7 @@ export function addPlayer(world, id, name, save = null) {
     cls: null, classes: {}, specs: {}, bag: [], equip: {}, profs: {}, quests: {}, bars: {},
     path: [], goal: null, target: null, engaged: false,
     gcdUntil: 0, swingAt: 0, cds: {}, queued: null, queuedUntil: 0, braceUntil: 0,
-    glowUntil: 0, fadeUntil: 0, hots: [], dialog: null, gather: null,
+    glowUntil: 0, fadeUntil: 0, hots: [], dialog: null, gather: null, mazeDeep: 1,
     warnedOil: 0,
   };
   if (save) P.loadInto(p, save);
@@ -812,6 +814,7 @@ function hitMob(world, p, m, dmg) {
     grantXp(world, q, m.def.xp, { kill: true });
     questEvent(world, q, 'kill', { mob: m.type });
     onKill(world, q, m.type);
+    if (m.def.mazeFloor) keeperFell(world, q, m.def.mazeFloor);
   }
   m.hitters.clear();
   loot(world, p, m);

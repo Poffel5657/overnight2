@@ -3,7 +3,7 @@
 // alle 30 Sekunden und beim Aufwachen am Lagerfeuer gespeichert.
 // Die Welt selbst (Wesen, angezündete Feuer) lebt nur im Speicher: Ist niemand da, darf sie verfallen.
 
-import { regionFor, REGION_IDS, HOME_REGION } from '../content/regions/index.js';
+import { regionFor, isRegionId, HOME_REGION } from '../content/regions/index.js';
 import { ARRIVE } from '../content/regions/kindle.js';
 import { TICK_MS, createWorld, step, addPlayer, removePlayer, saveFor, drainEvents, travel } from '../shared/sim.js';
 import { parseIntent, applyIntent, welcomeFor, tickFor } from '../shared/protocol.js';
@@ -103,7 +103,7 @@ export class RegionRoom {
 
   async fetch(req) {
     const id = req.headers.get('X-Region');
-    if (!this.regionId) this.regionId = REGION_IDS.includes(id) ? id : HOME_REGION;
+    if (!this.regionId) this.regionId = isRegionId(id) ? id : HOME_REGION;
     const [client, server] = Object.values(new WebSocketPair());
     server.accept();
     const conn = { pid: null, accountId: null, known: new Set(), tokens: BUCKET_SIZE, at: Date.now(), strikes: 0 };
@@ -181,7 +181,7 @@ export class RegionRoom {
     let save = null;
     try { save = row ? JSON.parse(row.data) : null; } catch { save = null; }
     // Steht der Charakter woanders, schicken wir den Browser dorthin (kein Springen durch die Welt).
-    const home = row && REGION_IDS.includes(row.region) ? row.region : HOME_REGION;
+    const home = row && isRegionId(row.region) ? row.region : HOME_REGION;
     if (home !== this.regionId) {
       ws.send(JSON.stringify({ t: 'tick', tick: 0, ents: [], spawn: [], gone: [], events: [{ type: 'travel', region: home }] }));
       return this.drop(ws, 4005, 'Elsewhere');
@@ -227,8 +227,10 @@ export class RegionRoom {
       world.events.push({ type: 'community', community: world.community });
       // Der Drift wird neu gewürfelt: Wer noch drin ist, wird nach Hause geweht.
       if (world.region.daily) {
-        world.events.push({ type: 'log', text: 'The Grey shifts. The Drift folds itself up, and you with it.', cls: 'hurt' });
-        for (const p of world.players.values()) travel(world, p, { region: HOME_REGION, ...ARRIVE.rift });
+        // Drift: zurück nach Kindle. Labyrinth: zurück nach Cinderford (foldTo/foldText im Gebiet).
+        const r = world.region;
+        world.events.push({ type: 'log', text: r.foldText ?? 'The Grey shifts. The Drift folds itself up, and you with it.', cls: 'hurt' });
+        for (const p of world.players.values()) travel(world, p, r.foldTo ?? { region: HOME_REGION, ...ARRIVE.rift });
         this.rebuild = true;
       }
     }

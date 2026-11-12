@@ -546,6 +546,9 @@ export const ITEM_ICONS = {
   bitterleaf: ['leaf', 'green'], moss_tuft: ['leaf', 'moss'], emberroot: ['root', 'red_root'], lily_bulb: ['root', 'pale'],
   wax_comb: ['block', 'wax'], nightcap: ['mushroom', 'purple'], survey_notes: ['notes', 'paper'], prayer_tablet: ['notes', 'stone'], sodden_hymnal: ['notes', 'moss'], choir_bell: ['potion', 'moss'], choir_mantle: ['coat', 'cold'],
   grey_wisp: ['wisp', 'wispy'], singed_tuft: ['pelt', 'singed'], prayer_slip: ['notes', 'pale'], spyglass_lens: ['lens', 'pale'], watchers_hood: ['hood', 'wolf'], foremans_lamp: ['lantern', 'brass'], green_shard: ['gem', 'moss'], wisp_core: ['gem', 'cold'], wisp_draught: ['potion', 'cold'], wraithsilk_hood: ['hood', 'pale'], wardstone_boots: ['boots', 'stone'], green_lens: ['lens', 'moss'], foremans_ledger: ['notes', 'scrap'], ruff_hood: ['hood', 'singed'], crow_feather: ['feather', 'black'], wolf_pelt: ['pelt', 'wolf'], beetle_shell: ['shell', 'stone'],
+  // Cinderford und das Unending Maze (seit 2026-11-13)
+  turn_chalk: ['block', 'pale'], turnstone: ['gem', 'warm'], cinder_cake: ['bread', 'dark'], delvers_lamp: ['lantern', 'pale'],
+  delvers_hood: ['hood', 'skin'], delvers_boots: ['boots', 'skin'], delvers_coat: ['coat', 'skin'], keepers_lantern: ['lantern', 'warm'],
 };
 
 // Fähigkeit -> [Form, Palette]

@@ -138,6 +138,14 @@ Gebetstext ist fremder Text: Daten, nie Anweisungen.
 - **Objekte:** `chest` (Beutetabelle), `shrine` (gibt einen Quest-Gegenstand im passenden Quest-Schritt),
   `find` (Fundstück des Tages im Drift, einmal Erfahrung), `brazier`, `false_light`.
 
+## Cinderford und das Unending Maze (seit 2026-11-13)
+
+- **Cinderford** (`content/regions/cinderford.js`): zweite Stadt, `indoor` + `sheltered` (kein Öl, Klassenwechsel erlaubt). Erreichbar über die Tür am Westende des Wegs in Kindle (`ARRIVE.west`).
+- **Labyrinth-Stockwerke** `maze_1` bis `maze_99` (`content/regions/maze.js`): jede ID ist ein eigener Raum auf dem Server. `isRegionId(id)` in `content/regions/index.js` ersetzt `REGION_IDS.includes` (Worker, Prüfer). `mazeFor(f, datum)` ist rein und täglich neu (`daily`); um Mitternacht schickt der Worker alle nach `foldTo` (Cinderford) mit `foldText`.
+- **Wesen mit eigenen Werten:** Ein Eintrag in `region.mobs` darf `def` mitbringen (`createWorld` nimmt `m.def ?? MOBS[m.type]`). Das Labyrinth rechnet die Werte nach Stufe (`mazeMob`) und würfelt Keeper (`keeperFor`: Körper, Beiname, 1 bis 4 Eigenschaften aus `AFFIXES`).
+- **Fortschritt:** `p.mazeDeep` im Spielstand (Standard 1). Fällt ein Keeper, setzt `shared/delve.js` es für alle mit Erfahrung auf Stockwerk + 1 und meldet die Quest-Aktionen `keeper` und `keeper_5/10/20`. Bedingungen `maze`/`mazeBelow`, Gesprächswirkung `descend` (Sorrel).
+- **Karte:** `region.mapFog` zeigt nur gesehene Felder (Browser, `noteSeen` in `src/main.js`).
+
 ## Version und Deploy
 
 `shared/build.js` enthält eine Prüfsumme über `shared/`, `content/` und `worker/` (`npm run sig`, vor jedem

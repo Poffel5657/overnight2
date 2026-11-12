@@ -229,4 +229,40 @@ export const QUESTS = {
     ],
     reward: { unlock: 'drifter', xp: 0 },
   },
+  // ---------- Cinderford und das Unending Maze (seit 2026-11-13, Gebet 4) ----------
+  old_road_west: {
+    name: 'The Old Road West', giver: 'band_corra',
+    text: 'The Grey gave back the old road west. Corra says Cinderford is at the end of it.',
+    steps: [
+      { type: 'talk', npc: 'sorrel', text: 'Follow the old road west from Kindle to its end, go down to Cinderford and find Delvemaster Sorrel.' },
+    ],
+    reward: { xp: 80, gold: 20, items: { cinder_cake: 2 } },
+  },
+  first_turn: {
+    name: 'The First Turn', giver: 'sorrel',
+    text: 'Sorrel wants to know what the Keeper of the first turn looks like today.',
+    steps: [
+      { type: 'action', action: 'keeper', text: 'Go down the Maze Mouth in Cinderford and defeat the Keeper at the bottom of the first turn.' },
+      { type: 'talk', npc: 'sorrel', text: 'Tell Sorrel what it was.' },
+    ],
+    reward: { xp: 250, gold: 30, items: { turnstone: 2, cinder_cake: 2 } },
+  },
+  chalk_and_string: {
+    name: 'Chalk and String', giver: 'ivy',
+    text: 'Old Ivy needs chalk that holds a mark in the Maze.',
+    steps: [
+      { type: 'have', item: 'turn_chalk', n: 5, text: 'Collect five sticks of turn chalk from the creatures of the Unending Maze.' },
+      { type: 'talk', npc: 'ivy', text: 'Bring the chalk to Old Ivy in Cinderford.' },
+    ],
+    reward: { xp: 220, gold: 25, items: { delvers_lamp: 1 } },
+  },
+  deeper_still: {
+    name: 'Deeper Still', giver: 'sorrel',
+    text: 'Every fifth turn of the Maze has a great Keeper. Sorrel wants you to meet one.',
+    steps: [
+      { type: 'action', action: 'keeper_5', text: 'Reach the fifth turn of the Unending Maze and defeat its great Keeper. Take friends.' },
+      { type: 'talk', npc: 'sorrel', text: 'Tell Sorrel.' },
+    ],
+    reward: { xp: 1200, gold: 120, items: { turnstone: 5 } },
+  },
 };

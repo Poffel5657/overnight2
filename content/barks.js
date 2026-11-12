@@ -18,6 +18,7 @@ export const BARKS = {
       'Wolves on the north-west fields! Warden Ama wants them sent home!',
       'Something new at the Night Market every night! Only after dark!',
       'Brack says the Old Foreman is still working! Somebody tell him!',
+      'The old road west is back! Cinderford is at the end of it, and a maze under it!',
     ],
   },
   band_corra: {
@@ -40,6 +41,14 @@ export const BARKS = {
       'Another wolf, running south. That makes nine today.',
       'Brighter than Tuesday. I am sure of it.',
     ],
+  },
+  hesk: {
+    range: 8, every: 40,
+    lines: ['Oil! Chalk! Cake! Rope!', 'Gear for turnstones, gold for everything else.', '*counts rope under his breath*'],
+  },
+  sorrel: {
+    range: 8, every: 45,
+    lines: ['Who is going down?', 'Twelve down, eleven up. Where is number twelve?', 'The walls turned well last night. Lots of corners.'],
   },
   mabb: {
     range: 10, every: 45,
@@ -67,5 +76,8 @@ export const HAILS = {
   brindle: 'You! Got two hands and a head for heights?',
   mabb: 'You there! Fancy a flutter on a snail?',
   mothwick: 'Psst. Wicks, lanterns, night things. Only while it lasts.',
+  sorrel: 'Kindle! Over here. The Maze is hiring.',
+  ivy: 'You. Yes. Do you have steady hands?',
+  band_corra: 'Psst! Did you hear about the west road?',
 };
 export const HAIL_DEFAULT = 'You there! A word?';

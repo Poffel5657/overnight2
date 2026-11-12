@@ -27,6 +27,8 @@ Jede Nacht weicht der Grey ein Stück zurück, und am Morgen steht dort etwas, d
 | **Sinkmarsh** | 25–40 | Sumpf im Süden mit versunkenen Ruinen, die älter sind als das Dorf. Irrlichter, Moorkröten. |
 | **The Drowned Chapel** | Dungeon, 35+ | Unter den Ruinen liegt eine zweite, ältere Kapelle. Boss: **the Lamplighter**, eine verlöschende Gestalt, die das falsche Licht bewacht. Seit Tag 2 singen in den Seitenschiffen **Choir Wraiths** noch die tiefe Stimme. |
 
+**Cinderford** (seit 2026-11-13): Am Ende des alten Wegs nach Westen, den der Grey jahrelang verschluckt hatte, liegt eine Stadt in einem Steinbruch unter dem Hügel. Ohne Leuchtfeuer: Unter dem Fels bekommt der Grey keinen Halt, und die Laternen brennen Tag und Nacht. Die Quarrymen stießen vor zweihundert Jahren auf das **Unending Maze**: Gänge, die sich jede Nacht neu drehen, mit einem **Keeper** am Ende jedes Stockwerks (jedes fünfte ein großer). Keeper tragen **Turnstones**, warm auf der Seite, die zum Ausgang zeigt. Figuren: **Delvemaster Sorrel** (zählt, wer hinab- und wer heraufkommt), **Hesk** (Händler, Ausrüstung gegen Turnstones), **Old Ivy** (zeichnet seit fünfzig Jahren jeden Morgen eine Karte, die abends falsch ist). Die Damp Socks spielten dort früher; Corra schuldet Sorrel ein Lied. Das letzte Stockwerk hat noch niemand gefunden.
+
 Hinter allen Gebieten liegt **the Drift**: der Rand des Grey, den der Nightwright jede Nacht neu mischt. Was man dort findet, ist morgen fort, außer man bringt es heim, oder der Nightwright beschließt, dass ein Ort bleibt.
 
 ## Licht
@@ -72,3 +74,4 @@ Im Grey sieht man nur so weit, wie das eigene Licht reicht. Laternen, Fackeln un
 - Tag 1 (Taverne): Hollis öffnet „The Lantern & Lark“ östlich der Kapellenhäuser. Die Band „the Damp Socks“ (Corra, Oswin, Pip) spielte früher die Dörfer am alten Weg ab, bis der Grey den Weg fraß. „The Lark's Jig“ stammt von Hollis' Großmutter. Pip schreibt an einem Lied über das Licht im Norden.
 - Tag 1: Der Nachtmarkt öffnet nach Einbruch der Dunkelheit, Mabb lässt Schnecken um Gold laufen, Fen hat eine Karte gezeichnet, und über dem Norden glüht ein fremdes Licht. Tallow liest die Hymnen des ertrunkenen Chors; im tiefen Sinkmarsh lauern Mire Lurker, die ihre Bücher verschluckt haben.
 - Tag 2: Brindle baut am Ende der Nordstraße The North Watch und sieht nachts das Licht im Norden; Wölfe fliehen mit versengtem Fell aus Hushwood, ein fremdes Gebet liegt im Opferkasten, der Old Foreman arbeitet noch in Copperdeep, und Mothwick bringt jede Nacht andere Ware.
+- 2026-11-13 (zwischen Tag 2 und 3): Der Grey gibt den alten Weg nach Westen frei. An seinem Ende liegt Cinderford, darunter das Unending Maze. Die Taschen aller Leute in Kindle sind über Nacht doppelt so groß geworden.
