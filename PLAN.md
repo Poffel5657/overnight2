@@ -48,7 +48,7 @@ Tag 1 (Nacht zum 2026-11-12). Gebaut und getestet, Stand für den PR:
 - Angeln im Bach (steht auf dem Stimmzettel).
 - Ein Ausguck am Nordrand von Hushwood (steht auf dem Stimmzettel, passt zum Bogen).
 - Ein Imker zieht nach Kindle (steht auf dem Stimmzettel).
-- Aus Gebet 2: eine Truhe im Dorf zum Einlagern (braucht neue Absichten im Protokoll, siehe `Große Vorschläge`), ein kleiner Talentbaum mit leichten Boni (größerer Umbau, später als Vorschlag).
+- Aus Gebet 2: ein kleiner Talentbaum mit leichten Boni (größerer Umbau, später als Vorschlag). Die Truhe steht seit Tag 1 in der Taverne.
 - Aus Gebet 1: ein Übungsring für freundliche Zweikämpfe (Kampf zwischen Spielern ändert die Kampfregeln, nur mit Chris).
 - Mehr Schnecken, ein Schneckenpokal am Wochenende.
 

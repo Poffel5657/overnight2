@@ -538,7 +538,7 @@ export const ITEM_ICONS = {
   scrap_coat: ['coat', 'scrap'], brass_coat: ['coat', 'brass'], glim_coat: ['coat', 'glim'], shell_coat: ['coat', 'stone'], greyglass_coat: ['coat', 'greyglass'],
   scrap_boots: ['boots', 'scrap'], brass_boots: ['boots', 'brass'], glim_boots: ['boots', 'glim'], greyglass_boots: ['boots', 'greyglass'],
   tin_lantern: ['lantern', 'tin'], brass_lantern: ['lantern', 'brass'], glim_lantern: ['lantern', 'glim'], greyglass_lantern: ['lantern', 'greyglass'], shard_lantern: ['lantern', 'shard'], moth_lantern: ['lantern', 'pale'],
-  bread: ['bread', 'bread'], night_bread: ['bread', 'dark'], moon_candle: ['potion', 'cold'], moonwick: ['feather', 'pale'], cold_glass: ['gem', 'moss'],
+  bread: ['bread', 'bread'], hearth_stew: ['potion', 'warm'], ember_ale: ['potion', 'amber'], night_bread: ['bread', 'dark'], moon_candle: ['potion', 'cold'], moonwick: ['feather', 'pale'], cold_glass: ['gem', 'moss'],
   lamp_oil: ['potion', 'amber'], bitter_tonic: ['potion', 'green'], glow_draught: ['potion', 'bluepot'], moss_salve: ['potion', 'moss'],
   dusk_draught: ['potion', 'purple'], flare_candle: ['potion', 'pale'], lily_oil: ['potion', 'pale'],
   scrap: ['pile', 'scrap'], brass_bits: ['pile', 'brass'], glimmer: ['gem', 'glim'], greyglass: ['gem', 'greyglass'], lamp_shard: ['gem', 'shard'],

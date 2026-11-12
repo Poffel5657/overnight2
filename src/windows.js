@@ -20,6 +20,7 @@ import { BALLOT } from '../content/ballot.js';
 import { CHRONICLE } from '../content/chronicle.js';
 import { favoursFor, PRAYER_MAX } from '../shared/community.js';
 import { TILE_TYPES } from '../content/tiles.js';
+import { STASH_SIZE, INN } from '../content/tavern.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -260,7 +261,7 @@ export function createWindows(handlers) {
     const g = c.getContext('2d');
     g.drawImage(base.canvas, 0, 0);
     for (const o of d.objects) {
-      const big = o.inside || ['house', 'chapel', 'workshop'].includes(o.type);
+      const big = o.inside || ['house', 'chapel', 'workshop', 'tavern'].includes(o.type);
       if (big) { g.fillStyle = '#5a3a26'; g.fillRect(o.x * s, o.y * s, o.w * s, o.d * s); continue; }
       const col = OBJ_COLOR[o.type];
       if (!col) continue;
@@ -332,7 +333,8 @@ export function createWindows(handlers) {
         stat('Max HP', me ? me.maxHp : '-'),
         stat('Power', s.power),
         stat('Defence', s.defence),
-        stat('Gold', s.gold));
+        stat('Gold', s.gold),
+        s.rested ? stat('Rested', `${s.rested} fights +${Math.round(INN.bonus * 100)}%`) : null);
 
       // Ausrüstung als Icons; Klick legt ab
       const gear = h('div', { class: 'gear' }, SLOTS.map((slot) => {
@@ -416,6 +418,30 @@ export function createWindows(handlers) {
           h('div', { class: 'row-buttons' }, btn('Reset layout', () => { resetLayout(); handlers.click?.(); })),
           h('h3', {}, 'CONTROLS'),
           h('div', { class: 'row-buttons' }, btn('Change keys', () => open('keys'))),
+        ],
+      };
+    },
+
+    // Die eigene Truhe in der Taverne (shared/stash.js). Oben die Truhe, unten der Beutel.
+    stash() {
+      if (!state) return { heading: 'YOUR CHEST', content: h('p', {}, '...') };
+      const row = (slot, i, from) => {
+        const it = ITEMS[slot.id];
+        const op = from === 'stash' ? 'take' : 'put';
+        return h('li', { 'data-item': slot.id }, iconEl('item', slot.id, it.glyph, 'icon small'), ` ${it.name}${slot.n > 1 ? ` x${slot.n}` : ''} `,
+          btn(op === 'take' ? 'TAKE' : 'STORE', () => handlers.stash(op, i, 1)),
+          slot.n > 1 ? btn('ALL', () => handlers.stash(op, i, slot.n)) : null);
+      };
+      const chest = (state.stash || []).map((s, i) => row(s, i, 'stash'));
+      const bag = state.bag.map((s, i) => (s ? row(s, i, 'bag') : null)).filter(Boolean);
+      return {
+        heading: `YOUR CHEST // ${chest.length}/${STASH_SIZE}`,
+        content: [
+          h('h3', {}, 'IN THE CHEST'),
+          h('ul', { class: 'rows' }, chest.length ? chest : [h('li', { class: 'muted' }, 'Empty. Hollis dusted it for you.')]),
+          h('h3', {}, 'IN YOUR BAG'),
+          h('ul', { class: 'rows' }, bag.length ? bag : [h('li', { class: 'muted' }, 'Your bag is empty.')]),
+          h('p', { class: 'muted small' }, 'Every chest in the Lantern & Lark opens to your own things.'),
         ],
       };
     },

@@ -39,6 +39,8 @@ export const REGION = {
     {type: 'house', x: 39, y: 54, w: 3, d: 3, roof: '#5f4a3a', name: 'a house', inside: inside('house3')},
     {type: 'house', x: 55, y: 55, w: 3, d: 3, roof: '#7a3b26', name: 'a house', inside: inside('house4')},
     {type: 'workshop', x: 59, y: 51, w: 4, d: 3, name: 'the Workshop', inside: inside('workshop')},
+    // Die Taverne „The Lantern & Lark“ östlich der Kapellenhäuser (Truhe, Betten, Band)
+    {type: 'tavern', x: 60, y: 39, w: 5, d: 3, roof: '#5a3020', light: 4, name: 'The Lantern & Lark', inside: inside('tavern')},
     {type: 'stall', x: 38, y: 45, w: 3, d: 2, name: 'a market stall', awning: '#8a2f2f'},
     {type: 'stall', x: 38, y: 51, w: 3, d: 2, name: 'a market stall', awning: '#2f5a8a'},
     {type: 'campfire', x: 53, y: 59, light: 3.5, name: 'the Campfire'},

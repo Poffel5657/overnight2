@@ -1,6 +1,6 @@
 // Raster der Innenräume von Kindle (Legende in content/tiles.js). Jeder Raum ist von Wand umgeben,
 // dazwischen liegt Nichts (' ', schwarz), damit man aus einem Raum die anderen nicht sieht.
-// Kapelle links, Werkstatt in der Mitte, vier Häuser rechts.
+// Kapelle links, Werkstatt in der Mitte, vier Häuser rechts, darunter die Taverne „The Lantern & Lark“.
 export const TILES = [
   '#############     ###########    ########    ######## ',
   '#fffffffffff#     #ppppppppp#    #pppppp#    #pppppp# ',
@@ -20,5 +20,19 @@ export const TILES = [
   '#fffffffffff#                    #pppppp#    #pppppp# ',
   '#fffffffffff#                    ########    ######## ',
   '#############                                         ',
+  '                                                      ',
+  '              ############################            ',
+  '              #pppppppppppppppppppppppppp#            ',
+  '              #pppppppppppppppppppppppppp#            ',
+  '              #pppppppppppppppppppppppppp#            ',
+  '              #pppppppppppppppppppppppppp#            ',
+  '              #pppppppppppppppppppppppppp#            ',
+  '              #pppppppppppppppppppppppppp#            ',
+  '              #pppppppppppppppppppppppppp#            ',
+  '              #pppppppppppppppppppppppppp#            ',
+  '              #pppppppppppppppppppppppppp#            ',
+  '              #pppppppppppppppppppppppppp#            ',
+  '              #pppppppppppppppppppppppppp#            ',
+  '              ############################            ',
 ];
 export const HEIGHTS = TILES.map((r) => 'c'.repeat(r.length));

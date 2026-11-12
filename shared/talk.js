@@ -10,6 +10,7 @@ import { cheb } from './path.js';
 import { tell, emit } from './events.js';
 import * as P from './player.js';
 import { placeBet } from './races.js';
+import { INN } from '../content/tavern.js';
 
 export const TALK_RANGE = 2;
 
@@ -173,8 +174,14 @@ function completeQuest(world, p, id) {
   if (r.xp) grantXp(world, p, r.xp);
 }
 
-export function grantXp(world, p, n) {
+// rested: Sieg über ein Wesen nach einer Nacht in der Taverne (siehe content/tavern.js)
+export function grantXp(world, p, n, { kill = false } = {}) {
   if (!p.cls) return;
+  if (kill && p.rested > 0) {
+    n = Math.round(n * (1 + INN.bonus));
+    p.rested--;
+    if (p.rested === 0) tell(world, p.id, 'The good night\'s sleep has worn off.', 'sys');
+  }
   emit(world, { to: p.id, type: 'float', ent: p.id, text: `+${n} XP`, cls: 'info' });
   for (const lvl of P.gainClassXp(p, n)) {
     tell(world, p.id, `${CLASSES[p.cls].name} level ${lvl}.`, 'good');

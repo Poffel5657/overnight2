@@ -59,4 +59,5 @@ Im Grey sieht man nur so weit, wie das eigene Licht reicht. Laternen, Fackeln un
 ## Zeitleiste
 
 - Tag 0: Kindle steht in der Lichtung, das Leuchtfeuer brennt, die Kapelle hört Gebete. Der Stranger ist schon da.
+- Tag 1 (Taverne): Hollis öffnet „The Lantern & Lark“ östlich der Kapellenhäuser. Die Band „the Damp Socks“ (Corra, Oswin, Pip) spielte früher die Dörfer am alten Weg ab, bis der Grey den Weg fraß. „The Lark's Jig“ stammt von Hollis' Großmutter. Pip schreibt an einem Lied über das Licht im Norden.
 - Tag 1: Der Nachtmarkt öffnet nach Einbruch der Dunkelheit, Mabb lässt Schnecken um Gold laufen, Fen hat eine Karte gezeichnet, und über dem Norden glüht ein fremdes Licht. Tallow liest die Hymnen des ertrunkenen Chors; im tiefen Sinkmarsh lauern Mire Lurker, die ihre Bücher verschluckt haben.

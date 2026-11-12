@@ -6,6 +6,8 @@ import { CLASSES, WANDERER, SPEC_LEVEL } from '../content/classes.js';
 import { ABILITIES } from '../content/abilities.js';
 import { PROFESSIONS, MAX_PROFESSIONS, PROF_MAX_LEVEL } from '../content/professions.js';
 import { QUESTS } from '../content/quests.js';
+import { INN } from '../content/tavern.js';
+import { cleanStash } from './stash.js';
 
 export const SAVE_VERSION = 2;
 export const MAX_LEVEL = 99;
@@ -309,6 +311,9 @@ export function loadInto(p, raw) {
       chests: Array.isArray(d.chests) ? d.chests.filter((x) => typeof x === 'string' && x.length < 48).slice(0, 50) : [],
     };
   }
+  // Taverne: eigene Truhe und ausgeruht (Siege mit mehr Erfahrung). Alte Stände: leer bzw. 0.
+  p.stash = cleanStash(save.stash);
+  p.rested = clampInt(save.rested, 0, INN.rested, 0);
   p.maxHp = maxHpOf(p);
   p.hp = clampInt(save.hp, 1, p.maxHp, p.maxHp);
   barOf(p);
@@ -320,6 +325,7 @@ export function saveOf(p) {
     x: p.x, y: p.y, hp: Math.max(1, p.hp), oil: Math.round(p.oil * 10) / 10, gold: p.gold,
     cls: p.cls, classes: p.classes, specs: p.specs ?? {}, bag: p.bag.filter(Boolean), equip: p.equip,
     profs: p.profs, quests: p.quests, bars: p.bars, daily: p.daily ?? null,
+    stash: p.stash ?? [], rested: p.rested ?? 0,
   };
 }
 
@@ -328,6 +334,6 @@ export function stateOf(p) {
   return {
     cls: p.cls, classes: p.classes, specs: p.specs ?? {}, bag: p.bag, equip: p.equip, gold: p.gold,
     profs: p.profs, quests: p.quests, bar: barOf(p), defence: defenceOf(p), power: weaponPower(p),
-    daily: p.daily ?? null,
+    daily: p.daily ?? null, stash: p.stash ?? [], rested: p.rested ?? 0,
   };
 }

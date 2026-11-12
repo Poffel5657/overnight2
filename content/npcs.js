@@ -14,6 +14,7 @@
 import { PROFESSIONS } from './professions.js';
 import { CLASSES, UNLOCK_LEVEL } from './classes.js';
 import { RACE } from './races.js';
+import { INN } from './tavern.js';
 
 const BYE = { text: 'Bye.' };
 
@@ -305,8 +306,59 @@ const mothwick = {
   north: { text: 'Big, and warm-coloured, and hungry-looking. Like a hearth that has not been fed. Ask the woodcutter, he sees it every night and pretends not to.', options: [BYE] },
 };
 
+// Die Taverne „The Lantern & Lark“: Hollis und die Band (Corra, Oswin, Pip). Regeln in content/tavern.js.
+const hollis = {
+  start: {
+    text: 'Hollis, keeper of the Lantern & Lark. Sit anywhere that is not on fire.',
+    options: [
+      { text: 'What have you got?', do: [{ shop: 'hollis' }] },
+      { text: 'Can I get a bed?', to: 'beds' },
+      { text: 'What are the chests by the wall?', to: 'chests' },
+      { text: 'Heard anything lately?', to: 'rumour' },
+      BYE,
+    ],
+  },
+  beds: { text: `${INN.price} gold a night, behind the curtain at the back. Sleep there and you wake up with a full lamp and a clear head. For the next ${INN.rested} fights you will learn ${Math.round(INN.bonus * 100)}% more from them. Tired people learn nothing, rested people learn everything.`, options: [{ text: 'Good to know.', to: 'start' }, BYE] },
+  chests: { text: 'One for every regular. Leave what you do not want to carry, take it back when you need it. Any chest opens to your own things. I stopped asking why. So should you.', options: [{ text: 'Thanks.', to: 'start' }, BYE] },
+  rumour: { text: 'Woodcutters come in at night talking about a glow up north. Mothwick says it is a hearth that nobody feeds. Tallow has been in here twice this week, and Tallow does not drink. Something is going on.', options: [{ text: 'Interesting.', to: 'start' }, BYE] },
+};
+
+const band_corra = {
+  start: {
+    text: 'Corra puts down her fiddle. "Requests cost one ale. Complaints cost two."',
+    options: [{ text: 'Who are you lot?', to: 'who' }, { text: 'What is that tune?', to: 'tune' }, BYE],
+  },
+  who: { text: '"We are the Damp Socks. Me on fiddle, Oswin on drum, Pip on the pipe. We played every village on the old road until the Grey ate the road. Now we play here, and the Beacon claps."', options: [BYE] },
+  tune: { text: '"The Lark\'s Jig. Hollis\'s grandmother wrote it. Or stole it. In Kindle that is the same thing."', options: [BYE] },
+};
+
+const band_oswin = {
+  start: {
+    text: 'Oswin is drumming on the table, because the drum has a hole in it.',
+    options: [
+      { text: 'What happened to your drum?', to: 'd_offer', if: { quest: { skin_for_the_drum: 'none' }, classLevel: 10 }, do: [{ start: 'skin_for_the_drum' }] },
+      { text: 'What happened to your drum?', to: 'd_early', if: { quest: { skin_for_the_drum: 'none' }, below: 10 } },
+      { text: 'Two wolf pelts.', to: 'd_done', if: { quest: { skin_for_the_drum: 1 }, has: { wolf_pelt: 2 } }, do: [{ take: { wolf_pelt: 2 } }, { advance: 'skin_for_the_drum' }] },
+      { text: 'Play something!', to: 'play' },
+      BYE,
+    ],
+  },
+  d_offer: { text: '"Got excited during the chorus. Stick went straight through." He looks at you hopefully. "The wolves in Hushwood have the right kind of hide. Two pelts, and I make a skin that will outlive me."', options: [{ text: 'Two pelts. I will be back.' }] },
+  d_early: { text: '"Got excited during the chorus." He sighs. "I would ask you to fetch a wolf pelt, but the wolves would fetch you. Come back when you are a bit tougher."', options: [BYE] },
+  d_done: { text: 'He stretches the pelt over the frame and gives it a thump. The whole tavern cheers. "That is the sound! Here, ale and stew, on the band. Hollis will not mind. Hollis will mind a bit."', options: [{ text: 'Play it loud.' }] },
+  play: { text: '"Always am." He plays a rattling roll on the table. Corra rolls her eyes. Pip joins in anyway.', options: [BYE] },
+};
+
+const band_pip = {
+  start: {
+    text: 'Pip lowers a little tin pipe. "Shh. I am composing."',
+    options: [{ text: 'Composing what?', to: 'song' }, BYE],
+  },
+  song: { text: '"A song about the light in the north. I only have the first line. It goes: \'There is a light in the north.\' The rest depends on what it is."', options: [BYE] },
+};
+
 export const TALK = {
-  ama, tallow, rook, fen, wren, stranger, haskel, brack, mabb, mothwick,
+  ama, tallow, rook, fen, wren, stranger, haskel, brack, mabb, mothwick, hollis, band_corra, band_oswin, band_pip,
   snail_bramble: snail('bramble'), snail_pebble: snail('pebble'), snail_tom: snail('tom'),
   pell: {
     start: { text: 'HEAR YE! A market that only opens after dark! Snails that race for gold! Kindle has never been so exciting!', options: [{ text: 'Anything else?', to: 'more' }, BYE] },
@@ -325,6 +377,9 @@ export const EXAMINE = {
   chapel: 'A small chapel with a big door. Someone has polished the handle with hope.',
   house: 'A house. Someone lives here and would rather you did not look in the window.',
   workshop: 'Old Rook\'s workshop. Everything in it is half of something else.',
+  tavern: 'The Lantern & Lark. Warm windows, a crooked sign, and a fiddle you can hear from the Beacon.',
+  stash: 'An iron-bound chest. It opens to your own things.',
+  inn_bed: 'A rented bed behind a curtain.',
   stall: 'A market stall. The awning is very confident.',
   campfire: 'The campfire. People wake up here when the Grey gets the better of them.',
   signal: 'A signal fire, stacked and waiting. Light it and the Grey has to stand back.',

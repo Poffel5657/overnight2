@@ -7,5 +7,6 @@ export function buyPrice(value) {
 }
 export const SHOPS = {
   mothwick: { name: 'The Night Market', npc: 'mothwick', night: true, sells: ['moth_lantern', 'moonwick', 'night_bread', 'lamp_oil'] },
+  hollis: { name: 'The Lantern & Lark', npc: 'hollis', sells: ['hearth_stew', 'ember_ale', 'bread', 'lamp_oil'] },
   marrow: { name: "Marrow's Stall", npc: 'marrow', sells: ['bread', 'lamp_oil', 'tin_lantern', 'scrap_hood', 'scrap_boots'] },
 };

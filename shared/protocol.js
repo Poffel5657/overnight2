@@ -11,6 +11,7 @@ import { askTrade, answerTrade, setOffer, confirmTrade, cancelTrade, TRADE_MAX_K
 import { invite, answer as answerParty, leave as leaveParty, kick, partyView } from './party.js';
 import { SLOTS } from '../content/items.js';
 import { CONTENT_SIG } from './version.js';
+import { stashPut, stashTake } from './stash.js';
 
 const ID = /^[a-z0-9_]{1,24}$/;
 const BAR_ID = /^(item:)?[a-z0-9_]{1,24}$/;
@@ -62,6 +63,7 @@ export function parseIntent(raw) {
     case 'partyLeave': return { t: 'partyLeave' };
     case 'partyKick': return ID.test(String(m.id)) ? { t: 'partyKick', id: m.id } : null;
     case 'tradeCancel': return { t: 'tradeCancel' };
+    case 'stash': return (m.op === 'put' || m.op === 'take') && int(m.slot, 0, 63) && int(m.n, 1, 99999) ? { t: 'stash', op: m.op, slot: m.slot, n: m.n } : null;
     case 'ping': return { t: 'ping' };
     default: return null;
   }
@@ -80,6 +82,7 @@ export function applyIntent(world, pid, m) {
     case 'bye': closeTalk(world, p); break;
     case 'use': useSlot(world, p, m.slot); break;
     case 'drop': dropSlot(world, p, m.slot); break;
+    case 'stash': if (m.op === 'put') stashPut(world, p, m.slot, m.n); else stashTake(world, p, m.slot, m.n); break;
     case 'unequip': unequip(world, p, m.slot); break;
     case 'craft': craft(world, p, m.obj, m.recipe, m.n); break;
     case 'buy': buy(world, p, m.shop, m.item, m.n); break;

@@ -264,6 +264,18 @@ const BUILDERS = {
     g.add(box(0.35, 0.12, 0.6, '#e8dcc0', -(o.w / 2) + 0.35, 0.5, 0));
     g.add(box(0.1, 0.7, 0.9, '#4a3020', -(o.w / 2) + 0.12, 0.35, 0));
   },
+  // Taverne: gemietetes Bett mit Vorhangstange, eigene Truhe mit Eisenbändern
+  inn_bed(o, g) {
+    BUILDERS.bed(o, g);
+    g.add(box(0.06, 1.6, 0.06, '#4a3020', o.w / 2 - 0.05, 0.8, 0.45));
+    g.add(box(0.05, 1.1, 0.7, '#7a3a3a', o.w / 2 - 0.05, 1.0, 0.1));
+  },
+  stash(o, g) {
+    g.add(box(0.8, 0.45, 0.5, '#4a3018', 0, 0.23, 0));
+    g.add(box(0.82, 0.14, 0.52, '#5a3c22', 0, 0.52, 0));
+    for (const x of [-0.28, 0.28]) g.add(box(0.06, 0.6, 0.54, '#3a3a40', x, 0.3, 0));
+    g.add(box(0.12, 0.14, 0.04, '#c8a040', 0, 0.38, 0.27));
+  },
   barrel(o, g) {
     g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.75, 8), mat('#6a4a2a')).translateY(0.38));
     for (const y of [0.15, 0.6]) g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.315, 0.315, 0.06, 8), mat('#3a3434')).translateY(y));
@@ -288,6 +300,22 @@ const BUILDERS = {
     g.add(box(0.5, 0.85, 0.06, '#3e2a18', 0, 0.42, o.d / 2 - 0.08));
     g.add(box(0.3, 0.28, 0.06, glowMat, -o.w / 4 - 0.1, 0.8, o.d / 2 - 0.08));
     g.add(box(0.3, 0.28, 0.06, glowMat, o.w / 4 + 0.1, 0.8, o.d / 2 - 0.08));
+  },
+  tavern(o, g) {
+    // Zwei Stockwerke, warme Fenster, Schornstein und ein schiefes Schild mit Laterne
+    const wall = 2.2;
+    g.add(box(o.w - 0.2, wall + 1, o.d - 0.2, '#9a7a56', 0, (wall - 1) / 2, 0));
+    g.add(box(o.w - 0.1, 0.12, o.d - 0.1, '#5a3c22', 0, 1.05, 0));
+    g.add(roof(o.w + 0.3, o.d + 0.3, 1.3, o.roof || '#5a3020', wall));
+    g.add(box(0.5, 1.4, 0.5, '#6a5a50', o.w / 2 - 0.9, wall + 0.9, -0.3));
+    const front = o.d / 2 - 0.08;
+    g.add(box(0.8, 1.0, 0.06, '#3e2a18', 0, 0.5, front));
+    for (const x of [-1.5, -0.8, 0.8, 1.5]) g.add(box(0.36, 0.34, 0.06, glowMat, x, 0.65, front));
+    for (const x of [-1.2, 0, 1.2]) g.add(box(0.34, 0.32, 0.06, glowMat, x, 1.6, front));
+    // Schild am Ausleger
+    g.add(box(0.06, 0.06, 0.7, '#3a2a1a', 0.75, 1.25, front + 0.35));
+    g.add(box(0.5, 0.36, 0.05, '#7a5a34', 0.75, 1.0, front + 0.62));
+    g.add(box(0.14, 0.14, 0.06, glowMat, 0.75, 1.0, front + 0.66));
   },
   chapel(o, g) {
     const wall = 2.0;

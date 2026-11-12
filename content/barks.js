@@ -13,7 +13,20 @@ export const BARKS = {
       'Pray at the chapel, and the world may answer!',
       'The Night Market opens at dusk! Bring gold, and a lantern!',
       'Snail races by the west path! Mabb takes bets!',
+      'The Lantern & Lark is open! Beds, stew and the Damp Socks!',
     ],
+  },
+  band_corra: {
+    range: 9, every: 20,
+    lines: ['*fiddles a quick jig*', 'One more! One more!', '*the fiddle squeaks, on purpose*', 'This one is called The Lark\'s Jig!'],
+  },
+  band_oswin: {
+    range: 9, every: 26,
+    lines: ['*drums on whatever is nearest*', 'Ba-dum, tss.', 'Everybody clap! No? Fine.'],
+  },
+  band_pip: {
+    range: 9, every: 31,
+    lines: ['*a thin, happy tune on the pipe*', '*toot*', 'There is a light in the north... la la...'],
   },
   mabb: {
     range: 10, every: 45,

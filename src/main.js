@@ -235,6 +235,7 @@ const windows = createWindows({
   keys() { return ui.keys; },
   setKeys(k) { ui.setKeys(k); },
   favour(id) { send({ t: 'favour', id }); },
+  stash(op, slot, n) { send({ t: 'stash', op, slot, n }); },
   feed(item, n) { send({ t: 'feed', item, n }); },
   vote(option) { send({ t: 'vote', option }); },
   pray(text) {
@@ -1203,6 +1204,8 @@ function frame(now) {
     if (zone !== lastZone) {
       if (lastZone && zone !== 'KINDLE') ui.log(`You enter: ${zone}.`, 'sys');
       lastZone = zone;
+      // In der Taverne spielt die Band ihre eigene Melodie.
+      music.setTavern(zone === 'THE LANTERN & LARK');
     }
     ui.updateStatus(me, zone);
     ui.updateBar(me, mirror.tick, alpha);

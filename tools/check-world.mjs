@@ -29,7 +29,7 @@ import { findPath } from '../shared/path.js';
 
 // Objekte mit Dach oder hohen Wänden: Figuren brauchen ein freies Feld Abstand,
 // sonst verdeckt das Gebäude sie aus manchen Kamerawinkeln.
-const TALL = new Set(['house', 'chapel', 'workshop']);
+const TALL = new Set(['house', 'chapel', 'workshop', 'tavern']);
 const errors = [];
 
 function check(region) {

@@ -21,6 +21,7 @@ content/                  Alles, was Inhalt ist, als Daten. Hier wächst das Spi
   quests.js               Quests als Schritte (talk, kill, have, action, flag) mit Belohnung
   shops.js                Händler (night: true = nur im Dunkeln offen, z. B. der Nachtmarkt)
   races.js                Schneckenrennen: Bahn, Takt, Einsätze, Schnecken mit Quote und Tempo
+  tavern.js               Taverne: STASH_SIZE (Truhe), INN (Bettpreis, ausgeruht: Siege und Bonus)
   npcs.js                 Gespräche mit Bedingungen (if) und Wirkungen (do), Beschreibungen
 shared/                   Reine Spiellogik ohne DOM, läuft auf dem Server und offline im Browser
   sim.js                  Welt eines Gebiets im Takt (300 ms): Spieler, Laufen, Kampf, Licht/Öl, Wesen
@@ -33,6 +34,7 @@ shared/                   Reine Spiellogik ohne DOM, läuft auf dem Server und o
   events.js               tell/emit/float: Ereignisse an Spieler
   community.js            Gefallen, Leuchtfeuer füttern, Beten, Abstimmen, Sprechen (schreibt in world.outbox)
   races.js                Schneckenrennen in Kindle (world.race): Wetten über Gesprächswirkung bet, Takt in step()
+  stash.js                Eigene Truhe (p.stash, im Spielstand): Absicht stash {op put|take, slot, n}, nur nahe einem Objekt 'stash'
 src/                      Browser
   main.js                 Spiegelwelt aus den Server-Nachrichten, Darstellung, Eingabe
   net.js                  NetConnection (WebSocket) und LocalConnection (offline, gleiche Nachrichten)
@@ -184,3 +186,7 @@ PS1-Stil: Die Szene wird etwa 240 Pixel hoch gerendert, Eckpunkte springen auf d
 - **Deploy:** `.github/workflows/deploy.yml` (push auf `main` oder vom Gate): Tests, dann Worker (`wrangler deploy`, Secrets `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`), dann Pages mit versionierten Pfaden `v/<commit>/`. So ist der Server nie älter als die Seite.
 - **Wache:** `.github/workflows/night-watch.yml` öffnet um 1:30 Uhr ein Issue, wenn die Nacht fehlt (aktiv ab Repo-Variable `NIGHTS_LIVE=true`).
 - **Tests:** `tests/unit/` (Kern, geschützt), `tests/night/` (ein Spielweg-Test pro Nacht), `tools/check-world.mjs` (Inhalt), `tools/smoke.mjs` (Browser, PC und Handy), `tools/boss-probe.mjs` (Gruppen gegen Bosse).
+
+- **Taverne** (Tag 1, von Chris): Gebäude `tavern` in Kindle, Raum in `kindle_inside` (Zone „THE LANTERN & LARK“). Objekte `stash` (Aktion open → Fenster `stash`) und `inn_bed` (Aktion rest → `sleepAtInn` in `shared/sim.js`). Spielstand: `stash` (Liste {id, n}) und `rested` (Siege mit Bonus, `grantXp(..., { kill: true })`). Musik: `music.setTavern()` spielt „The Lark's Jig“, sobald die Zone die Taverne ist.
+- **Feedback an Chris** („A Note for the Maker“): HTTP `POST /api/feedback`, Tabelle `feedback`, lesen mit `npm run feedback`. Nicht Teil der Nightwright-Inbox.
+- **Auto-Update** (`src/update.js`): `deploy.yml` schreibt `<meta name="build">` und `build.json`; die Seite lädt bei neuer Kennung selbst neu.

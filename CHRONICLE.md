@@ -36,3 +36,9 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 - **Fehler behoben:** Statusfenster und Log zeigten fest „Day 0“; jetzt kommt die Tagesnummer aus der Chronik.
 
 **Balance-Notizen Nachschlag:** Mire Lurker 200 HP, Angriff 12–15, line-Special mit 6 Takten Vorwarnung. Ein Warden auf 30 mit Glimsteel braucht etwa 6 s; das liegt im Rahmen der Welt (Bog Toad 5 s, Wisp 2 s). Die Oberwelt ist ab Stufe 25 insgesamt zu leicht; das gehört in die große Balance-Runde, die Chris am Ende machen will.
+
+**Von Chris am Tag 1 dazugebaut: die Taverne „The Lantern & Lark“** (östlich der Kapellenhäuser, Innenraum in `kindle_inside`):
+- **Eigene Truhe** (48 Fächer, `shared/stash.js`): jede Truhe in der Taverne öffnet die eigene, gespeichert im Spielstand (`stash`). Erfüllt den Truhen-Wunsch aus Gebet 2.
+- **Betten** für 8 Gold: Leben und Öl voll, danach **ausgeruht** (die nächsten 30 Siege +50 % Erfahrung, `rested` im Spielstand, Regeln in `content/tavern.js`).
+- **Hollis** (Gastwirt) verkauft Hearth Stew, Ember Ale, Brot und Öl und erzählt Gerüchte.
+- **Die Band „the Damp Socks“**: Corra (Fiedel), Oswin (Trommel), Pip (Pfeife) mit eigenen Rufen; in der Taverne spielt „The Lark's Jig“ statt der Hintergrundmusik. Oswins Quest „A Skin for the Drum“ (ab Stufe 10, zwei Wolfsfelle).

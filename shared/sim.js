@@ -21,6 +21,7 @@ import { berlinDate } from './daylight.js';
 import { tickTrade, cancelTrade } from './barter.js';
 import { partyHere, tickParty } from './party.js';
 import { tickRace, refundBet } from './races.js';
+import { INN } from '../content/tavern.js';
 
 export { saveOf, xpForLevel, MAX_LEVEL } from './player.js';
 
@@ -247,6 +248,8 @@ export function objectActions(o) {
     case 'signal':
     case 'brazier': return o.lit ? [['examine', 'Examine']] : [['light', 'Light'], ['examine', 'Examine']];
     case 'campfire': return [['rest', 'Rest'], ['examine', 'Examine']];
+    case 'stash': return [['open', 'Open'], ['examine', 'Examine']];
+    case 'inn_bed': return [['rest', `Sleep (${INN.price} gold)`], ['examine', 'Examine']];
     case 'station': return [['use', 'Use'], ['examine', 'Examine']];
     case 'node': return [['gather', NODES[o.node].verb], ['examine', 'Examine']];
     default: return [['examine', 'Examine']];
@@ -541,6 +544,10 @@ function doAction(world, p, goal) {
     // Schon an: zählt trotzdem für Quests, damit niemand auf ein dunkles Feuer warten muss.
     tell(world, p.id, 'This one is already burning. You warm your hands and feel useful.', 'sys');
     questEvent(world, p, 'action', { action: 'light' });
+  } else if (goal.action === 'open' && t.type === 'stash') {
+    emit(world, { to: p.id, type: 'window', win: 'stash' });
+  } else if (goal.action === 'rest' && t.type === 'inn_bed') {
+    sleepAtInn(world, p);
   } else if (goal.action === 'rest' && t.type === 'campfire') {
     p.hp = p.maxHp;
     tell(world, p.id, 'You warm your hands. Much better.', 'good');
@@ -762,12 +769,24 @@ function hitMob(world, p, m, dmg) {
   for (const q of credit) {
     if (cheb(q.x, q.y, m.x, m.y) > SHARE_RANGE) continue;
     tell(world, q.id, m.type === 'greyling' ? 'The Greyling comes apart into fog.' : `${theName(m.name)} falls.`, 'good');
-    grantXp(world, q, m.def.xp);
+    grantXp(world, q, m.def.xp, { kill: true });
     questEvent(world, q, 'kill', { mob: m.type });
     onKill(world, q, m.type);
   }
   m.hitters.clear();
   loot(world, p, m);
+}
+
+// Taverne: eine Nacht im Bett. Kostet Gold, füllt Leben und Öl, danach ausgeruht.
+function sleepAtInn(world, p) {
+  if (p.gold < INN.price) return tell(world, p.id, `A bed is ${INN.price} gold. Hollis is kind, but not that kind.`, 'sys');
+  p.gold -= INN.price;
+  p.hp = p.maxHp;
+  p.oil = 100;
+  p.warnedOil = 0;
+  p.rested = INN.rested;
+  tell(world, p.id, `You sleep like a log. The band plays you out of a dream. Rested: the next ${INN.rested} victories give ${Math.round(INN.bonus * 100)}% more experience.`, 'good');
+  questEvent(world, p, 'action', { action: 'sleep' });
 }
 
 // Truhen: einmal am Tag pro Spieler.

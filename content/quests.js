@@ -65,6 +65,15 @@ export const QUESTS = {
     ],
     reward: { xp: 600, gold: 50 },
   },
+  skin_for_the_drum: {
+    name: 'A Skin for the Drum', giver: 'band_oswin',
+    text: 'Oswin put his stick through the drum. Again. A wolf pelt would make a new skin, two would make a good one.',
+    steps: [
+      { type: 'have', item: 'wolf_pelt', n: 2, text: 'Get two wolf pelts (Hushwood wolves, north of Kindle).' },
+      { type: 'talk', npc: 'band_oswin', text: 'Bring the pelts to Oswin in the Lantern & Lark.' },
+    ],
+    reward: { xp: 350, gold: 25, items: { ember_ale: 3, hearth_stew: 2 } },
+  },
   drowned_choir: {
     name: 'The Drowned Choir', giver: 'tallow',
     text: 'The old chapel had a choir. Tallow wants to know what it sang, and how to make it stop.',

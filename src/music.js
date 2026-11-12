@@ -1,6 +1,7 @@
 // Leise Hintergrundmusik, im Browser erzeugt (keine Dateien, keine Lizenzfragen).
 // 16-Bit-Anmutung: weiche Dreiecks-Flächen, Pulswellen-Melodie mit Echo, viel Stille.
 // Tag: D-Dorisch, hell und ruhig. Nacht: dunklere Akkorde, langsamer, seltener eine Melodie.
+// Taverne: „The Lark's Jig“, eine feste Melodie in G-Dur im 6/8-Takt mit Bass, Akkorden und Trommel.
 
 import { onAudioReady } from './sfx.js';
 
@@ -18,6 +19,8 @@ let out = null;   // Musik-Summe
 let echoIn = null; // Eingang ins Echo
 let pulse = null;  // Pulswelle 25 %
 let night = false;
+let tavern = false;
+let noise = null; // Rauschen für die Trommel
 let timer = null;
 let nextBar = 0;   // Zeit (ctx) des nächsten Takts
 let bar = 0;
@@ -64,6 +67,9 @@ function setup(c) {
   const im = new Float32Array(n);
   for (let k = 1; k < n; k++) im[k] = (2 / (k * Math.PI)) * Math.sin(k * Math.PI * 0.25);
   pulse = ctx.createPeriodicWave(re, im);
+  noise = ctx.createBuffer(1, ctx.sampleRate * 0.2, ctx.sampleRate);
+  const nd = noise.getChannelData(0);
+  for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
 
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) stop();
@@ -88,8 +94,68 @@ function voice(type, freq, t, dur, gain, attack, release, toEcho = false) {
   o.stop(t + dur + 0.05);
 }
 
+// ---------- The Lark's Jig (Taverne) ----------
+// Pro Takt: Melodie als [MIDI, Achtel] (zusammen 6 Achtel) und Grundton des Akkords.
+const JIG_EIGHTH = 0.19;
+const JIG = [
+  [[[74, 2], [71, 1], [67, 2], [71, 1]], 43, 'M'],
+  [[[74, 2], [71, 1], [72, 1], [71, 1], [69, 1]], 43, 'M'],
+  [[[67, 2], [69, 1], [71, 2], [72, 1]], 48, 'M'],
+  [[[74, 3], [69, 2], [71, 1]], 50, 'M'],
+  [[[74, 2], [71, 1], [67, 2], [71, 1]], 43, 'M'],
+  [[[74, 2], [76, 1], [78, 1], [79, 1], [78, 1]], 50, 'M'],
+  [[[76, 2], [74, 1], [72, 1], [71, 1], [69, 1]], 45, 'm'],
+  [[[67, 4], [62, 2]], 43, 'M'],
+  // B-Teil: höher, dann zurück
+  [[[79, 2], [78, 1], [76, 2], [74, 1]], 48, 'M'],
+  [[[76, 2], [74, 1], [72, 2], [71, 1]], 48, 'M'],
+  [[[74, 2], [71, 1], [67, 2], [71, 1]], 43, 'M'],
+  [[[72, 2], [71, 1], [69, 3]], 50, 'M'],
+  [[[79, 2], [78, 1], [76, 2], [74, 1]], 48, 'M'],
+  [[[76, 1], [78, 1], [79, 1], [74, 2], [71, 1]], 43, 'M'],
+  [[[72, 2], [71, 1], [69, 2], [66, 1]], 50, 'M'],
+  [[[67, 4], [62, 2]], 43, 'M'],
+];
+
+function drum(t, gain, freq) {
+  const s = ctx.createBufferSource();
+  s.buffer = noise;
+  const f = ctx.createBiquadFilter();
+  f.type = 'bandpass';
+  f.frequency.value = freq;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(gain, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+  s.connect(f).connect(g).connect(out);
+  s.start(t);
+  s.stop(t + 0.15);
+}
+
+function scheduleJig(t) {
+  const e = JIG_EIGHTH;
+  const [melody, root, kind] = JIG[bar % JIG.length];
+  const chord = chordNotes(root + 12, kind);
+  // Bass auf 1 und 4, Akkord-Tupfer dazwischen (Oom-pa-pa)
+  voice('triangle', midi(root), t, e * 1.6, 0.24, 0.01, 0.15);
+  voice('triangle', midi(root + 7), t + e * 3, e * 1.6, 0.18, 0.01, 0.15);
+  for (const s of [1, 2, 4, 5]) for (const n of chord) voice('triangle', midi(n + 12), t + s * e, e * 0.6, 0.035, 0.005, 0.08);
+  // Trommel: kräftig auf 1, leiser auf 4, ab und zu ein Wirbel
+  drum(t, 0.35, 180);
+  drum(t + e * 3, 0.22, 220);
+  if (bar % 4 === 3) for (const s of [4, 4.5, 5, 5.5]) drum(t + s * e, 0.1, 900);
+  // Melodie: die Fiedel (Pulswelle), leicht ins Echo
+  let at = 0;
+  for (const [n, len] of melody) {
+    voice('pulse', midi(n), t + at * e, len * e * 0.92, 0.075, 0.01, 0.05, true);
+    at += len;
+  }
+}
+
+const barLength = () => (tavern ? JIG_EIGHTH * 6 : (night ? 1.05 : 0.85) * 4);
+
 // Einen Takt (4 Schläge) einplanen
 function scheduleBar(t) {
+  if (tavern) return scheduleJig(t);
   const beat = night ? 1.05 : 0.85; // Sekunden pro Schlag
   const prog = night ? NIGHT : DAY;
   const [root, kind] = prog[Math.floor(bar / 2) % prog.length];
@@ -125,7 +191,7 @@ function tick() {
   const ahead = ctx.currentTime + 1.5;
   while (nextBar < ahead) {
     scheduleBar(nextBar);
-    nextBar += (night ? 1.05 : 0.85) * 4;
+    nextBar += barLength();
     bar++;
   }
 }
@@ -146,6 +212,13 @@ onAudioReady(setup);
 
 export const music = {
   setNight(on) { night = !!on; },
+  // Taverne an/aus: die Jig beginnt am Anfang, die Hintergrundmusik danach von vorn.
+  setTavern(on) {
+    if (tavern === !!on) return;
+    tavern = !!on;
+    bar = 0;
+    if (ctx && timer) nextBar = Math.max(nextBar, ctx.currentTime + 0.3);
+  },
   get volume() { return volume; },
   setVolume(v) {
     volume = Math.round(Math.max(0, Math.min(1, v)) * 10) / 10;

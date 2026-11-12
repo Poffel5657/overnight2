@@ -58,6 +58,8 @@ export const ITEMS = {
   lily_oil: { name: 'Lily Oil', stack: true, use: { oil: 80 }, value: 14, glyph: '!', text: 'Pressed from bog lilies. Burns clean and long.' },
   night_bread: { name: 'Night Bread', stack: true, use: { heal: 30 }, value: 7, glyph: 'n', text: 'Dark rye baked after midnight. It stays warm until morning, out of spite.' },
   moon_candle: { name: 'Moon Candle', stack: true, use: { glow: 240, oil: 35 }, value: 20, glyph: '!', text: 'Wax and moonwick. It burns pale and slow, and the Grey finds it rude.' },
+  hearth_stew: { name: 'Hearth Stew', stack: true, use: { heal: 60 }, value: 6, glyph: 'u', text: 'Hollis will not say what is in it. It is brown, it is hot, and it fixes most things.' },
+  ember_ale: { name: 'Ember Ale', stack: true, use: { heal: 12, glow: 90 }, value: 4, glyph: '!', text: 'Warm ale that glows faintly in the mug. You glow faintly too, for a while.' },
   glow_draught: { name: 'Glow Draught', stack: true, use: { glow: 100, oil: 15 }, value: 14, glyph: '!', text: 'You glow a little. Greylings find this rude.' },
 
   // ---------- Rohstoffe ----------
