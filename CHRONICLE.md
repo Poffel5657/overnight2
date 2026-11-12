@@ -42,3 +42,53 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 - **Betten** für 8 Gold: Leben und Öl voll, danach **ausgeruht** (die nächsten 30 Siege +50 % Erfahrung, `rested` im Spielstand, Regeln in `content/tavern.js`).
 - **Hollis** (Gastwirt) verkauft Hearth Stew, Ember Ale, Brot und Öl und erzählt Gerüchte.
 - **Die Band „the Damp Socks“**: Corra (Fiedel), Oswin (Trommel), Pip (Pfeife) mit eigenen Rufen; in der Taverne spielt „The Lark's Jig“ statt der Hintergrundmusik. Oswins Quest „A Skin for the Drum“ (ab Stufe 10, zwei Wolfsfelle).
+
+## Tag 2 (Nacht zum 2026-11-13): Augen nach Norden
+
+**Inbox:** Die Datei des Abends (`v2/inbox/2026-11-12.json`) lag nicht vor. Der Export-Workflow wird von GitHub per Cron mit über vier Stunden Verspätung gestartet (letzte Nacht: 21:50 UTC geplant, gelaufen um 02:00 und 02:33 UTC) und bricht dann ab, weil es nicht mehr 22 Uhr in Berlin ist. Keine neuen Gebete, keine Stimmen gelesen. Steht unter „Bekannte Probleme“ in `PLAN.md`.
+
+**Teil 1, Gebete:** Entfällt (keine neuen Gebete gelesen). Teil 3 ist dafür größer.
+
+**Teil 2, Abstimmung: der Ausguck am Nordrand.** Zettel 1: old-mill, fishing, north-lookout, beekeeper; Stimmen unbekannt (siehe Inbox). Ohne Stimmen entscheidet der Nightwright: north-lookout, weil er den Bogen trägt.
+- *Gewünscht:* Ein Ort am Rand von Hushwood, von dem aus man das Licht im Norden beobachten kann.
+- *Geliefert:* „The North Watch“, ein Holzturm mit Windschutz aus Wolfsfell und Laterne am Ende der Nordstraße (eigene Gegend in der Statusanzeige, auf der Karte, Pfad von der Straße). Brindle, Haskels Schwester, hält Wache. Quest-Kette „Eyes on the North“ (Haskel, ab Stufe 10, neun Schritte): Brindle finden, drei Wolfsfelle für den Windschutz, drei Grey Wisps zu Wren, die eine Fernrohrlinse schleift, Linse zu Brindle, nachts hinaufklettern und nach Norden schauen, Brindle berichten. Lohn: 700 EP, 40 Gold, Watcher's Hood (Kopf, Abwehr 3, Licht +1), zwei Moss Salves. Danach: Hinaufklettern geht immer (Aktion „Climb up“), nachts einmal pro Tag etwas Erfahrung (30 + 4 pro Stufe). Gefallen „pelts_for_brindle“ am Anschlagbrett.
+- *Fehlt noch:* Der Blick von oben ist ein Text, kein eigenes Bild. Später: Brindles Buch mit dem Stand des Lichts, das sich mit dem Bogen verändert (`content/lookout.js`).
+
+**Teil 3, Nightwright: Unruhe im Norden (Bogen, Akt 1).**
+- *Restless Wolves:* neues Wesen Restless Wolf (Stufe 7, normal), sechs am Waldrand nordwestlich der Felder, jenseits des Bachs. Füllt die Lücke zwischen Greylingen (3) und Hushwood-Wölfen (12). Beute: Singed Tuft (füttert das Leuchtfeuer mit +2, Rezept Smoke-Ruff Hood für Tinkering 6: Kopf, Abwehr 2, Licht +0,5), manchmal ein Wolfsfell.
+- *Quest „The Restless Pack“* (Ama, ab Stufe 5): fünf Wölfe, drei versengte Fellbüschel, Haskel riecht fremden Rauch (Torf oder Fett, nicht Kiefer), zurück zu Ama. Lohn: 280 EP, 25 Gold, Brass-Toed Boots, Brot.
+- *Quest „A Prayer Not Ours“* (Tallow, nach Kindling): ein fremdes Gebet auf Birkenrindenpapier im Opferkasten neben dem Altar (neues Objekt in der Kapelle), Pell erkennt, dass es keine Kindle-Hand ist, Mothwick (nur nachts) erkennt das Papier aus dem Norden und erinnert sich an eine Frau mit grüner Laterne, Tallow legt es auf den Altar. Lohn: 140 EP, 15 Gold, zwei Glow Draughts.
+- Gefallen „restless_wolves“ (Haskel) und „tufts_for_ama“ (Ama). Pell ruft die Wölfe und den Ausguck aus. Tallows veralteter Satz „Praying opens soon“ ist ersetzt.
+
+**Klassen (Dauerauftrag): Flarecaster** bis Stufe 16. Glare (10, Fernschlag, blendet 1,8 s), Cinder Brand (13, 6 Öl, neue Wirkung `burn`: das Ziel brennt 3,6 s nach, 4 + Stufe/4 alle 0,6 s), Starfall (16, 14 Öl, Fläche Radius 2 bis 6 Felder weit). `burn` in `shared/sim.js` (castAbility, updateMob), Beschreibung in `shared/describe.js`; Fernschläge beschreiben jetzt auch Blenden.
+
+**Nachschlag:**
+- **Drifter bis Stufe 16:** Cheap Shot (10, blendet), Night Edge (13, +50 % Schaden im Dunkeln, neue Eigenschaft `dark`, Hilfsfunktion `inDark`), Caltrops (16, Stoß im Umkreis 2, alles steckt 3 s fest; `burst` kann jetzt `root`). Damit haben alle vier Klassen Fähigkeiten bis Stufe 16.
+- **The Old Foreman und „The Last Shift“:** Der verlassene Vorarbeiter aus der Welt-Bibel steht jetzt im Nordosten von Copperdeep (Stufe 21, Einzel-Boss mit zwei angekündigten Angriffen, heilt sich, wenn alle gehen). Brack bietet ab Stufe 18 nach „The Singing Seam“ die Quest an; das Hauptbuch erzählt von Glimmer, der jede Woche nach Norden ging, „for the Hollow fire“. Der Stranger reagiert darauf. Beute: Foreman's Lamp (Laterne, Licht +2,5, 50 % weniger Öl, 30 %), Glimmer, Messing; Lampwrights können die Lampe ab Stufe 19 bauen. Schließt die Lücke zwischen 16 und 22.
+- **Mothwicks Ware wechselt jede Nacht:** zwei Dinge aus einem Vorrat von elf (darunter grüne Scherben und Wisp Cores) (`rotating` in `content/shops.js`, `shopStock`), für alle gleich, nach Datum. Neue Antwort „Anything new tonight?“. Erfüllt das „Fehlt noch“ vom Tag 1.
+- **Fehler behoben:** Licht aus Rüstung (Choir Mantle, Licht +1) zählte nicht; jetzt rechnet `lanternBonus` Licht aus allen Plätzen, und das Tooltip zeigt es.
+- **Warden Stufe 20: Bulwark** (8 Öl): alle Wesen im Umkreis 4 greifen den Warden an, er und alle Verbündeten im selben Umkreis nehmen 3 s halben Schaden (`taunt` kann jetzt `brace`).
+- **Flarecaster Stufe 20: Sunlance** (10 Öl): der weiteste Schuss (7 Felder), 14–18 plus Waffenkraft.
+- **Drifter Stufe 20: Smoke Bomb**: blendet alles im Umkreis 2 für 1,8 s (angekündigte Angriffe verpuffen), dann verlieren einen die Wesen 3,6 s aus den Augen (`fade` kann `radius` und `dazzle`).
+- **Warden Stufe 24: Last Light** (10 Öl, 27 s Abklingzeit): heilt 40 und halbiert 4,8 s lang den Schaden, der große Schutz für Bosse. **Mender Stufe 24: Kindred Glow** (12 Öl): Wärme über Zeit für alle im Umkreis 5, 8 alle 0,6 s für 6 s.
+- **Flarecaster Stufe 24: Prism Ward** (8 Öl): alle im Umkreis 3 nehmen 3 s halben Schaden. **Drifter Stufe 24: Gutter Strike**: 14–18 plus Waffenkraft, im Dunkeln 75 % mehr. Damit haben alle vier Klassen Fähigkeiten bis Stufe 24.
+- **Mender Stufe 20: Smoulder** (8 Öl): Glut auf allem im Umkreis 2, das 4,8 s nachbrennt (`burst` kann jetzt `burn`). Gibt Mendern allein etwas mehr Schaden.
+- **„Lights That Eat Lights“** (Mothwick, nachts, ab Stufe 23): fünf Will-o'-Wisps nach Einbruch der Dunkelheit, drei Wisp Cores (neue Beute, 45 %). Mothwick hält einen Kern an ihre Laterne: Das Licht darin zieht nach Norden. Lohn: 900 EP, 50 Gold, Lily Oil, Moon Candles. Für die dünne Strecke 22 bis 28.
+- **„The Oil Rush“** (Marrow, ab Stufe 26, seine erste Quest): Seit dem Schein im Norden hortet Kindle Öl, Marrow hat keinen Talg mehr. Vier Bog Toads, drei Lily Bulbs. Lohn: 1.100 EP, 60 Gold, vier Lily Oil. Für die Strecke 25 bis 28.
+- **Gefallen „foreman_again“** (Brack): den Old Foreman noch einmal zur Ruhe bringen, gut zu zweit (40 Gold, 300 EP). Erster Gefallen, der eher für Gruppen gedacht ist.
+- **Choir Wraiths** (Stufe 36, normal): zwei Sänger des ertrunkenen Chors in den hinteren Ecken der Seitenschiffe der Drowned Chapel, weit genug vom Lamplighter. Beute: Greyglass, Sodden Hymnals, Grey Wisps. Gefallen „quiet_the_choir“ bei Tallow (zwei Wraiths). Schließt die Lücke zwischen den Pilgern (32) und dem Boss (40). Balance: 170 HP, 15–18 Schaden, ring mit 6 Takten; Warden 36 mit Greyglass gewinnt und verliert Leben.
+- **Salvage Stufe 26: Old Shaft** im Nordosten von Copperdeep, neben dem Old Foreman: Glimmer, manchmal Greyglass. Sammeln ging bisher nur bis 23.
+- **Cartography Stufe 26: North Cairn** (zwei am Nordrand von Hushwood, links und rechts des Ausgucks): Survey Notes, manchmal eine grüne Glasscherbe. Alte Steinmänner, die nach Norden zeigen (Bogen). Cartography ging bisher nur bis 24.
+- **Foraging Stufe 26: Drowned Garden** (zwei im tiefen Sinkmarsh): Nightcaps, manchmal Lily Bulbs. Foraging ging bisher nur bis 22.
+- **Tinkering Stufe 30 und 31:** Wraithsilk Hood (Greyglass, Sodden Hymnals, Glimmer) und Wardstone Boots (Greyglass, Beetle Shells, Glimmer), je Abwehr 5, eins mehr als Greyglass. Tinkering hörte bisher bei 28 auf; Hymnals haben jetzt nach der Quest noch einen Zweck.
+- **Alchemie Stufe 24: Wisplight Draught** aus Wisp Core und Nightcap (Glühen 90 s, 50 Öl). Alchemie hörte bisher bei 21 auf.
+- **Grünes Glas aus Hushwood (Bogen):** Hushwood-Wölfe (15 %) und Moosgeister (20 %) tragen Green Glass Shards, Scherben wie die der kalten Laterne. Fen will davon hören (Gespräch) und hat einen Gefallen am Brett (zwei Scherben); Lampwrights schleifen ab Stufe 12 aus drei Scherben und Messing die Green Glass Lens (Flarecaster, Kraft 7, zwischen Messing und Glimsteel).
+- Neue Gespräche und Rufe: Brindle zeigt nach der Quest ihr Wachbuch, Fen zum Ausguck und zu den Scherben, Ama zu den Wölfen, Wren zum grünen Glas, Hollis mit neuen Gerüchten, Tallow zu den Choir Wraiths, der Stranger zum fremden Gebet, Pip hat eine zweite Liedzeile, Brindle und Pell rufen Neues.
+
+**Balance-Notizen:**
+- Restless Wolf: 36 HP, 4–6 Schaden, line-Angriff mit 5 Takten Vorwarnung. Warden 7 mit Schrott braucht etwa 4 s pro Wolf und verliert dabei Leben.
+- The Old Foreman: 900 HP, 16–19 Schaden, ring und bigplus mit 6 Takten. Gemessen (Glimsteel, Stufe 21, 12 Moss Salves, mit Ausweichen): Warden etwa 70 s und 1 bis 5 Tränke, Flarecaster etwa 42 s und 3 bis 4 Tränke, Drifter 110 bis 220 s mit Niederlagen (braucht Dusk Step und Fade oder einen Partner), Mender allein schafft ihn nicht (wie Mender allein überall). Stufe 14 ohne Rüstung scheitert. `boss-probe` (für Gruppen-Bosse gebaut): zwei Spieler auf 26 ohne Ausrüstung siegen nach 24 s, einer fällt; Gruppen ab 38 brauchen unter 25 s. Er ist ein Einzel-Boss, kein Gruppen-Boss.
+- Quest-Erfahrung an `xpStep` angelehnt: Restless Pack 280 (Stufe 5–8, gut zwei Stufen), Eyes on the North 700 (Stufe 10–14, etwa drei Stufen), Last Shift 800 (Stufe 18–21, gut zwei Stufen), Lights That Eat Lights 900 und Oil Rush 1.100 (Stufe 23–27, je knapp zwei Stufen).
+- Neue Fähigkeiten im Test gegen Hushwood-Wölfe: Flarecaster 16 und Drifter 16 gewinnen mit Glimsteel-Waffe allein; Night Edge macht nachts im Mittel mindestens 25 % mehr Schaden als bei Tag.
+
+**Abstimmung neu:** Zettel 2 mit old-mill (dritte Nacht), fishing (dritte Nacht), beekeeper, snail-cup (neu, aus „Ideen für später“).

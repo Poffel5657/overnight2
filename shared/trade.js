@@ -4,7 +4,7 @@ import { ITEMS } from '../content/items.js';
 import { NODES } from '../content/nodes.js';
 import { RECIPES } from '../content/recipes.js';
 import { PROFESSIONS } from '../content/professions.js';
-import { SHOPS, buyPrice } from '../content/shops.js';
+import { SHOPS, buyPrice, shopStock } from '../content/shops.js';
 import { CLASSES } from '../content/classes.js';
 import { cheb } from './path.js';
 import { tell, emit, float } from './events.js';
@@ -148,7 +148,7 @@ function nearShop(world, p, shopId) {
 
 export function buy(world, p, shopId, itemId, n = 1) {
   const shop = nearShop(world, p, shopId);
-  if (!shop || !shop.sells.includes(itemId)) return;
+  if (!shop || !shopStock(shopId, world.date).includes(itemId)) return;
   const def = ITEMS[itemId];
   const k = Math.max(1, Math.min(20, n | 0));
   const each = buyPrice(def.value);

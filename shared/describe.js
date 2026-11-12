@@ -19,10 +19,14 @@ export function describeAbility(id) {
   let effect;
   switch (a.kind) {
     case 'melee':
-      effect = `Strike a creature next to you for ${dmg}.${a.dazzle ? ` It cannot attack for ${secs(a.dazzle)}.` : ''}`;
+      effect = `Strike a creature next to you for ${dmg}.${a.dazzle ? ` It cannot attack for ${secs(a.dazzle)}.` : ''}${a.dark ? ` In the dark (at night, away from fixed lights) it hits ${Math.round((a.dark - 1) * 100)}% harder.` : ''}`;
       break;
     case 'ranged':
-      effect = `Hit a creature up to ${tiles(a.range)} away for ${dmg}.`;
+      effect = [
+        `Hit a creature up to ${tiles(a.range)} away for ${dmg}.`,
+        a.dazzle ? `It cannot attack for ${secs(a.dazzle)}.` : '',
+        a.burn ? `It burns for ${a.burn.dmg} (+ a quarter of your level) every 0.6s for ${secs(a.burn.ticks)}.` : '',
+      ].filter(Boolean).join(' ');
       break;
     case 'zone':
       effect = `Pick a creature up to ${tiles(a.range)} away: everything within ${tiles(a.radius)} of it takes ${dmg}.`;
@@ -33,6 +37,8 @@ export function describeAbility(id) {
         a.scare ? `It flees for ${secs(a.scare)} and its charged attacks fizzle.` : '',
         a.dazzle ? `It cannot attack for ${secs(a.dazzle)}.` : '',
         a.hold ? 'It turns on you for 3.6s.' : '',
+        a.root ? `It is stuck in place for ${secs(a.root)}.` : '',
+        a.burn ? `It burns for ${a.burn.dmg} (+ a quarter of your level) every 0.6s for ${secs(a.burn.ticks)}.` : '',
       ].filter(Boolean).join(' ');
       break;
     case 'self':
@@ -48,7 +54,7 @@ export function describeAbility(id) {
       effect = `You and allies within ${tiles(a.radius)} heal ${a.heal} every 0.6s for ${secs(a.ticks)} (${a.heal * Math.ceil(a.ticks / 2)} in total, + half your staff's healing each time).`;
       break;
     case 'taunt':
-      effect = `Every creature within ${tiles(a.radius)} turns on you for 3.6s.`;
+      effect = `Every creature within ${tiles(a.radius)} turns on you for 3.6s.${a.brace ? ` You and allies within ${tiles(a.radius)} take half damage for ${secs(a.brace)}.` : ''}`;
       break;
     case 'dash':
       effect = `Jump ${tiles(a.dist)} away from your target and step out of the fight.`;
@@ -57,7 +63,7 @@ export function describeAbility(id) {
       effect = `Pin a creature up to ${tiles(a.range)} away in place for ${secs(a.root)}.`;
       break;
     case 'fade':
-      effect = `Creatures lose track of you for ${secs(a.ticks)}, unless you stand in bright light.`;
+      effect = `${a.radius && a.dazzle ? `Everything within ${tiles(a.radius)} is blinded for ${secs(a.dazzle)} and its charged attacks fizzle. ` : ''}Creatures lose track of you for ${secs(a.ticks)}, unless you stand in bright light.`;
       break;
     default:
       effect = '';
@@ -84,6 +90,7 @@ export function describeItem(id) {
     if (it.power) stats.push(`Power ${it.power}`);
     if (it.defence) stats.push(`Defence ${it.defence}`);
     if (it.heal) stats.push(`Healing +${it.heal}`);
+    if (it.light && it.slot !== 'lantern') stats.push(`Lantern light +${it.light} tiles`);
     if (it.slot === 'main') stats.push(`Attacks every ${secs(it.delay ?? UNARMED_DELAY)}`);
     if (it.slot === 'lantern') {
       stats.push(it.light ? `Light +${it.light} tiles` : 'Light: plain');

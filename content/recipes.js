@@ -9,6 +9,7 @@ export const RECIPES = {
   t_scrap_shivs: { prof: 'tinkering', level: 2, inputs: { scrap: 3 }, out: ['scrap_shivs', 1], xp: 14 },
   t_scrap_shield: { prof: 'tinkering', level: 2, inputs: { scrap: 4 }, out: ['scrap_shield', 1], xp: 14 },
   t_scrap_coat: { prof: 'tinkering', level: 3, inputs: { scrap: 4, crow_feather: 1 }, out: ['scrap_coat', 1], xp: 18 },
+  t_ruff_hood: { prof: 'tinkering', level: 6, inputs: { singed_tuft: 3, scrap: 2 }, out: ['ruff_hood', 1], xp: 24 },
   t_brass_hood: { prof: 'tinkering', level: 8, inputs: { brass_bits: 3 }, out: ['brass_hood', 1], xp: 30 },
   t_brass_boots: { prof: 'tinkering', level: 8, inputs: { brass_bits: 3 }, out: ['brass_boots', 1], xp: 30 },
   t_brass_shivs: { prof: 'tinkering', level: 9, inputs: { brass_bits: 3, scrap: 2 }, out: ['brass_shivs', 1], xp: 36 },
@@ -25,6 +26,8 @@ export const RECIPES = {
   t_greyglass_boots: { prof: 'tinkering', level: 24, inputs: { greyglass: 2, glimmer: 1 }, out: ['greyglass_boots', 1], xp: 120 },
   t_greyglass_shivs: { prof: 'tinkering', level: 26, inputs: { greyglass: 3, glimmer: 2 }, out: ['greyglass_shivs', 1], xp: 140 },
   t_greyglass_shield: { prof: 'tinkering', level: 26, inputs: { greyglass: 4, glimmer: 2 }, out: ['greyglass_shield', 1], xp: 140 },
+  t_wraithsilk_hood: { prof: 'tinkering', level: 30, inputs: { greyglass: 2, sodden_hymnal: 2, glimmer: 1 }, out: ['wraithsilk_hood', 1], xp: 180 },
+  t_wardstone_boots: { prof: 'tinkering', level: 31, inputs: { greyglass: 2, beetle_shell: 2, glimmer: 1 }, out: ['wardstone_boots', 1], xp: 190 },
   t_greyglass_coat: { prof: 'tinkering', level: 28, inputs: { greyglass: 4, beetle_shell: 2 }, out: ['greyglass_coat', 1], xp: 160 },
 
   // Alchemy (Destille in der Kapelle)
@@ -34,6 +37,7 @@ export const RECIPES = {
 
   a_moss_salve: { prof: 'alchemy', level: 12, inputs: { moss_tuft: 2 }, out: ['moss_salve', 1], xp: 50 },
   a_dusk_draught: { prof: 'alchemy', level: 16, inputs: { nightcap: 2, grey_wisp: 1 }, out: ['dusk_draught', 1], xp: 66 },
+  a_wisp_draught: { prof: 'alchemy', level: 24, inputs: { wisp_core: 1, nightcap: 1 }, out: ['wisp_draught', 1], xp: 96 },
   a_lily_oil: { prof: 'alchemy', level: 21, inputs: { lily_bulb: 2 }, out: ['lily_oil', 2], xp: 86 },
 
   // Lampwright (Linsenbank in der Werkstatt)
@@ -44,8 +48,10 @@ export const RECIPES = {
   l_brass_lens: { prof: 'lampwright', level: 9, inputs: { brass_bits: 2, glimmer: 1 }, out: ['brass_lens', 1], xp: 40 },
   l_brass_staff: { prof: 'lampwright', level: 9, inputs: { brass_bits: 2, emberroot: 2 }, out: ['brass_staff', 1], xp: 40 },
   l_glim_lantern: { prof: 'lampwright', level: 13, inputs: { brass_bits: 3, glimmer: 2, survey_notes: 2 }, out: ['glim_lantern', 1], xp: 56 },
+  l_green_lens: { prof: 'lampwright', level: 12, inputs: { green_shard: 3, brass_bits: 1 }, out: ['green_lens', 1], xp: 52 },
   l_glim_lens: { prof: 'lampwright', level: 15, inputs: { brass_bits: 2, glimmer: 3 }, out: ['glim_lens', 1], xp: 70 },
   l_glim_staff: { prof: 'lampwright', level: 17, inputs: { brass_bits: 2, glimmer: 2, moss_tuft: 2 }, out: ['glim_staff', 1], xp: 80 },
+  l_foremans_lamp: { prof: 'lampwright', level: 19, inputs: { brass_bits: 3, glimmer: 2, beetle_shell: 1 }, out: ['foremans_lamp', 1], xp: 85 },
   l_flare_candle: { prof: 'lampwright', level: 20, inputs: { wax_comb: 2, glimmer: 1 }, out: ['flare_candle', 2], xp: 90 },
   l_greyglass_lantern: { prof: 'lampwright', level: 24, inputs: { greyglass: 2, glimmer: 2, survey_notes: 3 }, out: ['greyglass_lantern', 1], xp: 120 },
   l_greyglass_lens: { prof: 'lampwright', level: 26, inputs: { greyglass: 3, glimmer: 2 }, out: ['greyglass_lens', 1], xp: 140 },

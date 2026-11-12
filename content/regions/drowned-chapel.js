@@ -36,6 +36,9 @@ export const REGION = {
     { type: 'drowned_pilgrim', x: 27, y: 26 },
     { type: 'drowned_pilgrim', x: 15, y: 17 },
     { type: 'drowned_pilgrim', x: 21, y: 17 },
+    // Seit Tag 2: Choir Wraiths in den hinteren Ecken der Seitenschiffe
+    { type: 'choir_wraith', x: 6, y: 27 },
+    { type: 'choir_wraith', x: 30, y: 27 },
     { type: 'lamplighter', x: 18, y: 6 },
   ],
 };

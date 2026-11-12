@@ -450,7 +450,7 @@ function flushEvents(events) {
       const npc = mirror.ents.get(e.npc);
       if (npc) ui.openDialog(npc.id, npc.name, e.page, e.options, npc.sprite, mirror.ents.get(mirror.you)?.sprite);
     } else if (e.type === 'dialogEnd') ui.closeDialog();
-    else if (e.type === 'shop') { ui.closeDialog(); windows.open('shop', { shop: e.shop }); }
+    else if (e.type === 'shop') { ui.closeDialog(); windows.open('shop', { shop: e.shop, stock: e.stock }); }
     else if (e.type === 'craft') windows.open('craft', { obj: e.obj, station: e.station });
     else if (e.type === 'node') objects.setDepleted(e.id, e.left <= 0);
     else if (e.type === 'window') { ui.closeDialog(); windows.open(e.win); }

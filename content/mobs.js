@@ -30,14 +30,23 @@ export const MOBS = {
   wolf: {
     name: 'Hushwood Wolf', sprite: 'wolf', level: 12, ai: 'beast',
     hp: 45, hit: [5, 7], attackEvery: 4, aggro: 6, leash: 10, respawn: 60, xp: 35,
-    drops: [['wolf_pelt', 0.5, 1, 1]], gold: [3, 8],
+    drops: [['wolf_pelt', 0.5, 1, 1], ['green_shard', 0.15, 1, 1]], gold: [3, 8],
     special: { every: 3, delay: 4, pattern: 'line', hit: [16, 21], text: 'The wolf drops low. It is going to charge.' },
     examine: 'It makes no sound on the needles. Neither does anything else in Hushwood.',
+  },
+  restless_wolf: {
+    // Seit Tag 2: Wölfe, die aus Hushwood herauswandern und am Waldrand von Fernmeadow herumstreunen
+    // (Stufe 6-9, füllt die Lücke zwischen Greylingen und Hushwood). Ihr Fell ist an den Spitzen versengt.
+    name: 'Restless Wolf', sprite: 'restless_wolf', level: 7, ai: 'beast',
+    hp: 36, hit: [4, 6], attackEvery: 4, aggro: 5, leash: 8, respawn: 45, xp: 22,
+    drops: [['singed_tuft', 0.5, 1, 1], ['wolf_pelt', 0.2, 1, 1]], gold: [2, 5],
+    special: { every: 3, delay: 5, pattern: 'line', hit: [9, 12], text: 'The wolf flattens its ears and bunches up. It is going to lunge.' },
+    examine: 'Thin, jumpy, and far from the trees. The tips of its fur are singed, as if it ran past a fire.',
   },
   moss_spirit: {
     name: 'Moss Spirit', sprite: 'moss_spirit', level: 14, ai: 'grey',
     hp: 55, hit: [4, 6], attackEvery: 4, aggro: 5, leash: 8, respawn: 70, xp: 42,
-    drops: [['moss_tuft', 0.4, 1, 2], ['grey_wisp', 0.3, 1, 1]], gold: [2, 6],
+    drops: [['moss_tuft', 0.4, 1, 2], ['grey_wisp', 0.3, 1, 1], ['green_shard', 0.2, 1, 1]], gold: [2, 6],
     special: { every: 3, delay: 6, pattern: 'ring', hit: [14, 19], text: 'The moss spirit swells. Spores drift around it.' },
     examine: 'Moss that has learned to walk, and has opinions about trespassers.',
   },
@@ -55,10 +64,25 @@ export const MOBS = {
     special: { every: 2, delay: 4, pattern: 'plus', hit: [22, 29], text: 'The worm sinks back. Something is coming up under you.' },
     examine: 'It never leaves its hole. It does not need to.',
   },
+  old_foreman: {
+    // Seit Tag 2: der verlassene Vorarbeiter im Nordosten von Copperdeep. Einzel-Boss für Stufe 19-22:
+    // allein mit Einsatz (Tränke, Ausweichen), zu zweit bequem. Er arbeitet noch an seiner letzten Schicht.
+    name: 'The Old Foreman', sprite: 'old_foreman', level: 21, ai: 'grey', moveEvery: 2,
+    hp: 900, hit: [16, 19], attackEvery: 4, aggro: 4, leash: 10, respawn: 600, xp: 420,
+    drops: [['foremans_ledger', 1, 1, 1], ['foremans_lamp', 0.3, 1, 1], ['glimmer', 0.8, 1, 3], ['brass_bits', 0.8, 2, 4]], gold: [30, 55],
+    specials: [
+      { every: 1, delay: 6, pattern: 'ring', hit: [32, 38], text: 'The Old Foreman swings his pick round in a wide, tired arc.' },
+      { every: 1, delay: 6, pattern: 'bigplus', hit: [28, 34], text: 'The Old Foreman stamps. Dust trickles down. The ground is going to give.' },
+    ],
+    specialEvery: 3,
+    // Ohne Phase 2: heilt sich nur, wenn alle gehen (wie ein Boss), und meldet sein Ende.
+    boss: { deathText: 'The Old Foreman sets down his pick. For the first time in a hundred years, his shift is over.' },
+    examine: 'A miner, grey as the dust. He is still finishing his last shift, and he would like you off his seam.',
+  },
   will_o_wisp: {
     name: 'Will-o\'-Wisp', sprite: 'will_o_wisp', level: 25, ai: 'grey', drainOil: 12,
     hp: 60, hit: [6, 8], attackEvery: 4, aggro: 6, leash: 10, respawn: 70, xp: 75,
-    drops: [['grey_wisp', 0.8, 1, 2], ['glimmer', 0.2, 1, 1]], gold: [4, 10],
+    drops: [['grey_wisp', 0.8, 1, 2], ['glimmer', 0.2, 1, 1], ['wisp_core', 0.45, 1, 1]], gold: [4, 10],
     special: { every: 3, delay: 6, pattern: 'plus', hit: [19, 24], text: 'The wisp flickers. Your lantern flickers with it.' },
     examine: 'A light that eats light. It is very interested in your lantern.',
   },
@@ -98,6 +122,15 @@ export const MOBS = {
       deathText: 'The False Light goes out. Somewhere far off in the Grey, another light flickers.',
     },
     examine: 'Tall, thin, patient. He tends a light that should not be burning.',
+  },
+  choir_wraith: {
+    // Seit Tag 2: Sänger des ertrunkenen Chors in den Seitenschiffen der Drowned Chapel (Stufe 36, normal).
+    // Schließt die Lücke zwischen den Pilgern (32) und dem Lamplighter (40).
+    name: 'Choir Wraith', sprite: 'choir_wraith', level: 36, ai: 'grey',
+    hp: 170, hit: [15, 18], attackEvery: 4, aggro: 5, leash: 8, respawn: 120, xp: 160,
+    drops: [['greyglass', 0.4, 1, 1], ['sodden_hymnal', 0.25, 1, 1], ['grey_wisp', 0.5, 1, 2]], gold: [14, 26],
+    special: { every: 3, delay: 6, pattern: 'ring', hit: [40, 50], text: 'The wraith draws a long breath for the low note. The water around it shivers.' },
+    examine: 'One of the forty voices. It still sings the low part, and it does not like being interrupted.',
   },
   drowned_pilgrim: {
     name: 'Drowned Pilgrim', sprite: 'drowned_pilgrim', level: 32, ai: 'grey',

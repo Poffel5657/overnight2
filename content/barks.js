@@ -14,6 +14,10 @@ export const BARKS = {
       'The Night Market opens at dusk! Bring gold, and a lantern!',
       'Snail races by the west path! Mabb takes bets!',
       'The Lantern & Lark is open! Beds, stew and the Damp Socks!',
+      'A lookout stands at the top of the north road! Brindle is watching!',
+      'Wolves on the north-west fields! Warden Ama wants them sent home!',
+      'Something new at the Night Market every night! Only after dark!',
+      'Brack says the Old Foreman is still working! Somebody tell him!',
     ],
   },
   band_corra: {
@@ -26,7 +30,16 @@ export const BARKS = {
   },
   band_pip: {
     range: 9, every: 31,
-    lines: ['*a thin, happy tune on the pipe*', '*toot*', 'There is a light in the north... la la...'],
+    lines: ['*a thin, happy tune on the pipe*', '*toot*', 'There is a light in the north... la la...', '...and Brindle is watching it... la la...'],
+  },
+  brindle: {
+    range: 8, every: 50,
+    lines: [
+      'Wind from the north again. Smells of smoke.',
+      '*scribbles in a little book*',
+      'Another wolf, running south. That makes nine today.',
+      'Brighter than Tuesday. I am sure of it.',
+    ],
   },
   mabb: {
     range: 10, every: 45,
@@ -51,6 +64,7 @@ export const HAILS = {
   marrow: 'Oi! Business for you, if you want it.',
   haskel: 'Over here! I could use some help.',
   brack: 'Hold up, wanderer. I have work.',
+  brindle: 'You! Got two hands and a head for heights?',
   mabb: 'You there! Fancy a flutter on a snail?',
   mothwick: 'Psst. Wicks, lanterns, night things. Only while it lasts.',
 };
