@@ -58,6 +58,50 @@ function check(region) {
     }
   }
 
+  // Platzierung muss Sinn ergeben (Chris' Wunsch, 2026-11-12):
+  // 1. Gebäude halten ein Feld Abstand zu anderen Gebäuden (keine Häuser, die ineinander stecken).
+  // 2. Vor jeder Gebäudetür (Mitte der Vorderseite, Süden) sind zwei Felder frei und begehbar.
+  // 3. Öffentliche Gebäude (alles mit Innenraum außer Wohnhäusern) hängen über Weg ('=') oder
+  //    Platz ('_') am Wegenetz, das vom Leuchtfeuer ausgeht: Man soll hinfinden, ohne zu suchen.
+  const buildings = region.objects.filter((o) => TALL.has(o.type));
+  for (const a of buildings) {
+    for (const b of buildings) {
+      if (a === b) continue;
+      const gapX = Math.max(a.x - (b.x + (b.w || 1)), b.x - (a.x + (a.w || 1)));
+      const gapY = Math.max(a.y - (b.y + (b.d || 1)), b.y - (a.y + (a.d || 1)));
+      if (gapX < 1 && gapY < 1) err(`${a.name || a.type} bei ${a.x},${a.y} steht ohne Abstand an ${b.name || b.type} bei ${b.x},${b.y}`);
+    }
+  }
+  const roads = new Set();
+  const beacon = region.objects.find((o) => o.type === 'beacon');
+  if (beacon) {
+    const isRoad = (x, y) => tile(x, y) === '=' || tile(x, y) === '_';
+    const todo = [];
+    for (let y = beacon.y - 2; y <= beacon.y + (beacon.d || 1) + 1; y++) {
+      for (let x = beacon.x - 2; x <= beacon.x + (beacon.w || 1) + 1; x++) if (isRoad(x, y)) todo.push([x, y]);
+    }
+    while (todo.length) {
+      const [x, y] = todo.pop();
+      const k = `${x},${y}`;
+      if (roads.has(k) || !isRoad(x, y)) continue;
+      roads.add(k);
+      todo.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+    }
+  }
+  for (const o of buildings) {
+    if (!o.inside) continue;
+    const fx = o.x + Math.floor((o.w || 1) / 2);
+    const fy = o.y + (o.d || 1);
+    for (const [x, y] of [[fx, fy], [fx, fy + 1]]) {
+      if (!TILE_TYPES[tile(x, y)]?.walk) err(`vor der Tür von ${o.name || o.type} (${x},${y}) ist kein begehbarer Boden`);
+      if (occupied.has(`${x},${y}`)) err(`vor der Tür von ${o.name || o.type} steht ${occupied.get(`${x},${y}`)}`);
+    }
+    if (o.type !== 'house' && beacon) {
+      const near = [[fx, fy], [fx - 1, fy], [fx + 1, fy], [fx, fy + 1]];
+      if (!near.some(([x, y]) => roads.has(`${x},${y}`))) err(`${o.name || o.type} hat keinen Weg ('=') vom Leuchtfeuer bis vor die Tür (${fx},${fy})`);
+    }
+  }
+
   const nearTall = (x, y) => region.objects.find((o) => TALL.has(o.type)
     && x >= o.x - 1 && x <= o.x + (o.w || 1) && y >= o.y - 1 && y <= o.y + (o.d || 1));
   const spawnOk = (kind, e) => {

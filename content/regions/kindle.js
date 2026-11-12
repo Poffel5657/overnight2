@@ -35,7 +35,6 @@ export const REGION = {
     {type: 'beacon', x: 49, y: 49, w: 2, d: 2, light: 11, name: 'the Beacon'},
     {type: 'chapel', x: 41, y: 38, w: 5, d: 6, name: 'the Chapel', inside: inside('chapel')},
     {type: 'house', x: 54, y: 38, w: 4, d: 4, roof: '#7a3b26', name: 'a house', inside: inside('house1')},
-    {type: 'house', x: 57, y: 43, w: 3, d: 3, roof: '#6b4a2a', name: 'a house', inside: inside('house2')},
     {type: 'house', x: 39, y: 54, w: 3, d: 3, roof: '#5f4a3a', name: 'a house', inside: inside('house3')},
     {type: 'house', x: 55, y: 55, w: 3, d: 3, roof: '#7a3b26', name: 'a house', inside: inside('house4')},
     {type: 'workshop', x: 59, y: 51, w: 4, d: 3, name: 'the Workshop', inside: inside('workshop')},

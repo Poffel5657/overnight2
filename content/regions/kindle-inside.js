@@ -1,4 +1,4 @@
-// Die Innenräume von Kindle: Kapelle (mit dem Altar), Old Rooks Werkstatt, vier Wohnhäuser und die
+// Die Innenräume von Kindle: Kapelle (mit dem Altar), Old Rooks Werkstatt, drei Wohnhäuser und die
 // Taverne „The Lantern & Lark“ (Gastwirt Hollis, die Band, Truhen und Betten; Regeln in content/tavern.js).
 // Alle Räume liegen in einem Gebiet. Man betritt sie über das Gebäude in Kindle ("Enter"),
 // die Tür im Raum führt zurück vor dasselbe Gebäude. Drinnen brennt kein Öl (sheltered).
@@ -8,7 +8,6 @@ import { TILES, HEIGHTS } from './kindle-inside-terrain.js';
 export const OUTSIDE = {
   chapel: { x: 43, y: 44 },
   house1: { x: 55, y: 42 },
-  house2: { x: 58, y: 46 },
   house3: { x: 40, y: 57 },
   house4: { x: 56, y: 58 },
   workshop: { x: 60, y: 54 },
@@ -19,7 +18,6 @@ export const INSIDE = {
   chapel: { x: 6, y: 15 },
   workshop: { x: 23, y: 6 },
   house1: { x: 36, y: 4 },
-  house2: { x: 48, y: 4 },
   house3: { x: 36, y: 14 },
   house4: { x: 48, y: 14 },
   tavern: { x: 28, y: 29 },
@@ -74,11 +72,6 @@ export const REGION = {
     { type: 'hearth', x: 34, y: 1, light: 4.5, name: 'the hearth', text: 'A small fire. The kettle on it has seen better centuries.' },
     { type: 'bed', x: 38, y: 1, w: 2, name: 'a bed', text: 'A narrow bed under a patchwork quilt.' },
     { type: 'table', x: 38, y: 4, name: 'a table', text: 'Two bowls, one spoon. Someone is in a hurry.' },
-    // Haus 2
-    exit('house2', 48, 5),
-    { type: 'hearth', x: 51, y: 1, light: 4.5, name: 'the hearth', text: 'The hearth crackles. A sock is drying on the grate.' },
-    { type: 'bed', x: 46, y: 1, w: 2, name: 'a bed', text: 'Neatly made. Suspiciously neatly.' },
-    { type: 'shelf', x: 50, y: 4, name: 'a shelf', text: 'Jars of preserved bitterleaf and one jar of something that moves.' },
     // Haus 3
     exit('house3', 36, 15),
     { type: 'hearth', x: 34, y: 11, light: 4.5, name: 'the hearth', text: 'The fire is low. Someone sleeps late here.' },
