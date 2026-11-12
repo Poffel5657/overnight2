@@ -61,6 +61,8 @@ export function createWindows(handlers) {
   let date = '';
   let top = null;
   let prayerDraft = '';
+  // „A Note for the Maker“: Entwurf, Art und Rückmeldung bleiben beim Neuzeichnen erhalten.
+  const note = { kind: 'bug', text: '', sending: false, msg: null, ok: false };
 
   function makeWin(kind) {
     const title = h('span', { class: 'panel-title' });
@@ -144,6 +146,7 @@ export function createWindows(handlers) {
     w.body.replaceChildren(...[content].flat(Infinity).filter(Boolean));
     w.body.scrollTop = scroll;
     if (focusedId === 'prayer-text') $('prayer-text')?.focus();
+    if (focusedId === 'note-text') $('note-text')?.focus();
   }
 
   // ---------- Gegenstände ----------
@@ -567,9 +570,38 @@ export function createWindows(handlers) {
               area,
               h('div', { class: 'row-buttons' }, btn('PRAY', () => { if (handlers.pray(prayerDraft)) { prayerDraft = ''; render(); } }, { disabled: !handlers.online() }))],
           !handlers.online() ? h('p', { class: 'muted small' }, 'Offline: prayers need the line to Kindle.') : null,
+          h('p', { class: 'muted small' }, 'Something broken, too hard, too easy? Leave a note for the maker instead.'),
+          h('div', { class: 'row-buttons' }, btn('A NOTE FOR THE MAKER', () => open('feedback'))),
           h('h3', {}, d.voted ? 'VOTE // DONE TODAY' : 'VOTE // ONE VOICE A DAY'),
           h('p', { class: 'muted small' }, 'Everyone has one voice a day, rich or poor. The idea with the most voices is built next.'),
           h('ul', { class: 'rows' }, options),
+        ],
+      };
+    },
+
+    feedback() {
+      const KINDS = [['bug', 'Something is broken'], ['balance', 'Too hard / too easy'], ['idea', 'An idea'], ['other', 'Something else']];
+      const area = h('textarea', { id: 'note-text', maxlength: 1000, rows: 5, placeholder: 'What should the maker fix or change? Where were you, what happened?', oninput: (e) => { note.text = e.target.value; } });
+      area.value = note.text;
+      const send = async () => {
+        if (note.sending) return;
+        if (note.text.trim().length < 5) { note.msg = 'A note needs a few words at least.'; note.ok = false; render(); return; }
+        note.sending = true; note.msg = null; render();
+        const err = await handlers.feedback(note.kind, note.text.trim());
+        note.sending = false;
+        if (err) { note.msg = err; note.ok = false; } else { note.msg = 'Thank you! The maker reads every note.'; note.ok = true; note.text = ''; }
+        render();
+      };
+      return {
+        heading: 'A NOTE FOR THE MAKER',
+        content: [
+          h('p', { class: 'muted small' }, 'Prayers go to the Nightwright, who builds the world at night. This note goes straight to the person who made Kindle: bugs, balance, anything that should be better.'),
+          h('div', { class: 'row-buttons' }, KINDS.map(([k, label]) => btn(label, () => { note.kind = k; note.msg = null; render(); }, { class: note.kind === k ? 'on' : '' }))),
+          area,
+          h('div', { class: 'row-buttons' }, btn(note.sending ? 'SENDING…' : 'SEND', send, { disabled: note.sending || !handlers.online() })),
+          !handlers.online() ? h('p', { class: 'muted small' }, 'Offline: notes need the line to Kindle.') : null,
+          note.msg ? h('p', { class: note.ok ? 'good small' : 'muted small' }, note.msg) : null,
+          h('p', { class: 'muted small' }, 'Your name, where you are and your class go with the note, so the maker can find the problem.'),
         ],
       };
     },

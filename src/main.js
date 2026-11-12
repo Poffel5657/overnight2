@@ -242,6 +242,28 @@ const windows = createWindows({
     send({ t: 'pray', text });
     return true;
   },
+  // Rückmeldung an Chris (HTTP, nicht über den Spieltakt). Gibt null oder eine Fehlermeldung zurück.
+  async feedback(kind, text) {
+    let token = null;
+    try { token = localStorage.getItem(TOKEN_KEY); } catch { /* egal */ }
+    if (!token || !conn || conn.offline) return 'Notes need the line to Kindle. Sign in first.';
+    const me = mirror.me;
+    const context = {
+      region: region?.id, cls: me?.cls ?? null, level: me?.level ?? null,
+      build: document.querySelector('meta[name="build"]')?.content ?? 'local',
+      screen: `${innerWidth}x${innerHeight}`, touch: matchMedia('(pointer: coarse)').matches,
+    };
+    try {
+      const res = await fetch(`${SERVER}/api/feedback`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ kind, text, context }),
+      });
+      if (res.ok) return null;
+      return (await res.json().catch(() => null))?.error || 'The note blew away. Try again.';
+    } catch {
+      return 'The note blew away. Try again.';
+    }
+  },
   online() { return conn ? !conn.offline : false; },
   leave() { document.getElementById('btn-leave').click(); },
   me() { return mirror.me; },
@@ -629,6 +651,10 @@ function banner(text) {
 }
 bannerEl.addEventListener('click', () => location.reload());
 // Neue Version auf der Seite: von selbst neu laden (src/update.js).
+document.getElementById('btn-feedback').addEventListener('click', () => {
+  document.getElementById('help').hidden = true;
+  windows.open('feedback');
+});
 const updates = watchUpdates({ banner, beforeReload: () => conn?.close() });
 
 const login = createLogin(SERVER, {

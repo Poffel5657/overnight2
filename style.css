@@ -861,3 +861,7 @@ button:disabled { color: var(--brass-dim); cursor: default; text-shadow: none; }
 .map-legend .key-npc { color: #ffe08a; }
 .map-legend .key-fire { color: #ff8a3a; }
 .map-legend .key-door { color: #9fe0ff; }
+
+/* „A Note for the Maker“: gewählte Art leuchtet, Dank in Grün */
+.row-buttons button.on { color: var(--flame); border-color: var(--brass); box-shadow: 0 0 0.5rem var(--glow); }
+.window p.good { color: var(--good); }

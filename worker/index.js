@@ -3,6 +3,7 @@
 //   POST /api/logout                 Token ungültig machen
 //   GET  /api/me                     Wer bin ich?
 //   GET  /api/play                   WebSocket ins Gebiet (Durable Object RegionRoom)
+//   POST /api/feedback               Rückmeldung an Chris (angemeldet, höchstens FEEDBACK_PER_DAY am Tag)
 // Das Token schickt der Browser im Header (Authorization: Bearer …) bzw. als erste WebSocket-Nachricht.
 
 import { RegionRoom } from './region.js';
@@ -15,7 +16,10 @@ const NAME = /^[A-Za-z][A-Za-z0-9_-]{2,15}$/;
 // Namen, die nach Spielleitung oder Figuren aussehen würden.
 const RESERVED = ['nightwright', 'claude', 'anthropic', 'admin', 'moderator', 'mod', 'system', 'server', 'kindle',
   'tallow', 'ama', 'pell', 'fen', 'rook', 'stranger', 'greyling', 'beacon'];
-const MAX_BODY = 2048;
+const MAX_BODY = 4096;
+const FEEDBACK_KINDS = ['bug', 'balance', 'idea', 'other'];
+const FEEDBACK_MAX = 1000;
+const FEEDBACK_PER_DAY = 10;
 
 function allowedOrigins(env) {
   return (env.ALLOWED_ORIGINS || '').split(',').map((s) => s.trim()).filter(Boolean);
@@ -102,6 +106,24 @@ async function login(req, env, cors) {
   return json(cors, 200, { token, name: row.name });
 }
 
+// ---------- Rückmeldung an Chris ----------
+async function feedback(req, env, cors) {
+  const acc = await accountForToken(env.DB, bearer(req));
+  if (!acc) return json(cors, 401, { error: 'Sign in to send a note.' });
+  const body = await readBody(req);
+  const kind = FEEDBACK_KINDS.includes(body?.kind) ? body.kind : 'other';
+  // Steuerzeichen raus, Zeilenumbrüche bleiben.
+  const text = typeof body?.text === 'string' ? body.text.replace(/[\u0000-\u0009\u000b-\u001f\u007f]/g, '').trim().slice(0, FEEDBACK_MAX) : '';
+  if (text.length < 5) return json(cors, 400, { error: 'A note needs a few words at least.' });
+  const context = typeof body?.context === 'object' && body.context ? JSON.stringify(body.context).slice(0, 500) : null;
+  const { n } = await env.DB.prepare('SELECT COUNT(*) AS n FROM feedback WHERE account_id = ? AND created_at > ?')
+    .bind(acc.id, Date.now() - 86400000).first();
+  if (n >= FEEDBACK_PER_DAY) return json(cors, 429, { error: 'That is a lot of notes for one day. Thank you! Try again tomorrow.' });
+  await env.DB.prepare('INSERT INTO feedback (account_id, kind, text, context, created_at) VALUES (?, ?, ?, ?, ?)')
+    .bind(acc.id, kind, text, context, Date.now()).run();
+  return json(cors, 200, { ok: true });
+}
+
 // ---------- Für den Nightwright: Gebete und Spenden lesen, Gebete als erhört markieren ----------
 // Nur mit dem geheimen Schlüssel ADMIN_KEY (wrangler secret put ADMIN_KEY). Ohne Schlüssel gibt es die Wege nicht.
 
@@ -127,6 +149,21 @@ async function admin(req, env, url) {
     if (!ids.length) return plain({ updated: 0 });
     const res = await env.DB.prepare(`UPDATE prayers SET answered_at = ?, answer_note = ? WHERE id IN (${ids.map(() => '?').join(',')})`)
       .bind(Date.now(), note, ...ids).run();
+    return plain({ updated: res.meta.changes });
+  }
+  // Rückmeldungen für Chris: GET listet (unread=1 nur ungelesene), POST /read markiert als gelesen.
+  if (url.pathname === '/api/admin/feedback' && req.method === 'GET') {
+    const unread = url.searchParams.get('unread') === '1';
+    const { results } = await env.DB.prepare(
+      `SELECT f.id, f.kind, f.text, f.context, f.created_at, f.read_at, a.name FROM feedback f JOIN accounts a ON a.id = f.account_id ${unread ? 'WHERE f.read_at IS NULL' : ''} ORDER BY f.created_at DESC LIMIT 200`,
+    ).all();
+    return plain({ feedback: results });
+  }
+  if (url.pathname === '/api/admin/feedback/read' && req.method === 'POST') {
+    const body = await readBody(req);
+    const ids = Array.isArray(body?.ids) ? body.ids.filter(Number.isInteger).slice(0, 200) : [];
+    if (!ids.length) return plain({ updated: 0 });
+    const res = await env.DB.prepare(`UPDATE feedback SET read_at = ? WHERE id IN (${ids.map(() => '?').join(',')})`).bind(Date.now(), ...ids).run();
     return plain({ updated: res.meta.changes });
   }
   return new Response('Not found', { status: 404 });
@@ -176,6 +213,7 @@ export default {
       }
       if (url.pathname === '/api/health') return json(cors, 200, { ok: true });
       if (url.pathname === '/api/board' && req.method === 'GET') return await board(env, cors);
+      if (url.pathname === '/api/feedback' && req.method === 'POST') return await feedback(req, env, cors);
       if (url.pathname.startsWith('/api/admin/')) return await admin(req, env, url);
     } catch (err) {
       console.error(err);
