@@ -13,13 +13,15 @@ content/                  Alles, was Inhalt ist, als Daten. Hier wächst das Spi
   chests.js               Beutetabellen für Truhen (einmal am Tag pro Spieler)
   sprites.js              Pixel-Sprites als Text mit Palette ('!' = leuchtet im Dunkeln)
   mobs.js                 Wesen (Werte, Beute, angekündigte Angriffe)
-  abilities.js            Fähigkeiten (Wirkungsarten: melee, ranged, burst, aura, hot, taunt, dash, snare, fade, zone; burst kann scare, dazzle, hold)
+  abilities.js            Fähigkeiten (Wirkungsarten: melee, ranged, burst, aura, hot, taunt, dash, snare, fade, zone; burst kann scare, dazzle, hold, root, burn; taunt kann brace; fade kann radius + dazzle;
+                          melee/ranged können dazzle und burn (Nachbrennen); dark = Schadensfaktor im Dunkeln)
+  lookout.js              Ausguck „The North Watch“: Texte beim Hinaufklettern bei Tag/Nacht, Erfahrung einmal pro Nacht
   classes.js              Vier Klassen: Lehrer, Startwaffe, Prüfung, Fähigkeiten pro Stufe
   items.js                Gegenstände (Platz, Klasse der Waffe, Werte, Wirkung, Preis)
   professions.js          Sechs Berufe, höchstens zwei pro Spieler
   nodes.js, recipes.js    Fundstellen für Sammelberufe, Rezepte für Herstellberufe
   quests.js               Quests als Schritte (talk, kill, have, action, flag) mit Belohnung
-  shops.js                Händler (night: true = nur im Dunkeln offen, z. B. der Nachtmarkt)
+  shops.js                Händler (night: true = nur im Dunkeln offen; rotating = wechselnde Ware pro Tag, shopStock(id, datum))
   races.js                Schneckenrennen: Bahn, Takt, Einsätze, Schnecken mit Quote und Tempo
   tavern.js               Taverne: STASH_SIZE (Truhe), INN (Bettpreis, ausgeruht: Siege und Bonus)
   npcs.js                 Gespräche mit Bedingungen (if) und Wirkungen (do), Beschreibungen
@@ -190,3 +192,4 @@ PS1-Stil: Die Szene wird etwa 240 Pixel hoch gerendert, Eckpunkte springen auf d
 - **Taverne** (Tag 1, von Chris): Gebäude `tavern` in Kindle, Raum in `kindle_inside` (Zone „THE LANTERN & LARK“). Objekte `stash` (Aktion open → Fenster `stash`) und `inn_bed` (Aktion rest → `sleepAtInn` in `shared/sim.js`). Spielstand: `stash` (Liste {id, n}) und `rested` (Siege mit Bonus, `grantXp(..., { kill: true })`). Musik: `music.setTavern()` spielt „The Lark's Jig“, sobald die Zone die Taverne ist.
 - **Feedback an Chris** („A Note for the Maker“): HTTP `POST /api/feedback`, Tabelle `feedback`, lesen mit `npm run feedback`. Nicht Teil der Nightwright-Inbox.
 - **Auto-Update** (`src/update.js`): `deploy.yml` schreibt `<meta name="build">` und `build.json`; die Seite lädt bei neuer Kennung selbst neu.
+- **Tag 2:** Objekt `lookout` (Aktion `use` = „Climb up“, `climbLookout` in `shared/sim.js`, Quest-Aktion `watch`, nur nachts). `shrine` kann `found` (Text beim Finden). Wesen brennen (`m.burn`, gesetzt von Fähigkeiten mit `burn`, abgearbeitet in `updateMob`). `inDark(world, p)`: Nacht und kein festes Licht. `lanternBonus` zählt Licht aus allen Ausrüstungsplätzen. Ein Wesen mit `boss` ohne `phase2At` heilt sich wie ein Boss, wenn alle gehen, hat aber keine zweite Phase (The Old Foreman). Händlerfenster bekommt die Ware des Tages mit dem Ereignis `shop` (`stock`).

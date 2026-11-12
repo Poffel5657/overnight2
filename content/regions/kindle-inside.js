@@ -49,6 +49,8 @@ export const REGION = {
     // Kapelle: Altar vorn, Kerzen, Bänke
     exit('chapel', 6, 16),
     { type: 'altar', x: 5, y: 2, w: 2, d: 1, name: 'the Altar' },
+    // Der Opferkasten neben dem Altar (Quest „A Prayer Not Ours“, seit Tag 2)
+    { type: 'shrine', look: 'offering_box', x: 9, y: 3, name: 'the offering box', gives: 'prayer_slip', quest: 'prayer_not_ours', step: 0, text: 'A wooden box full of white stones. Something pale is wedged under them.', found: 'Under the white stones you find a folded prayer, written on bark.', empty: 'White stones, one for every vote. Nothing else, today.' },
     { type: 'candles', x: 2, y: 1, light: 4, name: 'votive candles', text: 'Dozens of small candles. Every one is somebody\'s wish. Some are very small wishes.' },
     { type: 'candles', x: 9, y: 1, light: 4, name: 'votive candles', text: 'The wax has run into shapes. One of them looks like a lantern, if you squint.' },
     { type: 'pew', x: 2, y: 5, w: 3, name: 'a pew', text: 'A worn pew. The wood is polished by years of sitting and waiting.' },

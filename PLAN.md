@@ -4,53 +4,52 @@ Der Nightwright pflegt diese Datei jede Nacht (Regeln in `CLAUDE.md`).
 
 ## Inbox gelesen bis
 
-`v2/inbox/2026-11-11.json` (Tag 1)
+`v2/inbox/2026-11-11.json` (Tag 1). Tag 2: keine neue Datei vorhanden (Export verspätet, siehe „Bekannte Probleme“). Die nächste Nacht liest alle Dateien nach `2026-11-11.json`.
 
 ## Heute in Arbeit
 
-Tag 1 (Nacht zum 2026-11-12). Gebaut und getestet, Stand für den PR:
+Tag 2 (Nacht zum 2026-11-13). Die Inbox-Datei des Abends lag um 23 Uhr noch nicht vor (Export-Lauf verspätet); geplant ohne neue Gebete und ohne Stimmen, bei Gleichstand entscheidet der Nightwright.
 
-**Teil 1, aus den Gebeten: Schneckenrennen (Gebet 1) und die Karte (Gebet 2)**
-1. *Was der Spieler will:* Etwas im Dorf, das Spaß macht, ohne zu kämpfen, mit einem kleinen Nervenkitzel; und eine Übersicht, wo was ist, ohne sich durch die Welt zu tasten.
-2. *Woran er es merkt:* Mabb ruft am Westweg „Bets on the snails!“, Pell erwähnt es; man spricht mit Mabb, nimmt die Quest „Off to the Races“, setzt 5 oder 20 Gold auf eine von drei Schnecken, sieht sie die Bahn entlangkriechen (Sprechblasen, Log), bekommt bei Sieg Einsatz mal Quote. Die Karte: Knopf „Map“ in der Leiste und Taste M; sie zeigt Gelände, Gebäude, Lichter, Ausgänge, Figuren mit `!`/`?`, sich selbst, und ein Tipp darauf läuft hin.
-3. *Woran es anschließt:* Gold und Händler (Wetten sind eine Goldsenke mit leichtem Vorteil für Mabb), Quests (Aktionen `bet`/`race`), Gespräche (neue Bedingung `gold`, Wirkung `bet`), Quest-Laternen (Karte zeigt sie), Laufen (Tipp auf die Karte).
-4. *Weg dorthin:* Jeder nach Kindling sieht Mabb auf dem Weg von der Brücke ins Dorf; die Karte hat jeder sofort.
+**Teil 1, aus den Gebeten:** Keine neuen Gebete gelesen (siehe oben). Entfällt, Teil 3 wird größer (zwei Quests, ein Wesen, ein Rezept).
 
-**Teil 2, aus der Abstimmung: der Nachtmarkt (Zettel 0, 1 Stimme)**
-1. *Was der Spieler will:* Einen Grund, nachts im Dorf etwas zu tun, und Dinge, die es nur dann gibt.
-2. *Woran er es merkt:* Ein Stand mit lila Markise und eigenen Laternen am Rand des Lichtkreises; Mothwick ruft nachts; bei Tag verweist sie auf die Dunkelheit. Sie verkauft Moth Lantern (zwischen Messing- und Glimmlaterne), Moonwick, Night Bread und Öl; Quest „Wisps for the Wicks“ (drei Grey Wisps) bringt Moonwick; Lampwrights machen daraus Moon Candles (Stufe 11).
-3. *Woran es anschließt:* Händler (neu: `night: true`), Tag und Nacht (Bedingungen `night`/`day`), Licht/Öl (Laterne, Kerze), Lampwright (Rezept), Greylinge (Wisps), der Bogen (Mothwick folgt dem Licht im Norden).
-4. *Weg dorthin:* Pell ruft es aus, Mothwick ruft Vorbeigehende an; nachts sieht man ihre Lichter östlich vom Markt.
+**Teil 2, aus der Abstimmung: der Ausguck am Nordrand (Zettel 1, ohne Stimmen; Wahl des Nightwrights, weil er den Bogen trägt)**
+1. *Was der Spieler will:* Einen Ort, an dem man dem Licht im Norden näher ist und es wirklich sehen kann; das Gefühl, mitzuhelfen, statt nur zuzusehen.
+2. *Woran er es merkt:* Ein Holzturm mit Laterne am Ende der Nordstraße (eigene Gegend „THE NORTH WATCH“ in der Statusanzeige, auf der Karte); Brindle ruft Vorbeigehende; Pell ruft ihn aus; Haskel bietet die Quest „Eyes on the North“ ab Stufe 10 an. Man sammelt Wolfsfelle für den Windschutz, holt bei Wren eine Fernrohrlinse (mit Grey Wisps poliert), klettert nachts hinauf und sieht das Licht (Log). Danach: einmal pro Nacht hinaufklettern gibt ein wenig Erfahrung; Brindle hat einen Gefallen (Wolfsfelle) am Anschlagbrett.
+3. *Woran es anschließt:* Quests (neue Aktion `watch`), Tag und Nacht, Licht (Watcher's Hood mit Licht +1), Händler/Handel (Felle, Wisps), Gefallen, der Bogen.
+4. *Weg dorthin:* Nordstraße von Kindle durch Hushwood bis zum Ende; Haskel am Holzfällerfeuer schickt einen hin.
 
-**Teil 3, vom Nightwright: „Not From Here“, das Licht im Norden (Bogen, Akt 1)**
-1. *Was der Spieler will:* Merken, dass die Welt eine Geschichte hat, die weitergeht.
-2. *Woran er es merkt:* Nachts glüht über dem Nordrand von Hushwood ein warmer Schein; Fen (ab Stufe 10) schickt einen zur kalten Laterne am Nordrand, Wren erkennt fremdes Glas, der Stranger spricht vom hungrigen Feuer; Haskel und Mothwick erzählen davon.
-3. *Woran es anschließt:* Quests, Hushwood (Wölfe auf dem Weg), Figuren aus Tag 0 (Fen, Wren, Stranger, Haskel), Licht.
-4. *Weg dorthin:* Fen hat ein `!`, sobald man Stufe 10 hat; vorher ein Hinweis.
+**Teil 3, vom Nightwright: Unruhe im Norden (Bogen, Akt 1)**
+1. *Was der Spieler will:* Merken, dass das Licht im Norden Folgen hat, und Inhalt zwischen Stufe 5 und 10 (bisher fast leer).
+2. *Woran er es merkt:* Neue Wesen „Restless Wolf“ (Stufe 7) am Waldrand nordwestlich der Felder; Ama ab Stufe 5 mit „The Restless Pack“ (fünf Wölfe, versengtes Fell, Haskel riecht fremden Rauch); Tallow mit „A Prayer Not Ours“ (fremdes Gebet im Opferkasten der Kapelle, Pell, nachts Mothwick). Versengtes Fell füttert das Leuchtfeuer und wird zur Smoke-Ruff Hood (Tinkering 6). Gefallen bei Haskel und Ama.
+3. *Woran es anschließt:* Kampf, Quests, Leuchtfeuer, Tinkering, Gefallen, Kapelle, Nachtmarkt.
+4. *Weg dorthin:* Ama und Tallow stehen mitten im Dorf und rufen; Pell ruft die Wölfe aus.
 
-**Dauerauftrag Klassen: Warden** bekommt Stand Fast (Stufe 12, heilt und stemmt sich) und Beacon Slam (Stufe 16, Stoß im Nahbereich, blendet und bindet alles Getroffene an den Warden; neue Wirkung `dazzle`/`hold` für `burst`).
+**Dauerauftrag Klassen: Flarecaster** bis Stufe 16: Glare (10, blendet aus der Ferne), Cinder Brand (13, neue Wirkung `burn`: Ziel brennt nach), Starfall (16, große Fläche).
+
+**Nachschlag (gebaut):** Drifter bis Stufe 16; Warden Bulwark (20); Mender Smoulder (20); Flarecaster Sunlance (20); Drifter Smoke Bomb (20); Warden Last Light (24); Mender Kindred Glow (24); Flarecaster Prism Ward (24); Drifter Gutter Strike (24); Mothwicks Quest „Lights That Eat Lights“ (23+); Marrows Quest „The Oil Rush“ (26+); Choir Wraiths (36) in der Drowned Chapel; Alchemie Wisplight Draught (24); Tinkering Wraithsilk Hood (30) und Wardstone Boots (31); Salvage Old Shaft (26); Foraging Drowned Garden (26); Cartography North Cairn (26); grüne Glasscherben in Hushwood mit Gefallen bei Fen und Green Glass Lens; Mothwicks Ware wechselt jede Nacht; The Old Foreman mit „The Last Shift“ (Copperdeep, Stufe 18–21, Faden „for the Hollow fire“); Fehler behoben: Licht aus Rüstung (Choir Mantle) zählte nicht. Alles gebaut und getestet (`tests/night/002-*`).
 
 ## Ausbau läuft
 
-- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag, siehe `CLAUDE.md`): jede Nacht mindestens eine Klasse ein Stück weiter, Reihenfolge Warden, Mender, Flarecaster, Drifter. Stand in `ROADMAP.md`. Nächste Nacht: Mender (ab Stufe 12).
-- **Der Bogen „The Second Light“**, Akt 1 läuft (Licht im Norden gezeigt). Weitere Andeutungen in den nächsten Nächten.
+- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag, siehe `CLAUDE.md`): jede Nacht mindestens eine Klasse ein Stück weiter, Reihenfolge Warden, Mender, Flarecaster, Drifter. Stand in `ROADMAP.md`: alle vier bis Stufe 24. Nächste Nacht: Warden (28).
+- **Der Bogen „The Second Light“**, Akt 1 läuft (Licht im Norden, Ausguck, fliehende Wölfe, fremdes Gebet, Hauptbuch des Foreman). Weitere Andeutungen in den nächsten Nächten.
+- **The North Watch:** Der Text in `content/lookout.js` soll mit dem Bogen wachsen (das Licht wird heller, Brindles Buch).
 
 ## Nächste Nächte
 
-- Mender ausbauen (Stufe 12 bis 16), dann Flarecaster, Drifter.
-- Bogen: Hushwood-Wölfe kommen näher ans Dorf (Gefallen bei Haskel), Tallow findet ein fremdes Gebet im Altar.
-- Erste Gefallen, die Gruppen belohnen.
+- Warden auf Stufe 28, dann Mender, Flarecaster, Drifter (28). Ab 30 braucht es neue Gegner und Ausrüstung.
+- Inhalt für 40+ (Tag 2 brachte „Lights That Eat Lights“ ab 23 und „The Oil Rush“ ab 26).
+- Bogen: Fen zählt die grünen Scherben (seit Tag 2); als Nächstes Spuren von Trägern am Nordrand; der Schein wird heller (`farLight` größer, Text am Ausguck).
+- Mehr Gefallen, die Gruppen belohnen (Tag 2: der erste, „foreman_again“).
 - Wesen und Gebiete für 40+ (die Klassen wachsen schneller als der Inhalt).
 
 ## Ideen für später
 
 - Eine alte Mühle im Grey, die sich von selbst dreht (steht auf dem Stimmzettel).
 - Angeln im Bach (steht auf dem Stimmzettel).
-- Ein Ausguck am Nordrand von Hushwood (steht auf dem Stimmzettel, passt zum Bogen).
 - Ein Imker zieht nach Kindle (steht auf dem Stimmzettel).
 - Aus Gebet 2: ein kleiner Talentbaum mit leichten Boni (größerer Umbau, später als Vorschlag). Die Truhe steht seit Tag 1 in der Taverne.
 - Aus Gebet 1: ein Übungsring für freundliche Zweikämpfe (Kampf zwischen Spielern ändert die Kampfregeln, nur mit Chris).
-- Mehr Schnecken, ein Schneckenpokal am Wochenende.
+- Mehr Schnecken, ein Schneckenpokal am Wochenende (steht seit Zettel 2 auf dem Stimmzettel).
 
 ## Was ankommt
 
@@ -58,6 +57,8 @@ Tag 1 (Nacht zum 2026-11-12). Gebaut und getestet, Stand für den PR:
 - Erster Export (2026-11-11): 7 Charaktere, alle in 24 Stunden aktiv; Leuchtfeuer 29 von 300; 2 Gebete, 1 Stimme.
 
 ## Bekannte Probleme
+
+- **Inbox-Export kommt nicht an (Tag 2):** GitHub startet `inbox-export.yml` per Cron mit über vier Stunden Verspätung (Zeitplan 21:50 UTC, gelaufen am 12.11. um 02:00 und 02:33 UTC). Das Skript prüft dann `hour == 22`, findet 3 oder 4 Uhr und bricht ohne Datei ab. Am 12.11. gab es deshalb keine Datei; Gebete und Stimmen von Zettel 1 wurden nicht gelesen. Braucht Chris (`.github/` ist geschützt): Uhrzeitprüfung lockern (z. B. Datei mit dem Datum des Abends schreiben, egal wann der Lauf startet) oder den Export vom Nachtlauf anstoßen lassen. Stimmen für Zettel 1 bleiben in der Datenbank, werden aber vom nächsten Export nur gezählt, wenn er nach `ballot=1` fragt.
 
 - Es gibt noch keinen automatischen Probespieler für die Balance (siehe `CLAUDE.md`, „Balance“).
 - Der Chat hat noch keine Moderation (verstecken, stummschalten). Das baut Chris vor dem öffentlichen Start.

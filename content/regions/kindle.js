@@ -13,6 +13,7 @@ export const ARRIVE = { stairs: { x: 50, y: 92 }, rift: { x: 50, y: 4 }, respawn
 // Name der Gegend an einer Stelle (Statusanzeige und Meldung beim Betreten).
 function zoneAt(x, y) {
   if (Math.hypot(x - 49.5, y - 49.5) <= 10) return 'KINDLE';
+  if (Math.hypot(x - 44.5, y - 6.5) <= 4) return 'THE NORTH WATCH';
   if (y < 26) return 'HUSHWOOD';
   if (y > 76) return 'SINKMARSH';
   if (x > 74) return 'COPPERDEEP';
@@ -116,6 +117,16 @@ export const REGION = {
     // Der versunkene Glockenrahmen im Südwesten von Sinkmarsh (Quest „The Drowned Choir“)
     {type: 'shrine', look: 'bell_frame', x: 14, y: 93, name: 'a sunken bell frame', gives: 'choir_bell', quest: 'drowned_choir', step: 2, text: 'A wooden frame, half under the water. One small bell still hangs in it, green with age.', empty: 'The frame creaks. The empty hook sways, though there is no wind.'},
     {type: 'door', to: 'drift', tx: 32, ty: 58, x: 50, y: 3, name: 'a tear in the Grey', look: 'rift'},
+    // Seit Tag 2: der alte Schacht des Foreman im Nordosten von Copperdeep (Salvage 26)
+    {type: 'node', node: 'old_shaft', x: 95, y: 27},
+    // Seit Tag 2: alte Steinmänner am Nordrand, die nach Norden zeigen (Cartography 26)
+    {type: 'node', node: 'north_cairn', x: 60, y: 4},
+    {type: 'node', node: 'north_cairn', x: 36, y: 4},
+    // Seit Tag 2: versunkene Gärten im tiefen Sinkmarsh (Foraging 26)
+    {type: 'node', node: 'drowned_garden', x: 40, y: 94},
+    {type: 'node', node: 'drowned_garden', x: 74, y: 96},
+    // Der Ausguck am Nordrand von Hushwood (Tag 2, Abstimmung): Brindle hält Wache, nachts sieht man von oben das Licht
+    {type: 'lookout', x: 43, y: 5, w: 2, d: 2, light: 3, name: 'the North Watch'},
   ],
   npcs: [
     {id: 'ama', name: 'Warden Ama', sprite: 'ama', x: 48, y: 47},
@@ -129,6 +140,7 @@ export const REGION = {
     {id: 'haskel', name: 'Haskel', sprite: 'haskel', x: 53, y: 19},
     {id: 'brack', name: 'Brack', sprite: 'brack', x: 86, y: 50},
     {id: 'mothwick', name: 'Mothwick', sprite: 'mothwick', x: 61, y: 47},
+    {id: 'brindle', name: 'Brindle', sprite: 'brindle', x: 46, y: 6},
     // Schneckenrennen: Mabb nimmt Wetten an, die Schnecken laufen von x 42 nach x 48 (content/races.js)
     {id: 'mabb', name: 'Mabb', sprite: 'mabb', x: 41, y: 59},
     {id: 'snail_bramble', name: 'Bramble', sprite: 'snail_bramble', x: 42, y: 58},
@@ -146,6 +158,13 @@ export const REGION = {
     {type: 'crow', x: 59, y: 63},
     {type: 'crow', x: 43, y: 61},
     {type: 'crow', x: 66, y: 46},
+    // Seit Tag 2: unruhige Wölfe am Waldrand nordwestlich der Felder, jenseits des Bachs (Stufe 6-9)
+    {type: 'restless_wolf', x: 18, y: 24},
+    {type: 'restless_wolf', x: 22, y: 27},
+    {type: 'restless_wolf', x: 18, y: 30},
+    {type: 'restless_wolf', x: 20, y: 33},
+    {type: 'restless_wolf', x: 20, y: 21},
+    {type: 'restless_wolf', x: 23, y: 30},
     {type: 'wolf', x: 25, y: 7},
     {type: 'wolf', x: 36, y: 12},
     {type: 'wolf', x: 46, y: 14},
@@ -155,7 +174,7 @@ export const REGION = {
     {type: 'wolf', x: 33, y: 21},
     {type: 'wolf', x: 70, y: 20},
     {type: 'moss_spirit', x: 24, y: 14},
-    {type: 'moss_spirit', x: 40, y: 6},
+    {type: 'moss_spirit', x: 30, y: 6},
     {type: 'moss_spirit', x: 62, y: 16},
     {type: 'moss_spirit', x: 74, y: 22},
     {type: 'moss_spirit', x: 54, y: 8},
@@ -165,6 +184,8 @@ export const REGION = {
     {type: 'stone_beetle', x: 94, y: 58},
     {type: 'stone_beetle', x: 84, y: 64},
     {type: 'stone_beetle', x: 78, y: 70},
+    // Seit Tag 2: der verlassene Vorarbeiter an seinem alten Flöz im Nordosten
+    {type: 'old_foreman', x: 90, y: 27},
     {type: 'pit_worm', x: 96, y: 34},
     {type: 'pit_worm', x: 90, y: 50},
     {type: 'pit_worm', x: 96, y: 62},

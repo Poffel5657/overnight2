@@ -525,6 +525,7 @@ export const PALETTES = {
   red_root: { k: '#2a0a08', a: '#d05a3a', b: '#8a3a2a', c: '#ffa080', d: '#5a8a3a', e: '#ffa080' },
   black: { k: '#0a0a10', a: '#2a2a3a', b: '#14141e', c: '#5a5a7a', d: '#c8a040', e: '#5a5a7a' },
   wolf: { k: '#1a1a20', a: '#7a7a82', b: '#4a4a52', c: '#a8a8b0', d: '#3a3a42', e: '#a8a8b0' },
+  singed: { k: '#1a1410', a: '#7a6a5e', b: '#4a3e36', c: '#d08a3a', d: '#3a3230', e: '#ffb050' },
   wispy: { k: '#1a2028', a: '#a8acb6', b: '#7e828c', c: '#e8f4ff', d: '#5a5e66', e: '#c8d8ff' },
 };
 
@@ -544,14 +545,14 @@ export const ITEM_ICONS = {
   scrap: ['pile', 'scrap'], brass_bits: ['pile', 'brass'], glimmer: ['gem', 'glim'], greyglass: ['gem', 'greyglass'], lamp_shard: ['gem', 'shard'],
   bitterleaf: ['leaf', 'green'], moss_tuft: ['leaf', 'moss'], emberroot: ['root', 'red_root'], lily_bulb: ['root', 'pale'],
   wax_comb: ['block', 'wax'], nightcap: ['mushroom', 'purple'], survey_notes: ['notes', 'paper'], prayer_tablet: ['notes', 'stone'], sodden_hymnal: ['notes', 'moss'], choir_bell: ['potion', 'moss'], choir_mantle: ['coat', 'cold'],
-  grey_wisp: ['wisp', 'wispy'], crow_feather: ['feather', 'black'], wolf_pelt: ['pelt', 'wolf'], beetle_shell: ['shell', 'stone'],
+  grey_wisp: ['wisp', 'wispy'], singed_tuft: ['pelt', 'singed'], prayer_slip: ['notes', 'pale'], spyglass_lens: ['lens', 'pale'], watchers_hood: ['hood', 'wolf'], foremans_lamp: ['lantern', 'brass'], green_shard: ['gem', 'moss'], wisp_core: ['gem', 'cold'], wisp_draught: ['potion', 'cold'], wraithsilk_hood: ['hood', 'pale'], wardstone_boots: ['boots', 'stone'], green_lens: ['lens', 'moss'], foremans_ledger: ['notes', 'scrap'], ruff_hood: ['hood', 'singed'], crow_feather: ['feather', 'black'], wolf_pelt: ['pelt', 'wolf'], beetle_shell: ['shell', 'stone'],
 };
 
 // Fähigkeit -> [Form, Palette]
 export const ABILITY_ICONS = {
   punch: ['fist', 'skin'],
-  bash: ['shield', 'steel'], brace: ['shield', 'light'], taunt: ['bang', 'red'], lantern_ward: ['ring', 'light'], shield_slam: ['shield', 'red'], stand_fast: ['shield', 'warm'], beacon_slam: ['star', 'light'],
-  ember_touch: ['flame', 'ember'], staff_rap: ['staff', 'brass'], warmth: ['waves', 'warm'], glow: ['ring', 'warm'], kindle_burst: ['star', 'ember'], cinder_flick: ['bolt', 'ember'], hearth_song: ['waves', 'light'], rekindle: ['flame', 'warm'],
-  flare_bolt: ['bolt', 'light'], flare: ['star', 'light'], sear: ['beam', 'ember'], sunspot: ['sun', 'light'],
-  slash: ['slash', 'steel'], dusk_step: ['arrow', 'dark'], snare: ['trap', 'steel'], fade: ['ghost', 'dark'], twin_cut: ['cross', 'steel'],
+  bash: ['shield', 'steel'], brace: ['shield', 'light'], taunt: ['bang', 'red'], lantern_ward: ['ring', 'light'], shield_slam: ['shield', 'red'], stand_fast: ['shield', 'warm'], beacon_slam: ['star', 'light'], bulwark: ['shield', 'glim'], last_light: ['shield', 'pale'],
+  ember_touch: ['flame', 'ember'], staff_rap: ['staff', 'brass'], warmth: ['waves', 'warm'], glow: ['ring', 'warm'], kindle_burst: ['star', 'ember'], cinder_flick: ['bolt', 'ember'], hearth_song: ['waves', 'light'], rekindle: ['flame', 'warm'], smoulder: ['star', 'red'], kindred_glow: ['waves', 'ember'],
+  flare_bolt: ['bolt', 'light'], flare: ['star', 'light'], sear: ['beam', 'ember'], sunspot: ['sun', 'light'], glare: ['ring', 'pale'], cinder_brand: ['flame', 'red'], starfall: ['star', 'cold'], sunlance: ['beam', 'light'], prism_ward: ['ring', 'glim'],
+  slash: ['slash', 'steel'], dusk_step: ['arrow', 'dark'], snare: ['trap', 'steel'], fade: ['ghost', 'dark'], twin_cut: ['cross', 'steel'], cheap_shot: ['fist', 'dark'], night_edge: ['slash', 'dark'], caltrops: ['trap', 'dark'], smoke_bomb: ['ghost', 'stone'], gutter_strike: ['slash', 'red'],
 };

@@ -427,6 +427,31 @@ export const SPRITES = {
     ],
   },
 
+  brindle: {
+    // Haskels Schwester, Wächterin am Ausguck: grüne Jacke, Fernrohr über der Schulter, rotes Kopftuch.
+    px: 1 / 13,
+    palette: { r: '#a83a2a', R: '#7a2a20', f: '#d8a880', e: '#2a1a10', h: '#5a3f26', c: '#4a6a3a', C: '#34502a', s: '#c8a040', S: '#8a6a20', p: '#4a3a2a', d: '#2e2218' },
+    rows: [
+      '....rrrr....',
+      '...rrrrrr...',
+      '...Rffffh...',
+      '...fefefh...',
+      '...ffffff...',
+      '....ffff..sS',
+      '..cccccccsS.',
+      '.ccCcccCsS..',
+      '.ccCcccsSc..',
+      '.fccccccccf.',
+      '..cccccccc..',
+      '..cccccccc..',
+      '..pppppppp..',
+      '..pp....pp..',
+      '..pp....pp..',
+      '..dd....dd..',
+      '.ddd....ddd.',
+    ],
+  },
+
   brack: {
     px: 1 / 13,
     palette: { y: '#c8a040', Y: '!#ffe08a', f: '#c89068', e: '#2a1a10', o: '#8a5a30', O: '#6a4220', g: '#5a5a62', p: '#3a3a44', d: '#2e2218' },
@@ -459,6 +484,27 @@ export const SPRITES = {
       'gGg.......gg',
       'gGGg.....gek',
       '.gGGggggGGgg',
+      '.gGGGGGGGGgw',
+      '.gGGGGGGGGg.',
+      '..gGGGGGGg..',
+      '..g.g..g.g..',
+      '..k.k..k.k..',
+    ],
+    walk: [
+      '.g..g..g..g.',
+      'k...k.k...k.',
+    ],
+  },
+
+  restless_wolf: {
+    // Ein Wolf, der aus Hushwood herausgewandert ist. Das Fell an den Spitzen versengt, die Augen bernsteinfarben.
+    px: 1 / 12,
+    palette: { g: '#6e625a', G: '#8e8076', k: '#3a3230', e: '!#ffb050', s: '#a0602a', w: '#c8c0b8' },
+    rows: [
+      'ss..........',
+      'gsg.......sg',
+      'gGGg.....gek',
+      '.gGGsgsgGGgg',
       '.gGGGGGGGGgw',
       '.gGGGGGGGGg.',
       '..gGGGGGGg..',
@@ -607,6 +653,54 @@ export const SPRITES = {
       '.rrrrrrrrrr.',
       '.wwrrrrrrww.',
       'wwwwwwwwwwww',
+    ],
+  },
+
+  old_foreman: {
+    // Der verlassene Vorarbeiter von Copperdeep (Tag 2): blasser Bergmann mit Helm, erloschener Helmlampe
+    // und Spitzhacke, halb durchsichtig grau. Die Augen glimmen kalt.
+    px: 1 / 11,
+    palette: { k: '#2a2a30', h: '#8a7a40', H: '#6a5a30', l: '#3a3a3a', f: '#9a9a94', e: '!#b8e0ff', c: '#5a5a62', C: '#46464e', b: '#3a3020', p: '#6a5a40', P: '#8a8a90', d: '#26262c' },
+    rows: [
+      '....hhhhh.....',
+      '...hhhlhhh....',
+      '..HHHHHHHHH...',
+      '...ffffff.....',
+      '...feffef.....',
+      '...ffffff.....',
+      '....ffff...P..',
+      '..cccccccc.PP.',
+      '.cCcccccCcpP..',
+      '.cCccbbcCcp...',
+      '.fcccbbcccf...',
+      '..cccccccc....',
+      '..cccccccc....',
+      '..CCC..CCC....',
+      '..CC....CC....',
+      '..dd....dd....',
+      '.ddd....ddd...',
+    ],
+  },
+
+  choir_wraith: {
+    // Ein Sänger des ertrunkenen Chors (Tag 2): blasser Umhang, offener Mund, kalte Augen, kein Unterleib.
+    px: 1 / 11,
+    palette: { w: '#b8c4c8', W: '#8a989c', k: '#2a3034', e: '!#c8f0ff', m: '#1a2024', g: '#5a7a6a' },
+    rows: [
+      '...wwwww....',
+      '..wwwwwww...',
+      '..wkeweke...',
+      '..wwwwwww...',
+      '..ww.mm.w...',
+      '..wwwmmww...',
+      '.WwwwwwwwW..',
+      'WWwwgwgwwWW.',
+      'W.wwwwwww.W.',
+      '..wwwwwww...',
+      '..WwwwwwW...',
+      '...WwwwW....',
+      '...W.W.W....',
+      '....W.W.....',
     ],
   },
 

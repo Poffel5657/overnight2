@@ -179,6 +179,13 @@ const BUILDERS = {
       g.add(box(0.14, 0.14, 0.14, glimmerMat, 0, 1.34, -0.38));
       return;
     }
+    if (o.look === 'offering_box') {
+      // Ein Holzkasten mit weißen Stimmsteinen neben dem Altar
+      g.add(box(0.6, 0.4, 0.45, '#5a3a20', 0, 0.2, 0));
+      g.add(box(0.5, 0.06, 0.35, '#e8e4d8', 0, 0.42, 0));
+      g.add(box(0.16, 0.03, 0.1, '#d8c8a0', 0.12, 0.46, 0.05));
+      return;
+    }
     if (o.look === 'bell_frame') {
       // Ein schiefer Glockenrahmen, halb im Sumpf, mit einer kleinen grünen Glocke
       const frame = new THREE.Group();
@@ -361,6 +368,23 @@ const BUILDERS = {
         g.add(box(0.16, 0.2, 0.16, glowMat, x, 1.2, o.d / 2 - 0.3));
       }
     }
+  },
+  lookout(o, g) {
+    // Der Ausguck am Nordrand (Tag 2): vier hohe Pfosten, Plattform mit Windschutz aus Wolfsfell,
+    // ein spitzes Dach und eine Laterne oben, eine Leiter auf der Südseite.
+    const top = 2.6;
+    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+      g.add(box(0.16, top + 0.9, 0.16, '#5a4028', sx * (o.w / 2 - 0.3), (top + 0.9) / 2, sz * (o.d / 2 - 0.3)));
+    }
+    g.add(box(0.08, 0.08, o.d - 0.4, '#4a3420', -(o.w / 2 - 0.3), 1.1, 0).rotateX(0.7));
+    g.add(box(0.08, 0.08, o.d - 0.4, '#4a3420', o.w / 2 - 0.3, 1.1, 0).rotateX(-0.7));
+    g.add(box(o.w - 0.1, 0.12, o.d - 0.1, '#6a4c2c', 0, top, 0));
+    g.add(box(o.w - 0.2, 0.5, 0.08, '#7a7a82', 0, top + 0.3, -(o.d / 2 - 0.1)));
+    g.add(box(0.08, 0.5, o.d - 0.2, '#6a6a72', -(o.w / 2 - 0.1), top + 0.3, 0));
+    g.add(box(0.08, 0.5, o.d - 0.2, '#6a6a72', o.w / 2 - 0.1, top + 0.3, 0));
+    g.add(roof(o.w + 0.1, o.d + 0.1, 0.8, '#4a3a2a', top + 0.9));
+    g.add(box(0.22, 0.26, 0.22, glowMat, 0, top + 0.5, 0));
+    for (let i = 0; i < 5; i++) g.add(box(0.5, 0.06, 0.06, '#5a4028', 0, 0.35 + i * 0.5, o.d / 2 - 0.1));
   },
   beacon(o, g, ctx) {
     g.add(new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.15, 0.7, 8), mat('#7a746a')).translateY(0.35));

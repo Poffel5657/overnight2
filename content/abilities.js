@@ -7,6 +7,9 @@
 //   taunt   Wesen im Umkreis greifen dich an      dash   springt dist Felder vom Ziel weg
 //   snare   Ziel steckt fest (root Takte)          fade   Wesen verlieren dich (Takte), außer im Licht
 //   zone    Fläche um das Ziel, Schaden an allem darin
+// melee/ranged können dazzle (Takte) und burn { dmg, ticks } (brennt nach, alle 2 Takte, + Stufe/4).
+// dark: Schadensfaktor, wenn der Werfer im Dunkeln steht (Nacht und kein festes Licht). burst kann root (Takte) und burn.
+// fade kann radius + dazzle (blendet alles um einen herum, bevor man verschwindet).
 // desc: ein Satz Stimmung; die Zahlen erzeugt shared/describe.js aus den Daten.
 // power: Waffe zählt mit (Schaden + Waffenkraft). dazzle: Ziel kann kurz nicht angreifen.
 
@@ -23,6 +26,8 @@ export const ABILITIES = {
   lantern_ward: { name: 'Lantern Ward', desc: "Your lantern's steady light hardens everyone close.", glyph: 'O', kind: 'aura', radius: 3, brace: 8, oil: 6, cd: 40, text: 'Your lantern spreads a ring of steady light.' },
   stand_fast: { name: 'Stand Fast', desc: "Dig in behind the shield and get your breath back.", glyph: 'H', kind: 'self', heal: 18, brace: 8, cd: 36, text: 'You dig in. The shield holds, and so do you.' },
   beacon_slam: { name: 'Beacon Slam', desc: "Slam the lantern into the shield. The flash rings every head nearby.", glyph: '*', kind: 'burst', radius: 1.5, hit: [7, 10], dazzle: 5, hold: true, oil: 5, cd: 24, text: 'Lantern meets shield. Everything close sees stars.' },
+  bulwark: { name: 'Bulwark', desc: "Raise the shield and the lantern together. Everything looks at you, and everyone behind you breathes easier.", glyph: 'U', kind: 'taunt', radius: 4, brace: 10, oil: 8, cd: 45, text: 'You raise shield and lantern. Everything turns to you, and your friends stand easier.' },
+  last_light: { name: 'Last Light', desc: "Turn the lantern all the way up and crouch behind the shield. For a while, nothing gets through.", glyph: 'A', kind: 'self', heal: 40, brace: 16, oil: 10, cd: 90, text: 'Your lantern blazes. You are a wall with a light on it.' },
   shield_slam: { name: 'Shield Slam', desc: "A heavy slam that rings the target's head.", glyph: ']', kind: 'melee', hit: [6, 9], dazzle: 4, cd: 16, power: true },
 
   // Mender
@@ -33,12 +38,19 @@ export const ABILITIES = {
   cinder_flick: { name: 'Cinder Flick', desc: "Flick a coal from the staff. Rude, but it works at a distance.", glyph: '.', kind: 'ranged', range: 4, hit: [4, 6], cd: 6, power: true },
   hearth_song: { name: 'Hearth Song', desc: "Hum the old hearth tune. Everyone near feels it for a long while.", glyph: '~', kind: 'hot', radius: 4, heal: 5, ticks: 14, oil: 6, cd: 45, text: 'You hum. The cold steps back from everyone near.' },
   rekindle: { name: 'Rekindle', desc: "Pour the ember into everyone close. For a moment, nobody is cold.", glyph: '+', kind: 'aura', radius: 3, heal: 24, brace: 6, oil: 12, cd: 60, text: 'The ember roars up. Every lantern near you burns brighter.' },
+  smoulder: { name: 'Smoulder', desc: "Shake the staff. Embers settle on everything close and refuse to go out.", glyph: '%', kind: 'burst', radius: 2, hit: [3, 5], burn: { dmg: 4, ticks: 16 }, oil: 8, cd: 30, power: true, text: 'Embers drift from your staff and settle on everything near.' },
+  kindred_glow: { name: 'Kindred Glow', desc: "Share the ember with everyone in reach, and keep sharing it.", glyph: '~', kind: 'hot', radius: 5, heal: 8, ticks: 20, oil: 12, cd: 70, text: 'A wide, warm glow spreads out from you and stays.' },
   kindle_burst: { name: 'Kindle Burst', desc: "The ember flares. Creatures flinch and run.", glyph: '*', kind: 'burst', radius: 2.5, hit: [3, 5], scare: 6, oil: 10, cd: 24, text: 'Your ember flares outward.' },
 
   // Flarecaster
   flare_bolt: { name: 'Flare Bolt', desc: "A focused bolt of lantern light.", glyph: '-', kind: 'ranged', range: 5, hit: [3, 5], cd: 0, power: true },
   flare: { name: 'Flare', desc: "A white flash. Everything close is scorched and scared off.", glyph: '*', kind: 'burst', radius: 2.5, hit: [2, 3], scare: 8, oil: 10, cd: 16, text: 'Your lantern flares white.' },
   sear: { name: 'Sear', desc: "A long, hot beam. Costs a little oil, hits hard.", glyph: '=', kind: 'ranged', range: 5, hit: [6, 9], oil: 4, cd: 10, power: true },
+  glare: { name: 'Glare', desc: "Tilt the lens and put the whole lantern in its eyes.", glyph: 'O', kind: 'ranged', range: 5, hit: [4, 6], dazzle: 6, cd: 18, power: true },
+  cinder_brand: { name: 'Cinder Brand', desc: "A hot point of light that stays lit on whatever it touches.", glyph: '^', kind: 'ranged', range: 5, hit: [3, 4], burn: { dmg: 4, ticks: 12 }, oil: 6, cd: 20, power: true, text: 'The spot of light catches, and keeps burning.' },
+  starfall: { name: 'Starfall', desc: "Gather the light high up, then let it all fall at once.", glyph: '%', kind: 'zone', range: 6, radius: 2, hit: [10, 14], oil: 14, cd: 40, power: true, text: 'Light gathers overhead, and falls.' },
+  sunlance: { name: 'Sunlance', desc: "Narrow the lens to a needle and throw the whole lantern down it.", glyph: '|', kind: 'ranged', range: 7, hit: [14, 18], oil: 10, cd: 24, power: true, text: 'A needle of white light crosses the dark.' },
+  prism_ward: { name: 'Prism Ward', desc: "Split the lantern light into a ring of colours. Blows that pass through it come out softer.", glyph: 'o', kind: 'aura', radius: 3, brace: 10, oil: 8, cd: 50, text: 'A ring of split light settles around you and your friends.' },
   sunspot: { name: 'Sunspot', desc: "Drop a patch of hard light on a group.", glyph: '@', kind: 'zone', range: 5, radius: 1.5, hit: [4, 6], oil: 8, cd: 20, text: 'A patch of hard light lands on the ground.' },
 
   // Drifter
@@ -46,5 +58,10 @@ export const ABILITIES = {
   dusk_step: { name: 'Dusk Step', desc: "Step back into the dusk and out of the fight.", glyph: '>', kind: 'dash', dist: 2, cd: 12, text: 'You step back into the dusk.' },
   snare: { name: 'Snare', desc: "A wire snare. The target stays where it is.", glyph: '&', kind: 'snare', range: 3, root: 8, cd: 18, text: 'A wire snare bites at its feet.' },
   fade: { name: 'Fade', desc: "Let the dark forget you. Light still finds you.", glyph: '.', kind: 'fade', ticks: 12, cd: 40, text: 'You let the dark forget you.' },
+  cheap_shot: { name: 'Cheap Shot', desc: "A knee, an elbow, a handful of grit. Nobody said it was fair.", glyph: ',', kind: 'melee', hit: [4, 6], dazzle: 6, cd: 18, power: true },
+  night_edge: { name: 'Night Edge', desc: "A cut from the dark side of the lantern. It goes deeper where nobody can see it coming.", glyph: '\\', kind: 'melee', hit: [8, 11], dark: 1.5, cd: 14, power: true },
+  caltrops: { name: 'Caltrops', desc: "Scatter a pocketful of bent nails. Everything close stops to think about its feet.", glyph: ':', kind: 'burst', radius: 2, hit: [4, 6], root: 10, cd: 36, text: 'You scatter caltrops all around you.' },
+  smoke_bomb: { name: 'Smoke Bomb', desc: "A clay ball of soot and lamp-black. Everyone coughs, nobody sees you go.", glyph: 'o', kind: 'fade', ticks: 12, radius: 2, dazzle: 6, cd: 50, text: 'Smoke bursts around you. You are somewhere else now.' },
+  gutter_strike: { name: 'Gutter Strike', desc: "Low, from the side nobody watches. In the dark, it is the last thing they notice.", glyph: 'v', kind: 'melee', hit: [14, 18], dark: 1.75, cd: 30, power: true },
   twin_cut: { name: 'Twin Cut', desc: "Both blades at once. Your hardest hit.", glyph: 'X', kind: 'melee', hit: [8, 11], cd: 12, power: true },
 };

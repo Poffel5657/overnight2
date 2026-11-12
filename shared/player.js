@@ -64,8 +64,11 @@ export function defenceOf(p) {
   return d;
 }
 
+// Reichweite der Laterne plus Licht aus anderer Ausrüstung (z. B. Choir Mantle, Smoke-Ruff Hood).
 export function lanternBonus(p) {
-  return equipped(p, 'lantern')?.light ?? -1;
+  let extra = 0;
+  for (const slot of SLOTS) if (slot !== 'lantern') extra += equipped(p, slot)?.light ?? 0;
+  return (equipped(p, 'lantern')?.light ?? -1) + extra;
 }
 
 export function oilBurn(p) {

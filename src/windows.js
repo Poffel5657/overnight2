@@ -219,7 +219,7 @@ export function createWindows(handlers) {
   // Ein Tipp auf die Karte schickt die Figur dorthin.
   const MAP_PX = 300;
   let mapBase = null;
-  const OBJ_COLOR = { beacon: '#ffb347', campfire: '#ff8a3a', signal: '#ff8a3a', brazier: '#ff8a3a', door: '#9fe0ff', station: '#c8a040', board: '#e8dcc0', altar: '#e8dcc0', stall: '#c86a8a', shrine: '#b0d0a0', chest: '#c8a040' };
+  const OBJ_COLOR = { beacon: '#ffb347', campfire: '#ff8a3a', signal: '#ff8a3a', brazier: '#ff8a3a', door: '#9fe0ff', station: '#c8a040', board: '#e8dcc0', altar: '#e8dcc0', stall: '#c86a8a', shrine: '#b0d0a0', chest: '#c8a040', lookout: '#ffcf70' };
   function mapBaseFor(region) {
     const key = `${region.id}:${region.date ?? ''}`;
     if (mapBase?.key === key) return mapBase;
@@ -510,10 +510,10 @@ export function createWindows(handlers) {
       };
     },
 
-    shop({ shop }) {
+    shop({ shop, stock }) {
       const s = SHOPS[shop];
       if (!state) return { heading: s.name.toUpperCase(), content: h('p', {}, '...') };
-      const buy = s.sells.map((id) => {
+      const buy = (stock || s.sells).filter((id) => ITEMS[id]).map((id) => {
         const it = ITEMS[id];
         const price = buyPrice(it.value);
         return h('li', { 'data-item': id }, iconEl('item', id, it.glyph, 'icon small'), ` ${it.name} `, h('span', { class: 'muted' }, `${price}G `),

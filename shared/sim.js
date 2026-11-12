@@ -22,6 +22,7 @@ import { tickTrade, cancelTrade } from './barter.js';
 import { partyHere, tickParty } from './party.js';
 import { tickRace, refundBet } from './races.js';
 import { INN } from '../content/tavern.js';
+import { LOOKOUT } from '../content/lookout.js';
 
 export { saveOf, xpForLevel, MAX_LEVEL } from './player.js';
 
@@ -115,7 +116,7 @@ export function createWorld(region, seed = 1234) {
       id: 'm' + i, kind: 'mob', type: m.type, def, name: def.name, sprite: def.sprite,
       x: p.x, y: p.y, px: p.x, py: p.y, home: p,
       hp: def.hp, maxHp: def.hp, nextAttack: 0, attacks: 0,
-      scaredUntil: 0, dazzleUntil: 0, rootUntil: 0, deadUntil: 0, dead: false,
+      scaredUntil: 0, dazzleUntil: 0, rootUntil: 0, deadUntil: 0, dead: false, burn: null,
       angryAt: null, tauntUntil: 0, returning: false, hitters: new Set(),
     };
   });
@@ -251,6 +252,7 @@ export function objectActions(o) {
     case 'stash': return [['open', 'Open'], ['examine', 'Examine']];
     case 'inn_bed': return [['rest', `Sleep (${INN.price} gold)`], ['examine', 'Examine']];
     case 'station': return [['use', 'Use'], ['examine', 'Examine']];
+    case 'lookout': return [['use', 'Climb up'], ['examine', 'Examine']];
     case 'node': return [['gather', NODES[o.node].verb], ['examine', 'Examine']];
     default: return [['examine', 'Examine']];
   }
@@ -554,6 +556,8 @@ function doAction(world, p, goal) {
     questEvent(world, p, 'action', { action: 'rest' });
   } else if (goal.action === 'gather' && t.type === 'node') {
     startGather(world, p, t);
+  } else if (goal.action === 'use' && t.type === 'lookout') {
+    climbLookout(world, p);
   } else if (goal.action === 'use' && t.type === 'station') {
     emit(world, { to: p.id, type: 'craft', obj: t.id, station: t.station });
   } else if (goal.action === 'enter' && t.inside) {
@@ -579,7 +583,7 @@ function doAction(world, p, goal) {
     const st = p.quests[t.quest];
     if (st && !st.done && st.step === t.step && P.countItem(p, t.gives) === 0) {
       P.addItem(p, t.gives, 1);
-      tell(world, p.id, `Under the old candles you find ${ITEMS[t.gives].name}.`, 'good');
+      tell(world, p.id, t.found || `Under the old candles you find ${ITEMS[t.gives].name}.`, 'good');
     } else {
       tell(world, p.id, t.empty || 'Old candles, cold wax, and the feeling of being listened to.', 'sys');
     }
@@ -592,6 +596,21 @@ function doAction(world, p, goal) {
     dailyOf(world, p);
     emit(world, { to: p.id, type: 'window', win: 'altar' });
   }
+}
+
+// Ausguck (Tag 2): Von oben sieht man nachts das Licht im Norden. Einmal pro Nacht und Spieler gibt das
+// ein wenig Erfahrung; Quests zählen es als Aktion 'watch'. Texte in content/lookout.js.
+function climbLookout(world, p) {
+  if (world.daylight >= 0.5) return tell(world, p.id, LOOKOUT.day, 'sys');
+  tell(world, p.id, LOOKOUT.night, 'info');
+  questEvent(world, p, 'action', { action: 'watch' });
+  const d = dailyOf(world, p);
+  d.chests = d.chests || [];
+  const key = `watch:${world.date}`;
+  if (d.chests.includes(key)) return;
+  d.chests.push(key);
+  tell(world, p.id, LOOKOUT.first, 'good');
+  grantXp(world, p, LOOKOUT.xp + LOOKOUT.xpPerLevel * P.classLevel(p));
 }
 
 // In ein anderes Gebiet wechseln. Der Server speichert, trennt und verbindet den Spieler neu.
@@ -614,7 +633,13 @@ function roll(world, a, b) {
 }
 
 function abilityDamage(world, p, a) {
-  return roll(world, a.hit[0], a.hit[1]) + (a.power ? P.weaponPower(p) : 0) + Math.floor(P.classLevel(p) / 2);
+  const dmg = roll(world, a.hit[0], a.hit[1]) + (a.power ? P.weaponPower(p) : 0) + Math.floor(P.classLevel(p) / 2);
+  // dark: mehr Schaden, wenn man im Dunkeln steht (nachts und außerhalb fester Lichter)
+  return a.dark && inDark(world, p) ? Math.round(dmg * a.dark) : dmg;
+}
+
+export function inDark(world, p) {
+  return world.daylight < 0.5 && staticLightAt(world, p.x, p.y) < 0.4;
 }
 
 function alliesNear(world, p, radius) {
@@ -639,6 +664,8 @@ function castAbility(world, p, id) {
     case 'melee':
     case 'ranged':
       if (a.dazzle) target.dazzleUntil = world.tick + a.dazzle;
+      // burn: Das Ziel brennt nach (Schaden alle 2 Takte), solange es lebt und nicht heimkehrt.
+      if (a.burn) target.burn = { by: p.id, dmg: a.burn.dmg + Math.floor(P.classLevel(p) / 4), left: a.burn.ticks };
       hitMob(world, p, target, abilityDamage(world, p, a));
       break;
     case 'zone':
@@ -655,6 +682,9 @@ function castAbility(world, p, id) {
         }
         // Geblendet: kann kurz nicht angreifen, angekündigte Angriffe verpuffen.
         if (a.dazzle) m.dazzleUntil = world.tick + a.dazzle;
+        // root: steckt fest (wie Snare), greift aber an, wer daneben steht
+        if (a.root) m.rootUntil = world.tick + a.root;
+        if (a.burn) m.burn = { by: p.id, dmg: a.burn.dmg + Math.floor(P.classLevel(p) / 4), left: a.burn.ticks };
         // hold: Wer getroffen wird, hält sich an den Werfer (wie Taunt), gut für Beschützer.
         if (a.hold) {
           m.angryAt = p.id;
@@ -687,6 +717,8 @@ function castAbility(world, p, id) {
         m.tauntUntil = world.tick + 12;
         m.hitters.add(p.id);
       }
+      // brace: Verbündete (und man selbst) im selben Umkreis nehmen kurz halben Schaden
+      if (a.brace) for (const q of alliesNear(world, p, a.radius)) q.braceUntil = Math.max(q.braceUntil, world.tick + a.brace);
       break;
     case 'dash': {
       const from = target || { x: p.x, y: p.y + 1 };
@@ -703,6 +735,14 @@ function castAbility(world, p, id) {
       target.hitters.add(p.id);
       break;
     case 'fade':
+      // Mit radius und dazzle: erst blenden, was nahe steht, dann verschwinden (Smoke Bomb).
+      if (a.radius && a.dazzle) {
+        for (const m of world.mobs) {
+          if (m.dead || Math.hypot(m.x - p.x, m.y - p.y) > a.radius) continue;
+          m.dazzleUntil = world.tick + a.dazzle;
+          dropTelegraphs(world, (t) => t.mob === m.id);
+        }
+      }
       p.fadeUntil = world.tick + a.ticks;
       for (const m of world.mobs) if (m.angryAt === p.id && m.tauntUntil <= world.tick) m.angryAt = null;
       p.engaged = false;
@@ -927,8 +967,19 @@ function updateMob(world, m) {
       m.returning = false;
       m.hitters.clear();
       m.phase2 = false;
+      m.burn = null;
     }
     return;
+  }
+  // Brennen (Fähigkeit mit burn): alle 2 Takte Schaden vom Werfer, solange er im Gebiet ist.
+  if (m.burn) {
+    const q = world.players.get(m.burn.by);
+    if (!q || m.burn.left <= 0 || m.returning) m.burn = null;
+    else if (world.tick % 2 === 0) {
+      m.burn.left -= 2;
+      hitMob(world, q, m, m.burn.dmg);
+      if (m.dead) { m.burn = null; return; }
+    }
   }
   const occupiedByPlayer = (x, y) => {
     for (const p of world.players.values()) if (p.x === x && p.y === y) return true;

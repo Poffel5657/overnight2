@@ -11,6 +11,7 @@ import { tell, emit } from './events.js';
 import * as P from './player.js';
 import { placeBet } from './races.js';
 import { INN } from '../content/tavern.js';
+import { shopStock } from '../content/shops.js';
 
 export const TALK_RANGE = 2;
 
@@ -132,7 +133,7 @@ function applyEffect(world, p, eff) {
     p.warnedOil = 0;
     questEvent(world, p, 'action', { action: 'refill' });
   }
-  if (eff.shop) emit(world, { to: p.id, type: 'shop', shop: eff.shop });
+  if (eff.shop) emit(world, { to: p.id, type: 'shop', shop: eff.shop, stock: shopStock(eff.shop, world.date) });
   if (eff.bet) placeBet(world, p, eff.bet[0], eff.bet[1]);
 }
 
