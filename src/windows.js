@@ -61,6 +61,15 @@ export function createWindows(handlers) {
   let date = '';
   let top = null;
   let prayerDraft = '';
+  // Tabs in Fenstern (Quests: aktiv/erledigt, Notice Board: Gefallen/Bestenliste). Gewählter Tab pro Fensterart.
+  const tabOf = {};
+  function tabBar(kind, list) {
+    const cur = list.some(([id]) => id === tabOf[kind]) ? tabOf[kind] : list[0][0];
+    const bar = h('div', { class: 'win-tabs', role: 'tablist' }, list.map(([id, label]) =>
+      h('button', { type: 'button', class: `win-tab${id === cur ? ' on' : ''}`, role: 'tab', 'aria-selected': String(id === cur),
+        onclick: () => { tabOf[kind] = id; handlers.click?.(); render(); } }, label)));
+    return [cur, bar];
+  }
   // „A Note for the Maker“: Entwurf, Art und Rückmeldung bleiben beim Neuzeichnen erhalten.
   const note = { kind: 'bug', text: '', sending: false, msg: null, ok: false };
 
@@ -434,12 +443,14 @@ export function createWindows(handlers) {
         const progress = step.type === 'kill' ? ` (${q.n}/${step.n})` : '';
         active.push(h('li', { class: 'quest' }, h('strong', {}, def.name), h('div', { class: 'muted small' }, `${def.text} (${npcName(def.giver)})`), h('div', {}, `> ${step.text}${progress}`)));
       }
+      const [tab, bar] = tabBar('quests', [['active', `Active (${active.length})`], ['done', `Done (${done.length})`]]);
       return {
         heading: 'QUESTS',
         content: [
-          h('ul', { class: 'rows' }, active.length ? active : [h('li', { class: 'muted' }, 'Nothing on your mind. People in Kindle might change that.')]),
-          done.length ? h('h3', {}, 'DONE') : null,
-          done.length ? h('ul', { class: 'rows' }, done) : null,
+          bar,
+          tab === 'active'
+            ? h('ul', { class: 'rows' }, active.length ? active : [h('li', { class: 'muted' }, 'Nothing on your mind. People in Kindle might change that.')])
+            : h('ul', { class: 'rows' }, done.length ? done : [h('li', { class: 'muted' }, 'Nothing finished yet.')]),
         ],
       };
     },
@@ -512,16 +523,20 @@ export function createWindows(handlers) {
           h('div', { class: 'muted small' }, `${npcName(f.from)} // ${done ? 'DONE' : progress} // ${f.reward.gold}G`),
           !done && f.type === 'bring' ? btn('HAND IN', () => handlers.favour(id), { disabled: have < f.n }) : null);
       });
-      if (top === null && handlers.online()) handlers.fetchBoard().then((t) => { top = t; render(); }).catch(() => { top = []; });
+      const [tab, bar] = tabBar('board', [['today', 'Favours'], ['brave', 'The Brave']]);
+      if (tab === 'brave' && top === null && handlers.online()) handlers.fetchBoard().then((t) => { top = t; render(); }).catch(() => { top = []; });
       const ranks = (top || []).map((r, i) => h('li', {}, `${String(i + 1).padStart(2)}. ${r.name}  LV ${r.level}`));
       return {
         heading: 'NOTICE BOARD',
-        content: [
+        content: tab === 'today' ? [
+          bar,
           h('h3', {}, 'FAVOURS TODAY'),
           h('ul', { class: 'rows' }, favours),
           h('p', { class: 'muted small' }, 'New favours every midnight. Kills count by themselves; bring the rest here.'),
           h('h3', {}, 'THE BEACON'),
           beaconBar(),
+        ] : [
+          bar,
           h('h3', {}, 'THE BRAVE'),
           handlers.online()
             ? h('ul', { class: 'rows mono' }, ranks.length ? ranks : [h('li', { class: 'muted' }, top === null ? 'Reading...' : 'Nobody yet.')])

@@ -865,3 +865,9 @@ button:disabled { color: var(--brass-dim); cursor: default; text-shadow: none; }
 /* „A Note for the Maker“: gewählte Art leuchtet, Dank in Grün */
 .row-buttons button.on { color: var(--flame); border-color: var(--brass); box-shadow: 0 0 0.5rem var(--glow); }
 .window p.good { color: var(--good); }
+
+/* Tabs in Fenstern (Quests, Notice Board), im Stil der Log/Chat-Tabs */
+.win-tabs { display: flex; gap: 0.9rem; margin: 0 0 0.5rem; border-bottom: 1px solid var(--brass); padding-bottom: 0.2rem; }
+.win-tab { color: var(--muted); opacity: 0.75; padding: 0.1rem 0; }
+.win-tab:hover { color: var(--bright); opacity: 1; }
+.win-tab.on { color: var(--flame); opacity: 1; text-shadow: 0 0 0.4em var(--glow); }
