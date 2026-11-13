@@ -564,7 +564,7 @@ export const ITEM_ICONS = {
   // Cinderford und das Unending Maze (seit 2026-11-13)
   turn_chalk: ['block', 'pale'], turnstone: ['gem', 'warm'], cinder_cake: ['bread', 'dark'], delvers_lamp: ['lantern', 'pale'],
   // Tag 3
-  snail_cup: ['cup', 'brass'], abels_riddle: ['notes', 'paper'], hollow_ration: ['bread', 'bread'], tally_stick: ['root', 'scrap'], carriers_wraps: ['boots', 'paper'], abels_purse_1: ['pile', 'bread'], abels_purse_2: ['pile', 'bread'], abels_purse_3: ['pile', 'bread'],
+  snail_cup: ['cup', 'brass'], abels_riddle: ['notes', 'paper'], hollow_ration: ['bread', 'bread'], tally_stick: ['root', 'scrap'], carriers_wraps: ['boots', 'paper'], sealed_ledger: ['notes', 'red'], abels_purse_1: ['pile', 'bread'], abels_purse_2: ['pile', 'bread'], abels_purse_3: ['pile', 'bread'],
   delvers_hood: ['hood', 'skin'], delvers_boots: ['boots', 'skin'], delvers_coat: ['coat', 'skin'], keepers_lantern: ['lantern', 'warm'],
 };
 

@@ -105,6 +105,7 @@ export const ITEMS = {
   abels_purse_1: { name: "Abel's First Purse", stack: true, value: 0, glyph: '$', text: 'A small leather purse, tied with a riddle-knot. Heavy for its size. Coyne will want to count it.' },
   abels_purse_2: { name: "Abel's Second Purse", stack: true, value: 0, glyph: '$', text: 'A small leather purse, tied with a riddle-knot. Heavy for its size. Coyne will want to count it.' },
   abels_purse_3: { name: "Abel's Third Purse", stack: true, value: 0, glyph: '$', text: 'A small leather purse, tied with a riddle-knot. Heavy for its size. Coyne will want to count it.' },
+  sealed_ledger: { name: 'Sealed Ledger', stack: true, value: 0, glyph: '=', text: 'A ledger tied with red string and sealed with wax shaped like a coin. Corrections, in Coyne\'s smallest handwriting.' },
   prayer_slip: { name: 'Folded Prayer', stack: true, value: 0, glyph: '=', text: 'A strip of pale bark paper, folded small. The writing is neat, brown and not from Kindle.' },
   crow_feather: { name: 'Crow Feather', stack: true, value: 1, glyph: '/', text: 'Glossy and judgemental. Fen collects them for quills.' },
 

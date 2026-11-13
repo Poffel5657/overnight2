@@ -22,6 +22,7 @@ import { CHRONICLE } from '../content/chronicle.js';
 import { favoursFor, PRAYER_MAX } from '../shared/community.js';
 import { TILE_TYPES } from '../content/tiles.js';
 import { STASH_SIZE, INN } from '../content/tavern.js';
+import { VENTURES } from '../content/ventures.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -340,6 +341,14 @@ export function createWindows(handlers) {
   const RENDER = {
     char() {
       const s = state;
+      // Counting House (Tag 3): alle Anteile in einer Zeile, Einzelheiten nennt Coyne („What do I own?“)
+      const sharesLine = (sh) => {
+        const rows = Object.entries(sh ?? {}).filter(([id, n]) => VENTURES[id] && n > 0);
+        if (!rows.length) return null;
+        const n = rows.reduce((a, [, k]) => a + k, 0);
+        const g = rows.reduce((a, [id, k]) => a + VENTURES[id].dividend * k, 0);
+        return h('div', { class: 'stat', title: rows.map(([id, k]) => `${VENTURES[id].name}: ${k}`).join(', ') }, h('span', { class: 'muted' }, 'Shares'), h('span', {}, `${n} (${g}g/day)`));
+      };
       if (!s) return { heading: 'CHARACTER', content: h('p', {}, '...') };
       const active = s.cls && CLASSES[s.cls];
       const def = active || WANDERER;
@@ -367,7 +376,9 @@ export function createWindows(handlers) {
         stat('Gold', s.gold),
         s.rested ? stat('Rested', `${s.rested} fights +${Math.round(INN.bonus * 100)}%`) : null,
         // Unending Maze: bis zu welchem Stockwerk die Treppen offen sind
-        (s.mazeDeep ?? 1) > 1 ? stat('Maze', `down to turn ${s.mazeDeep}`) : null);
+        (s.mazeDeep ?? 1) > 1 ? stat('Maze', `down to turn ${s.mazeDeep}`) : null,
+        // Counting House (Tag 3): Anteile und was sie am Tag bringen
+        sharesLine(s.shares));
 
       // Ausrüstung als Icons; Klick legt ab
       const gear = h('div', { class: 'gear' }, SLOTS.map((slot) => {
@@ -413,7 +424,7 @@ export function createWindows(handlers) {
           h('p', { class: 'muted small' }, 'Switch by holding a calling\'s weapon in Kindle. Nothing you learn is lost.'),
           h('h3', {}, `TRADES (${Object.keys(s.profs).length}/${MAX_PROFESSIONS})`),
           h('ul', { class: 'rows' }, profRows.length ? profRows : [h('li', { class: 'muted' }, 'None yet.')]),
-          free > 0 ? h('p', { class: 'muted small' }, 'Teachers: Rook (Salvage, Tinkering), Tallow (Foraging, Alchemy), Fen (Cartography), Wren (Lampwright).') : null,
+          free > 0 ? h('p', { class: 'muted small' }, 'Teachers: Rook or Tansy (Salvage, Tinkering), Tallow (Foraging, Alchemy), Fen (Cartography), Wren (Lampwright).') : null,
           h('div', { class: 'row-buttons' }, btn('Keys', () => open('keys')), handlers.online() ? btn('Leave Kindle', () => { closeAll(); handlers.leave(); }) : null),
         ],
       };

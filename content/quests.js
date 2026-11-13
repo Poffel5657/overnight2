@@ -163,6 +163,18 @@ export const QUESTS = {
     ],
     reward: { xp: 380, gold: 90, items: { glow_draught: 2, lamp_oil: 3 } },
   },
+  // Tag 3, Nachschlag: Coyne schickt Teilhaber mit einem Hauptbuch nach Cinderford (Counting House, Hesk, Maze)
+  cinderford_ledger: {
+    name: 'The Cinderford Ledger', giver: 'coyne',
+    text: 'Coyne\'s cousin keeps Hesk\'s books in Cinderford, badly. Coyne has corrections.',
+    steps: [
+      { type: 'talk', npc: 'hesk', text: 'Take Coyne\'s sealed ledger down the old road west to Hesk in Cinderford.' },
+      { type: 'have', item: 'turn_chalk', n: 5, text: 'Hesk pays in kind: fetch five sticks of turn chalk from the Unending Maze.' },
+      { type: 'talk', npc: 'hesk', text: 'Bring the turn chalk to Hesk.' },
+      { type: 'talk', npc: 'coyne', text: 'Report back to Coyne in the Counting House.' },
+    ],
+    reward: { xp: 260, gold: 55, items: { cinder_cake: 2 } },
+  },
   wisps_for_wicks: {
     name: 'Wisps for the Wicks', giver: 'mothwick',
     text: 'Mothwick spins wicks that burn at night. The secret ingredient is a little bit of the Grey.',

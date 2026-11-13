@@ -11,7 +11,7 @@ export const SHOPS = {
   mothwick: {
     name: 'The Night Market', npc: 'mothwick', night: true, sells: ['moth_lantern', 'moonwick', 'night_bread', 'lamp_oil'],
     // Seit Tag 2: jede Nacht zwei andere Dinge „aus dem Norden“
-    rotating: { perDay: 2, pool: ['glow_draught', 'dusk_draught', 'moss_salve', 'flare_candle', 'lily_oil', 'nightcap', 'emberroot', 'survey_notes', 'glimmer', 'green_shard', 'wisp_core'] },
+    rotating: { perDay: 2, pool: ['glow_draught', 'dusk_draught', 'moss_salve', 'flare_candle', 'lily_oil', 'nightcap', 'emberroot', 'survey_notes', 'glimmer', 'green_shard', 'wisp_core', 'hollow_ration'] },
   },
   hollis: { name: 'The Lantern & Lark', npc: 'hollis', sells: ['hearth_stew', 'ember_ale', 'bread', 'lamp_oil'] },
   // Seit 2026-11-13: Hesk in Cinderford (Ausrüstung gegen Turnstones im Gespräch)

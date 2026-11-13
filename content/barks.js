@@ -35,7 +35,7 @@ export const BARKS = {
   },
   band_pip: {
     range: 9, every: 31,
-    lines: ['*a thin, happy tune on the pipe*', '*toot*', 'There is a light in the north... la la...', '...and Brindle is watching it... la la...'],
+    lines: ['*a thin, happy tune on the pipe*', '*toot*', 'There is a light in the north... la la...', '...and Brindle is watching it... la la...', '...and lamps walk by in the dark... la la...'],
   },
   brindle: {
     range: 8, every: 50,
