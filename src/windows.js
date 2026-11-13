@@ -167,6 +167,8 @@ export function createWindows(handlers) {
       type: 'button',
       class: 'cell',
       'data-item': slot.id,
+      // Benutzbare Dinge lassen sich auf die Leiste ziehen (src/bardrag.js), nur in der Tasche
+      'data-bar-id': def.use && !extra.onclick ? `item:${slot.id}` : null,
       'data-hint': extra.hint ?? (def.slot ? 'Click: wear. Right-click: more.' : def.use ? 'Click: use. Right-click: more.' : 'Right-click: more.'),
       onclick: () => (extra.onclick ? extra.onclick(i, slot) : handlers.use(i)),
       oncontextmenu: (e) => { e.preventDefault(); itemMenu(e.clientX, e.clientY, i, slot); },
@@ -365,7 +367,7 @@ export function createWindows(handlers) {
         const known = s.classes[s.cls].level >= need;
         const onBar = s.bar.includes(ab);
         const d = describeAbility(ab);
-        return h('li', { class: `ability-row ${known ? '' : 'dim'}`, 'data-ability': ab },
+        return h('li', { class: `ability-row ${known ? '' : 'dim'}`, 'data-ability': ab, 'data-bar-id': known ? ab : null },
           h('div', {}, iconEl('ability', ab, a.glyph, 'icon small'), ` ${a.name} `,
             known ? (onBar ? h('span', { class: 'muted' }, 'on bar') : btn('To bar', () => handlers.assign(ab, a.name))) : h('span', { class: 'muted' }, `Lv ${need}`)),
           h('div', { class: 'ability-desc' }, d.effect),
@@ -459,7 +461,7 @@ export function createWindows(handlers) {
         heading: `BAG // ${state.gold} GOLD`,
         content: [
           bagGrid(),
-          h('p', { class: 'muted small' }, 'Click: use or wear. Right-click / hold: more (put on bar, drop).'),
+          h('p', { class: 'muted small' }, 'Click: use or wear. Drag onto the bar. Right-click / hold: more (put on bar, drop).'),
         ],
       };
     },

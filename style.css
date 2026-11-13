@@ -871,3 +871,12 @@ button:disabled { color: var(--brass-dim); cursor: default; text-shadow: none; }
 .win-tab { color: var(--muted); opacity: 0.75; padding: 0.1rem 0; }
 .win-tab:hover { color: var(--bright); opacity: 1; }
 .win-tab.on { color: var(--flame); opacity: 1; text-shadow: 0 0 0.4em var(--glow); }
+
+/* Ziehen auf die Leiste (src/bardrag.js) */
+[data-bar-id] { cursor: grab; }
+body.bar-dragging, body.bar-dragging * { cursor: grabbing !important; user-select: none; }
+.bar-ghost { position: fixed; z-index: 1000; pointer-events: none; transform: translate(-50%, -50%); width: 2.6rem; height: 2.6rem; display: flex; align-items: center; justify-content: center; border: 1px solid var(--brass); border-radius: 3px; background: var(--well); box-shadow: 0 0 0.8rem var(--glow); opacity: 0.9; }
+.bar-ghost .icon { width: 1.9rem; height: 1.9rem; }
+.hotbar.drop-ready .slot { border-color: var(--brass); }
+.slot.drop-target { border-color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent), 0 0 0.8rem var(--glow); }
+body.bar-dragging .tip { display: none !important; }

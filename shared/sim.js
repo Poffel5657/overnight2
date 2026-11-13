@@ -132,7 +132,7 @@ export function addPlayer(world, id, name, save = null) {
     id, kind: 'player', name, sprite: 'player',
     x: 0, y: 0, px: 0, py: 0,
     hp: 30, maxHp: 30, oil: 100, gold: 0,
-    cls: null, classes: {}, specs: {}, bag: [], equip: {}, profs: {}, quests: {}, bars: {},
+    cls: null, classes: {}, specs: {}, bag: [], equip: {}, profs: {}, quests: {}, bars: {}, barSeen: {},
     path: [], goal: null, target: null, engaged: false,
     gcdUntil: 0, swingAt: 0, cds: {}, queued: null, queuedUntil: 0, braceUntil: 0,
     glowUntil: 0, fadeUntil: 0, hots: [], dialog: null, gather: null, mazeDeep: 1,

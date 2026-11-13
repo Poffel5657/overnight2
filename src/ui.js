@@ -154,7 +154,7 @@ export function createUI(handlers) {
         delete b.dataset.tip;
         if (entry?.item) b.dataset.item = entry.item;
         else if (entry) b.dataset.ability = id;
-        else b.dataset.tip = `Empty slot (${keyLabel(keys[i])}). Right-click a bag item, or use "To bar" in the Character window.`;
+        else b.dataset.tip = `Empty slot (${keyLabel(keys[i])}). Drag an ability or bag item here.`;
         b.dataset.key = keyLabel(keys[i]);
         b.querySelector('.key').textContent = keyLabel(keys[i]);
         b.querySelector('.glyph').replaceChildren(entry ? iconEl(entry.item ? 'item' : 'ability', entry.item || id, entry.glyph) : '·');

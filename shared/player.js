@@ -92,7 +92,9 @@ export function barKey(p) {
   return p.cls || 'wanderer';
 }
 
-// Leiste der aktiven Klasse. Neu gelernte Fähigkeiten rücken in das erste freie Feld.
+// Leiste der aktiven Klasse. Neu gelernte Fähigkeiten rücken einmal in das erste freie Feld.
+// barSeen merkt sich pro Leiste, welche Fähigkeiten schon dort lagen: Nimmt der Spieler eine
+// davon herunter, bleibt das Feld leer (Chris' Wunsch, 2026-11-13).
 export function barOf(p) {
   const key = barKey(p);
   let bar = p.bars[key];
@@ -100,12 +102,18 @@ export function barOf(p) {
     bar = Array(BAR_SIZE).fill(null);
     p.bars[key] = bar;
   }
+  p.barSeen ??= {};
+  const seen = (p.barSeen[key] ??= []);
   const known = knownAbilities(p);
   for (let i = 0; i < BAR_SIZE; i++) if (bar[i] && !known.includes(bar[i]) && !bar[i].startsWith('item:')) bar[i] = null;
   for (const id of known) {
-    if (bar.includes(id)) continue;
-    const free = bar.indexOf(null);
-    if (free >= 0) bar[free] = id;
+    if (seen.includes(id)) continue;
+    if (!bar.includes(id)) {
+      const free = bar.indexOf(null);
+      if (free < 0) continue; // kein Platz: beim nächsten freien Feld noch einmal versuchen
+      bar[free] = id;
+    }
+    seen.push(id);
   }
   return bar;
 }
@@ -302,6 +310,12 @@ export function loadInto(p, raw) {
       return null;
     });
   }
+  // Schon einmal angebotene Fähigkeiten pro Leiste (alte Stände: leer, barOf füllt nach)
+  p.barSeen = {};
+  for (const [k, list] of Object.entries(save.barSeen || {})) {
+    if (!(k === 'wanderer' || CLASSES[k]) || !Array.isArray(list)) continue;
+    p.barSeen[k] = [...new Set(list.filter((v) => typeof v === 'string' && Object.hasOwn(ABILITIES, v)))];
+  }
   // Tagesstand (Gefallen, Spenden, Gebet). Gilt nur für das gespeicherte Datum.
   const d = save.daily;
   if (d && typeof d.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d.date)) {
@@ -329,7 +343,7 @@ export function saveOf(p) {
     v: SAVE_VERSION,
     x: p.x, y: p.y, hp: Math.max(1, p.hp), oil: Math.round(p.oil * 10) / 10, gold: p.gold,
     cls: p.cls, classes: p.classes, specs: p.specs ?? {}, bag: p.bag.filter(Boolean), equip: p.equip,
-    profs: p.profs, quests: p.quests, bars: p.bars, daily: p.daily ?? null,
+    profs: p.profs, quests: p.quests, bars: p.bars, barSeen: p.barSeen ?? {}, daily: p.daily ?? null,
     stash: p.stash ?? [], rested: p.rested ?? 0, mazeDeep: p.mazeDeep ?? 1,
   };
 }

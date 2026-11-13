@@ -17,6 +17,7 @@ import { buildObjects } from './render/objects.js';
 import { makeSprite } from './render/sprites.js';
 import { setLights, lightUniforms } from './render/light.js';
 import { createUI } from './ui.js';
+import { initBarDrag } from './bardrag.js';
 import { startNumerals } from './numerals.js';
 import { conditionHolds } from '../shared/talk.js';
 import { TALK } from '../content/npcs.js';
@@ -233,6 +234,9 @@ const ui = createUI({
   partyLeave() { send({ t: 'partyLeave' }); },
   partyKick(id) { send({ t: 'partyKick', id }); },
 });
+
+// Fähigkeiten und Gegenstände per Ziehen auf die Leiste legen, Felder tauschen oder leeren
+initBarDrag({ hotbar: document.getElementById('hotbar'), getBar: () => ui.bar, assign: (slot, id) => send({ t: 'bar', slot, id }) });
 
 const windows = createWindows({
   use(slot) { send({ t: 'use', slot }); },

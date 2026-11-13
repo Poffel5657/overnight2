@@ -315,6 +315,30 @@ test('Leiste: nur bekannte Fähigkeiten, Gegenstände erlaubt', () => {
   assert.equal(p.queued, null, 'fremde Fähigkeit wird nicht ausgeführt');
 });
 
+test('Leiste: heruntergenommene Fähigkeit bleibt weg, neu gelernte kommt einmal, alter Stand lädt', () => {
+  const w = S.createWorld(REGION, 13);
+  const p = newcomer(w, 'a', 'warden');
+  const first = P.barOf(p).find(Boolean);
+  assert.ok(first, 'eine Fähigkeit liegt auf der Leiste');
+  const slot = P.barOf(p).indexOf(first);
+  applyIntent(w, 'a', { t: 'bar', slot, id: null });
+  assert.ok(!P.barOf(p).includes(first), 'Feld bleibt leer');
+  // Spielstand speichern und laden: bleibt leer
+  const q = S.createWorld(REGION, 14);
+  S.addPlayer(q, 'b', 'B', P.saveOf(p));
+  assert.ok(!P.barOf(q.players.get('b')).includes(first), 'auch nach dem Laden leer');
+  // Zurückziehen geht
+  applyIntent(w, 'a', { t: 'bar', slot: 8, id: first });
+  assert.equal(P.barOf(p)[8], first);
+  // Alter Stand ohne barSeen: bekannte Fähigkeit wird wie früher eingesetzt
+  const old = P.saveOf(p);
+  delete old.barSeen;
+  old.bars = {};
+  const r = S.createWorld(REGION, 15);
+  S.addPlayer(r, 'c', 'C', old);
+  assert.ok(P.barOf(r.players.get('c')).includes(first), 'alter Stand bekommt die Fähigkeit');
+});
+
 // ---------- Berufe ----------
 
 test('Höchstens zwei Berufe, Verlernen löscht den Fortschritt', () => {
