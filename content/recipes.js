@@ -21,6 +21,8 @@ export const RECIPES = {
   t_glim_shivs: { prof: 'tinkering', level: 15, inputs: { brass_bits: 3, glimmer: 2 }, out: ['glim_shivs', 1], xp: 70 },
   t_glim_shield: { prof: 'tinkering', level: 15, inputs: { brass_bits: 4, glimmer: 2 }, out: ['glim_shield', 1], xp: 70 },
   t_glim_coat: { prof: 'tinkering', level: 17, inputs: { brass_bits: 3, glimmer: 1, wolf_pelt: 2 }, out: ['glim_coat', 1], xp: 80 },
+  // Tag 3: die Wickel der Träger nachbauen (Wolfsfell, Messing, ein Wisp für das Lämpchen am Knöchel)
+  t_carriers_wraps: { prof: 'tinkering', level: 18, inputs: { wolf_pelt: 2, brass_bits: 2, grey_wisp: 1 }, out: ['carriers_wraps', 1], xp: 86 },
   t_shell_coat: { prof: 'tinkering', level: 20, inputs: { beetle_shell: 4, brass_bits: 2 }, out: ['shell_coat', 1], xp: 95 },
   t_greyglass_hood: { prof: 'tinkering', level: 24, inputs: { greyglass: 2, glimmer: 1 }, out: ['greyglass_hood', 1], xp: 120 },
   t_greyglass_boots: { prof: 'tinkering', level: 24, inputs: { greyglass: 2, glimmer: 1 }, out: ['greyglass_boots', 1], xp: 120 },

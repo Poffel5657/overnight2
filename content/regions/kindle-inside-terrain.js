@@ -1,6 +1,6 @@
 // Raster der Innenräume von Kindle (Legende in content/tiles.js). Jeder Raum ist von Wand umgeben,
 // dazwischen liegt Nichts (' ', schwarz), damit man aus einem Raum die anderen nicht sieht.
-// Kapelle links, Werkstatt in der Mitte, drei Häuser rechts, darunter die Taverne „The Lantern & Lark“.
+// Kapelle links, Werkstatt in der Mitte (seit Tag 3 doppelt so groß), drei Häuser rechts, darunter die Taverne „The Lantern & Lark“.
 export const TILES = [
   '#############     ###########    ########             ',
   '#fffffffffff#     #ppppppppp#    #pppppp#             ',
@@ -10,15 +10,15 @@ export const TILES = [
   '#fffffffffff#     #ppppppppp#    #pppppp#             ',
   '#fffffffffff#     #ppppppppp#    ########             ',
   '#fffffffffff#     #ppppppppp#                         ',
-  '#fffffffffff#     ###########                         ',
-  '#fffffffffff#                                         ',
-  '#fffffffffff#                    ########    ######## ',
-  '#fffffffffff#                    #pppppp#    #pppppp# ',
-  '#fffffffffff#                    #pppppp#    #pppppp# ',
-  '#fffffffffff#                    #pppppp#    #pppppp# ',
-  '#fffffffffff#                    #pppppp#    #pppppp# ',
-  '#fffffffffff#                    #pppppp#    #pppppp# ',
-  '#fffffffffff#                    ########    ######## ',
+  '#fffffffffff#     #ppppppppp#                         ',
+  '#fffffffffff#     #ppppppppp#                         ',
+  '#fffffffffff#     #ppppppppp#    ########    ######## ',
+  '#fffffffffff#     #ppppppppp#    #pppppp#    #pppppp# ',
+  '#fffffffffff#     #ppppppppp#    #pppppp#    #pppppp# ',
+  '#fffffffffff#     #ppppppppp#    #pppppp#    #pppppp# ',
+  '#fffffffffff#     #ppppppppp#    #pppppp#    #pppppp# ',
+  '#fffffffffff#     #ppppppppp#    #pppppp#    #pppppp# ',
+  '#fffffffffff#     ###########    ########    ######## ',
   '#############                                         ',
   '                                                      ',
   '              ############################            ',

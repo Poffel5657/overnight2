@@ -24,6 +24,7 @@ export function describeAbility(id) {
     case 'ranged':
       effect = [
         `Hit a creature up to ${tiles(a.range)} away for ${dmg}.`,
+        a.pull ? 'It is dragged to your side and attacks only you for a while (the biggest creatures will not budge, but still turn on you).' : '',
         a.dazzle ? `It cannot attack for ${secs(a.dazzle)}.` : '',
         a.burn ? `It burns for ${a.burn.dmg} (+ a quarter of your level) every 0.6s for ${secs(a.burn.ticks)}.` : '',
       ].filter(Boolean).join(' ');

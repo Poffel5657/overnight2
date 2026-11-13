@@ -19,6 +19,10 @@ export const BARKS = {
       'Something new at the Night Market every night! Only after dark!',
       'Brack says the Old Foreman is still working! Somebody tell him!',
       'The old road west is back! Cinderford is at the end of it, and a maze under it!',
+      'The Counting House is open! Coyne sells shares in Kindle! Your gold, working for you!',
+      'The Snail Cup is here! Two new snails! Cup Day every weekend!',
+      'Lights on the north edge at night! Brindle wants to know who is carrying them!',
+      'Rook\'s workshop doubled in size! He still works in the yard!',
     ],
   },
   band_corra: {
@@ -40,11 +44,20 @@ export const BARKS = {
       '*scribbles in a little book*',
       'Another wolf, running south. That makes nine today.',
       'Brighter than Tuesday. I am sure of it.',
+      'Lamps on the tree line again. Five. No, four.',
     ],
   },
   hesk: {
     range: 8, every: 40,
     lines: ['Oil! Chalk! Cake! Rope!', 'Gear for turnstones, gold for everything else.', '*counts rope under his breath*'],
+  },
+  coyne: {
+    range: 6, every: 50,
+    lines: ['*counts under her breath*', 'Forty-one, forty-two... who moved that coin?', 'Shares in Kindle! Gold that comes back!'],
+  },
+  tansy: {
+    range: 6, every: 55,
+    lines: ['*tightens something that did not need tightening*', 'Rook! It is raining! ...no? Fine.', 'Mind the gears, they are in order.'],
   },
   sorrel: {
     range: 8, every: 45,
@@ -56,6 +69,9 @@ export const BARKS = {
       'Bets on the snails! Five gold, twenty gold!',
       'Bramble is in fine form today. Probably.',
       'Old Tom is not asleep. He is thinking.',
+      'Duchess will not race if anyone is rude about her hat.',
+      'Thistle thinks she is a horse. Do not tell her.',
+      'Win three and the Cup is yours! I have spares!',
     ],
   },
 };
@@ -79,5 +95,7 @@ export const HAILS = {
   sorrel: 'Kindle! Over here. The Maze is hiring.',
   ivy: 'You. Yes. Do you have steady hands?',
   band_corra: 'Psst! Did you hear about the west road?',
+  coyne: 'You there. Yes, you, with the purse. A moment.',
+  tansy: 'Hey! Want to learn the trade? Inside, where it is dry.',
 };
 export const HAIL_DEFAULT = 'You there! A word?';

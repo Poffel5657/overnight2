@@ -135,7 +135,7 @@ export function addPlayer(world, id, name, save = null) {
     cls: null, classes: {}, specs: {}, bag: [], equip: {}, profs: {}, quests: {}, bars: {}, barSeen: {},
     path: [], goal: null, target: null, engaged: false,
     gcdUntil: 0, swingAt: 0, cds: {}, queued: null, queuedUntil: 0, braceUntil: 0,
-    glowUntil: 0, fadeUntil: 0, hots: [], dialog: null, gather: null, mazeDeep: 1,
+    glowUntil: 0, fadeUntil: 0, hots: [], dialog: null, gather: null, mazeDeep: 1, shares: {}, dividendDay: null,
     warnedOil: 0,
   };
   if (save) P.loadInto(p, save);
@@ -668,6 +668,9 @@ function castAbility(world, p, id) {
       if (a.dazzle) target.dazzleUntil = world.tick + a.dazzle;
       // burn: Das Ziel brennt nach (Schaden alle 2 Takte), solange es lebt und nicht heimkehrt.
       if (a.burn) target.burn = { by: p.id, dmg: a.burn.dmg + Math.floor(P.classLevel(p) / 4), left: a.burn.ticks };
+      // pull (Tag 3, Lantern Hook): holt das Ziel auf ein freies Feld neben den Werfer und bindet es an ihn.
+      // Bosse lassen sich nicht ziehen, werden aber gebunden.
+      if (a.pull) pullMob(world, p, target);
       hitMob(world, p, target, abilityDamage(world, p, a));
       break;
     case 'zone':
@@ -753,6 +756,28 @@ function castAbility(world, p, id) {
       return false;
   }
   return true;
+}
+
+function pullMob(world, p, m) {
+  m.angryAt = p.id;
+  m.tauntUntil = world.tick + 12;
+  m.hitters.add(p.id);
+  if (m.def.boss || cheb(p.x, p.y, m.x, m.y) <= 1) return;
+  let best = null;
+  for (let dy = -1; dy <= 1; dy++) {
+    for (let dx = -1; dx <= 1; dx++) {
+      const x = p.x + dx;
+      const y = p.y + dy;
+      if ((!dx && !dy) || !walkable(world, x, y)) continue;
+      if (world.mobs.some((o) => o !== m && !o.dead && o.x === x && o.y === y)) continue;
+      const d = Math.hypot(x - m.x, y - m.y);
+      if (!best || d < best.d) best = { x, y, d };
+    }
+  }
+  if (!best) return;
+  m.x = best.x;
+  m.y = best.y;
+  dropTelegraphs(world, (t) => t.mob === m.id);
 }
 
 function healPlayer(world, q, n) {

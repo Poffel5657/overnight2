@@ -19,4 +19,10 @@ export const CHRONICLE = [
     title: 'Eyes on the north',
     text: 'The lookout from the altar\'s ballot stands at the top of the north road, and Brindle keeps watch there. Wolves are running out of Hushwood with singed fur, a stranger\'s prayer turned up in the offering box, the Old Foreman still works his seam in Copperdeep, every calling learned something new, and Mothwick brings something different every night.',
   },
+  {
+    day: 3,
+    date: '2026-11-14',
+    title: 'Partners, a Cup and lamps in the trees',
+    text: 'The altar voted for the Snail Cup, so Mabb has a trophy, two new snails and a Cup Day every weekend. Coyne opened the Counting House, where your gold can buy a share of Kindle, and an old strongbox waits for someone who can count to three. Rook\'s workshop doubled, every calling learned two new things up to level 32, and Brindle has seen lamps walking along the north edge at night.',
+  },
 ];

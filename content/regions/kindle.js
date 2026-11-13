@@ -34,11 +34,12 @@ export const REGION = {
   // Im Lichtkreis des Leuchtfeuers brennt kein Öl, und hier wechselt man die Klasse.
   safeRadius: 10,
   // Nur Darstellung: ein warmer Schein über dem Nordrand, nachts sichtbar (der Bogen „The Second Light“).
-  farLight: { x: 40, y: -1, h: 3 },
+  farLight: { x: 40, y: -1, h: 3.5, size: 1.25 },
   objects: [
     {type: 'beacon', x: 49, y: 49, w: 2, d: 2, light: 11, name: 'the Beacon'},
     {type: 'chapel', x: 41, y: 38, w: 5, d: 6, name: 'the Chapel', inside: inside('chapel')},
-    {type: 'house', x: 54, y: 38, w: 4, d: 4, roof: '#7a3b26', name: 'a house', inside: inside('house1')},
+    // Seit Tag 3 (Gebet): das Counting House, Coyne verwaltet Anteile an den Geschäften von Kindle
+    {type: 'house', x: 54, y: 38, w: 4, d: 4, roof: '#3a4a5a', sign: true, name: 'the Counting House', text: 'A narrow house with a brass sign over the door: a pair of scales. Somebody inside is counting out loud.', inside: inside('house1')},
     {type: 'house', x: 39, y: 54, w: 3, d: 3, roof: '#5f4a3a', name: 'a house', inside: inside('house3')},
     {type: 'house', x: 55, y: 55, w: 3, d: 3, roof: '#7a3b26', name: 'a house', inside: inside('house4')},
     {type: 'workshop', x: 59, y: 51, w: 4, d: 3, name: 'the Workshop', inside: inside('workshop')},
@@ -130,6 +131,12 @@ export const REGION = {
     // Seit Tag 2: versunkene Gärten im tiefen Sinkmarsh (Foraging 26)
     {type: 'node', node: 'drowned_garden', x: 40, y: 94},
     {type: 'node', node: 'drowned_garden', x: 74, y: 96},
+    // Seit Tag 3 (Bogen): ein zerbrochenes Tragegestell am Bach im Nordwesten (Quest „Carriers in the Dark“)
+    {type: 'shrine', look: 'carrier_frame', x: 30, y: 2, name: 'a broken carrying frame', gives: 'tally_stick', quest: 'carriers_dark', step: 0, text: 'A wooden frame for carrying loads on your back. One strap is torn, and something has chewed the rest.', found: 'Tied to the frame with string is a stick covered in notches.', empty: 'Just the frame, and teeth marks. Lots of teeth marks.'},
+    // Seit Tag 3: Abels drei Verstecke (Quest „Abel's Three Caches“, je ein Schritt)
+    {type: 'shrine', look: 'floorboard', x: 51, y: 14, name: 'a mossy hollow', gives: 'abels_purse_1', quest: 'abels_caches', step: 0, text: 'A hollow between two roots, three steps north of the woodcutters\' fire. The moss on top has been put back by hand.', found: 'Under the moss: a small leather purse, tied with a complicated knot.', empty: 'Moss, roots, and a beetle that resents you.'},
+    {type: 'shrine', look: 'floorboard', x: 4, y: 48, name: 'a stone that does not belong', gives: 'abels_purse_2', quest: 'abels_caches', step: 1, text: 'A flat river stone, out here where there is no river. Somebody carried it a long way to put it here.', found: 'Under the stone: another purse, with the same knot.', empty: 'Just a stone. A well-travelled one.'},
+    {type: 'shrine', look: 'floorboard', x: 84, y: 45, name: 'a loose rock uphill', gives: 'abels_purse_3', quest: 'abels_caches', step: 2, text: 'A rock uphill of the mine camp fire, wedged in a little too neatly.', found: 'Behind the rock: the third purse. Somebody has scratched "3" on it.', empty: 'Rock, dust, and a smell of old beer from the camp below.'},
     // Der Ausguck am Nordrand von Hushwood (Tag 2, Abstimmung): Brindle hält Wache, nachts sieht man von oben das Licht
     {type: 'lookout', x: 43, y: 5, w: 2, d: 2, light: 3, name: 'the North Watch'},
   ],
@@ -151,6 +158,9 @@ export const REGION = {
     {id: 'snail_bramble', name: 'Bramble', sprite: 'snail_bramble', x: 42, y: 58},
     {id: 'snail_pebble', name: 'Pebble', sprite: 'snail_pebble', x: 42, y: 59},
     {id: 'snail_tom', name: 'Old Tom', sprite: 'snail_tom', x: 42, y: 60},
+    // Seit Tag 3 (Snail Cup): zwei neue Bahnen südlich der alten
+    {id: 'snail_duchess', name: 'Duchess', sprite: 'snail_duchess', x: 42, y: 61},
+    {id: 'snail_thistle', name: 'Thistle', sprite: 'snail_thistle', x: 42, y: 62},
   ],
   mobs: [
     {type: 'greyling', x: 35, y: 29},
@@ -178,6 +188,11 @@ export const REGION = {
     {type: 'wolf', x: 76, y: 12},
     {type: 'wolf', x: 33, y: 21},
     {type: 'wolf', x: 70, y: 20},
+    // Seit Tag 3: Grey Gnawer am Nordrand (Stufe 17), sie fressen, was die Träger verloren haben
+    {type: 'grey_gnawer', x: 28, y: 6},
+    {type: 'grey_gnawer', x: 38, y: 8},
+    {type: 'grey_gnawer', x: 60, y: 8},
+    {type: 'grey_gnawer', x: 66, y: 5},
     {type: 'moss_spirit', x: 24, y: 14},
     {type: 'moss_spirit', x: 30, y: 6},
     {type: 'moss_spirit', x: 62, y: 16},

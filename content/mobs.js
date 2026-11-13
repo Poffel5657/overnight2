@@ -50,6 +50,15 @@ export const MOBS = {
     special: { every: 3, delay: 6, pattern: 'ring', hit: [14, 19], text: 'The moss spirit swells. Spores drift around it.' },
     examine: 'Moss that has learned to walk, and has opinions about trespassers.',
   },
+  grey_gnawer: {
+    // Seit Tag 3 (Bogen): Nebelwesen am Nordrand von Hushwood, die an den Vorräten fremder Träger nagen.
+    // Rolle: normal, Stufe 17 (zwischen Moosgeistern 14 und Steinkäfern 18).
+    name: 'Grey Gnawer', sprite: 'grey_gnawer', level: 17, ai: 'grey',
+    hp: 66, hit: [7, 9], attackEvery: 4, aggro: 5, leash: 8, respawn: 70, xp: 52,
+    drops: [['hollow_ration', 0.5, 1, 1], ['grey_wisp', 0.3, 1, 1], ['scrap', 0.3, 1, 2]], gold: [4, 9],
+    special: { every: 3, delay: 5, pattern: 'plus', hit: [18, 23], text: 'The gnawer hunches over, teeth first. It is about to lunge at you.' },
+    examine: 'A low grey thing with too many teeth, chewing on something that is not its own.',
+  },
   stone_beetle: {
     name: 'Stone Beetle', sprite: 'stone_beetle', level: 18, ai: 'beast', moveEvery: 2,
     hp: 80, hit: [7, 9], attackEvery: 5, aggro: 4, leash: 8, respawn: 80, xp: 60,

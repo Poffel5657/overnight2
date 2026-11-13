@@ -8,6 +8,7 @@ import { PROFESSIONS, MAX_PROFESSIONS, PROF_MAX_LEVEL } from '../content/profess
 import { QUESTS } from '../content/quests.js';
 import { INN } from '../content/tavern.js';
 import { cleanStash } from './stash.js';
+import { VENTURES, SHARE_MAX } from '../content/ventures.js';
 
 export const SAVE_VERSION = 2;
 export const MAX_LEVEL = 99;
@@ -333,6 +334,12 @@ export function loadInto(p, raw) {
   p.rested = clampInt(save.rested, 0, INN.rested, 0);
   // Unending Maze: tiefstes Stockwerk, zu dem man hinunter darf (alte Stände: 1)
   p.mazeDeep = clampInt(save.mazeDeep, 1, 99, 1);
+  // Anteile im Counting House (Tag 3): nur bekannte Geschäfte, höchstens SHARE_MAX
+  p.shares = {};
+  for (const [id, n] of Object.entries(save.shares || {})) {
+    if (Object.hasOwn(VENTURES, id)) { const k = clampInt(n, 0, SHARE_MAX, 0); if (k) p.shares[id] = k; }
+  }
+  p.dividendDay = typeof save.dividendDay === 'string' ? save.dividendDay.slice(0, 10) : null;
   p.maxHp = maxHpOf(p);
   p.hp = clampInt(save.hp, 1, p.maxHp, p.maxHp);
   barOf(p);
@@ -345,6 +352,7 @@ export function saveOf(p) {
     cls: p.cls, classes: p.classes, specs: p.specs ?? {}, bag: p.bag.filter(Boolean), equip: p.equip,
     profs: p.profs, quests: p.quests, bars: p.bars, barSeen: p.barSeen ?? {}, daily: p.daily ?? null,
     stash: p.stash ?? [], rested: p.rested ?? 0, mazeDeep: p.mazeDeep ?? 1,
+    shares: p.shares ?? {}, dividendDay: p.dividendDay ?? null,
   };
 }
 
@@ -354,5 +362,6 @@ export function stateOf(p) {
     cls: p.cls, classes: p.classes, specs: p.specs ?? {}, bag: p.bag, equip: p.equip, gold: p.gold,
     profs: p.profs, quests: p.quests, bar: barOf(p), defence: defenceOf(p), power: weaponPower(p),
     daily: p.daily ?? null, stash: p.stash ?? [], rested: p.rested ?? 0, mazeDeep: p.mazeDeep ?? 1,
+    shares: p.shares ?? {},
   };
 }

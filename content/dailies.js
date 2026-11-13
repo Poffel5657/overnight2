@@ -17,6 +17,9 @@ export const FAVOURS = {
   shards_for_fen: { from: 'fen', type: 'bring', item: 'green_shard', n: 2, text: 'Fen wants green glass shards from Hushwood, for proof. Of what, Fen will not say.', reward: { gold: 18, xp: 70 } },
   foreman_again: { from: 'brack', type: 'kill', mob: 'old_foreman', n: 1, text: 'The Old Foreman clocked back in. Brack wants him resting again. Bring a friend.', reward: { gold: 40, xp: 300 } },
   quiet_the_choir: { from: 'tallow', type: 'kill', mob: 'choir_wraith', n: 2, text: 'Tallow hears the low part at night, all the way up here. Quiet two choir wraiths.', reward: { gold: 30, xp: 400 } },
+  // Tag 3 (Bogen): die Gnawer am Nordrand und das Brot der Träger
+  thin_gnawers: { from: 'brindle', type: 'kill', mob: 'grey_gnawer', n: 3, text: 'Grey Gnawers are chewing through whatever the carriers drop on the north edge. Brindle wants three fewer.', reward: { gold: 22, xp: 160 } },
+  bread_for_stranger: { from: 'stranger', type: 'bring', item: 'hollow_ration', n: 2, text: 'The Stranger wants peat-smoked bread from the north edge. He does not say why.', reward: { gold: 20, xp: 140 } },
   shoo_crows: { from: 'fen', type: 'kill', mob: 'crow', n: 3, text: 'The crows are judging the vegetable patch. Shoo them.', reward: { gold: 8, xp: 20 } },
 };
 

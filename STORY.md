@@ -20,9 +20,9 @@ Jede Nacht weicht der Grey ein Stück zurück, und am Morgen steht dort etwas, d
 
 | Ort | Stufe | Kurz |
 |---|---|---|
-| **Kindle** | Dorf | Leuchtfeuer, Kapelle, Lagerfeuer (Aufwachpunkt), Lager, Markt, Werkstatt, Ausrufer, Anschlagbrett; seit Tag 1 Nachtmarkt (Ostrand) und Schneckenbahn (Westweg) |
+| **Kindle** | Dorf | Leuchtfeuer, Kapelle, Lagerfeuer (Aufwachpunkt), Lager, Markt, Werkstatt, Ausrufer, Anschlagbrett; seit Tag 1 Nachtmarkt (Ostrand) und Schneckenbahn (Westweg), seit Tag 2 die Taverne, seit Tag 3 das Counting House (Coyne) und Rooks große Werkstatt (Tansy) |
 | **Fernmeadow** | 1–10 | Wiesen und Bach rund ums Dorf. Krähen, Nebelratten, erste Greylinge. Kräuter, Treibholz, erste Signalfeuer. |
-| **Hushwood** | 10–25 | Stiller Wald im Norden, in dem man die eigenen Schritte nicht hört. Wölfe, Moosgeister, Holzfällerlager. Seit Tag 2 am Ende der Nordstraße der Ausguck **The North Watch**. |
+| **Hushwood** | 10–25 | Stiller Wald im Norden, in dem man die eigenen Schritte nicht hört. Wölfe, Moosgeister, Holzfällerlager. Seit Tag 2 am Ende der Nordstraße der Ausguck **The North Watch**. Seit Tag 3 Grey Gnawer am Nordrand. |
 | **Copperdeep** | 15–35 | Offene Mine im Osten, halb verschüttet, Erz und Schrott zum Bergen. Steinkäfer, ein verlassener Vorarbeiter (seit Tag 2: **The Old Foreman**, im Nordosten, arbeitet noch an seiner letzten Schicht). |
 | **Sinkmarsh** | 25–40 | Sumpf im Süden mit versunkenen Ruinen, die älter sind als das Dorf. Irrlichter, Moorkröten. |
 | **The Drowned Chapel** | Dungeon, 35+ | Unter den Ruinen liegt eine zweite, ältere Kapelle. Boss: **the Lamplighter**, eine verlöschende Gestalt, die das falsche Licht bewacht. Seit Tag 2 singen in den Seitenschiffen **Choir Wraiths** noch die tiefe Stimme. |
@@ -45,7 +45,9 @@ Im Grey sieht man nur so weit, wie das eigene Licht reicht. Laternen, Fackeln un
 - **The Stranger**, ein Fremder, der an Tag 0 schon da ist und nicht sagt, woher. (Faden des ersten Bogens.) Seit Tag 1 hat er ein Stück fremdes grünes Glas und sagt, da draußen sei „ein Feuer, das hungert“.
 - **Mothwick** (seit Tag 1), Händlerin des Nachtmarkts am Ostrand des Lichtkreises. Verkauft nur im Dunkeln, „meine Ware mag nicht von der Sonne angesehen werden“. Folgt Lichtern, weil Lichter Kunden bringen; kam aus dem Norden, weil dort ein neues, helles Licht brennt.
 - **Brindle** (seit Tag 2), Haskels Schwester, „die Kluge“, hält Wache auf The North Watch und schreibt in ein Buch, wie hell das Licht im Norden ist. Kann als Einzige in der Familie klettern. Ihre Schwester-Salbe kennt man schon von Haskel.
-- **Mabb** (seit Tag 1), Schneckenhalter am Westweg, nimmt Wetten an. Seine Schnecken: Bramble (stetig), Pebble (schnell, wenn sie daran denkt), Old Tom (meist schlafend, manchmal eine Rakete). „Ich bin kein Dieb“: Wer Kindle verlässt, bekommt den Einsatz zurück.
+- **Coyne** (seit Tag 3), Geldverleiherin im **Counting House** (dem Haus nördlich des Platzes, blaues Dach, Schild mit Waage). Zählt laut, verkauft Anteile an den Geschäften von Kindle und Cinderford (ein Vetter von ihr führt Hesks Bücher). Vor ihr zählte **Abel** Kindles Geld; er liebte Münzen und Rätsel, misstraute Schubladen und wohnte im Haus am Lagerfeuer. Seine Truhe mit drei Symbolrädern steht noch im Counting House.
+- **Tansy** (seit Tag 3), Rooks Lehrling. Rook hat die Werkstatt doppelt so groß gemacht und arbeitet trotzdem lieber draußen im Hof („er hört den Schrott besser“). Tansy hält drinnen Ordnung und lehrt wie Rook. Rook hat neun Finger.
+- **Mabb** (seit Tag 1), Schneckenhalter am Westweg, nimmt Wetten an. Seine Schnecken: Bramble (stetig), Pebble (schnell, wenn sie daran denkt), Old Tom (meist schlafend, manchmal eine Rakete); seit Tag 3 auch Duchess (kam in einer Hutschachtel aus Cinderford, läuft nicht im Regen) und Thistle (winzig, stachelig, hält sich für ein Pferd). Am Wochenende ist Cup Day; der Kindle Snail Cup ist aus einem alten Kessel gehämmert (von Rook, der das bestreitet), und Mabb hat mehrere davon. „Ich bin kein Dieb“: Wer Kindle verlässt, bekommt den Einsatz zurück.
 
 ## Offene Fäden (Startmaterial)
 
@@ -62,7 +64,8 @@ Im Grey sieht man nur so weit, wie das eigene Licht reicht. Laternen, Fackeln un
 - Seit Tag 2 finden sich in Hushwood grüne Glasscherben (Wölfe und Moosgeister tragen sie), dick und gebogen wie die der kalten Laterne. Fen sammelt sie als Beweis.
 - Seit Tag 2: Die Will-o'-Wisps im Sinkmarsh fressen mehr Licht als früher. In ihren Kernen zieht das Licht nach Norden (Mothwick: „Something up there is drawing every light in the Grey toward it.“).
 - Seit Tag 2 hortet Kindle Lampenöl, seit der Schein im Norden zu sehen ist. Marrow hat keinen Talg mehr und presst Öl aus Sinkmarsh-Lilien; er will die Preise erhöhen, „do not tell Ama“.
-- Von The North Watch sieht man nachts ein warmes Licht tief am Horizont, wie ein Herd, den jemand von Hand füttert. Brindle: kleiner als letzte Woche war es nicht.
+- Seit Tag 3: Nachts ziehen kleine Lampen in einer Reihe am Nordrand von Hushwood entlang, von West nach Ost, jedes Mal weniger (Brindle: fünf, dann vier, dann drei). Am Bach westlich der kalten Laterne lag ein zerbrochenes Tragegestell mit einem Kerbholz: vierzig Kerben pro Reihe, über Jahre, zuletzt zwanzig, zwölf, acht (Wren). Dazu Brot, über Torf gebacken, in Birkenrinde gewickelt. Grey Gnawer fressen, was die Träger verlieren. Der Stranger aß davon mit geschlossenen Augen: „Sie tragen es nicht zu euch. Sie gehen den alten Weg nach Süden, so wie der Glimmer früher nach Norden ging. Mit fast nichts.“ Wer sie sind: „Leute, die sich an einen Weg erinnern, den ihr vergessen habt.“
+- Von The North Watch sieht man nachts ein warmes Licht tief am Horizont, wie ein Herd, den jemand von Hand füttert. Brindle: kleiner als letzte Woche war es nicht. Seit Tag 3 ist der Schein sichtbar größer.
 
 ## Erster Bogen (nur die Richtung, Details privat)
 
@@ -75,3 +78,4 @@ Im Grey sieht man nur so weit, wie das eigene Licht reicht. Laternen, Fackeln un
 - Tag 1: Der Nachtmarkt öffnet nach Einbruch der Dunkelheit, Mabb lässt Schnecken um Gold laufen, Fen hat eine Karte gezeichnet, und über dem Norden glüht ein fremdes Licht. Tallow liest die Hymnen des ertrunkenen Chors; im tiefen Sinkmarsh lauern Mire Lurker, die ihre Bücher verschluckt haben.
 - Tag 2: Brindle baut am Ende der Nordstraße The North Watch und sieht nachts das Licht im Norden; Wölfe fliehen mit versengtem Fell aus Hushwood, ein fremdes Gebet liegt im Opferkasten, der Old Foreman arbeitet noch in Copperdeep, und Mothwick bringt jede Nacht andere Ware.
 - 2026-11-13 (zwischen Tag 2 und 3): Der Grey gibt den alten Weg nach Westen frei. An seinem Ende liegt Cinderford, darunter das Unending Maze. Die Taschen aller Leute in Kindle sind über Nacht doppelt so groß geworden.
+- Tag 3: Coyne öffnet das Counting House, Abels Truhe wartet auf jemanden, der bis drei zählen kann, Mabb hat einen Pokal und zwei neue Schnecken, Rooks Werkstatt ist doppelt so groß, und am Nordrand ziehen nachts die Lampen fremder Träger vorbei.

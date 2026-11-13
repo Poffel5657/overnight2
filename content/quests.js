@@ -105,6 +105,64 @@ export const QUESTS = {
     ],
     reward: { xp: 45, gold: 10, items: { bread: 2 } },
   },
+  // Tag 3 (Abstimmung): der Snail Cup
+  snail_cup: {
+    name: 'The Snail Cup', giver: 'mabb',
+    text: 'Mabb has a trophy, two new snails and a lot of spare trophies.',
+    steps: [
+      { type: 'action', action: 'race_win', text: 'Win a bet on the snails with Mabb. (1 of 3)' },
+      { type: 'action', action: 'race_win', text: 'Win another bet on the snails. (2 of 3)' },
+      { type: 'action', action: 'race_win', text: 'Win one more bet on the snails. (3 of 3)' },
+      { type: 'talk', npc: 'mabb', text: 'Tell Mabb you won three times.' },
+    ],
+    reward: { xp: 120, gold: 20, items: { snail_cup: 1 } },
+  },
+  // Tag 3 (Gebete): das Counting House
+  stake_in_kindle: {
+    name: 'A Stake in Kindle', giver: 'coyne',
+    text: 'Coyne in the Counting House sells shares in the businesses of Kindle.',
+    steps: [
+      { type: 'action', action: 'invest', text: 'Buy a share from Coyne in the Counting House.' },
+      { type: 'talk', npc: 'marrow', text: 'Tell Marrow you are a partner now. He will love that.' },
+    ],
+    reward: { xp: 70, gold: 15, items: { bread: 2 } },
+  },
+  old_strongbox: {
+    name: 'The Old Strongbox', giver: 'coyne',
+    text: 'Abel, who counted Kindle\'s money before Coyne, left a strongbox with three dials and a riddle somewhere in his old house.',
+    steps: [
+      { type: 'have', item: 'abels_riddle', n: 1, text: 'Search Abel\'s old house (the house by the campfire) for his note.' },
+      { type: 'talk', npc: 'coyne', text: 'Solve Abel\'s riddle and set the three dials of the strongbox, in the Counting House.' },
+    ],
+    reward: { xp: 160, gold: 45, items: { glow_draught: 2 } },
+  },
+  // Tag 3 (Bogen „The Second Light“, Akt 1): Brindle sieht nachts Lichter, die am Nordrand entlangziehen
+  carriers_dark: {
+    name: 'Carriers in the Dark', giver: 'brindle',
+    text: 'Brindle has seen small lights moving along the north edge at night, in a line, like people carrying something.',
+    steps: [
+      { type: 'have', item: 'tally_stick', n: 1, text: 'Search the north edge for whatever the carriers left. Brindle saw them stop by the stream, west of the cold lantern.' },
+      { type: 'kill', mob: 'grey_gnawer', n: 4, text: 'Drive off four Grey Gnawers on the north edge. They are eating what the carriers dropped.' },
+      { type: 'have', item: 'hollow_ration', n: 2, text: 'Save two rations from the gnawers.' },
+      { type: 'talk', npc: 'wren', text: 'Show the tally stick to Wren in Kindle. Wren counts for a living.' },
+      { type: 'talk', npc: 'stranger', text: 'Show a ration to the Stranger.' },
+      { type: 'talk', npc: 'brindle', text: 'Tell Brindle what you found.' },
+    ],
+    reward: { xp: 650, gold: 40, items: { carriers_wraps: 1, moss_salve: 2 } },
+  },
+  // Tag 3, Nachschlag (Gebet 5, Rätsel): Abels drei Verstecke. Jeder Hinweis steht im Schritt, das Versteck
+  // findet man nur, wenn man den Ort errät (ein shrine pro Schritt, content/regions/kindle.js).
+  abels_caches: {
+    name: "Abel's Three Caches", giver: 'coyne',
+    text: 'At the bottom of Abel\'s strongbox was a second note: three hiding places, in the order he counted them.',
+    steps: [
+      { type: 'have', item: 'abels_purse_1', n: 1, text: 'Abel\'s note: "One. Where the axes rest and hands get warm, take three steps toward the cold." (Hushwood)' },
+      { type: 'have', item: 'abels_purse_2', n: 1, text: 'Abel\'s note: "Two. Where the old road gave up and the Grey began, look for the stone that does not belong." (the far west)' },
+      { type: 'have', item: 'abels_purse_3', n: 1, text: 'Abel\'s note: "Three. Where the diggers warm their beer, look uphill." (Copperdeep)' },
+      { type: 'talk', npc: 'coyne', text: 'Bring Abel\'s three purses to Coyne in the Counting House.' },
+    ],
+    reward: { xp: 380, gold: 90, items: { glow_draught: 2, lamp_oil: 3 } },
+  },
   wisps_for_wicks: {
     name: 'Wisps for the Wicks', giver: 'mothwick',
     text: 'Mothwick spins wicks that burn at night. The secret ingredient is a little bit of the Grey.',

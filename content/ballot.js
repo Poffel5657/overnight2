@@ -2,11 +2,11 @@
 // Der Nightwright füllt den Zettel jede Nacht neu (Ideen aus Gebeten, in eigenen Worten).
 // day: Nummer des Zettels.  options: { id, text } (Text englisch, höchstens 90 Zeichen).
 export const BALLOT = {
-  day: 2,
+  day: 3,
   options: [
-    { id: 'old-mill', text: 'An old mill turns somewhere in the Grey, and nobody is turning it.' },
-    { id: 'fishing', text: 'The stream has fish, and someone should learn to catch them.' },
     { id: 'beekeeper', text: 'A beekeeper moves to Kindle and wants the wild hives tamed.' },
-    { id: 'snail-cup', text: 'Mabb wants a proper Snail Cup, with a trophy and two new snails.' },
+    { id: 'cooking', text: 'Hollis teaches cooking: hot food that heals and keeps you warm at night.' },
+    { id: 'north-road-fires', text: 'Signal fires along the north road, so night walkers have somewhere to stop.' },
+    { id: 'rook-masterwork', text: 'Old Rook moves indoors and teaches masterwork recipes at his own bench.' },
   ],
 };
