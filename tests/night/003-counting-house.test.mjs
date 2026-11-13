@@ -207,3 +207,40 @@ test("Abel's Three Caches: drei Verstecke nach Rätseln, in der richtigen Reihen
   for (let i = 1; i <= 3; i++) assert.equal(P.countItem(r, `abels_purse_${i}`), 0);
   assert.ok(r.gold >= QUESTS.abels_caches.reward.gold);
 });
+
+test('The Cinderford Ledger: Coyne, Hesk in Cinderford, Kreide (als Teilhaber bei Hesk gekauft), zurück', () => {
+  let w = S.createWorld(regionFor('kindle_inside'), 319);
+  const p = veteran(w, 'a', { level: 12, gold: VENTURES.hesk.price + 200 });
+  const cs = w.npcs.find((n) => n.id === 'coyne');
+  p.x = cs.x; p.y = cs.y + 2;
+  talk(w, 'a', 'coyne');
+  assert.ok(!options(w, 'a').some((t) => t.includes('for a partner')), 'nur für Teilhaber');
+  choose(w, 'a', 'buy a share');
+  choose(w, 'a', `share in ${VENTURES.hesk.name}`);
+  talk(w, 'a', 'coyne');
+  choose(w, 'a', 'for a partner');
+  assert.equal(P.countItem(p, 'sealed_ledger'), 1);
+  const save = P.saveOf(p);
+  S.removePlayer(w, 'a');
+  // Hinab nach Cinderford (der Weg ist in 002-cinderford-maze gespielt)
+  const c = S.createWorld(regionFor('cinderford'), 320);
+  const q = S.addPlayer(c, 'a', 'a', save);
+  const hesk = c.npcs.find((n) => n.id === 'hesk');
+  q.x = hesk.x; q.y = hesk.y + 1;
+  if (!S.walkable(c, q.x, q.y)) { q.x = hesk.x + 1; q.y = hesk.y; }
+  talk(c, 'a', 'hesk'); choose(c, 'a', 'Coyne sent this ledger');
+  assert.equal(q.quests.cinderford_ledger.step, 1);
+  // Als Teilhaber verkauft Hesk Kreide
+  applyIntent(c, 'a', { t: 'buy', shop: 'hesk', item: 'turn_chalk', n: 5 });
+  assert.equal(P.countItem(q, 'turn_chalk'), 5);
+  assert.equal(q.quests.cinderford_ledger.step, 2);
+  talk(c, 'a', 'hesk'); choose(c, 'a', 'Five sticks');
+  assert.equal(q.quests.cinderford_ledger.step, 3);
+  const back = S.createWorld(regionFor('kindle_inside'), 321);
+  const r = S.addPlayer(back, 'a', 'a', P.saveOf(q));
+  r.x = cs.x; r.y = cs.y + 2;
+  const gold = r.gold;
+  talk(back, 'a', 'coyne'); choose(back, 'a', 'regards');
+  assert.equal(r.quests.cinderford_ledger.done, true);
+  assert.equal(r.gold, gold + QUESTS.cinderford_ledger.reward.gold);
+});

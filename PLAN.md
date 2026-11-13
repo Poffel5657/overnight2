@@ -30,7 +30,7 @@ Tag 3 (Nacht zum 2026-11-14). Inbox `v2/inbox/2026-11-13.json`: Gebete 3 bis 6 (
 
 **Dauerauftrag Klassen: Warden** Stufe 28: Lantern Hook (neue Wirkung `pull`: holt ein Wesen aus der Ferne vor den Schild).
 
-**Nachschlag (gebaut):** alle vier Klassen bis 32 (Shield Wall, Sanctuary, Corona, Vanishing Cut), Tinkering 18 Carrier's Wraps, Ama und Fen zu den Trägern; Mender Ember Mend, Flarecaster Noonbrand, Drifter Lampblack Cut (alle 28); Rooks Werkstatt doppelt so groß mit der guten Werkbank und Tansy; Hesks Stand als viertes Geschäft; Rätsel-Schatzsuche „Abel's Three Caches“; zwei Gefallen am Nordrand; Gespräche und Rufe. Alles gebaut und getestet (`tests/night/003-*`). Rook selbst bleibt draußen (Kern-Tests erwarten ihn in Kindle), steht als „rook-masterwork“ auf dem Stimmzettel.
+**Nachschlag (gebaut):** alle vier Klassen bis 32 (Shield Wall, Sanctuary, Corona, Vanishing Cut), Tinkering 18 Carrier's Wraps, Ama und Fen zu den Trägern; Mender Ember Mend, Flarecaster Noonbrand, Drifter Lampblack Cut (alle 28); Rooks Werkstatt doppelt so groß mit der guten Werkbank und Tansy; Hesks Stand als viertes Geschäft; Quest „The Cinderford Ledger“; Rätsel-Schatzsuche „Abel's Three Caches“; zwei Gefallen am Nordrand; Gespräche und Rufe. Alles gebaut und getestet (`tests/night/003-*`). Rook selbst bleibt draußen (Kern-Tests erwarten ihn in Kindle), steht als „rook-masterwork“ auf dem Stimmzettel.
 
 ## Ausbau läuft
 

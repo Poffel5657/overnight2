@@ -122,7 +122,9 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 - **Warden Stufe 32: Shield Wall** (10 Öl, 24 s): heilt 12 und halbiert 4,8 s lang den Schaden für alle im Umkreis 3. **Drifter Stufe 32: Vanishing Cut**: 18–23 plus Waffenkraft, im Dunkeln 60 % mehr. Damit haben alle vier Klassen Fähigkeiten bis Stufe 32.
 - **Tinkering 18: Carrier's Wraps** nachbauen (2 Wolfsfelle, 2 Messing, 1 Grey Wisp), damit die Wickel auch handelbar sind. Ama und Fen reagieren auf die Träger.
 - **Hesks Stand als viertes Geschäft** im Counting House (Anteile kauft man bei Coyne in Kindle).
-- **Zwei neue Gefallen** am Nordrand und neue Gespräche/Rufe: Pell, Hollis (drittes Gerücht), Brindle, Mabb, Coyne, Tansy.
+- **„The Cinderford Ledger“** (Coyne, für Teilhaber): ein versiegeltes Hauptbuch zu Hesk nach Cinderford bringen, fünf Turn Chalk besorgen (Maze oder, als Hesks Teilhaber, an seinem Stand), zurück zu Coyne. Lohn: 260 EP, 55 Gold, Cinder Cakes. Verbindet Counting House, Cinderford und Maze.
+- **Anteile im Charakterfenster** (Zeile „Shares“ mit Gold pro Tag) und bei Coyne „What do I own?“ mit der Aufstellung pro Geschäft.
+- **Zwei neue Gefallen** am Nordrand und neue Gespräche/Rufe: Pell, Hollis (drittes Gerücht), Brindle, Mabb, Coyne, Tansy, eine neue Liedzeile von Pip. Mothwick hat manchmal Torfbrot „aus dem Norden“ (wechselnde Ware).
 
 **Balance-Notizen:**
 - Grey Gnawer: Rolle normal, Stufe 17, 66 HP, 7–9 Schaden, plus-Angriff mit 5 Takten Vorwarnung, 52 EP (zwischen Moosgeist 14 und Steinkäfer 18). Warden 18 mit Glimsteel verliert pro Gnawer einige bis 25 Leben; Flarecaster und Drifter 28 gewinnen allein.
