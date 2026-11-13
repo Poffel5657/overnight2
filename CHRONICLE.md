@@ -92,3 +92,42 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 - Neue Fähigkeiten im Test gegen Hushwood-Wölfe: Flarecaster 16 und Drifter 16 gewinnen mit Glimsteel-Waffe allein; Night Edge macht nachts im Mittel mindestens 25 % mehr Schaden als bei Tag.
 
 **Abstimmung neu:** Zettel 2 mit old-mill (dritte Nacht), fishing (dritte Nacht), beekeeper, snail-cup (neu, aus „Ideen für später“).
+
+## Tag 3 (Nacht zum 2026-11-14): Teilhaber, ein Pokal und Lampen zwischen den Bäumen
+
+**Inbox:** `v2/inbox/2026-11-13.json` (die erste Datei seit Tag 1). Vier Gebete (IDs 3 bis 6), Zettel 2: snail-cup 2 Stimmen (2 Wähler), sonst keine. 8 Charaktere, 4 aktiv in 24 Stunden. Leuchtfeuer: 362, 295, 350 (Ziel 300).
+- Gebet 3 (größerer Beutel) und Gebet 4 (zweite Stadt mit Zufalls-Labyrinth) hat Chris am 2026-11-13 schon gebaut (Cinderford, Unending Maze, Beutel 48). Nicht noch einmal gebaut.
+
+**Teil 1, Gebete: das Counting House und Abels Truhe.**
+- Gebet 6 (ID 6): *Gewünscht:* Ein Bankier im Dorf, bei dem man Gold in Läden und künftige Dinge steckt; dazu eine größere Werkstatt, in der Old Rook drinnen lehrt und die Werkbank drinnen steht. *Geliefert:* Das Haus nördlich des Platzes ist jetzt **the Counting House** (blaues Dach, Schild mit Waage). Darin **Coyne**, die Geldverleiherin. Man kauft Anteile (je bis zu 3) an Marrows Stand (120 Gold, 4 pro Tag), der Taverne (150, 5), dem Nachtmarkt (200, 7) und Hesks Stand in Cinderford (180, 6). Einmal am Tag holt man die Ausschüttung bei Coyne ab; Teilhaber sehen beim jeweiligen Händler zusätzliche Ware (Marrow: Moss Salve, Glow Draught; Hollis: Lily Oil, Moon Candle; Mothwick: Wisp Core, Dusk Draught; Hesk: Turn Chalk, Lily Oil). Quest „A Stake in Kindle“ (ersten Anteil kaufen, Marrow erzählen). Marrow, Hollis, Mothwick und Hesk reden mit Teilhabern. Die Werkstatt ist doppelt so groß, mit der guten Werkbank drinnen und **Tansy**, Rooks Lehrling, die Salvage und Tinkering lehrt. *Fehlt noch:* Rook selbst steht weiter draußen (die Kern-Tests erwarten ihn und die Werkbank in Kindle, also bleiben beide; Rook drinnen mit Meisterrezepten steht jetzt auf dem Stimmzettel). Gemeinsame Investitionen, bei denen alle zusammen einem Laden etwas Neues kaufen, bräuchten einen dauerhaften Weltzähler (Datenbank, nur mit Chris).
+- Gebet 5 (ID 5): *Gewünscht:* Häuser mit Zweck und Quests mit Rätseln, bei denen man nachdenken muss. *Geliefert:* Ein Haus wurde zum Counting House, und die Rätsel-Quest **„The Old Strongbox“**: Abel, Coynes Vorgänger, hat eine Truhe mit drei Symbolrädern hinterlassen. Seinen Zettel findet man unter einer losen Diele in seinem alten Haus am Lagerfeuer; drei Rätsel, deren Antworten aus der Welt kommen (was ein Warden außer dem Schild trägt, womit der ertrunkene Chor jede Hymne beendete, wonach die Händlerin des Nachtmarkts heißt). Falsch gestellte Räder lassen die Truhe zu, ohne zu verraten, welches falsch war. Ama, Tallow und Mothwick geben Hinweise. Lohn: 160 EP, 45 Gold, zwei Glow Draughts und Abels Anteil an Marrows Stand. *Fehlt noch:* Die anderen Häuser haben noch keinen Zweck; mehr Rätsel in späteren Quests.
+
+**Teil 2, Abstimmung: der Snail Cup.** Zettel 2: snail-cup 2, old-mill 0, fishing 0, beekeeper 0.
+- *Gewünscht:* Ein richtiger Pokal mit zwei neuen Schnecken.
+- *Geliefert:* Zwei neue Schnecken auf eigenen Bahnen: **Duchess** (aus Cinderford, in einer Hutschachtel, Quote 6) und **Thistle** (winzig, hält sich für ein Pferd, Quote 8). Die Quoten aller fünf sind neu abgestimmt (Bramble 3, Pebble 4, Old Tom 5). **Cup Day** an Samstagen und Sonntagen: Mabb nimmt dann auch 50 Gold. Quest **„The Snail Cup“** (nach „Off to the Races“): drei gewonnene Wetten, Lohn der Kindle Snail Cup, ein Pokal, den man als Hut trägt (Abwehr 1, Licht +0,5). Pell und Mabb rufen es aus.
+- *Fehlt noch:* Eine Rangliste der Cup-Sieger.
+
+**Teil 3, Nightwright: „Carriers in the Dark“ (Bogen, Akt 1).** Brindle sieht nachts kleine Lampen in einer Reihe am Nordrand entlangziehen. Quest ab Stufe 16 (nach „Eyes on the North“): ein zerbrochenes Tragegestell am Bach westlich der kalten Laterne mit einem Kerbholz, vier **Grey Gnawer** (neu, Stufe 17, vier am Nordrand) vertreiben, zwei Peat-Smoked Rations retten, Wren liest das Kerbholz (vierzig pro Reihe, zuletzt acht), der Stranger isst das Brot und sagt, sie gingen „den alten Weg nach Süden“. Lohn: 650 EP, 40 Gold, Carrier's Wraps (Füße, Abwehr 3, Licht +0,5), zwei Moss Salves. Der Schein im Norden ist größer, und vom Ausguck sieht man nachts die Lampen der Träger. Gefallen „thin_gnawers“ (Brindle) und „bread_for_stranger“.
+
+**Klassen (Dauerauftrag): Warden** Stufe 28: **Lantern Hook** (4 Öl): Fernschlag bis 5 Felder, zieht das Ziel neben den Warden und bindet es an ihn (neue Wirkung `pull`; Bosse bleiben stehen, werden aber gebunden).
+
+**Nachschlag:**
+- **Mender Stufe 28: Ember Mend** (6 Öl, 4,2 s): heilt 30 (plus Stabheilung) für alle im Umkreis 1,5, die schnelle Heilung für den Tank.
+- **Flarecaster Stufe 28: Noonbrand** (10 Öl): 12–16 plus Waffenkraft auf 6 Felder, blendet 1,2 s und brennt nach.
+- **Drifter Stufe 28: Lampblack Cut**: 10–13 plus Waffenkraft, blendet 1,8 s, im Dunkeln 50 % mehr. Damit haben alle vier Klassen Fähigkeiten bis Stufe 28.
+- **Rooks Werkstatt doppelt so groß**, mit der guten Werkbank und Tansy (aus Gebet 6, siehe oben).
+- **„Abel's Three Caches“** (Coyne, ab Stufe 12, nach der Truhe, aus Gebet 5): ein zweiter Zettel mit drei Rätseln zu drei Verstecken (beim Holzfällerfeuer in Hushwood, am Ende des alten Wegs nach Westen, oberhalb des Minenfeuers in Copperdeep). Man muss den Ort aus dem Rätsel erraten; die Verstecke geben nur in der richtigen Reihenfolge etwas her. Lohn: 380 EP, 90 Gold, Glow Draughts, Lampenöl.
+- **Mender Stufe 32: Sanctuary** (14 Öl, 22,5 s): heilt 16 (plus Stabheilung) und halbiert 3,6 s lang den Schaden für alle im Umkreis 4. 
+- **Flarecaster Stufe 32: Corona** (16 Öl, 15 s): Lichtkranz im Umkreis 3, 10–13 plus Waffenkraft, blendet 1,5 s und brennt nach.
+- **Warden Stufe 32: Shield Wall** (10 Öl, 24 s): heilt 12 und halbiert 4,8 s lang den Schaden für alle im Umkreis 3. **Drifter Stufe 32: Vanishing Cut**: 18–23 plus Waffenkraft, im Dunkeln 60 % mehr. Damit haben alle vier Klassen Fähigkeiten bis Stufe 32.
+- **Tinkering 18: Carrier's Wraps** nachbauen (2 Wolfsfelle, 2 Messing, 1 Grey Wisp), damit die Wickel auch handelbar sind. Ama und Fen reagieren auf die Träger.
+- **Hesks Stand als viertes Geschäft** im Counting House (Anteile kauft man bei Coyne in Kindle).
+- **Zwei neue Gefallen** am Nordrand und neue Gespräche/Rufe: Pell, Hollis (drittes Gerücht), Brindle, Mabb, Coyne, Tansy.
+
+**Balance-Notizen:**
+- Grey Gnawer: Rolle normal, Stufe 17, 66 HP, 7–9 Schaden, plus-Angriff mit 5 Takten Vorwarnung, 52 EP (zwischen Moosgeist 14 und Steinkäfer 18). Warden 18 mit Glimsteel verliert pro Gnawer einige bis 25 Leben; Flarecaster und Drifter 28 gewinnen allein.
+- Schneckenquoten per Monte-Carlo (40.000 Rennen): Erwartung je Schnecke 0,91 bis 0,96, Mabb bleibt knapp vorn.
+- Anteile: Ausschüttung etwa 3 % pro Tag, ein Anteil zahlt sich nach rund 30 Tagen aus. Höchstens 12 Anteile (alle vier Geschäfte voll) bringen 66 Gold am Tag; das ist so viel wie ein paar Gefallen.
+- Quest-Erfahrung: Carriers 650 (Stufe 16–20, etwa zwei Stufen), Strongbox 160 und Stake 70 (für alle Stufen, kleine Belohnung, weil es ums Nachdenken bzw. Gold geht).
+
+**Abstimmung neu:** Zettel 3 mit beekeeper (dritte Nacht), cooking, north-road-fires, rook-masterwork (alle neu). old-mill und fishing sind nach drei Nächten ohne Stimmen heraus und stehen wieder unter „Ideen für später“.

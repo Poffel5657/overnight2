@@ -16,7 +16,7 @@ export const OUTSIDE = {
 // Wo man drinnen ankommt
 export const INSIDE = {
   chapel: { x: 6, y: 15 },
-  workshop: { x: 23, y: 6 },
+  workshop: { x: 23, y: 14 },
   house1: { x: 36, y: 4 },
   house3: { x: 36, y: 14 },
   house4: { x: 48, y: 14 },
@@ -30,6 +30,7 @@ function zoneAt(x, y) {
   if (y >= 18) return 'THE LANTERN & LARK';
   if (x <= 12) return 'THE CHAPEL';
   if (x <= 29) return 'ROOK\'S WORKSHOP';
+  if (x >= 32 && x <= 39 && y <= 7) return 'THE COUNTING HOUSE';
   return 'A HOUSE IN KINDLE';
 }
 
@@ -62,18 +63,24 @@ export const REGION = {
     { type: 'candles', x: 1, y: 14, light: 3, name: 'candles', text: 'Candles by the door, for those who leave in the dark.' },
     { type: 'candles', x: 11, y: 14, light: 3, name: 'candles', text: 'Candles by the door, for those who leave in the dark.' },
 
-    // Old Rooks Werkstatt
-    exit('workshop', 23, 7),
+    // Old Rooks Werkstatt (seit Tag 3 doppelt so groß: hinten die gute Werkbank, Rooks Lehrling Tansy)
+    exit('workshop', 23, 15),
+    { type: 'station', station: 'workbench', x: 19, y: 11, w: 1, d: 2, name: 'Rook\'s good bench' },
+    { type: 'table', x: 26, y: 11, w: 2, name: 'a parts table', text: 'Gears laid out in rows, biggest to smallest. Tansy did this. Rook pretends not to notice it is useful.' },
+    { type: 'barrel', x: 27, y: 14, name: 'a barrel of brass', text: 'Brass offcuts, sorted. The sign says "ASK FIRST". Underneath, smaller: "or do not, Rook is out".' },
+    { type: 'candles', x: 27, y: 8, light: 4.5, name: 'a work lamp', text: 'A lamp on a long arm, so you can see what you are about to ruin.' },
+    { type: 'candles', x: 19, y: 14, light: 3.5, name: 'a work lamp', text: 'Another lamp, lower down, for the things that fall under the bench.' },
     { type: 'hearth', x: 26, y: 1, light: 5, name: 'the forge', text: 'Rook\'s little forge. It is never quite out.' },
     { type: 'table', x: 20, y: 2, w: 2, name: 'a cluttered table', text: 'Half a hinge, a third of a clock and a whole lot of springs.' },
     { type: 'shelf', x: 19, y: 5, name: 'a shelf of parts', text: 'Jars of screws, sorted by a system only Rook understands.' },
     { type: 'barrel', x: 27, y: 5, name: 'a barrel', text: 'A barrel of scrap. It rattles when the wind blows.' },
 
-    // Haus 1
+    // Haus 1, seit Tag 3 das Counting House: Coyne, ihr Rechentisch und Abels alte Truhe
     exit('house1', 36, 5),
-    { type: 'hearth', x: 34, y: 1, light: 4.5, name: 'the hearth', text: 'A small fire. The kettle on it has seen better centuries.' },
-    { type: 'bed', x: 38, y: 1, w: 2, name: 'a bed', text: 'A narrow bed under a patchwork quilt.' },
-    { type: 'table', x: 38, y: 4, name: 'a table', text: 'Two bowls, one spoon. Someone is in a hurry.' },
+    { type: 'hearth', x: 34, y: 1, light: 4.5, name: 'the hearth', text: 'A small fire. The kettle on it has been counted twice.' },
+    { type: 'strongbox', x: 38, y: 1, name: 'the old strongbox', text: 'An iron box with three brass dials. Each dial has six little pictures: a lantern, a shield, a bell, a moth, a snail and a wolf.' },
+    { type: 'table', x: 33, y: 3, name: 'the counting table', text: 'Stacks of coins in neat towers, a ledger, and an abacus with one bead missing.' },
+    { type: 'shelf', x: 38, y: 4, name: 'a shelf of ledgers', text: 'Ledgers going back years. The old ones are in a different hand: small, tidy, and fond of riddles.' },
     // Haus 3
     exit('house3', 36, 15),
     { type: 'hearth', x: 34, y: 11, light: 4.5, name: 'the hearth', text: 'The fire is low. Someone sleeps late here.' },
@@ -83,6 +90,8 @@ export const REGION = {
     exit('house4', 48, 15),
     { type: 'hearth', x: 51, y: 11, light: 4.5, name: 'the hearth', text: 'A warm hearth and a cat-shaped dent in the rug.' },
     { type: 'bed', x: 46, y: 11, w: 2, name: 'a bed', text: 'A bed with far too many pillows.' },
+    // Tag 3: hier wohnte Abel, der alte Geldverleiher. Unter einer Diele liegt noch sein Rätsel (Quest „The Old Strongbox“).
+    { type: 'shrine', look: 'floorboard', x: 52, y: 13, name: 'a loose floorboard', gives: 'abels_riddle', quest: 'old_strongbox', step: 0, text: 'One board by the wall sits a little higher than the others. It wobbles when you step on it.', found: 'You lift the board. Underneath lies a folded note in a small, tidy hand.', empty: 'Just dust under the board, and a very old button.' },
     { type: 'table', x: 50, y: 14, name: 'a table', text: 'A half-finished letter: "Dear Mother, the fog is fine, the people are fine, I am fine..."' },
 
     // Taverne „The Lantern & Lark“: Tresen oben links, Bühne links, Tische in der Mitte,
@@ -108,6 +117,10 @@ export const REGION = {
   ],
   npcs: [
     { id: 'hollis', name: 'Hollis the Innkeeper', sprite: 'hollis', x: 20, y: 20 },
+    // Tag 3: Tansy, Rooks Lehrling, in der hinteren Werkstatt (lehrt Salvage und Tinkering wie Rook)
+    { id: 'tansy', name: 'Tansy the Apprentice', sprite: 'tansy', x: 23, y: 10 },
+    // Tag 3: Coyne im Counting House (Anteile, Ausschüttung, Abels Truhe)
+    { id: 'coyne', name: 'Coyne the Moneylender', sprite: 'coyne', x: 36, y: 2 },
     { id: 'band_corra', name: 'Corra the Fiddler', sprite: 'band_corra', x: 16, y: 25 },
     { id: 'band_oswin', name: 'Oswin the Drummer', sprite: 'band_oswin', x: 17, y: 28 },
     { id: 'band_pip', name: 'Pip the Piper', sprite: 'band_pip', x: 19, y: 24 },

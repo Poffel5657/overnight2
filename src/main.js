@@ -86,7 +86,8 @@ function makeFarLight(f) {
   g.fillRect(0, 0, 64, 64);
   const mat = new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending, fog: false, opacity: 0 });
   const s = new THREE.Sprite(mat);
-  s.scale.set(22, 11, 1);
+  // size: der Schein wächst mit dem Bogen (Tag 3: 1.25)
+  s.scale.set(22 * (f.size ?? 1), 11 * (f.size ?? 1), 1);
   s.position.set(f.x, f.h, f.y);
   s.renderOrder = 5;
   s.raycast = () => {};

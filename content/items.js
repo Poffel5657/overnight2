@@ -95,6 +95,16 @@ export const ITEMS = {
   green_shard: { name: 'Green Glass Shard', stack: true, value: 5, glyph: '*', text: 'A curved shard of thick green glass, like the cold lantern up north. Things in Hushwood keep finding them.' },
   wisp_core: { name: 'Wisp Core', stack: true, value: 12, glyph: 'o', text: 'The cold bead left when a will-o\'-wisp goes out. It still pulls at your lantern, very gently.' },
   singed_tuft: { name: 'Singed Tuft', stack: true, value: 2, glyph: '&', text: 'A tuft of wolf fur, burnt at the tips. It smells of woodsmoke, and the wood was not from here.' },
+  // Tag 3: der Pokal vom Snail Cup. Man trägt ihn auf dem Kopf, Mabb besteht darauf.
+  snail_cup: { name: 'The Kindle Snail Cup', slot: 'head', defence: 1, light: 0.5, value: 5, glyph: 'U', text: 'A little brass cup hammered from an old kettle. It fits any head. Polish it and it catches the lantern light.' },
+  abels_riddle: { name: "Abel's Note", stack: true, value: 0, glyph: '=', text: 'One: every Warden carries two things, and one is a shield. Two: what ended every hymn of the forty voices. Three: what the keeper of the Night Market is named for.' },
+  // Tag 3 (Bogen): was die Träger am Nordrand verloren haben
+  hollow_ration: { name: 'Peat-Smoked Ration', stack: true, use: { heal: 30 }, value: 6, glyph: '%', text: 'Hard brown bread, wrapped in birch bark. It smells of peat smoke. Nobody in Kindle bakes like this.' },
+  tally_stick: { name: 'Notched Tally Stick', stack: true, value: 0, glyph: '/', text: 'A carrier\'s tally. Rows of notches, forty to a row. The last rows are short.' },
+  carriers_wraps: { name: 'Carrier\'s Wraps', slot: 'feet', defence: 3, light: 0.5, value: 90, glyph: 'u', text: 'Leg wraps of oiled cloth with a tiny lamp-hook at the ankle. Made for walking a long way in the dark.' },
+  abels_purse_1: { name: "Abel's First Purse", stack: true, value: 0, glyph: '$', text: 'A small leather purse, tied with a riddle-knot. Heavy for its size. Coyne will want to count it.' },
+  abels_purse_2: { name: "Abel's Second Purse", stack: true, value: 0, glyph: '$', text: 'A small leather purse, tied with a riddle-knot. Heavy for its size. Coyne will want to count it.' },
+  abels_purse_3: { name: "Abel's Third Purse", stack: true, value: 0, glyph: '$', text: 'A small leather purse, tied with a riddle-knot. Heavy for its size. Coyne will want to count it.' },
   prayer_slip: { name: 'Folded Prayer', stack: true, value: 0, glyph: '=', text: 'A strip of pale bark paper, folded small. The writing is neat, brown and not from Kindle.' },
   crow_feather: { name: 'Crow Feather', stack: true, value: 1, glyph: '/', text: 'Glossy and judgemental. Fen collects them for quills.' },
 

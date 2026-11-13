@@ -186,6 +186,25 @@ const BUILDERS = {
       g.add(box(0.16, 0.03, 0.1, '#d8c8a0', 0.12, 0.46, 0.05));
       return;
     }
+    if (o.look === 'carrier_frame') {
+      // Tag 3: ein umgekipptes Tragegestell aus Holz mit zerrissenem Gurt
+      const f = new THREE.Group();
+      f.add(box(0.08, 1.2, 0.08, '#5a4028', -0.3, 0.6, 0));
+      f.add(box(0.08, 1.2, 0.08, '#5a4028', 0.3, 0.6, 0));
+      for (const y of [0.3, 0.7, 1.1]) f.add(box(0.68, 0.06, 0.06, '#6a4a2a', 0, y, 0));
+      f.add(box(0.1, 0.6, 0.03, '#8a7a5a', -0.15, 0.7, 0.06));
+      f.rotation.x = -1.2;
+      f.position.y = 0.15;
+      g.add(f);
+      g.add(box(0.3, 0.2, 0.25, '#7a5a3a', 0.45, 0.1, 0.3));
+      return;
+    }
+    if (o.look === 'floorboard') {
+      // Tag 3: ein lockeres Dielenbrett, darunter ein gefalteter Zettel
+      g.add(box(0.9, 0.05, 0.25, '#6e5034', 0.05, 0.05, 0).rotateZ(0.12));
+      g.add(box(0.2, 0.03, 0.14, '#e8dcc0', -0.1, 0.03, 0.18));
+      return;
+    }
     if (o.look === 'bell_frame') {
       // Ein schiefer Glockenrahmen, halb im Sumpf, mit einer kleinen grünen Glocke
       const frame = new THREE.Group();
@@ -283,6 +302,12 @@ const BUILDERS = {
     for (const x of [-0.28, 0.28]) g.add(box(0.06, 0.6, 0.54, '#3a3a40', x, 0.3, 0));
     g.add(box(0.12, 0.14, 0.04, '#c8a040', 0, 0.38, 0.27));
   },
+  // Tag 3: die alte Truhe im Counting House mit drei Symbolrädern (das Rätsel löst man im Gespräch mit Coyne)
+  strongbox(o, g) {
+    g.add(box(0.9, 0.55, 0.6, '#3a3a40', 0, 0.28, 0));
+    g.add(box(0.94, 0.12, 0.64, '#4a4a52', 0, 0.6, 0));
+    for (const x of [-0.25, 0, 0.25]) g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.05, 8), mat('#c8a040')).rotateX(Math.PI / 2).translateY(0.31).translateZ(-0.33).translateX(x));
+  },
   barrel(o, g) {
     g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.75, 8), mat('#6a4a2a')).translateY(0.38));
     for (const y of [0.15, 0.6]) g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.315, 0.315, 0.06, 8), mat('#3a3434')).translateY(y));
@@ -302,6 +327,11 @@ const BUILDERS = {
   station(o, g) { (LOOKS[o.station] || LOOKS.workbench)(g, o); },
   house(o, g) {
     const wall = 1.3;
+    // Tag 3: Haus mit Schild (das Counting House: eine Waage über der Tür)
+    if (o.sign) {
+      g.add(box(0.06, 0.06, 0.5, '#3a2a18', 0.55, 1.35, o.d / 2 + 0.2));
+      g.add(box(0.5, 0.36, 0.05, '#c8a040', 0.55, 1.1, o.d / 2 + 0.42));
+    }
     g.add(box(o.w - 0.2, wall + 1, o.d - 0.2, '#a08664', 0, (wall - 1) / 2, 0));
     g.add(roof(o.w + 0.2, o.d + 0.2, 1.1, o.roof || '#7a3b26', wall));
     g.add(box(0.5, 0.85, 0.06, '#3e2a18', 0, 0.42, o.d / 2 - 0.08));

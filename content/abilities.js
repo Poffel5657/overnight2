@@ -9,6 +9,7 @@
 //   zone    Fläche um das Ziel, Schaden an allem darin
 // melee/ranged können dazzle (Takte) und burn { dmg, ticks } (brennt nach, alle 2 Takte, + Stufe/4).
 // dark: Schadensfaktor, wenn der Werfer im Dunkeln steht (Nacht und kein festes Licht). burst kann root (Takte) und burn.
+// ranged kann pull (zieht das Ziel neben den Werfer und bindet es, Bosse bleiben stehen).
 // fade kann radius + dazzle (blendet alles um einen herum, bevor man verschwindet).
 // desc: ein Satz Stimmung; die Zahlen erzeugt shared/describe.js aus den Daten.
 // power: Waffe zählt mit (Schaden + Waffenkraft). dazzle: Ziel kann kurz nicht angreifen.
@@ -28,6 +29,10 @@ export const ABILITIES = {
   beacon_slam: { name: 'Beacon Slam', desc: "Slam the lantern into the shield. The flash rings every head nearby.", glyph: '*', kind: 'burst', radius: 1.5, hit: [7, 10], dazzle: 5, hold: true, oil: 5, cd: 24, text: 'Lantern meets shield. Everything close sees stars.' },
   bulwark: { name: 'Bulwark', desc: "Raise the shield and the lantern together. Everything looks at you, and everyone behind you breathes easier.", glyph: 'U', kind: 'taunt', radius: 4, brace: 10, oil: 8, cd: 45, text: 'You raise shield and lantern. Everything turns to you, and your friends stand easier.' },
   last_light: { name: 'Last Light', desc: "Turn the lantern all the way up and crouch behind the shield. For a while, nothing gets through.", glyph: 'A', kind: 'self', heal: 40, brace: 16, oil: 10, cd: 90, text: 'Your lantern blazes. You are a wall with a light on it.' },
+  // Tag 3: Stufe 28. pull = das Ziel wird neben den Werfer gezogen und an ihn gebunden (shared/sim.js pullMob)
+  lantern_hook: { name: 'Lantern Hook', desc: "Swing the lantern out on its chain, hook something, and haul it in where the shield can see it.", glyph: 'J', kind: 'ranged', range: 5, hit: [8, 11], pull: true, oil: 4, cd: 20, power: true, text: 'The lantern swings out on its chain and hooks.' },
+  // Tag 3, Nachschlag: Stufe 32. Schild und Laterne als Wand für alle dahinter.
+  shield_wall: { name: 'Shield Wall', desc: "Set the shield down like a wall and hang the lantern on it. Everyone behind it gets their breath back.", glyph: 'W', kind: 'aura', radius: 3, heal: 12, brace: 16, oil: 10, cd: 80, text: 'You set the shield down like a wall. Your friends crowd in behind it.' },
   shield_slam: { name: 'Shield Slam', desc: "A heavy slam that rings the target's head.", glyph: ']', kind: 'melee', hit: [6, 9], dazzle: 4, cd: 16, power: true },
 
   // Mender
@@ -40,6 +45,10 @@ export const ABILITIES = {
   rekindle: { name: 'Rekindle', desc: "Pour the ember into everyone close. For a moment, nobody is cold.", glyph: '+', kind: 'aura', radius: 3, heal: 24, brace: 6, oil: 12, cd: 60, text: 'The ember roars up. Every lantern near you burns brighter.' },
   smoulder: { name: 'Smoulder', desc: "Shake the staff. Embers settle on everything close and refuse to go out.", glyph: '%', kind: 'burst', radius: 2, hit: [3, 5], burn: { dmg: 4, ticks: 16 }, oil: 8, cd: 30, power: true, text: 'Embers drift from your staff and settle on everything near.' },
   kindred_glow: { name: 'Kindred Glow', desc: "Share the ember with everyone in reach, and keep sharing it.", glyph: '~', kind: 'hot', radius: 5, heal: 8, ticks: 20, oil: 12, cd: 70, text: 'A wide, warm glow spreads out from you and stays.' },
+  // Tag 3: Stufe 28. Eine starke, schnelle Heilung für die, die ganz nah stehen (meist der Warden vorn).
+  ember_mend: { name: 'Ember Mend', desc: "Press the ember against whoever is closest and hold it there. It is not comfortable. It works.", glyph: '+', kind: 'aura', radius: 1.5, heal: 30, oil: 6, cd: 14, text: 'You press the ember close. Skin knits, cloaks steam.' },
+  // Tag 3, Nachschlag: Stufe 32. Heilen und Schützen zugleich, für alle im Umkreis, der große Gruppenmoment.
+  sanctuary: { name: 'Sanctuary', desc: "Plant the staff and let the ember burn as a little hearth. Everyone near it is warm, and hard to hurt.", glyph: 'A', kind: 'aura', radius: 4, heal: 16, brace: 12, oil: 14, cd: 75, text: 'You plant the staff. For a moment there is a hearth here, and everyone stands closer to it.' },
   kindle_burst: { name: 'Kindle Burst', desc: "The ember flares. Creatures flinch and run.", glyph: '*', kind: 'burst', radius: 2.5, hit: [3, 5], scare: 6, oil: 10, cd: 24, text: 'Your ember flares outward.' },
 
   // Flarecaster
@@ -51,6 +60,10 @@ export const ABILITIES = {
   starfall: { name: 'Starfall', desc: "Gather the light high up, then let it all fall at once.", glyph: '%', kind: 'zone', range: 6, radius: 2, hit: [10, 14], oil: 14, cd: 40, power: true, text: 'Light gathers overhead, and falls.' },
   sunlance: { name: 'Sunlance', desc: "Narrow the lens to a needle and throw the whole lantern down it.", glyph: '|', kind: 'ranged', range: 7, hit: [14, 18], oil: 10, cd: 24, power: true, text: 'A needle of white light crosses the dark.' },
   prism_ward: { name: 'Prism Ward', desc: "Split the lantern light into a ring of colours. Blows that pass through it come out softer.", glyph: 'o', kind: 'aura', radius: 3, brace: 10, oil: 8, cd: 50, text: 'A ring of split light settles around you and your friends.' },
+  // Tag 3: Stufe 28. Ein Brandmal, das blendet und lange nachglüht.
+  noonbrand: { name: 'Noonbrand', desc: "Fold the whole lantern into one point and press noon into the target.", glyph: '^', kind: 'ranged', range: 6, hit: [12, 16], burn: { dmg: 6, ticks: 12 }, dazzle: 4, oil: 10, cd: 30, power: true, text: 'For a moment it is noon, in one small place.' },
+  // Tag 3, Nachschlag: Stufe 32. Ein Kranz aus Licht um den Werfer: verbrennt und blendet alles ringsum.
+  corona: { name: 'Corona', desc: "Open the lantern all the way and stand in the middle of it. Everything close burns and cannot see.", glyph: '*', kind: 'burst', radius: 3, hit: [10, 13], dazzle: 5, burn: { dmg: 5, ticks: 10 }, oil: 16, cd: 50, power: true, text: 'Light pours out of you in a ring. Everything near you flinches and smokes.' },
   sunspot: { name: 'Sunspot', desc: "Drop a patch of hard light on a group.", glyph: '@', kind: 'zone', range: 5, radius: 1.5, hit: [4, 6], oil: 8, cd: 20, text: 'A patch of hard light lands on the ground.' },
 
   // Drifter
@@ -63,5 +76,9 @@ export const ABILITIES = {
   caltrops: { name: 'Caltrops', desc: "Scatter a pocketful of bent nails. Everything close stops to think about its feet.", glyph: ':', kind: 'burst', radius: 2, hit: [4, 6], root: 10, cd: 36, text: 'You scatter caltrops all around you.' },
   smoke_bomb: { name: 'Smoke Bomb', desc: "A clay ball of soot and lamp-black. Everyone coughs, nobody sees you go.", glyph: 'o', kind: 'fade', ticks: 12, radius: 2, dazzle: 6, cd: 50, text: 'Smoke bursts around you. You are somewhere else now.' },
   gutter_strike: { name: 'Gutter Strike', desc: "Low, from the side nobody watches. In the dark, it is the last thing they notice.", glyph: 'v', kind: 'melee', hit: [14, 18], dark: 1.75, cd: 30, power: true },
+  // Tag 3: Stufe 28. Ein Schnitt mit Lampenruß in der Klinge: blendet, im Dunkeln tiefer.
+  lampblack_cut: { name: 'Lampblack Cut', desc: "A blade dipped in lamp-black. It leaves a smear across the eyes, and a deeper one in the dark.", glyph: '/', kind: 'melee', hit: [10, 13], dazzle: 6, dark: 1.5, cd: 22, power: true },
+  // Tag 3, Nachschlag: Stufe 32. Der schwerste Schnitt des Drifters, im Dunkeln noch schwerer.
+  vanishing_cut: { name: 'Vanishing Cut', desc: "Step through the edge of the light and out the other side. The blade stays behind for a moment.", glyph: 'V', kind: 'melee', hit: [18, 23], dark: 1.6, cd: 36, power: true },
   twin_cut: { name: 'Twin Cut', desc: "Both blades at once. Your hardest hit.", glyph: 'X', kind: 'melee', hit: [8, 11], cd: 12, power: true },
 };

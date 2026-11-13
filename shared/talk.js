@@ -10,8 +10,9 @@ import { cheb } from './path.js';
 import { tell, emit } from './events.js';
 import * as P from './player.js';
 import { placeBet } from './races.js';
+import { isCupDay } from '../content/races.js';
+import { canInvest, sharesIn, totalShares, dividendDue, invest, grantShare, collectDividend, stockFor, readLedger } from './ventures.js';
 import { INN } from '../content/tavern.js';
-import { shopStock } from '../content/shops.js';
 import { mazeStart, mazeId } from '../content/regions/maze.js';
 
 export const TALK_RANGE = 2;
@@ -48,6 +49,14 @@ export function conditionHolds(p, cond = {}, world = null) {
   // Tageszeit: night = nach Einbruch der Dunkelheit (wie bei Quest-Schritten mit night)
   if (world && cond.night && world.daylight >= 0.5) return false;
   if (world && cond.day && world.daylight < 0.5) return false;
+  // Cup Day bei Mabb (Wochenende nach Berliner Datum); der Browser prüft das nicht
+  if (world && cond.cupDay && !isCupDay(world.date)) return false;
+  // Counting House (Tag 3): canInvest = darf noch einen Anteil kaufen (Gold reicht), partner = hat Anteile
+  // (an diesem Geschäft oder, mit true, an irgendeinem), dividendDue = heute noch nicht abgeholt (braucht die Welt)
+  if (cond.canInvest && !canInvest(p, cond.canInvest)) return false;
+  if (cond.partner && (cond.partner === true ? totalShares(p) : sharesIn(p, cond.partner)) < 1) return false;
+  if (cond.notPartner && totalShares(p) > 0) return false;
+  if (world && cond.dividendDue && !dividendDue(p, world.date)) return false;
   // Spezialisierung: specLevel = aktive Klasse hat SPEC_LEVEL erreicht; noSpec / hasSpec für die aktive Klasse
   if (cond.specLevel && P.classLevel(p) < SPEC_LEVEL) return false;
   if (cond.noSpec && p.specs?.[p.cls]) return false;
@@ -137,7 +146,11 @@ function applyEffect(world, p, eff) {
     p.warnedOil = 0;
     questEvent(world, p, 'action', { action: 'refill' });
   }
-  if (eff.shop) emit(world, { to: p.id, type: 'shop', shop: eff.shop, stock: shopStock(eff.shop, world.date) });
+  if (eff.shop) emit(world, { to: p.id, type: 'shop', shop: eff.shop, stock: stockFor(p, eff.shop, world.date) });
+  if (eff.invest) invest(world, p, eff.invest);
+  if (eff.grantShare) grantShare(world, p, eff.grantShare);
+  if (eff.dividend) collectDividend(world, p);
+  if (eff.ledger) readLedger(world, p);
   if (eff.bet) placeBet(world, p, eff.bet[0], eff.bet[1]);
   // Unending Maze: Sorrel lässt einen an einem Stockwerk einsteigen, das man schon erreicht hat
   if (eff.descend && (p.mazeDeep ?? 1) >= eff.descend) {

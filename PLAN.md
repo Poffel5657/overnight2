@@ -4,54 +4,60 @@ Der Nightwright pflegt diese Datei jede Nacht (Regeln in `CLAUDE.md`).
 
 ## Inbox gelesen bis
 
-`v2/inbox/2026-11-11.json` (Tag 1). Tag 2: keine neue Datei vorhanden (Export verspätet, siehe „Bekannte Probleme“). Die nächste Nacht liest alle Dateien nach `2026-11-11.json`.
+`v2/inbox/2026-11-13.json` (Tag 3). Die nächste Nacht liest alle Dateien nach `2026-11-13.json`.
 
 ## Heute in Arbeit
 
-Tag 2 (Nacht zum 2026-11-13). Die Inbox-Datei des Abends lag um 23 Uhr noch nicht vor (Export-Lauf verspätet); geplant ohne neue Gebete und ohne Stimmen, bei Gleichstand entscheidet der Nightwright.
+Tag 3 (Nacht zum 2026-11-14). Inbox `v2/inbox/2026-11-13.json`: Gebete 3 bis 6 (3 und 4 hat Chris schon gebaut), Zettel 2: snail-cup 2 Stimmen, sonst keine.
 
-**Teil 1, aus den Gebeten:** Keine neuen Gebete gelesen (siehe oben). Entfällt, Teil 3 wird größer (zwei Quests, ein Wesen, ein Rezept).
+**Teil 1, aus den Gebeten: das Zählhaus und ein Rätsel (Gebete 6 und 5)**
+1. *Was der Spieler will:* Gold, das nicht nur im Beutel liegt, sondern im Dorf etwas bewegt und zurückkommt (Gebet 6); Häuser, die einen Zweck haben, und Quests, bei denen man nachdenken muss (Gebet 5).
+2. *Woran er es merkt:* Das Haus nördlich des Platzes wird „the Counting House“ (eigener Name, Gegend im Innenraum). Darin sitzt Coyne, die Geldverleiherin. Man kauft Anteile (bis zu drei) an Marrows Stand, der Taverne und dem Nachtmarkt; jeder Anteil bringt einmal am Tag eine kleine Ausschüttung bei Coyne und schaltet beim jeweiligen Händler Ware „für Teilhaber“ frei. Pell ruft es aus, Marrow und Hollis reden darüber. Quest „A Stake in Kindle“ (ersten Anteil kaufen, Marrow davon erzählen). Rätsel-Quest „The Old Strongbox“: Coynes Vorgänger hat eine Truhe mit drei Symbolrädern hinterlassen; der Zettel mit drei Rätseln liegt in seinem alten Haus, Antworten kennt man aus der Welt (Tallow, Mabb, Ama geben Hinweise), falsche Einstellung lässt die Truhe zu.
+3. *Woran es anschließt:* Händler (Ware für Teilhaber), Gold, Quests, Kapelle/Chor (Rätsel), Schneckenrennen (Rätsel), Häuser in Kindle.
+4. *Weg dorthin:* Pell und Marrow schicken einen ins Counting House direkt am Platz; Coyne hat ein `!`.
 
-**Teil 2, aus der Abstimmung: der Ausguck am Nordrand (Zettel 1, ohne Stimmen; Wahl des Nightwrights, weil er den Bogen trägt)**
-1. *Was der Spieler will:* Einen Ort, an dem man dem Licht im Norden näher ist und es wirklich sehen kann; das Gefühl, mitzuhelfen, statt nur zuzusehen.
-2. *Woran er es merkt:* Ein Holzturm mit Laterne am Ende der Nordstraße (eigene Gegend „THE NORTH WATCH“ in der Statusanzeige, auf der Karte); Brindle ruft Vorbeigehende; Pell ruft ihn aus; Haskel bietet die Quest „Eyes on the North“ ab Stufe 10 an. Man sammelt Wolfsfelle für den Windschutz, holt bei Wren eine Fernrohrlinse (mit Grey Wisps poliert), klettert nachts hinauf und sieht das Licht (Log). Danach: einmal pro Nacht hinaufklettern gibt ein wenig Erfahrung; Brindle hat einen Gefallen (Wolfsfelle) am Anschlagbrett.
-3. *Woran es anschließt:* Quests (neue Aktion `watch`), Tag und Nacht, Licht (Watcher's Hood mit Licht +1), Händler/Handel (Felle, Wisps), Gefallen, der Bogen.
-4. *Weg dorthin:* Nordstraße von Kindle durch Hushwood bis zum Ende; Haskel am Holzfällerfeuer schickt einen hin.
+**Teil 2, aus der Abstimmung: der Snail Cup (Zettel 2, 2 Stimmen)**
+1. *Was der Spieler will:* Mehr aus den Schneckenrennen: neue Schnecken, ein Ziel, etwas zum Vorzeigen.
+2. *Woran er es merkt:* Zwei neue Schnecken (Duchess, Thistle) auf zwei neuen Bahnen; Mabb hat eine Pokal-Quest „The Snail Cup“ (drei gewonnene Wetten), der Pokal ist ein tragbarer Hut; am Wochenende ist „Cup Day“ mit höherem Einsatz (50 Gold). Pell ruft es aus.
+3. *Woran es anschließt:* Schneckenrennen, Gold, Ausrüstung (Kopf), Quests.
+4. *Weg dorthin:* Mabb am Westweg, Pell, die Quest-Laterne.
 
-**Teil 3, vom Nightwright: Unruhe im Norden (Bogen, Akt 1)**
-1. *Was der Spieler will:* Merken, dass das Licht im Norden Folgen hat, und Inhalt zwischen Stufe 5 und 10 (bisher fast leer).
-2. *Woran er es merkt:* Neue Wesen „Restless Wolf“ (Stufe 7) am Waldrand nordwestlich der Felder; Ama ab Stufe 5 mit „The Restless Pack“ (fünf Wölfe, versengtes Fell, Haskel riecht fremden Rauch); Tallow mit „A Prayer Not Ours“ (fremdes Gebet im Opferkasten der Kapelle, Pell, nachts Mothwick). Versengtes Fell füttert das Leuchtfeuer und wird zur Smoke-Ruff Hood (Tinkering 6). Gefallen bei Haskel und Ama.
-3. *Woran es anschließt:* Kampf, Quests, Leuchtfeuer, Tinkering, Gefallen, Kapelle, Nachtmarkt.
-4. *Weg dorthin:* Ama und Tallow stehen mitten im Dorf und rufen; Pell ruft die Wölfe aus.
+**Teil 3, vom Nightwright: die Spur der Träger (Bogen, Akt 1)**
+1. *Was der Spieler will:* Weiterkommen im Rätsel um das Licht im Norden, mit Inhalt für Stufe 14 bis 20.
+2. *Woran er es merkt:* Brindle sah nachts Laternen, die sich am Nordrand bewegten. Quest „Carriers in the Dark“ (Brindle, ab 14): ein zerbrochenes Tragegestell und ein Kerbholz am Nordrand finden, Wren und der Stranger deuten es; neue Wesen „Grey Gnawer“ am Nordrand, die die Vorräte der Träger fressen. Der Schein im Norden wird heller (Ausguck-Text, `farLight`).
+3. *Woran es anschließt:* Quests, Kampf, Ausguck, Licht, der Bogen, der Stranger.
+4. *Weg dorthin:* Brindle am Ausguck (Nordstraße), Pell ruft es aus.
 
-**Dauerauftrag Klassen: Flarecaster** bis Stufe 16: Glare (10, blendet aus der Ferne), Cinder Brand (13, neue Wirkung `burn`: Ziel brennt nach), Starfall (16, große Fläche).
+**Dauerauftrag Klassen: Warden** Stufe 28: Lantern Hook (neue Wirkung `pull`: holt ein Wesen aus der Ferne vor den Schild).
 
-**Nachschlag (gebaut):** Drifter bis Stufe 16; Warden Bulwark (20); Mender Smoulder (20); Flarecaster Sunlance (20); Drifter Smoke Bomb (20); Warden Last Light (24); Mender Kindred Glow (24); Flarecaster Prism Ward (24); Drifter Gutter Strike (24); Mothwicks Quest „Lights That Eat Lights“ (23+); Marrows Quest „The Oil Rush“ (26+); Choir Wraiths (36) in der Drowned Chapel; Alchemie Wisplight Draught (24); Tinkering Wraithsilk Hood (30) und Wardstone Boots (31); Salvage Old Shaft (26); Foraging Drowned Garden (26); Cartography North Cairn (26); grüne Glasscherben in Hushwood mit Gefallen bei Fen und Green Glass Lens; Mothwicks Ware wechselt jede Nacht; The Old Foreman mit „The Last Shift“ (Copperdeep, Stufe 18–21, Faden „for the Hollow fire“); Fehler behoben: Licht aus Rüstung (Choir Mantle) zählte nicht. Alles gebaut und getestet (`tests/night/002-*`).
+**Nachschlag (gebaut):** alle vier Klassen bis 32 (Shield Wall, Sanctuary, Corona, Vanishing Cut), Tinkering 18 Carrier's Wraps, Ama und Fen zu den Trägern; Mender Ember Mend, Flarecaster Noonbrand, Drifter Lampblack Cut (alle 28); Rooks Werkstatt doppelt so groß mit der guten Werkbank und Tansy; Hesks Stand als viertes Geschäft; Rätsel-Schatzsuche „Abel's Three Caches“; zwei Gefallen am Nordrand; Gespräche und Rufe. Alles gebaut und getestet (`tests/night/003-*`). Rook selbst bleibt draußen (Kern-Tests erwarten ihn in Kindle), steht als „rook-masterwork“ auf dem Stimmzettel.
 
 ## Ausbau läuft
 
 - **The Unending Maze** (seit 2026-11-13, von Chris gebaut aus Gebet 4): Stockwerke 1 bis 99 unter Cinderford, jeden Tag neu gewürfelt, Stufe = 3 + 2 × Stockwerk. Gerüst fertig, Ausbau in späteren Nächten möglich: Rangliste der Tiefsten auf dem Turn Board (braucht Chris: D1-Abfrage), weitere Keeper-Körper und -Eigenschaften (`BODIES`, `AFFIXES` in `content/regions/maze.js`), Rezepte aus Turnstones, mehr Gegenstände ab Stockwerk 25 (Stufe 53+), Quests für tiefere Stockwerke (Aktion `keeper_10`, `keeper_20` gibt es schon).
 
-- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag, siehe `CLAUDE.md`): jede Nacht mindestens eine Klasse ein Stück weiter, Reihenfolge Warden, Mender, Flarecaster, Drifter. Stand in `ROADMAP.md`: alle vier bis Stufe 24. Nächste Nacht: Warden (28).
+- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag, siehe `CLAUDE.md`): jede Nacht mindestens eine Klasse ein Stück weiter, Reihenfolge Warden, Mender, Flarecaster, Drifter. Stand in `ROADMAP.md`: alle vier bis Stufe 32. Nächste Nacht: Warden (36), dann Mender, Flarecaster, Drifter.
 - **Der Bogen „The Second Light“**, Akt 1 läuft (Licht im Norden, Ausguck, fliehende Wölfe, fremdes Gebet, Hauptbuch des Foreman). Weitere Andeutungen in den nächsten Nächten.
-- **The North Watch:** Der Text in `content/lookout.js` soll mit dem Bogen wachsen (das Licht wird heller, Brindles Buch).
+- **The North Watch:** Der Text in `content/lookout.js` soll mit dem Bogen wachsen (Tag 3: Schein größer, Lampen der Träger sichtbar).
+- **Counting House:** weitere Geschäfte (Wren, Rook, Sorrel), Ausschüttung in Waren statt Gold, ein gemeinsames Ziel pro Geschäft (bräuchte einen dauerhaften Weltzähler, nur mit Chris).
 
 ## Nächste Nächte
 
-- Warden auf Stufe 28, dann Mender, Flarecaster, Drifter (28). Ab 30 braucht es neue Gegner und Ausrüstung.
+- Warden auf Stufe 36, dann Mender, Flarecaster, Drifter (36). Danach Spezialisierungen vorbereiten (ab 50). Ab 30 braucht es neue Gegner und Ausrüstung.
 - Inhalt für 40+ (Tag 2 brachte „Lights That Eat Lights“ ab 23 und „The Oil Rush“ ab 26).
-- Bogen: Fen zählt die grünen Scherben (seit Tag 2); als Nächstes Spuren von Trägern am Nordrand; der Schein wird heller (`farLight` größer, Text am Ausguck).
+- Bogen: Tag 3 brachte die Träger (Kerbholz, Torfbrot, „der alte Weg nach Süden“). Als Nächstes: der Stranger ohne Schatten im Leuchtfeuer (jemand bemerkt es), Ama rechnet mit mehr Brennstoff (Vorbereitung auf „The Beacon Starves“ ab Tag 7).
 - Mehr Gefallen, die Gruppen belohnen (Tag 2: der erste, „foreman_again“).
 - Wesen und Gebiete für 40+ (die Klassen wachsen schneller als der Inhalt).
 
 ## Ideen für später
 
-- Eine alte Mühle im Grey, die sich von selbst dreht (steht auf dem Stimmzettel).
-- Angeln im Bach (steht auf dem Stimmzettel).
-- Ein Imker zieht nach Kindle (steht auf dem Stimmzettel).
+- Eine alte Mühle im Grey, die sich von selbst dreht (drei Nächte auf dem Zettel ohne Stimme, vorerst herunter).
+- Angeln im Bach (drei Nächte auf dem Zettel ohne Stimme, vorerst herunter).
+- Ein Imker zieht nach Kindle (steht auf dem Stimmzettel, dritte Nacht).
+- Kochen bei Hollis, Signalfeuer an der Nordstraße, Rook drinnen mit Meisterrezepten (alle auf Zettel 3).
+- Rangliste der Cup-Sieger bei Mabb; mehr Rätsel-Quests (Gebet 5) in anderen Häusern (Haus 3 mit der Karte voller Kreuze).
 - Aus Gebet 2: ein kleiner Talentbaum mit leichten Boni (größerer Umbau, später als Vorschlag). Die Truhe steht seit Tag 1 in der Taverne.
 - Aus Gebet 1: ein Übungsring für freundliche Zweikämpfe (Kampf zwischen Spielern ändert die Kampfregeln, nur mit Chris).
-- Mehr Schnecken, ein Schneckenpokal am Wochenende (steht seit Zettel 2 auf dem Stimmzettel).
 
 ## Was ankommt
 
@@ -60,7 +66,10 @@ Tag 2 (Nacht zum 2026-11-13). Die Inbox-Datei des Abends lag um 23 Uhr noch nich
 
 ## Bekannte Probleme
 
-- **Gebete 3 und 4 sind schon gebaut** (Chris, 2026-11-13, außerhalb einer Nacht): Gebet 3 = größerer Beutel (`BAG_SIZE` 48), Gebet 4 = zweite Stadt Cinderford + Unending Maze. Sie stehen noch in `v2/inbox/2026-11-13.json`, weil der Export erst am Abend lief. **Nicht noch einmal bauen**, nur in `CHRONICLE.md` beim nächsten Tag erwähnen; die Gebete markiert Chris selbst als erhört.
+- Gebete 3 und 4 hat Chris am 2026-11-13 gebaut (Beutel 48, Cinderford und Maze); Tag 3 hat sie nur in `CHRONICLE.md` erwähnt, Chris markiert sie selbst als erhört.
+- Der Smoke-Test lief in der Nachtumgebung mit dem vorinstallierten Chromium (`PW_CHROME=/opt/pw-browsers/chromium-1243/chrome-linux64/chrome`), weil `tools/smoke.mjs` den Browser von Playwright 1.56 sonst nicht findet.
+- Der Kern-Test „Gefallen erledigen“ (`tests/unit/sim.test.mjs`) nimmt den ersten Tag ab 2026-11-10 mit Abgabe- und Kampf-Gefallen und lässt einen Neuling (Stufe 1) gegen das Wesen des Kampf-Gefallens kämpfen. Welcher Gefallen gezogen wird, hängt von allen IDs in `content/dailies.js` ab; ein neuer Gefallen kann so einen Gegner ab Stufe 7 ziehen, und der Test scheitert. Tag 3 hat die ID des Gnawer-Gefallens so gewählt (`thin_gnawers`), dass die Krähen gezogen werden. Vorschlag an Chris: Der Test sollte einen leichten Kampf-Gefallen gezielt suchen.
+- Ab Stufe 28 hat jede Klasse mehr Fähigkeiten als die Leiste Felder (9); neue landen nicht von selbst auf der Leiste, man zieht sie aus dem Fähigkeitenfenster. Die Meldung „New ability on your bar“ stimmt dann nicht ganz (`grantXp` in `shared/talk.js`).
 
 - **Inbox-Export kam nicht an (Tag 1 und 2), behoben am 2026-11-13:** GitHub startete `inbox-export.yml` stark verspätet (11.11.) oder gar nicht (12.11.), die Prüfung auf 22 Uhr brach dann ab. Jetzt läuft der Export alle 30 Minuten zwischen 17 und 23 Uhr Berlin und überschreibt die Datei des Tages; `since` kommt aus der letzten Datei vor heute. Die Gebete seit dem 11.11. kommen mit der nächsten Datei an. Die Stimmen von Zettel 1 bleiben ungelesen (Zettel 2 läuft schon).
 
@@ -70,4 +79,4 @@ Tag 2 (Nacht zum 2026-11-13). Die Inbox-Datei des Abends lag um 23 Uhr noch nich
 
 ## Große Vorschläge
 
-- #1 Truhe zum Einlagern in Kindle (Gebet 2), offen seit Tag 1, Entwurf in `v2/proposals/stash.md` im Inbox-Repo.
+- #1 Truhe zum Einlagern in Kindle (Gebet 2), offen seit Tag 1. Chris hat die Truhe an Tag 1 in der Taverne selbst gebaut; das Issue ist damit erledigt, bleibt aber für Chris zum Schließen offen.

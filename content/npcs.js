@@ -8,13 +8,15 @@
 //       prof / noProf: '<beruf>'   profSlot: true (noch ein Beruf frei)   has: { item: n }
 //       gold: n (mindestens so viel Gold)   night / day: true (Tageszeit; der Browser prüft das nicht)
 //   do: Wirkungen der Reihe nach: start, advance (Quest), chooseClass, give, take, learn, unlearn,
-//       refill, shop ('<händler>'), bet (['<schnecke>', gold], Schneckenrennen in shared/races.js)
+//       refill, shop ('<händler>'), bet (['<schnecke>', gold], Schneckenrennen in shared/races.js),
+//       invest / grantShare ('<geschäft>'), dividend, ledger (Counting House, shared/ventures.js)
 // Seiten werden nur gezeigt, wenn mindestens eine Antwort übrig bleibt (sonst endet das Gespräch).
 
 import { PROFESSIONS } from './professions.js';
 import { CLASSES, UNLOCK_LEVEL } from './classes.js';
 import { RACE } from './races.js';
 import { INN } from './tavern.js';
+import { VENTURES, SHARE_MAX } from './ventures.js';
 
 const BYE = { text: 'Bye.' };
 
@@ -75,9 +77,13 @@ const ama = (() => {
         ...t.options,
         { text: 'Can I fill my lantern?', to: 'oil', do: [{ refill: true }] },
         { text: 'What is out there?', to: 'grey' },
-        BYE,
+        { text: 'What does a Warden carry, besides a shield?', to: 'sb_ama', if: { quest: { old_strongbox: 1 } } },
+      { text: 'Did Brindle tell you about the carriers?', to: 'ama_carriers', if: { quest: { carriers_dark: 'done' } } },
+      BYE,
       ],
     },
+    ama_carriers: { text: 'She shouted it up the road, so the whole village knows. Lamps, walking, with nothing to carry. Ama looks at the Beacon for a long moment. "If somebody out there is short of fire, they will come looking for ours. Feed the Beacon. Every night. I am not asking."', options: [BYE] },
+    sb_ama: { text: 'A shield, and a lantern. Always both. A shield without a light is a door in the dark. A light without a shield is a target. Why, is Coyne setting riddles again? Abel used to do that.', options: [BYE] },
     k_offer: {
       text: 'New, and no light of your own. Here, a tin lantern. Before you wander off with it, tell me what you are good for.',
       options: [{ text: 'Let me choose.', to: 'k_choose' }],
@@ -130,9 +136,12 @@ const tallow = (() => {
         { text: 'Is the choir really quiet?', to: 'wraiths', if: { quest: { drowned_choir: 'done' } } },
         { text: 'Anything new at the altar?', to: 'po_offer', if: { quest: { kindling: 'done', prayer_not_ours: 'none' } }, do: [{ start: 'prayer_not_ours' }] },
         { text: 'About the folded prayer...', to: 'po_done', if: { quest: { prayer_not_ours: 3 }, has: { prayer_slip: 1 } }, do: [{ take: { prayer_slip: 1 } }, { advance: 'prayer_not_ours' }] },
-        ...t.options, ...f.options, ...a.options, { text: 'I want to pray.', to: 'pray' }, { text: 'Does it ever answer?', to: 'answer' }, BYE,
+        ...t.options, ...f.options, ...a.options, { text: 'I want to pray.', to: 'pray' }, { text: 'Does it ever answer?', to: 'answer' },
+        { text: 'How did the drowned choir end a hymn?', to: 'sb_tallow', if: { quest: { old_strongbox: 1 } } },
+        BYE,
       ],
     },
+    sb_tallow: { text: 'With a bell. Every hymn, forty voices, and then one small bell, so the singers knew to stop. I keep it here. I do not ring it.', options: [BYE] },
     op_offer: { text: 'People say there is an older chapel under the Sinkmarsh ruins. Older than ours. Built for someone else. There is a shrine in the ruins; if there is a prayer left on it, I would like to read it.', options: [{ text: 'I will look.' }] },
     op_done: { text: '"To the one who holds the lamp." Not the Nightwright, then. The stairs under the ruins, they will let you down now. Take a light. Take two.', options: [{ text: 'I will be careful.' }] },
     dc_offer: { text: 'It said there was a choir. Forty voices, singing to "the one who holds the lamp". The pilgrims down there are still singing, I think. The Mire Lurkers in the deep marsh swallow their books. Bring me three. I want to read what they sang.', options: [{ text: 'Three wet books. Fine.' }] },
@@ -180,9 +189,11 @@ const fen = (() => {
         ...c.options,
         { text: 'There is a lookout up north now.', to: 'watch', if: { quest: { not_from_here: 'done' } } },
         { text: 'I found more green glass.', to: 'shards', if: { quest: { not_from_here: 'done' }, has: { green_shard: 1 } } },
+        { text: 'Brindle saw people on the north edge.', to: 'fen_carriers', if: { quest: { carriers_dark: 'done' } } },
         { text: 'A bit scary.', to: 'scary' }, BYE,
       ],
     },
+    fen_carriers: { text: '\"PEOPLE? With lamps? Walking? Then there is a road up there, and if there is a road, it goes somewhere!" Fen is already drawing it on the map. "I am putting a dotted line. Dotted means maybe. Do not tell Ama I drew a road. She will make me un-draw it.', options: [BYE] },
     f_offer: { text: 'Quills! For maps! Crows have the best feathers and they will not share. Four, please. Four is a good number.', options: [{ text: 'Four feathers.' }] },
     f_done: { text: 'These are perfect. Here, my best survey notes. I measured a goose. It moved.', options: [{ text: 'Thanks, Fen.' }] },
     shards: { text: 'MORE? The wolves have it, and the moss spirits, like they walked past a lot of broken lanterns. Put two on the notice board for me some days, I am keeping count. And Wren can grind three into a lens, if you know lamps.', options: [BYE] },
@@ -208,6 +219,7 @@ const wren = (() => {
         { text: 'Brindle needs a spyglass lens.', to: 'en_wisps', if: { quest: { eyes_north: 4 } } },
         { text: 'Can you work this green glass?', to: 'green', if: { has: { green_shard: 1 } } },
         { text: 'What do you make of this glass?', to: 'nf_glass', if: { quest: { not_from_here: 1 }, has: { cold_glass: 1 } }, do: [{ advance: 'not_from_here' }] },
+        { text: 'Can you read this tally stick?', to: 'cd_tally', if: { quest: { carriers_dark: 3 }, has: { tally_stick: 1 } }, do: [{ advance: 'carriers_dark' }] },
         ...t.options, ...l.options, BYE,
       ],
     },
@@ -215,6 +227,7 @@ const wren = (() => {
     en_lens: { text: 'Wren takes a lump of good Kindle glass off the shelf and grinds for a long, dusty while, then rubs it with the wisps until they give up. "There. It does not make things bigger. It makes them closer, which is worse. Tell Brindle not to drop it."', options: [{ text: 'Thanks, Wren.' }] },
     en_wisps: { text: 'A spyglass? Fine. Glass I have. To polish it I need grey wisps, three of them. They hate the light so much that they rub every speck of it smooth.', options: [{ text: 'Three wisps.' }] },
     nf_glass: { text: 'Green, poured thick, full of tiny bubbles. Nobody in Kindle pours glass like this, and I would know. Whoever made it had sand, a hot fire and no patience. Show the Stranger. He looks at lanterns like he misses one.', options: [{ text: 'I will.' }] },
+    cd_tally: { text: 'Wren runs a thumb down the notches. "Forty to a row. Forty, forty, forty, for years of rows. A carrier\'s tally: one notch for every load that arrived." Wren turns it over. "And then the rows get short. Twenty. Twelve. The last one has eight." The stick comes back to you. "Somebody used to carry forty of something, every time. Now they carry what they can find."', options: [{ text: 'Forty. Like the crates in the ledger.' }] },
     ...l.pages, ...t.pages,
   };
 })();
@@ -232,6 +245,7 @@ const stranger = (() => {
         { text: 'This glass came from the north.', to: 'nf_hungry', if: { quest: { not_from_here: 2 }, has: { cold_glass: 1 } }, do: [{ take: { cold_glass: 1 } }, { advance: 'not_from_here' }] },
         { text: 'Have you heard of the Hollow fire?', to: 'hollow', if: { quest: { last_shift: 'done' } } },
         { text: 'Someone left a prayer in the chapel.', to: 'prayer', if: { quest: { prayer_not_ours: 'done' } } },
+        { text: 'The carriers dropped this bread.', to: 'cd_bread', if: { quest: { carriers_dark: 4 }, has: { hollow_ration: 1 } }, do: [{ take: { hollow_ration: 1 } }, { advance: 'carriers_dark' }] },
         ...t.options, { text: 'Where are you from?', to: 'from' }, BYE,
       ],
     },
@@ -241,6 +255,8 @@ const stranger = (() => {
     prayer: { text: '"Did they." The Stranger looks at his hands. There is brown ink in the creases of his fingers, or maybe it is only dirt. "Then somebody still thinks it helps."', options: [{ text: '...' }] },
     hollow: { text: 'The Stranger is very still. "Where did you hear that?" You tell him about the ledger. "Crates of glimmer, every week." He almost laughs. "Then somebody here used to remember." He turns away. "Keep your wick trimmed."', options: [{ text: '...' }] },
     from: { text: 'Further out than you have been. There is another light out there. Keep your wick trimmed.', options: [BYE] },
+    cd_bread: { text: 'The Stranger takes the bread and breaks off a corner. He eats it slowly, with his eyes shut. "Peat," he says. "You can only bake it over peat." He looks at the tally stick in your hand and does not ask to hold it. "They are not carrying it to you. They are walking the old way south, the way the glimmer used to go north. With almost nothing." He pockets the rest of the bread. "Tell the girl on the tower to keep counting."', options: [{ text: 'Who are they?', to: 'cd_who' }, BYE] },
+    cd_who: { text: '"People who remember a road you have forgotten." He says it gently, which is worse.', options: [BYE] },
     ...t.pages,
   };
 })();
@@ -305,12 +321,20 @@ const brindle = {
       { text: 'Three wolf pelts.', to: 'en_pelts', if: { quest: { eyes_north: 2 }, has: { wolf_pelt: 3 } }, do: [{ take: { wolf_pelt: 3 } }, { advance: 'eyes_north' }] },
       { text: 'Here is the spyglass lens.', to: 'en_glass', if: { quest: { eyes_north: 6 }, has: { spyglass_lens: 1 } }, do: [{ take: { spyglass_lens: 1 } }, { advance: 'eyes_north' }] },
       { text: 'I saw it.', to: 'en_done', if: { quest: { eyes_north: 8 } }, do: [{ advance: 'eyes_north' }] },
+      { text: 'Anything new up north?', to: 'cd_offer', if: { quest: { eyes_north: 'done', carriers_dark: 'none' }, classLevel: 16 }, do: [{ start: 'carriers_dark' }] },
+      { text: 'Anything new up north?', to: 'cd_early', if: { quest: { eyes_north: 'done', carriers_dark: 'none' }, below: 16 } },
+      { text: 'I followed the carriers.', to: 'cd_done', if: { quest: { carriers_dark: 5 } }, do: [{ advance: 'carriers_dark' }] },
+      { text: 'Seen the carriers again?', to: 'cd_after', if: { quest: { carriers_dark: 'done' } } },
       { text: 'What do you see up there?', to: 'see' },
       { text: 'Can I read your book?', to: 'book', if: { quest: { eyes_north: 'done' } } },
       { text: 'Why a lookout?', to: 'why' },
       BYE,
     ],
   },
+  cd_offer: { text: '"Lights. Small ones, five or six, walking in a line along the edge of the trees, west to east. Not wolves, not wisps. People, carrying lamps and something heavy." She taps her book. "They stopped by the stream west of the cold lantern, and then the gnawers came and they ran. Go and see what they left behind. Take a big stick. The gnawers have a lot of teeth and no manners."', options: [{ text: 'I will look.' }] },
+  cd_early: { text: '"Lights on the edge of the trees, walking. I want somebody to go and look, but the things that came after them would eat you. Come back with a few more levels. (Level 16)"', options: [BYE] },
+  cd_done: { text: 'She writes it all down: the frame, the tally, the bread, what Wren said, what the Stranger said, and underlines "the old way south" three times. "So the glow up north has people under it. Hungry people, walking." She closes the book. "Here: the wraps one of them dropped, and Haskel\'s salve. I will keep counting. Tell Ama. No, I will tell Ama. She listens to me when I shout."', options: [{ text: 'Thanks, Brindle.' }] },
+  cd_after: { text: '"Twice more. Always at night, always heading east along the trees, always fewer lamps than the time before. Last night, three." She does not look up from her book.', options: [BYE] },
   en_hello: { text: 'Good, hands. The tower is up, more or less. The wind up there could peel an apple. I need three wolf pelts for a windbreak, and the wolves are, helpfully, all around us. After that, a proper glass.', options: [{ text: 'Three pelts.' }] },
   en_pelts: { text: 'She nails them up along the rail, fur side in. "Better. Now I can stay up there long enough to see something. What I need next is a spyglass. Wren in Kindle grinds lenses. Wren will want something for it. Wren always does."', options: [{ text: 'I will ask Wren.' }] },
   en_glass: { text: 'She fits the lens into a brass tube and squints through it at a tree. "Hah. That tree has a beetle on it." She hands you the tube back. "You did the work, you get the first look. Wait for dark, climb up and look north. Then come and tell me I am not mad."', options: [{ text: 'After dark, then.' }] },
@@ -330,29 +354,119 @@ const mabb = (() => {
       bets.push({ text: `${stake} gold on ${sn.name}. (pays ${stake * sn.odds})`, if: { gold: stake }, do: [{ bet: [id, stake] }] });
     }
   }
+  // Seit Tag 3: am Cup Day (Wochenende) der hohe Einsatz
+  const cupBets = Object.entries(S).map(([id, sn]) => ({ text: `${RACE.cup.stake} gold on ${sn.name}, for the Cup. (pays ${RACE.cup.stake * sn.odds})`, if: { gold: RACE.cup.stake, cupDay: true }, do: [{ bet: [id, RACE.cup.stake] }] }));
+  const odds = Object.values(S).map((sn) => `${sn.name} pays ${sn.odds} to 1`).join(', ');
   return {
     start: {
       text: 'Mabb. I keep snails. Racing snails. Do not laugh, they can hear you.',
       options: [
         { text: 'You look like you could use a hand.', to: 'q_offer', if: { quest: { kindling: 'done', off_to_races: 'none' } }, do: [{ start: 'off_to_races' }] },
         { text: 'I watched my snail race.', to: 'q_done', if: { quest: { off_to_races: 2 } }, do: [{ advance: 'off_to_races' }] },
+        { text: 'Is that a trophy?', to: 'cup_offer', if: { quest: { off_to_races: 'done', snail_cup: 'none' } }, do: [{ start: 'snail_cup' }] },
+        { text: 'Three wins. About that cup...', to: 'cup_done', if: { quest: { snail_cup: 3 } }, do: [{ advance: 'snail_cup' }] },
         { text: 'I want to place a bet.', to: 'stake', if: { gold: Math.min(...RACE.stakes) } },
         { text: 'Who is racing?', to: 'field' },
+        { text: 'What is Cup Day?', to: 'cupday' },
         { text: 'How does this work?', to: 'how' },
         BYE,
       ],
     },
     q_offer: { text: 'Business is slow. The snails think nobody believes in them. Put a bet on one, any one, and watch the race to the end. It does wonders for their confidence.', options: [{ text: 'I will place a bet.', to: 'stake', if: { gold: Math.min(...RACE.stakes) } }, { text: 'Later.' }] },
     q_done: { text: 'There. Did you see Bramble\'s face? Neither did I, but I could tell. Here, for your trouble. Come back any time, the snails always run.', options: [{ text: 'Thanks, Mabb.' }] },
-    stake: { text: `Who do you fancy? ${S.bramble.name} pays double, ${S.pebble.name} three times, ${S.tom.name} four. One bet a race.`, options: [...bets, { text: 'Not today.' }] },
-    field: { text: `${S.bramble.name}: ${S.bramble.text} ${S.pebble.name}: ${S.pebble.text} ${S.tom.name}: ${S.tom.text}`, options: [{ text: 'I want to bet.', to: 'stake', if: { gold: Math.min(...RACE.stakes) } }, BYE] },
+    stake: { text: `Who do you fancy? ${odds}. One bet a race.`, options: [...cupBets, ...bets, { text: 'Not today.' }] },
+    field: { text: Object.values(S).map((sn) => `${sn.name}: ${sn.text}`).join(' '), options: [{ text: 'I want to bet.', to: 'stake', if: { gold: Math.min(...RACE.stakes) } }, BYE] },
     how: { text: 'A race every few minutes, from the stones to the grass line. Bet before the bell, watch them crawl, collect if you were right. If you were wrong, the snails thank you for your support.', options: [BYE] },
+    cupday: { text: `Saturdays and Sundays are Cup Day. Same snails, same track, but I take ${RACE.cup.stake} gold a bet as well, for the serious people. And the Cup sits on the barrel where everyone can see it.`, options: [BYE] },
+    cup_offer: { text: 'The Kindle Snail Cup! Hammered out of an old kettle by Rook, who says he did not. Two new runners came down the west road for it: Duchess, in a hatbox, and Thistle, in a sock. Win three bets, any day, any snail, and the Cup is yours. I have a spare. I have several spares. Do not tell the snails.', options: [{ text: 'Three wins. I am in.' }] },
+    cup_done: { text: 'Three! He holds the Cup up to the light, polishes it with his sleeve and puts it on your head. "It fits. They always fit. That is the secret of the Cup." The snails do not look up. They are very proud of you, in their way.', options: [{ text: 'Thanks, Mabb.' }] },
   };
 })();
 
 const snail = (id) => ({
   start: { text: `${RACE.snails[id].name}. ${RACE.snails[id].text}`, options: [{ text: 'Good luck.' }] },
 });
+
+// Tag 3 (Gebet): Rooks Werkstatt ist größer geworden. Tansy, sein Lehrling, steht drinnen an der guten Werkbank
+// und bringt Salvage und Tinkering bei wie Rook selbst (Rook bleibt draußen in seinem Hof).
+const tansy = (() => {
+  const s = teaches('salvage', 'Rook says: heaps, wrecks, anything the Grey spat out. I say: gloves. Rook does not wear gloves. Rook has nine fingers.');
+  const k = teaches('tinkering', 'The good bench is right here, inside, out of the rain. Rook built it for himself and then decided he likes the yard better. His loss.');
+  return {
+    start: {
+      text: 'Tansy. Rook\'s apprentice. He made the workshop twice as big and then went back to work in the yard. I keep the inside.',
+      options: [
+        ...s.options, ...k.options,
+        { text: 'Why is Rook outside?', to: 'yard' },
+        { text: 'What is this bench?', to: 'bench' },
+        BYE,
+      ],
+    },
+    yard: { text: '"He says he can hear the scrap better out there. I think he likes shouting at people who walk past. He comes in when it rains, and complains that I moved things. I did move things. Now you can find them."', options: [BYE] },
+    bench: { text: '"Rook\'s good bench. Same as the one in the yard, but with a roof and a lamp, and nobody stepping on your fingers. Anything you can make out there, you can make in here. Warmer, too."', options: [BYE] },
+    ...s.pages, ...k.pages,
+  };
+})();
+
+// Tag 3 (Gebete): Coyne im Counting House. Anteile an den Geschäften von Kindle (content/ventures.js) und
+// Abels alte Truhe mit drei Symbolrädern (Rätsel-Quest „The Old Strongbox“). Die Räder sind Seiten:
+// Nur wer alle drei richtig stellt (Lantern, Bell, Moth), landet auf der Seite, die die Quest abschließt.
+// Die Seiten mit x am Ende sehen gleich aus, führen aber sicher ins Leere.
+const coyne = (() => {
+  const SYMBOLS = ['Lantern', 'Shield', 'Bell', 'Moth', 'Snail', 'Wolf'];
+  const ANSWER = ['Lantern', 'Bell', 'Moth'];
+  const box = { quest: { old_strongbox: 1 } };
+  const dial = (n, right, wrong, last = false) => SYMBOLS.map((sym) => ({
+    text: `Turn it to the ${sym.toLowerCase()}.`, if: box,
+    to: sym === ANSWER[n] && right !== null ? right : wrong,
+    ...(last && sym === ANSWER[n] && right !== null ? { do: [{ take: { abels_riddle: 1 } }, { advance: 'old_strongbox' }, { grantShare: 'marrow' }] } : {}),
+  }));
+  const ventures = Object.entries(VENTURES).map(([id, v]) => ({
+    text: `A share in ${v.name}. (${v.price} gold, pays ${v.dividend} a day)`, if: { canInvest: id }, to: 'bought', do: [{ invest: id }],
+  }));
+  const RIDDLE = 'One: every Warden carries two things, and one of them is a shield. Turn to the other. Two: forty voices sang under the marsh. Turn to what ended every hymn. Three: turn to what the keeper of the Night Market is named for.';
+  return {
+    start: {
+      text: 'Coyne. I count things. Mostly other people\'s money, which is the best kind of thing to count.',
+      options: [
+        { text: 'A counting house, in Kindle?', to: 'stake_offer', if: { quest: { kindling: 'done', stake_in_kindle: 'none' } }, do: [{ start: 'stake_in_kindle' }] },
+        { text: 'I would like to buy a share.', to: 'ventures' },
+        { text: 'I have come for my share of the takings.', to: 'paid', if: { partner: true, dividendDue: true }, do: [{ dividend: true }] },
+        { text: 'What is in that iron box?', to: 'box_offer', if: { quest: { kindling: 'done', old_strongbox: 'none' } }, do: [{ start: 'old_strongbox' }] },
+        { text: 'I found Abel\'s note. Let me try the dials.', to: 'dial1', if: { quest: { old_strongbox: 1 }, has: { abels_riddle: 1 } } },
+        { text: 'Any idea where Abel kept his notes?', to: 'box_where', if: { quest: { old_strongbox: 0 } } },
+        { text: 'Was there anything else in the box?', to: 'cache_offer', if: { quest: { old_strongbox: 'done', abels_caches: 'none' }, classLevel: 12 }, do: [{ start: 'abels_caches' }] },
+        { text: 'Was there anything else in the box?', to: 'cache_early', if: { quest: { old_strongbox: 'done', abels_caches: 'none' }, below: 12 } },
+        { text: 'Three purses, with knots.', to: 'cache_done', if: { quest: { abels_caches: 3 }, has: { abels_purse_1: 1, abels_purse_2: 1, abels_purse_3: 1 } }, do: [{ take: { abels_purse_1: 1, abels_purse_2: 1, abels_purse_3: 1 } }, { advance: 'abels_caches' }] },
+        { text: 'What do I own?', if: { partner: true }, do: [{ ledger: true }] },
+        { text: 'How do shares work?', to: 'how' },
+        BYE,
+      ],
+    },
+    stake_offer: { text: 'In Kindle, yes. Since the west road opened, coin moves again: Cinderford buys, Kindle sells, and somebody has to write it down. Buy a share in one of the businesses here. They get a new roof, you get a little of the takings every day. Then tell Marrow. He hates owing people.', options: [{ text: 'Show me what I can buy.', to: 'ventures' }, { text: 'Later.' }] },
+    ventures: {
+      text: `${Object.keys(VENTURES).length} businesses take partners, one of them in Cinderford. Up to ${SHARE_MAX} shares each. A share pays a little every day, and partners can buy what the shop keeps under the counter.`,
+      options: [...ventures, { text: 'What do they want the gold for?', to: 'plans' }, { text: 'Not today.', to: 'start' }],
+    },
+    plans: { text: Object.values(VENTURES).map((v) => v.text).join(' '), options: [{ text: 'Back to the shares.', to: 'ventures' }, BYE] },
+    bought: { text: 'She writes your name in the ledger in very small, very permanent letters. "Congratulations, partner. Come and see me once a day. The takings do not collect themselves. Well. They do. I collect them."', options: [{ text: 'Another share.', to: 'ventures' }, BYE] },
+    paid: { text: 'She slides a little stack of coins across the table, counts them again, and lets go of them with visible effort. "Your share. Come back tomorrow. The shops do not sleep, and neither, apparently, do I."', options: [BYE] },
+    how: { text: `You buy a share for gold. The shop uses the gold, and from then on pays you a little every day: come here and I hand it over, once a day. Partners can buy the extra goods a shopkeeper keeps for friends. ${SHARE_MAX} shares in one business is the most I sell. Nobody owns Marrow. Not even Marrow.`, options: [{ text: 'Thanks.', to: 'start' }] },
+    box_offer: { text: '"That? Abel\'s strongbox. Abel counted Kindle\'s money before me, and he loved two things: coins and riddles. He set the dials before he died, and nobody has opened it since. His old house is the one by the campfire. If he wrote the answer down, it is somewhere in there. He never threw anything away."', options: [{ text: 'I will look.' }] },
+    box_where: { text: '"Abel? In his house, probably under something. He did not trust drawers. He said drawers are the first place a thief looks, and the floor is the last."', options: [BYE] },
+    dial1: { text: `${RIDDLE} She folds her arms. "Go on. The first dial."`, options: [...dial(0, 'dial2', 'dial2x'), { text: 'Any hints?', to: 'hint' }, { text: 'Not yet.' }] },
+    dial2: { text: 'Click. The second dial.', options: dial(1, 'dial3', 'dial3x') },
+    dial2x: { text: 'Click. The second dial.', options: dial(1, null, 'dial3x') },
+    dial3: { text: 'Click. The last dial.', options: dial(2, 'opened', 'stuck', true) },
+    dial3x: { text: 'Click. The last dial.', options: dial(2, null, 'stuck') },
+    cache_offer: { text: '"One more note, at the very bottom. Three hiding places, in the order he counted them, each one a riddle. One in Hushwood, one at the far end of the old road west, one at the mines." She hands you the note. "Abel never put all his coins in one place. He never put all his riddles in one place either. Bring me what you find. I will count it. Then we will see."', options: [{ text: 'Three caches.' }] },
+    cache_early: { text: '"There is another note. Three hiding places, one of them in Hushwood and one at the mines, where the wolves and beetles are. Come back when you have a few more levels. (Level 12)"', options: [BYE] },
+    cache_done: { text: 'She unties the knots one by one, with a patience you did not know a person could have, and counts. And counts again. "Ninety, and a bit. Abel\'s rainy-day money." She pushes it over. "The bit is mine. Commission. He would have wanted it that way. He would have charged more."', options: [{ text: 'Thank you, Coyne.' }] },
+    stuck: { text: 'The last dial clicks home. The lid does not move. Coyne pretends she was not watching, and writes something down.', options: [{ text: 'Try again.', to: 'dial1' }, { text: 'Any hints?', to: 'hint' }, BYE] },
+    hint: { text: '"Abel liked his riddles plain. Ask the people who would know. Warden Ama about Wardens. Brother Tallow about the drowned choir. And for the last one, go and say hello to the Night Market after dark."', options: [{ text: 'Back to the dials.', to: 'dial1', if: box }, BYE] },
+    opened: { text: 'The lid sighs open. Inside: a purse of old coins, two glow draughts wrapped in a sock, and a paper with a seal. Coyne reads it and laughs. "Abel\'s share in Marrow\'s stall. He left it to whoever opened the box." She writes your name over his. "Welcome, partner. Abel would have liked you. He liked anybody who could count to three."', options: [{ text: 'Thank you, Coyne.' }] },
+  };
+})();
 
 // Der Nachtmarkt: Mothwick verkauft nur im Dunkeln (Händler mit night: true in content/shops.js).
 const mothwick = {
@@ -369,9 +483,13 @@ const mothwick = {
       { text: 'Do you know this paper?', to: 'po_moth', if: { night: true, quest: { prayer_not_ours: 2 }, has: { prayer_slip: 1 } }, do: [{ advance: 'prayer_not_ours' }] },
       { text: 'Do you know this paper?', to: 'po_day', if: { day: true, quest: { prayer_not_ours: 2 }, has: { prayer_slip: 1 } } },
       { text: 'Where do you come from?', to: 'from' },
+      { text: 'Why are you called Mothwick?', to: 'sb_moth', if: { quest: { old_strongbox: 1 } } },
+      { text: 'I hear you take partners now.', to: 'partner_moth', if: { night: true, partner: 'mothwick' } },
       BYE,
     ],
   },
+  sb_moth: { text: '"Because moths and I want the same thing, dear: the nearest lamp. My mother said I flew into the first one I saw. I have been following lights ever since."', options: [BYE] },
+    partner_moth: { text: 'She lifts a cloth under the counter. "For partners, wisp cores and dusk draughts. Do not tell the others. The others are also partners. Tell nobody anything."', options: [{ text: 'Show me.', do: [{ shop: 'mothwick' }] }, BYE] },
   po_moth: { text: 'She rubs the paper between two fingers. "Birch bark, boiled and pressed. Nobody makes it this side of Hushwood. I bought a sheaf of it once, years ago, from a woman with a green lantern." She hands it back, a little too quickly. "Paper is paper, dear. Take it home to your priest."', options: [{ text: 'A green lantern?', to: 'po_green' }, { text: 'Thanks.' }] },
   po_green: { text: '"Green glass, thick as a thumb. She said her village poured it." Mothwick shrugs. "Lots of villages pour glass. Lots of villages go quiet. I do not ask which."', options: [BYE] },
   po_day: { text: 'Paper? Not by daylight, dear. Daylight is bad for paper, and worse for me. Come back after dark.', options: [BYE] },
@@ -394,13 +512,16 @@ const hollis = {
       { text: 'Can I get a bed?', to: 'beds' },
       { text: 'What are the chests by the wall?', to: 'chests' },
       { text: 'Heard anything lately?', to: 'rumour' },
+      { text: 'Coyne says you take partners.', to: 'partner_hollis', if: { partner: 'hollis' } },
       BYE,
     ],
   },
+  partner_hollis: { text: '"Partner! Then you get the good shelf: lily oil and moon candles, at the price I pay myself. Nearly." He polishes the bar where you are leaning. "The roof thanks you. So do the buckets."', options: [BYE] },
   beds: { text: `${INN.price} gold a night, behind the curtain at the back. Sleep there and you wake up with a full lamp and a clear head. For the next ${INN.rested} fights you will learn ${Math.round(INN.bonus * 100)}% more from them. Tired people learn nothing, rested people learn everything.`, options: [{ text: 'Good to know.', to: 'start' }, BYE] },
   chests: { text: 'One for every regular. Leave what you do not want to carry, take it back when you need it. Any chest opens to your own things. I stopped asking why. So should you.', options: [{ text: 'Thanks.', to: 'start' }, BYE] },
   rumour: { text: 'Woodcutters come in at night talking about a glow up north. Mothwick says it is a hearth that nobody feeds. Tallow has been in here twice this week, and Tallow does not drink. Something is going on.', options: [{ text: 'Anything else?', to: 'rumour2' }, { text: 'Interesting.', to: 'start' }, BYE] },
-  rumour2: { text: 'Brindle came down for stew and would not stop writing in her little book. Marrow is buying up every drop of oil in Kindle. And Brack swears the Old Foreman tipped his helmet at him once. Brack also swears at beetles, so.', options: [{ text: 'Interesting.', to: 'start' }, BYE] },
+  rumour3: { text: 'There is a woman in the old moneylender\'s house counting everybody\'s coins, and Marrow has started saying "partner" like it is a swear word. And the woodcutters say they saw lamps walking along the north edge, in a line, with nobody they knew under them.', options: [{ text: 'Interesting.', to: 'start' }, BYE] },
+  rumour2: { text: 'Brindle came down for stew and would not stop writing in her little book. Marrow is buying up every drop of oil in Kindle. And Brack swears the Old Foreman tipped his helmet at him once. Brack also swears at beetles, so.', options: [{ text: 'And?', to: 'rumour3' }, { text: 'Interesting.', to: 'start' }, BYE] },
 };
 
 const band_corra = {
@@ -488,9 +609,11 @@ const hesk = {
       { text: 'Show me your wares.', do: [{ shop: 'hesk' }] },
       { text: 'What do turnstones buy?', to: 'gear' },
       { text: 'What are turnstones?', to: 'stones' },
+      { text: 'Coyne says I own a bit of your stall.', to: 'partner_hesk', if: { partner: 'hesk' } },
       BYE,
     ],
   },
+  partner_hesk: { text: '"Coyne. Her cousin keeps my books, and he is worse." He sighs and lifts a crate from under the stall. "Partners get chalk and lily oil off the bottom shelf. The rope stays mine."', options: [{ text: 'Show me your wares.', do: [{ shop: 'hesk' }] }, BYE] },
   stones: { text: '"Little stones the Keepers carry. Warm on one side. The warm side always faces the way out, wherever you are. Delvers sew them into their coats so they never get lost." He taps his chest. "I have nine."', options: [{ text: 'And you trade gear for them?', to: 'gear' }, BYE] },
   gear: {
     text: '"Hood, four stones. Boots, six. Coat, ten. And if you ever bring me twenty-five, the Keeper\'s Lantern. I only made one. I will make another."',
@@ -521,10 +644,11 @@ const ivy = {
 
 export const TALK = {
   ama, tallow, rook, fen, wren, stranger, haskel, brack, brindle, mabb, mothwick, hollis, band_corra, band_oswin, band_pip,
-  sorrel, hesk, ivy,
+  sorrel, hesk, ivy, coyne, tansy,
   snail_bramble: snail('bramble'), snail_pebble: snail('pebble'), snail_tom: snail('tom'),
+  snail_duchess: snail('duchess'), snail_thistle: snail('thistle'),
   pell: {
-    start: { text: 'HEAR YE! Wolves on the fields! Ama wants them sent home! And every calling has new tricks, and the Flarecasters set things on fire on purpose now!', options: [
+    start: { text: 'HEAR YE! The Counting House is open, and Coyne sells shares in Kindle! Mabb has a Snail Cup and two new snails! Lights walk along the north edge at night! And every calling learned something new again!', options: [
       { text: 'Whose hand is this?', to: 'po_pell', if: { quest: { prayer_not_ours: 1 }, has: { prayer_slip: 1 } }, do: [{ advance: 'prayer_not_ours' }] },
       { text: 'Anything else?', to: 'more' }, BYE] },
     po_pell: { text: '"Not Kindle\'s! I read every notice on that board and every scrap nailed to every door. Kindle writes in charcoal. This is ink. Brown ink, and very tidy." He holds it up to the light. "And bark for paper! Mothwick sells paper things. At night, obviously."', options: [{ text: 'Thanks, Pell.' }] },
@@ -537,10 +661,14 @@ export const TALK = {
         { text: 'Show me your wares.', do: [{ shop: 'marrow' }] },
         { text: 'Business good?', to: 'oil_offer', if: { quest: { oil_rush: 'none' }, classLevel: 26 }, do: [{ start: 'oil_rush' }] },
         { text: 'Business good?', to: 'oil_early', if: { quest: { oil_rush: 'none' }, below: 26 } },
+        { text: 'I am a partner now. Coyne sold me a share.', to: 'partner_news', if: { quest: { stake_in_kindle: 1 } }, do: [{ advance: 'stake_in_kindle' }] },
+        { text: 'About the goods under the counter...', to: 'partner_marrow', if: { partner: 'marrow' } },
         { text: 'Bulbs, and fewer toads.', to: 'oil_done', if: { quest: { oil_rush: 2 }, has: { lily_bulb: 3 } }, do: [{ take: { lily_bulb: 3 } }, { advance: 'oil_rush' }] },
         BYE,
       ],
     },
+    partner_marrow: { text: '"Partner." He lifts a sack off the crate under the counter: moss salves and glow draughts. "At the honest price, which is still my price." He shakes your hand. Twice, to be sure.', options: [{ text: 'Show me your wares.', do: [{ shop: 'marrow' }] }, BYE] },
+    partner_news: { text: '"A partner." He says it the way other people say "a toothache". Then he grins. "Fine. Good. Coyne has been talking about roofs all week, and now somebody is paying for them. If it is my stall, partners get the salves and draughts I keep under the counter. If it is not my stall, I will be sulking. Here. It is bread. It is not a bribe. It is a bit of a bribe."', options: [BYE] },
     oil_offer: { text: 'Too good. Everybody wants oil since that glow showed up in the north. They buy it, they hide it under the bed, they come back for more. I am out of tallow. Lily bulbs from the Sinkmarsh press into good oil, but the bog toads sit on every patch. Four fewer toads and three bulbs, and I can keep the lamps of Kindle lit another week.', options: [{ text: 'Toads and bulbs.' }] },
     oil_early: { text: 'Busy. Everyone wants oil all of a sudden. I need somebody who can push bog toads around, and that is not you yet. (Level 26)', options: [BYE] },
     oil_done: { text: 'He squeezes a bulb and sniffs. "Good. Smells like next week." He counts coins into your hand, slowly, as if each one hurts. "If that light up north gets any brighter, I am raising prices. Do not tell Ama."', options: [{ text: 'My lips are sealed.' }] },
@@ -554,6 +682,7 @@ export const EXAMINE = {
   workshop: 'Old Rook\'s workshop. Everything in it is half of something else.',
   tavern: 'The Lantern & Lark. Warm windows, a crooked sign, and a fiddle you can hear from the Beacon.',
   stash: 'An iron-bound chest. It opens to your own things.',
+  strongbox: 'An iron box with three brass dials.',
   inn_bed: 'A rented bed behind a curtain.',
   stall: 'A market stall. The awning is very confident.',
   campfire: 'The campfire. People wake up here when the Grey gets the better of them.',

@@ -63,7 +63,7 @@ export const TILES = [
   '.T...TT.....,,,..T.....T...T....~~~....==",,,,,,"==..,,,,,,,,,,,,,,,,,,.ssssssssssrsssssgggggssrssss',
   '.....T......,T,,.......T.....T,T~~~...=="",,,.,,"==......,,,,,,,,,,,,,,,ssggggggggggggggggggssssssss',
   '............T,,T...T...,",T..T,,~~~..=="T",,...,,==,,......,,,,T,,,,,,,.ssggg,grgggggggggggsssssssss',
-  ',..T.TT..........T.T...,,,,,,,T,~~,,,=="".T...,,,==,,......,,,...,,.....ssgrr,ggggrggggggggsssssssss',
+  ',..T.TT..........T.T...,,,,,,,T,~~,,,=="".....,,,==,,......,,,...,,.....ssgrr,ggggrggggggggsssssssss',
   ',,T......T.......,,,,,,,,,,T,T,,~~,,==T.......,,,==,,.......,,.T.........sgg,,ggsggggggrgsssssssssss',
   ',T,,...........""",,,,,,,T,,,,,~~~."""........,,,,==,T......,,...~~~T..T.,,,,,ssssggrgggssssssssssss',
   '",,,...........""T,,,,,,,,,,,,,~~"""""........,,,,==....T.T.....~~~~~....TT,,Tssssggggggsssssrggggrg',

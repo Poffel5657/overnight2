@@ -2,7 +2,7 @@
 // Minuten laufen drei Schnecken (Figuren snail_<id>) ihre Bahn, und wer auf den Sieger gesetzt hat, bekommt
 // Einsatz mal Quote. Zahlen in content/races.js. Zufall nur über world.rand.
 
-import { RACE } from '../content/races.js';
+import { RACE, isCupDay } from '../content/races.js';
 import { tell, emit, float } from './events.js';
 import { questEvent } from './talk.js';
 import { cheb } from './path.js';
@@ -38,7 +38,9 @@ export function secondsToStart(world) {
 export function placeBet(world, p, snail, gold) {
   const r = raceOf(world);
   const s = RACE.snails[snail];
-  if (!r || !s || !RACE.stakes.includes(gold)) return;
+  // Am Cup Day (Wochenende) nimmt Mabb zusätzlich den hohen Einsatz an.
+  const cup = gold === RACE.cup.stake && isCupDay(world.date);
+  if (!r || !s || (!RACE.stakes.includes(gold) && !cup)) return;
   if (r.phase !== 'open') return tell(world, p.id, 'The snails are already running. Wait for the next race.', 'sys');
   if (r.bets.has(p.id)) return tell(world, p.id, 'You already have a stone on this race. One bet a race.', 'sys');
   if (p.gold < gold) return tell(world, p.id, `That bet is ${gold} gold. You have ${p.gold}.`, 'sys');
@@ -115,6 +117,7 @@ function settle(world, r, winner) {
       p.gold += win;
       tell(world, pid, `Your snail won! Mabb counts out ${win} gold.`, 'good');
       float(world, pid, `+${win} gold`, 'info', pid);
+      questEvent(world, p, 'action', { action: 'race_win' });
     } else {
       tell(world, pid, `${RACE.snails[b.snail].name} was not in a hurry. Your ${b.gold} gold stays with Mabb.`, 'sys');
     }
