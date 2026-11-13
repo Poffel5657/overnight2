@@ -9,6 +9,7 @@ import { CLASSES } from '../content/classes.js';
 import { cheb } from './path.js';
 import { tell, emit, float } from './events.js';
 import { questEvent, checkHave, TALK_RANGE } from './talk.js';
+import { takeWithStash, giveBack } from './stash.js';
 import * as P from './player.js';
 import { queue } from './sim.js';
 
@@ -111,13 +112,14 @@ export function craft(world, p, objId, recipeId, n = 1) {
   const times = Math.max(1, Math.min(MAX_CRAFT, n | 0));
   let made = 0;
   for (let i = 0; i < times; i++) {
-    if (!P.hasAll(p, r.inputs)) break;
-    for (const [id, k] of Object.entries(r.inputs)) P.takeItem(p, id, k);
+    // Zutaten aus Beutel und Truhe
+    const from = takeWithStash(p, r.inputs);
+    if (!from) break;
     const lost = P.addItem(p, r.out[0], r.out[1]);
     if (lost) {
-      // Kein Platz: Zutaten zurück, aufhören.
-      for (const [id, k] of Object.entries(r.inputs)) P.addItem(p, id, k);
+      // Kein Platz: Zutaten zurück, wohin sie gehörten, aufhören.
       P.takeItem(p, r.out[0], r.out[1] - lost);
+      giveBack(p, from);
       tell(world, p.id, 'Your bag is full.', 'hurt');
       break;
     }

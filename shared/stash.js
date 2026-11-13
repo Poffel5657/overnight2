@@ -55,6 +55,47 @@ export function stashTake(world, p, index, n) {
   if (left > 0) tell(world, p.id, 'Your bag is full. The rest stays in the chest.', 'sys');
 }
 
+// ---------- Herstellen mit Truhe (Chris' Wunsch, 2026-11-13) ----------
+// Zutaten kommen erst aus dem Beutel, dann aus der Truhe. Die Truhe zählt überall, nicht nur
+// in der Taverne (jede Truhe öffnet sich zu den eigenen Sachen).
+
+export function stashCount(p, id) {
+  return (p.stash || []).reduce((n, s) => n + (s.id === id ? s.n : 0), 0);
+}
+
+export function hasAllWithStash(p, items) {
+  return Object.entries(items).every(([id, n]) => P.countItem(p, id) + stashCount(p, id) >= n);
+}
+
+// Nimmt alle Zutaten. Gibt zurück, was woher kam ({ bag: {id: n}, stash: {id: n} }), oder null.
+export function takeWithStash(p, items) {
+  if (!hasAllWithStash(p, items)) return null;
+  p.stash ??= [];
+  const from = { bag: {}, stash: {} };
+  for (const [id, n] of Object.entries(items)) {
+    const inBag = Math.min(n, P.countItem(p, id));
+    if (inBag) { P.takeItem(p, id, inBag); from.bag[id] = inBag; }
+    let left = n - inBag;
+    if (left) from.stash[id] = left;
+    for (let i = p.stash.length - 1; i >= 0 && left > 0; i--) {
+      const s = p.stash[i];
+      if (s.id !== id) continue;
+      const t = Math.min(left, s.n);
+      s.n -= t;
+      left -= t;
+      if (s.n <= 0) p.stash.splice(i, 1);
+    }
+  }
+  return from;
+}
+
+// Legt Genommenes zurück, wohin es gehörte.
+export function giveBack(p, from) {
+  for (const [id, n] of Object.entries(from.bag)) P.addItem(p, id, n);
+  p.stash ??= [];
+  for (const [id, n] of Object.entries(from.stash)) addToStash(p.stash, id, n);
+}
+
 // Aus dem Spielstand: nur bekannte Gegenstände, höchstens STASH_SIZE Fächer
 export function cleanStash(raw) {
   const out = [];

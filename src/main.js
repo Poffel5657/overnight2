@@ -795,7 +795,7 @@ function describe(hit) {
 }
 
 // Nur offline (Tests im Browser): eigene Lage und Kamera abfragen
-if (OFFLINE) window.overnightDebug = { me: () => { const e = mirror.ents.get(mirror.you); return e && { x: e.x, y: e.y }; }, yaw: () => rig.yaw };
+if (OFFLINE) window.overnightDebug = { me: () => { const e = mirror.ents.get(mirror.you); return e && { x: e.x, y: e.y }; }, yaw: () => rig.yaw, openWindow: (k, o) => windows.open(k, o) };
 
 // ---------- WASD: laufen relativ zur Kamera ----------
 // W = auf dem Bildschirm nach oben. Gesendet wird ein Ziel zwei Felder voraus, solange die Tasten

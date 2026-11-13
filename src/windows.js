@@ -14,6 +14,7 @@ import { xpForLevel } from '../shared/player.js';
 import { keyLabel } from './ui.js';
 import { iconEl, spriteURL } from './icons.js';
 import { describeAbility } from '../shared/describe.js';
+import { TRADE_MAX_KINDS } from '../shared/barter.js';
 import { makeDraggable, hasSaved, resetLayout, forget } from './drag.js';
 import { FAVOURS, BEACON_FUEL, BEACON_GOAL } from '../content/dailies.js';
 import { BALLOT } from '../content/ballot.js';
@@ -171,10 +172,33 @@ export function createWindows(handlers) {
       'data-bar-id': def.use && !extra.onclick ? `item:${slot.id}` : null,
       'data-hint': extra.hint ?? (def.slot ? 'Click: wear. Right-click: more.' : def.use ? 'Click: use. Right-click: more.' : 'Right-click: more.'),
       onclick: () => (extra.onclick ? extra.onclick(i, slot) : handlers.use(i)),
-      oncontextmenu: (e) => { e.preventDefault(); itemMenu(e.clientX, e.clientY, i, slot); },
+      oncontextmenu: (e) => { e.preventDefault(); (extra.menu ?? itemMenu)(e.clientX, e.clientY, i, slot); },
     }, iconEl('item', slot.id, def.glyph), slot.n > 1 ? h('span', { class: 'count' }, slot.n) : null);
-    longPress(cell, (x, y) => itemMenu(x, y, i, slot));
+    longPress(cell, (x, y) => (extra.menu ?? itemMenu)(x, y, i, slot));
     return cell;
+  }
+
+  // Kleine Abfrage einer Anzahl an der Mausposition (Enter = OK, ESC = Abbruch)
+  function askAmount(x, y, label, max, fn) {
+    document.querySelector('.amount-ask')?.remove();
+    const input = h('input', { type: 'number', min: 1, max, value: Math.min(max, 1), inputmode: 'numeric', 'aria-label': label });
+    const done = () => box.remove();
+    const ok = () => {
+      const n = Math.floor(Number(input.value));
+      done();
+      if (n >= 1) fn(Math.min(max, n));
+    };
+    const box = h('form', {
+      class: 'window amount-ask',
+      onsubmit: (e) => { e.preventDefault(); ok(); },
+      onkeydown: (e) => { if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); done(); } },
+    }, h('label', {}, label), h('div', { class: 'row-buttons' }, input, h('button', { type: 'submit', class: 'plaque' }, 'OK'), btn('×', done)));
+    document.body.append(box);
+    const r = box.getBoundingClientRect();
+    box.style.left = `${Math.max(4, Math.min(x, window.innerWidth - r.width - 4))}px`;
+    box.style.top = `${Math.max(4, Math.min(y, window.innerHeight - r.height - 4))}px`;
+    input.focus();
+    input.select();
   }
 
   function itemMenu(x, y, i, slot) {
@@ -496,7 +520,9 @@ export function createWindows(handlers) {
       const heading = `${def.name.toUpperCase()} // ${station.toUpperCase()}`;
       if (!state) return { heading, content: h('p', {}, '...') };
       const known = state.profs[profId];
-      const count = (id) => state.bag.reduce((s, x) => s + (x && x.id === id ? x.n : 0), 0);
+      // Zutaten zählen aus Beutel und Truhe (die Truhe hilft überall beim Herstellen)
+      const count = (id) => state.bag.reduce((s, x) => s + (x && x.id === id ? x.n : 0), 0)
+        + (state.stash || []).reduce((s, x) => s + (x.id === id ? x.n : 0), 0);
       const rows = Object.entries(RECIPES).filter(([, r]) => r.prof === profId).map(([rid, r]) => {
         const out = ITEMS[r.out[0]];
         const canLevel = known && known.level >= r.level;
@@ -515,6 +541,7 @@ export function createWindows(handlers) {
           known ? h('p', {}, `${def.name} LV ${known.level}`, xpLine(known.level, known.xp))
             : h('p', { class: 'muted' }, `You do not know ${def.name.toLowerCase()}. ${npcName(def.teacher)} teaches it.`),
           h('ul', { class: 'rows' }, rows),
+          h('p', { class: 'muted small' }, 'Counts include your chest at the Lantern & Lark. The bag is used first.'),
         ],
       };
     },
@@ -713,21 +740,36 @@ export function createWindows(handlers) {
       };
       const goldStep = (d) => btn(d > 0 ? `+${d}` : `${d}`, () => offer(mine.items, Math.max(0, Math.min(state.gold, mine.gold + d))));
       const badge = (ok) => h('span', { class: `trade-ok${ok ? ' on' : ''}` }, ok ? 'agreed' : 'thinking');
+      // n Stück mehr anbieten, höchstens so viele, wie im Beutel sind
+      const add = (id, n) => {
+        const cur = mine.items[id] || 0;
+        const next = Math.min(have(id), cur + n);
+        if (next <= cur || (!cur && Object.keys(mine.items).length >= TRADE_MAX_KINDS)) return;
+        offer({ ...mine.items, [id]: next }, mine.gold);
+      };
+      const addMenu = (x, y, _, sl) => {
+        const name = ITEMS[sl.id].name;
+        const left = have(sl.id) - (mine.items[sl.id] || 0);
+        const entries = [1, 5, 10].map((n) => ({ verb: `Offer ${n}`, noun: name, fn: () => add(sl.id, n) }));
+        entries.push({ verb: 'Offer X', noun: name, fn: () => askAmount(x, y, `How many? (up to ${left})`, Math.max(1, left), (n) => add(sl.id, n)) });
+        entries.push({ verb: 'Cancel' });
+        handlers.menu(x, y, entries);
+      };
       const cells = [];
       for (let i = 0; i < BAG_SIZE; i++) {
         const slot = state.bag[i];
         cells.push(itemCell(slot, i, {
-          hint: 'Click: add one to your offer.',
-          onclick: (_, sl) => {
-            const cur = mine.items[sl.id] || 0;
-            if (cur >= have(sl.id) || (!cur && Object.keys(mine.items).length >= 8)) return;
-            offer({ ...mine.items, [sl.id]: cur + 1 }, mine.gold);
-          },
+          hint: 'Click: add one. Right-click: 5, 10 or any amount.',
+          onclick: (_, sl) => add(sl.id, 1),
+          menu: addMenu,
         }));
       }
       return {
         heading: `TRADE // ${v.name}`,
         content: [
+          h('div', { class: 'row-buttons trade-buttons' },
+            h('button', { type: 'button', class: `plaque${mine.ok ? ' on' : ''}`, disabled: mine.ok, onclick: () => handlers.tradeOk() }, mine.ok ? `Waiting for ${v.name}...` : 'Agree'),
+            h('button', { type: 'button', class: 'plaque', onclick: () => close('trade') }, 'Call it off')),
           h('div', { class: 'trade-cols' },
             h('div', {},
               h('h3', {}, 'YOU GIVE ', badge(mine.ok)),
@@ -738,11 +780,8 @@ export function createWindows(handlers) {
               list(v.theirs.items, false),
               h('div', { class: 'muted' }, `${v.theirs.gold} gold`))),
           h('h3', {}, 'YOUR BAG'),
-          h('p', { class: 'muted small' }, 'Click an item to add one to your offer. Any change takes back both agreements.'),
+          h('p', { class: 'muted small' }, 'Click an item to add one, right-click for more. Any change takes back both agreements.'),
           h('div', { class: 'grid' }, cells),
-          h('div', { class: 'row-buttons trade-buttons' },
-            h('button', { type: 'button', class: `plaque${mine.ok ? ' on' : ''}`, disabled: mine.ok, onclick: () => handlers.tradeOk() }, mine.ok ? `Waiting for ${v.name}...` : 'Agree'),
-            h('button', { type: 'button', class: 'plaque', onclick: () => close('trade') }, 'Call it off')),
         ],
       };
     },

@@ -11,6 +11,7 @@ import * as P from '../../shared/player.js';
 import { SPRITES } from '../../content/sprites.js';
 import { buyPrice } from '../../content/shops.js';
 import { ITEMS } from '../../content/items.js';
+import { RECIPES } from '../../content/recipes.js';
 import { applyParty } from '../../shared/party.js';
 import { parseIntent, applyIntent, tickFor, welcomeFor } from '../../shared/protocol.js';
 
@@ -357,6 +358,30 @@ test('Höchstens zwei Berufe, Verlernen löscht den Fortschritt', () => {
   assert.ok(!p.profs.salvage);
   talk(w, 'a', 'rook'); choose(w, 'a', 'salvage');
   assert.equal(p.profs.salvage.level, 1, 'von vorn');
+});
+
+test('Herstellen nimmt Zutaten aus der Truhe, Beutel zuerst, voller Beutel verliert nichts', () => {
+  const w = S.createWorld(REGION, 16);
+  const p = newcomer(w, 'a', 'warden');
+  p.profs.tinkering = { level: 1, xp: 0 };
+  const need = RECIPES.t_scrap_hood.inputs.scrap;
+  // Einer im Beutel, der Rest in der Truhe
+  while (P.countItem(p, 'scrap')) P.takeItem(p, 'scrap', 1);
+  P.addItem(p, 'scrap', 1);
+  p.stash = [{ id: 'scrap', n: need + 5 }];
+  const bench = w.objects.find((o) => o.station === 'workbench');
+  applyIntent(w, 'a', { t: 'act', kind: 'object', id: bench.id, action: 'use' });
+  run(w, 60);
+  applyIntent(w, 'a', { t: 'craft', obj: bench.id, recipe: 't_scrap_hood', n: 1 });
+  assert.equal(P.countItem(p, 'scrap_hood'), 1, 'hergestellt');
+  assert.equal(P.countItem(p, 'scrap'), 0, 'Beutel zuerst');
+  assert.equal(p.stash[0].n, need + 5 - (need - 1), 'Rest aus der Truhe');
+  // Beutel voll: nichts geht verloren
+  const before = p.stash[0].n;
+  while (P.addItem(p, 'scrap_boots', 1) === 0);
+  applyIntent(w, 'a', { t: 'craft', obj: bench.id, recipe: 't_scrap_hood', n: 1 });
+  assert.equal(p.stash[0].n, before, 'Truhe unverändert');
+  assert.equal(P.countItem(p, 'scrap_hood'), 1);
 });
 
 test('Sammeln, Herstellen, Verkaufen, Kaufen', () => {

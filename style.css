@@ -578,7 +578,7 @@ button:disabled { color: var(--brass-dim); cursor: default; text-shadow: none; }
 .trade-item { display: flex; align-items: center; gap: 0.2rem; }
 .trade-gold { align-items: center; margin-top: 0.3rem; }
 .trade-gold span { color: var(--flame); margin-right: 0.3rem; }
-.trade-buttons { margin-top: 0.6rem; gap: 0.5rem; }
+.trade-buttons { margin-bottom: 0.6rem; gap: 0.5rem; }
 .plaque.on { color: var(--good); border-color: var(--good); }
 
 /* Settings */
@@ -880,3 +880,9 @@ body.bar-dragging, body.bar-dragging * { cursor: grabbing !important; user-selec
 .hotbar.drop-ready .slot { border-color: var(--brass); }
 .slot.drop-target { border-color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent), 0 0 0.8rem var(--glow); }
 body.bar-dragging .tip { display: none !important; }
+
+/* Anzahl abfragen (Handel: Offer X) */
+.amount-ask { position: fixed; z-index: 70; padding: 0.5rem 0.6rem; display: flex; flex-direction: column; gap: 0.35rem; }
+.amount-ask label { color: var(--bright); font-size: 0.85rem; }
+.amount-ask .row-buttons { align-items: center; gap: 0.35rem; }
+.amount-ask input { width: 5rem; font: inherit; color: var(--text); background: var(--well); border: 1px solid var(--brass-dim); border-radius: 3px; padding: 0.15rem 0.3rem; }
