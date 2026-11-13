@@ -442,6 +442,20 @@ chatText.addEventListener('keydown', (e) => {
 });
 chatText.addEventListener('blur', () => { if (!chatText.value.trim()) chatForm.hidden = true; });
 
+// Hörweite: Töne von Figuren klingen nach Entfernung leiser (bis HEAR_NEAR Felder voll, ab HEAR_FAR still).
+// Fremde Kämpfe (weder ich noch mein Ziel beteiligt) zusätzlich leiser, damit sie nicht wie die eigenen klingen.
+const HEAR_NEAR = 3;
+const HEAR_FAR = 12;
+function hearing(id) {
+  const me = mirror.ents.get(mirror.you);
+  const o = mirror.ents.get(id);
+  if (!me || !o) return 0;
+  const d = Math.hypot(o.x - me.x, o.y - me.y);
+  const near = d <= HEAR_NEAR ? 1 : Math.max(0, 1 - (d - HEAR_NEAR) / (HEAR_FAR - HEAR_NEAR));
+  const mine = id === mirror.you || id === mirror.me?.target;
+  return mine ? Math.max(near, 0.6) : near * 0.45;
+}
+
 function flushEvents(events) {
   for (const e of events) {
     if (e.type === 'log') { ui.log(e.text, e.cls); sfx.log(e.text, e.cls); }
@@ -460,7 +474,7 @@ function flushEvents(events) {
           hitAvg[kind] = avg * 0.8 + n * 0.2;
         }
         ui.floater(s.x, s.y, e.text, cls);
-        sfx.float(e, cls, mirror.you);
+        sfx.float(e, cls, mirror.you, hearing(e.ent));
       }
     } else if (e.type === 'dialog') {
       const npc = mirror.ents.get(e.npc);

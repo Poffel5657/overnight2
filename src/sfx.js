@@ -76,11 +76,13 @@ export function setVolume(v) {
 // Zuordnung von Spiel-Ereignissen zu Tönen. me: eigene Spieler-ID.
 export const sfx = {
   play,
-  float(e, cls = '', me = null) {
+  // near: Hörweite 0..1 aus src/main.js (Entfernung, eigener Kampf oder fremder)
+  float(e, cls = '', me = null, near = 1) {
     const own = e.ent === me;
-    if (/dealt/.test(cls)) play(/big/.test(cls) ? 'hit_big' : 'hit', own ? 1 : 0.8);
-    else if (/taken/.test(cls)) play('hurt');
-    else if (cls === 'heal') play('heal', 0.7, 300);
+    if (near <= 0.02) return;
+    if (/dealt/.test(cls)) play(/big/.test(cls) ? 'hit_big' : 'hit', 0.8 * near);
+    else if (/taken/.test(cls)) play('hurt', near);
+    else if (cls === 'heal') play('heal', 0.7 * near, 300);
     else if (cls === 'info' && own && / gold$/.test(e.text)) play('coin');
     else if (cls === 'info' && own && /^\+1 /.test(e.text)) play('pickup');
   },
