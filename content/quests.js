@@ -407,4 +407,12 @@ export const QUESTS = {
     ],
     reward: { xp: 240, gold: 25, items: { cinder_cake: 2 } },
   },
+  ivys_reply: {
+    name: "Ivy's Reply", giver: 'ivy',
+    text: 'Old Ivy wants to send something back up the road to her son.',
+    steps: [
+      { type: 'talk', npc: 'mabb', text: 'Take Ivy\'s map of Kindle to Mabb, by the west path.' },
+    ],
+    reward: { xp: 120, gold: 10, items: { duchess_hat: 1 } },
+  },
 };
