@@ -161,3 +161,25 @@ test('Gefallen: zwei Lurker für Flint, ein Cinder Iron für Rook (am Brett in K
   assert.equal(P.countItem(q, 'cinder_iron'), 0);
   assert.equal(q.gold, g2 + FAVOURS.iron_for_rook.reward.gold);
 });
+
+test('Nachschlag: Alchemie 28 und 32 brauen stärkere Heilung, die gegen Lurker hilft', async () => {
+  const { RECIPES } = await import('../../content/recipes.js');
+  const { ITEMS } = await import('../../content/items.js');
+  for (const [rid, out] of [['a_hearth_salve', 'hearth_salve'], ['a_seam_tonic', 'seam_tonic']]) {
+    const r = RECIPES[rid];
+    const w = S.createWorld(REGION, 467);
+    const p = veteran(w, 'a', { level: 36, profs: { alchemy: { level: r.level, xp: P.xpForLevel(r.level) } }, bag: Object.entries(r.inputs).map(([id, n]) => ({ id, n })) });
+    const still = w.objects.find((o) => o.type === 'station' && o.station === 'still');
+    applyIntent(w, 'a', { t: 'act', kind: 'object', id: still.id, action: 'use' });
+    for (let i = 0; i < 400 && p.goal; i++) run(w, 1);
+    applyIntent(w, 'a', { t: 'craft', obj: still.id, recipe: rid, n: 1 });
+    run(w, 1);
+    assert.equal(P.countItem(p, out), r.out[1], `${out} gebraut`);
+    assert.ok(ITEMS[out].use.heal > ITEMS.moss_salve.use.heal);
+    // Benutzen heilt
+    p.hp = 10;
+    applyIntent(w, 'a', { t: 'use', slot: p.bag.findIndex((s) => s?.id === out) });
+    run(w, 6);
+    assert.ok(p.hp >= Math.min(p.maxHp, 10 + ITEMS[out].use.heal) - 1);
+  }
+});

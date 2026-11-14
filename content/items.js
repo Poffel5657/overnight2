@@ -135,6 +135,9 @@ export const ITEMS = {
   ivys_map: { name: "Ivy's Map of Kindle", stack: true, value: 0, glyph: '=', text: 'A careful map of Kindle, drawn from memory. Every house is in the right place. It is the only map Ivy has ever drawn that will still be right tonight.' },
   duchess_hat: { name: "Duchess's Spare Hat", slot: 'head', defence: 2, light: 0.3, value: 25, glyph: '^', text: 'A tiny green felt hat with a feather, made for a snail and stretched, with some violence, for a person. It still smells faintly of lettuce.' },
   cart_wheel: { name: 'Cart Wheel', stack: true, value: 0, glyph: 'o', text: 'An iron-rimmed wheel from Rook\'s yard. Rook says it is the best wheel in the Grey. Rook says that about every wheel.' },
+  // Tag 4, Nachschlag: stärkere Heilung für Stufe 30 bis 40 (Alchemie 28 und 32)
+  hearth_salve: { name: 'Hearthroot Salve', stack: true, use: { heal: 90 }, value: 28, glyph: '!', text: 'Emberroot and moss, cooked down until it is warm to hold. Rub it in and the cold goes out of the bruise.' },
+  seam_tonic: { name: 'Deep Seam Tonic', stack: true, use: { heal: 140, oil: 20 }, value: 40, glyph: '!', text: 'Lily, nightcap and a pinch of ground glimmer. Flint swears by it. Flint swears by most things.' },
   rooks_tongs: { name: "Rook's Old Tongs", stack: true, value: 0, glyph: '/', text: 'Iron tongs, worn smooth where nine fingers held them. Tansy says they belong on the good bench.' },
   keepers_lantern: { name: 'Keeper\'s Lantern', slot: 'lantern', light: 4, burn: 0.35, value: 600, glyph: 'i', text: 'Made from the lamp of a Keeper. It lights every corner at once, and seems to enjoy it.' },
 };

@@ -50,6 +50,9 @@ export const RECIPES = {
   a_moss_salve: { prof: 'alchemy', level: 12, inputs: { moss_tuft: 2 }, out: ['moss_salve', 1], xp: 50 },
   a_dusk_draught: { prof: 'alchemy', level: 16, inputs: { nightcap: 2, grey_wisp: 1 }, out: ['dusk_draught', 1], xp: 66 },
   a_wisp_draught: { prof: 'alchemy', level: 24, inputs: { wisp_core: 1, nightcap: 1 }, out: ['wisp_draught', 1], xp: 96 },
+  // Tag 4, Nachschlag: Alchemie 28 und 32, Heilung für die Lurker im tiefen Flöz
+  a_hearth_salve: { prof: 'alchemy', level: 28, inputs: { emberroot: 2, moss_tuft: 2, nightcap: 1 }, out: ['hearth_salve', 2], xp: 110 },
+  a_seam_tonic: { prof: 'alchemy', level: 32, inputs: { lily_bulb: 2, nightcap: 2, glimmer: 1 }, out: ['seam_tonic', 2], xp: 130 },
   a_lily_oil: { prof: 'alchemy', level: 21, inputs: { lily_bulb: 2 }, out: ['lily_oil', 2], xp: 86 },
 
   // Lampwright (Linsenbank in der Werkstatt)
