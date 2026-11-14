@@ -583,7 +583,13 @@ function doAction(world, p, goal) {
     }
   } else if (goal.action === 'search' && t.type === 'shrine') {
     const st = p.quests[t.quest];
-    if (st && !st.done && st.step === t.step && P.countItem(p, t.gives) === 0) {
+    const ready = st && !st.done && st.step === t.step && P.countItem(p, t.gives) === 0;
+    // Tag 4: night = nur nach Einbruch der Dunkelheit (dayText), needs = braucht diesen Gegenstand (bleibt im Beutel)
+    if (ready && t.night && world.daylight >= 0.5) {
+      tell(world, p.id, t.dayText || 'Not by daylight. Come back after dark.', 'sys');
+    } else if (ready && t.needs && P.countItem(p, t.needs) < 1) {
+      tell(world, p.id, `You need ${ITEMS[t.needs].name} for that.`, 'sys');
+    } else if (ready) {
       P.addItem(p, t.gives, 1);
       tell(world, p.id, t.found || `Under the old candles you find ${ITEMS[t.gives].name}.`, 'good');
     } else {
@@ -664,23 +670,29 @@ function castAbility(world, p, id) {
 
   switch (a.kind) {
     case 'melee':
-    case 'ranged':
+    case 'ranged': {
+      // exploit (Tag 4): erst prüfen, ob das Ziel schon brennt/geblendet ist/festsitzt, dann neue Zustände setzen
+      const ex = exploitOf(world, p, a, target);
       if (a.dazzle) target.dazzleUntil = world.tick + a.dazzle;
+      // root (Tag 4, Anvil Blow): ein Nahschlag kann das Ziel festnageln
+      if (a.root) target.rootUntil = world.tick + a.root;
       // burn: Das Ziel brennt nach (Schaden alle 2 Takte), solange es lebt und nicht heimkehrt.
       if (a.burn) target.burn = { by: p.id, dmg: a.burn.dmg + Math.floor(P.classLevel(p) / 4), left: a.burn.ticks };
       // pull (Tag 3, Lantern Hook): holt das Ziel auf ein freies Feld neben den Werfer und bindet es an ihn.
       // Bosse lassen sich nicht ziehen, werden aber gebunden.
       if (a.pull) pullMob(world, p, target);
-      hitMob(world, p, target, abilityDamage(world, p, a));
+      hitMob(world, p, target, Math.round(abilityDamage(world, p, a) * ex));
       break;
+    }
     case 'zone':
       for (const m of world.mobs) {
-        if (!m.dead && Math.hypot(m.x - target.x, m.y - target.y) <= a.radius) hitMob(world, p, m, abilityDamage(world, p, a));
+        if (!m.dead && Math.hypot(m.x - target.x, m.y - target.y) <= a.radius) hitMob(world, p, m, Math.round(abilityDamage(world, p, a) * exploitOf(world, p, a, m)));
       }
       break;
     case 'burst':
       for (const m of world.mobs) {
         if (m.dead || Math.hypot(m.x - p.x, m.y - p.y) > a.radius) continue;
+        const ex = exploitOf(world, p, a, m);
         if (a.scare) {
           m.scaredUntil = world.tick + a.scare;
           dropTelegraphs(world, (t) => t.mob === m.id);
@@ -695,7 +707,7 @@ function castAbility(world, p, id) {
           m.angryAt = p.id;
           m.tauntUntil = world.tick + 12;
         }
-        hitMob(world, p, m, abilityDamage(world, p, a));
+        hitMob(world, p, m, Math.round(abilityDamage(world, p, a) * ex));
       }
       break;
     case 'self':
@@ -756,6 +768,26 @@ function castAbility(world, p, id) {
       return false;
   }
   return true;
+}
+
+// exploit (Tag 4, Gebet 8: mehr zu tun im Kampf): Fähigkeiten, die mehr Schaden machen, wenn das Ziel schon
+// brennt (burn), geblendet ist (dazzle) oder festsitzt (root). So lohnt es sich, Fähigkeiten zu verketten,
+// allein oder mit der Gruppe. Gibt den Faktor zurück (1 = nichts ausgenutzt) und zeigt „EXPLOIT“ über dem Ziel.
+export function mobState(world, m) {
+  return {
+    burn: !!(m.burn && m.burn.left > 0),
+    dazzle: world.tick < m.dazzleUntil,
+    root: world.tick < m.rootUntil,
+  };
+}
+
+function exploitOf(world, p, a, m) {
+  if (!a.exploit) return 1;
+  const st = mobState(world, m);
+  let mult = 1;
+  for (const [k, f] of Object.entries(a.exploit)) if (st[k]) mult = Math.max(mult, f);
+  if (mult > 1) float(world, m.id, 'EXPLOIT', 'crit', p.id);
+  return mult;
 }
 
 function pullMob(world, p, m) {

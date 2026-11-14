@@ -25,6 +25,8 @@ export const ABILITIES = {
   brace: { name: 'Brace', desc: "Plant your feet and let the shield take it.", glyph: '#', kind: 'self', brace: 10, cd: 30, text: 'You brace behind your shield.' },
   taunt: { name: 'Taunt', desc: "Bang the shield. Everything nearby forgets the others.", glyph: '!', kind: 'taunt', radius: 4, cd: 20, text: 'You bang your shield. Everything looks at you.' },
   lantern_ward: { name: 'Lantern Ward', desc: "Your lantern's steady light hardens everyone close.", glyph: 'O', kind: 'aura', radius: 3, brace: 8, oil: 6, cd: 40, text: 'Your lantern spreads a ring of steady light.' },
+  // Tag 4 (Gebet 8: mehr zu tun im Kampf): Stufe 36. Der erste Schlag nagelt fest, der zweite trifft das festgenagelte Ziel härter.
+  anvil_blow: { name: 'Anvil Blow', desc: "Bring the shield rim down like a smith's hammer. The first blow pins them. The second one is the one they remember.", glyph: 'T', kind: 'melee', hit: [9, 12], root: 16, exploit: { root: 1.7 }, cd: 10, power: true },
   stand_fast: { name: 'Stand Fast', desc: "Dig in behind the shield and get your breath back.", glyph: 'H', kind: 'self', heal: 18, brace: 8, cd: 36, text: 'You dig in. The shield holds, and so do you.' },
   beacon_slam: { name: 'Beacon Slam', desc: "Slam the lantern into the shield. The flash rings every head nearby.", glyph: '*', kind: 'burst', radius: 1.5, hit: [7, 10], dazzle: 5, hold: true, oil: 5, cd: 24, text: 'Lantern meets shield. Everything close sees stars.' },
   bulwark: { name: 'Bulwark', desc: "Raise the shield and the lantern together. Everything looks at you, and everyone behind you breathes easier.", glyph: 'U', kind: 'taunt', radius: 4, brace: 10, oil: 8, cd: 45, text: 'You raise shield and lantern. Everything turns to you, and your friends stand easier.' },
@@ -49,6 +51,8 @@ export const ABILITIES = {
   ember_mend: { name: 'Ember Mend', desc: "Press the ember against whoever is closest and hold it there. It is not comfortable. It works.", glyph: '+', kind: 'aura', radius: 1.5, heal: 30, oil: 6, cd: 14, text: 'You press the ember close. Skin knits, cloaks steam.' },
   // Tag 3, Nachschlag: Stufe 32. Heilen und Schützen zugleich, für alle im Umkreis, der große Gruppenmoment.
   sanctuary: { name: 'Sanctuary', desc: "Plant the staff and let the ember burn as a little hearth. Everyone near it is warm, and hard to hurt.", glyph: 'A', kind: 'aura', radius: 4, heal: 16, brace: 12, oil: 14, cd: 75, text: 'You plant the staff. For a moment there is a hearth here, and everyone stands closer to it.' },
+  // Tag 4 (Gebet 8): Stufe 36. Bläst in die Glut, die Smoulder hinterlassen hat: Brennendes trifft es doppelt.
+  cinder_bloom: { name: 'Cinder Bloom', desc: "Blow on the embers you left behind. Whatever is already smouldering goes up all at once.", glyph: '&', kind: 'burst', radius: 2.5, hit: [8, 11], exploit: { burn: 2 }, oil: 10, cd: 24, power: true, text: 'You breathe on the embers. They bloom.' },
   kindle_burst: { name: 'Kindle Burst', desc: "The ember flares. Creatures flinch and run.", glyph: '*', kind: 'burst', radius: 2.5, hit: [3, 5], scare: 6, oil: 10, cd: 24, text: 'Your ember flares outward.' },
 
   // Flarecaster
@@ -64,6 +68,8 @@ export const ABILITIES = {
   noonbrand: { name: 'Noonbrand', desc: "Fold the whole lantern into one point and press noon into the target.", glyph: '^', kind: 'ranged', range: 6, hit: [12, 16], burn: { dmg: 6, ticks: 12 }, dazzle: 4, oil: 10, cd: 30, power: true, text: 'For a moment it is noon, in one small place.' },
   // Tag 3, Nachschlag: Stufe 32. Ein Kranz aus Licht um den Werfer: verbrennt und blendet alles ringsum.
   corona: { name: 'Corona', desc: "Open the lantern all the way and stand in the middle of it. Everything close burns and cannot see.", glyph: '*', kind: 'burst', radius: 3, hit: [10, 13], dazzle: 5, burn: { dmg: 5, ticks: 10 }, oil: 16, cd: 50, power: true, text: 'Light pours out of you in a ring. Everything near you flinches and smokes.' },
+  // Tag 4 (Gebet 8): Stufe 36. Trifft Geblendete viel härter: erst Glare oder Noonbrand, dann Flashpoint.
+  flashpoint: { name: 'Flashpoint', desc: "Light finds the eyes it already blinded. Aim for the one that is still blinking.", glyph: '!', kind: 'ranged', range: 6, hit: [12, 15], exploit: { dazzle: 1.8 }, oil: 8, cd: 16, power: true },
   sunspot: { name: 'Sunspot', desc: "Drop a patch of hard light on a group.", glyph: '@', kind: 'zone', range: 5, radius: 1.5, hit: [4, 6], oil: 8, cd: 20, text: 'A patch of hard light lands on the ground.' },
 
   // Drifter
@@ -80,5 +86,7 @@ export const ABILITIES = {
   lampblack_cut: { name: 'Lampblack Cut', desc: "A blade dipped in lamp-black. It leaves a smear across the eyes, and a deeper one in the dark.", glyph: '/', kind: 'melee', hit: [10, 13], dazzle: 6, dark: 1.5, cd: 22, power: true },
   // Tag 3, Nachschlag: Stufe 32. Der schwerste Schnitt des Drifters, im Dunkeln noch schwerer.
   vanishing_cut: { name: 'Vanishing Cut', desc: "Step through the edge of the light and out the other side. The blade stays behind for a moment.", glyph: 'V', kind: 'melee', hit: [18, 23], dark: 1.6, cd: 36, power: true },
+  // Tag 4 (Gebet 8): Stufe 36. Gegen Festsitzende (Snare, Caltrops) und Geblendete (Cheap Shot) der tiefste Schnitt.
+  hamstring: { name: 'Hamstring', desc: "Something that cannot move or cannot see has no idea where you are. You know exactly where it is.", glyph: 'J', kind: 'melee', hit: [12, 15], exploit: { root: 1.8, dazzle: 1.4 }, cd: 14, power: true },
   twin_cut: { name: 'Twin Cut', desc: "Both blades at once. Your hardest hit.", glyph: 'X', kind: 'melee', hit: [8, 11], cd: 12, power: true },
 };

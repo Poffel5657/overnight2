@@ -2,6 +2,9 @@
 //   prof / level: wer ab welcher Stufe.  inputs: { Gegenstand: Anzahl }.  out: [Gegenstand, Anzahl].
 //   xp: Berufserfahrung.
 
+// Ab diesem Schritt der Quest „Rook's Masterwork“ darf man Meisterstücke (master: true) herstellen.
+export const MASTERWORK_STEP = 3;
+
 export const RECIPES = {
   // Tinkering (Werkbank)
   t_scrap_hood: { prof: 'tinkering', level: 1, inputs: { scrap: 2 }, out: ['scrap_hood', 1], xp: 10 },
@@ -30,6 +33,13 @@ export const RECIPES = {
   t_greyglass_shield: { prof: 'tinkering', level: 26, inputs: { greyglass: 4, glimmer: 2 }, out: ['greyglass_shield', 1], xp: 140 },
   t_wraithsilk_hood: { prof: 'tinkering', level: 30, inputs: { greyglass: 2, sodden_hymnal: 2, glimmer: 1 }, out: ['wraithsilk_hood', 1], xp: 180 },
   t_wardstone_boots: { prof: 'tinkering', level: 31, inputs: { greyglass: 2, beetle_shell: 2, glimmer: 1 }, out: ['wardstone_boots', 1], xp: 190 },
+  // Tag 4 (Abstimmung): Rooks Meisterstücke. master: nur an einer Werkbank mit master (Rooks gute Bank in der
+  // Werkstatt) und erst, wenn Rook es gezeigt hat (Quest „Rook's Masterwork“ ab Schritt 3).
+  t_mw_hood: { prof: 'tinkering', level: 32, master: true, inputs: { cinder_iron: 2, glimmer: 2 }, out: ['masterwork_hood', 1], xp: 210 },
+  t_mw_boots: { prof: 'tinkering', level: 33, master: true, inputs: { cinder_iron: 2, beetle_shell: 2 }, out: ['masterwork_boots', 1], xp: 220 },
+  t_mw_shivs: { prof: 'tinkering', level: 34, master: true, inputs: { cinder_iron: 3, greyglass: 2 }, out: ['masterwork_shivs', 1], xp: 240 },
+  t_mw_shield: { prof: 'tinkering', level: 35, master: true, inputs: { cinder_iron: 4, greyglass: 2 }, out: ['masterwork_shield', 1], xp: 250 },
+  t_mw_coat: { prof: 'tinkering', level: 37, master: true, inputs: { cinder_iron: 4, greyglass: 2, wolf_pelt: 2 }, out: ['masterwork_coat', 1], xp: 280 },
   t_greyglass_coat: { prof: 'tinkering', level: 28, inputs: { greyglass: 4, beetle_shell: 2 }, out: ['greyglass_coat', 1], xp: 160 },
 
   // Alchemy (Destille in der Kapelle)
@@ -58,5 +68,7 @@ export const RECIPES = {
   l_greyglass_lantern: { prof: 'lampwright', level: 24, inputs: { greyglass: 2, glimmer: 2, survey_notes: 3 }, out: ['greyglass_lantern', 1], xp: 120 },
   l_greyglass_lens: { prof: 'lampwright', level: 26, inputs: { greyglass: 3, glimmer: 2 }, out: ['greyglass_lens', 1], xp: 140 },
   l_shard_lantern: { prof: 'lampwright', level: 30, inputs: { lamp_shard: 1, greyglass: 3, glimmer: 2 }, out: ['shard_lantern', 1], xp: 220 },
+  // Tag 4, Nachschlag: Lampwright 32, Cinder Iron aus Cinderford
+  l_cinder_lantern: { prof: 'lampwright', level: 32, inputs: { cinder_iron: 2, glimmer: 3, wisp_core: 1 }, out: ['cinder_lantern', 1], xp: 240 },
   l_greyglass_staff: { prof: 'lampwright', level: 26, inputs: { greyglass: 2, glimmer: 2, lily_bulb: 2 }, out: ['greyglass_staff', 1], xp: 140 },
 };

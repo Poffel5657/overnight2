@@ -59,6 +59,15 @@ export const MOBS = {
     special: { every: 3, delay: 5, pattern: 'plus', hit: [18, 23], text: 'The gnawer hunches over, teeth first. It is about to lunge at you.' },
     examine: 'A low grey thing with too many teeth, chewing on something that is not its own.',
   },
+  seam_lurker: {
+    // Tag 4: Rolle normal, Stufe 38 (zwischen Choir Wraith 36 und Lamplighter 40). Lebt im tiefen Flöz östlich
+    // des Old Shaft in Copperdeep und frisst Erz; in seinem Bauch findet man Cinder Iron (Rooks Meisterstücke).
+    name: 'Seam Lurker', sprite: 'seam_lurker', level: 38, ai: 'beast', moveEvery: 0,
+    hp: 400, hit: [21, 26], attackEvery: 4, aggro: 4, leash: 7, respawn: 110, xp: 190,
+    drops: [['cinder_iron', 0.5, 1, 1], ['glimmer', 0.4, 1, 2], ['greyglass', 0.15, 1, 1]], gold: [14, 28],
+    special: { every: 3, delay: 6, pattern: 'line', hit: [44, 54], text: 'The lurker flattens itself against the rock. The seam in front of it starts to glow.' },
+    examine: 'A slab of rock that eats other rock. The glowing veins in its back are the ore it has not finished yet.',
+  },
   stone_beetle: {
     name: 'Stone Beetle', sprite: 'stone_beetle', level: 18, ai: 'beast', moveEvery: 2,
     hp: 80, hit: [7, 9], attackEvery: 5, aggro: 4, leash: 8, respawn: 80, xp: 60,

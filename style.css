@@ -468,6 +468,7 @@ button:disabled { color: var(--brass-dim); cursor: default; text-shadow: none; }
 .floater { position: absolute; transform: translate(-50%, -100%); font-size: 1rem; color: var(--bright); text-shadow: 0 0 3px #000, 0 0 2px #000; white-space: nowrap; animation: rise 1.2s ease-out forwards; }
 .floater.heal { color: #b6f07a; font-size: 2.2rem; }
 .floater.info { color: var(--bright); font-size: 1rem; }
+.floater.crit { color: var(--flame); font-size: 1.5rem; letter-spacing: 0.08em; }
 /* Schaden: dicke dunkle Kontur, kurzer Aufschlag (groß -> normal), dann steigen und verblassen */
 .floater.dealt, .floater.taken, .floater.heal {
   font-weight: 700;

@@ -133,3 +133,35 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 - Quest-Erfahrung: Carriers 650 (Stufe 16–20, etwa zwei Stufen), Strongbox 160 und Stake 70 (für alle Stufen, kleine Belohnung, weil es ums Nachdenken bzw. Gold geht).
 
 **Abstimmung neu:** Zettel 3 mit beekeeper (dritte Nacht), cooking, north-road-fires, rook-masterwork (alle neu). old-mill und fishing sind nach drei Nächten ohne Stimmen heraus und stehen wieder unter „Ideen für später“.
+
+## Tag 4 (Nacht zum 2026-11-15): Eisen unter dem Hügel, ein fehlender Schatten
+
+**Inbox:** `v2/inbox/2026-11-14.json`. Zwei Gebete (IDs 7 und 8), Zettel 3: rook-masterwork 2 Stimmen (2 Wähler), sonst keine. 8 Charaktere, 2 aktiv in 24 Stunden. Leuchtfeuer: 362, 295, 350, 300 (Ziel 300).
+
+**Teil 1, Gebete: Flint, der Bergmann in Cinderford (Gebet 7) und mehr zu tun im Kampf (Gebet 8).**
+- Gebet 7 (ID 7): *Gewünscht:* Ein Bergmann in Cinderford, der Schrott, Messing und Glimmer verkauft, und ein Anteil an seinem Geschäft macht seine Ware billiger. Dazu: Ama Material bringen, bis sie eine Mauer um das Dorf baut. *Geliefert:* **Flint the Miner** steht mit seinem Erzkarren oben an den Stufen in Cinderford (Weg vom Platz, eigene Lampe) und verkauft Scrap, Brass Bits und Glimmer. Bei Coyne gibt es ein fünftes Geschäft, **Flint's Ore Cart** (160 Gold, 5 pro Tag). Neu: Geschäfte können Teilhabern einen **Nachlass pro Anteil** geben (`discount`), bei Flint 10 % pro Anteil, also bis 30 %; das Händlerfenster zeigt „(PARTNER)“ am Preis. Teilhaber bekommen außerdem **Cinder Iron**, das neue Eisen aus dem Steinbruch (Zutat für Rooks Meisterstücke). Quest **„A Share of the Cart“** (Flint, Anteil bei Coyne, zurück zu Flint). *Fehlt noch:* Die Mauer um Kindle: Das berührt eine große Entscheidung, die noch kommt. Ein gemeinsamer Holz- und Materialvorrat bei Ama steht als „beacon-stockpile“ auf dem Stimmzettel.
+- Gebet 8 (ID 8): *Gewünscht:* Im Kampf mehr zu tun als eine Taste zu drücken; dazu abgeschlossene Abenteuer mit Rätseln, Beute und Bossen. *Geliefert:* Neue Kampfregel **exploit**: Fähigkeiten, die gegen brennende, geblendete oder festsitzende Ziele deutlich mehr Schaden machen (über dem Ziel steht dann EXPLOIT). Jede Klasse bekommt auf Stufe 36 eine davon und hat die passende Vorbereitung schon: Warden **Anvil Blow** (nagelt fest, der nächste Schlag trifft 70 % härter), Mender **Cinder Bloom** (doppelt gegen alles, was von Smoulder glimmt), Flarecaster **Flashpoint** (80 % gegen Geblendete, nach Glare oder Noonbrand), Drifter **Hamstring** (80 % gegen Festsitzende nach Snare oder Caltrops, 40 % gegen Geblendete). In der Gruppe nutzt einer, was der andere anrichtet. Die Tooltips erklären es. *Fehlt noch:* Abgeschlossene Abenteuer mit Rätseln und Bossen (eine eigene Instanz pro Gruppe braucht Chris; das Unending Maze kommt dem am nächsten). Exploit-Fähigkeiten für niedrigere Stufen.
+
+**Teil 2, Abstimmung: Rooks Meisterstücke.** Zettel 3: rook-masterwork 2, beekeeper 0, cooking 0, north-road-fires 0.
+- *Gewünscht:* Old Rook zieht nach drinnen und lehrt Meisterrezepte an seiner eigenen Bank.
+- *Geliefert:* Quest **„Rook's Masterwork“** (Rook, ab Tinkering 30): drei Cinder Iron (von Flint oder aus den neuen Seam Lurkern), Rook geht hinein, Tansy hat seine alten Zangen, das erste Meisterstück an **Rooks guter Bank** in der Werkstatt, zurück zu Rook. Fünf **Meisterstücke** (Tinkering 32 bis 37): Masterwork Hood, Boots, Shivs, Shield, Coat, je eine Stufe besser als Greyglass. Sie gehen nur an der guten Bank drinnen (`master: true`) und erst nach Rooks Quest; das Herstellfenster zeigt sie mit „MASTERWORK, ROOK'S BENCH“. Rook, Tansy und Pell reden davon.
+- *Fehlt noch:* Rook steht weiter im Hof (die Kern-Tests erwarten ihn dort); im Spiel geht er für Meisterstücke hinein und kommt zum Schimpfen wieder heraus. Ein Rook-Sprite drinnen bräuchte eine Figur an zwei Orten oder Chris' Test-Anpassung.
+
+**Teil 3, Nightwright: „Catch a Shadow“ (Bogen, Akt 1).** Fen hat ein Spiel erfunden: Nachts zeichnet Fen die langen Schatten am Leuchtfeuer mit Kreide nach. Quest (nach Kindling, alle Stufen): Kreide von Tallow holen, nachts den eigenen Schatten in **Fens Kreidekreis** neben dem Leuchtfeuer nachzeichnen (neues Objekt, bei Tag geht es nicht), den Stranger nachts in den Kreis bitten: Er wirft keinen Schatten. Er sagt, sein Schatten sei „zu Hause, wo das Licht seins ist“. Ama weicht aus („manche haben nicht viel Licht übrig“), Tallow freut sich, wenn man ihm die Kreide zurückbringt. Ama erzählt außerdem, dass das Leuchtfeuer jede Nacht mehr frisst. Der Schein im Norden ist wieder größer.
+
+**Klassen (Dauerauftrag): Warden** Stufe 36: Anvil Blow (siehe oben, neue Wirkung `root` für Nahschläge und `exploit`).
+
+**Nachschlag:**
+- **Mender, Flarecaster und Drifter auf Stufe 36** (Cinder Bloom, Flashpoint, Hamstring, siehe oben). Damit haben alle vier Klassen Fähigkeiten bis Stufe 36.
+- **Seam Lurker und „The Deep Seam“:** neues Wesen (Stufe 38, normal) im tiefen Flöz östlich des Old Shaft in Copperdeep, drei Stück, sie bleiben im Fels. Beute: Cinder Iron, Glimmer, manchmal Greyglass. Flints Quest ab Stufe 36: vier Lurker, Brack weiß vom alten Flöz (sein Großvater grub es, und manches Eisen ging „mit dem Glimmer nach Norden“), zwei Cinder Iron zurück zu Flint. Lohn: 3.000 EP. Erstes Oberwelt-Gebiet für 36 bis 40.
+- **Lampwright 32: Cinder Iron Lantern** (Licht 3,8, 60 % weniger Öl) an der Linsenbank; Wren erzählt davon.
+- Neue Gespräche und Rufe: Pell, Flint, Fen, Tansy, Brindle, Wren, Brack, Ama, Tallow, Stranger.
+
+**Balance-Notizen:**
+- Seam Lurker: 400 HP, 21–26 Schaden, line-Angriff mit 6 Takten Vorwarnung, 190 EP (Choir Wraith 36: 170 HP, 160 EP; die Klassen machen auf 36 inzwischen so viel Schaden, dass ein Wraith in 5 s fällt). Gemessen ohne Ausweichen, Greyglass-Ausrüstung, Stufe 36: Warden etwa 11 s und 40 % Leben, Flarecaster 10 s und 55–65 %, Drifter 11–19 s und 50–80 %. Stufe 26 mit Glimsteel verliert deutlich mehr. Lurker bewegen sich nicht (`moveEvery: 0`); das hält auch alte Tests mit Zufallsfolgen stabil.
+- exploit: Faktor 1,7 bis 2 nur mit Vorbereitung; gemessen Hamstring nach Snare im Mittel mehr als 1,4-mal so viel wie ohne. Anvil Blow: Festnageln 4,8 s, Abklingzeit 3 s, also bleibt ein Fenster von 1,8 s für den zweiten Schlag.
+- Meisterstücke liegen eine Stufe über Greyglass (Kopf/Füße 6, Körper 10, Schild Kraft 12/Abwehr 10, Klingen Kraft 15).
+- Flints Nachlass: Ein Anteil (160 Gold) spart 10 % bei Glimmer (23 statt 25 Gold) usw.; wer viel Glimmer kauft, hat ihn nach einigen Wochen heraus. Schrott bleibt bei 3 Gold (Aufrundung).
+- Quest-Erfahrung: Deep Seam 3.000 (Stufe 36–38, etwa zwei Stufen), Masterwork 1.200 (Handwerksquest), Catch a Shadow 320 (für alle Stufen), Share of the Cart 120.
+
+**Abstimmung neu:** Zettel 4 mit cooking (zweite Nacht), north-road-fires (zweite Nacht), old-mill (zurück aus „Ideen für später“) und beacon-stockpile (neu, aus Gebet 7). beekeeper ist nach drei Nächten ohne Stimme heraus.

@@ -25,4 +25,10 @@ export const CHRONICLE = [
     title: 'Partners, a Cup and lamps in the trees',
     text: 'The altar voted for the Snail Cup, so Mabb has a trophy, two new snails and a Cup Day every weekend. Coyne opened the Counting House, where your gold can buy a share of Kindle, and an old strongbox waits for someone who can count to three. Rook\'s workshop doubled, every calling learned two new things up to level 32, and Brindle has seen lamps walking along the north edge at night.',
   },
+  {
+    day: 4,
+    date: '2026-11-15',
+    title: 'Iron under the hill, a shadow missing',
+    text: 'The altar voted for Old Rook, and he has finally gone inside: masterwork at his good bench, from cinder iron that Flint the Miner digs in Cinderford (cheaper for his partners). Every calling learned to strike what is already burning, blinded or stuck, something eats iron in the deep seam of Copperdeep, and Fen has noticed that one person at the Beacon throws no shadow.',
+  },
 ];

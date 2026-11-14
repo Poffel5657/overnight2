@@ -23,6 +23,10 @@ export const BARKS = {
       'The Snail Cup is here! Two new snails! Cup Day every weekend!',
       'Lights on the north edge at night! Brindle wants to know who is carrying them!',
       'Rook\'s workshop doubled in size! He still works in the yard!',
+      'Old Rook teaches MASTERWORK! At his good bench, indoors! Bring cinder iron!',
+      'Flint the Miner sells ore in Cinderford! Partners pay less!',
+      'Fen draws shadows by the Beacon at night! Bring chalk!',
+      'Hit them while they are down! Every calling has a new trick!',
     ],
   },
   band_corra: {
@@ -45,6 +49,7 @@ export const BARKS = {
       'Another wolf, running south. That makes nine today.',
       'Brighter than Tuesday. I am sure of it.',
       'Lamps on the tree line again. Five. No, four.',
+      'Three lamps last night. And the glow is wider again.',
     ],
   },
   hesk: {
@@ -57,7 +62,15 @@ export const BARKS = {
   },
   tansy: {
     range: 6, every: 55,
-    lines: ['*tightens something that did not need tightening*', 'Rook! It is raining! ...no? Fine.', 'Mind the gears, they are in order.'],
+    lines: ['*tightens something that did not need tightening*', 'Rook! It is raining! ...no? Fine.', 'Mind the gears, they are in order.', 'Masterwork goes on the good bench. Only the good bench.'],
+  },
+  flint: {
+    range: 8, every: 45,
+    lines: ['Scrap! Brass! Glimmer! Straight out of the hill!', '*kicks the cart. It wobbles.*', 'Partners pay less. Ask Coyne.', 'Something is chewing the east seam again.'],
+  },
+  fen: {
+    range: 7, every: 60,
+    lines: ['*draws round a goose\'s shadow*', 'Stand still! You moved!', 'Everybody has a shadow. Everybody.'],
   },
   sorrel: {
     range: 8, every: 45,
@@ -97,5 +110,6 @@ export const HAILS = {
   band_corra: 'Psst! Did you hear about the west road?',
   coyne: 'You there. Yes, you, with the purse. A moment.',
   tansy: 'Hey! Want to learn the trade? Inside, where it is dry.',
+  flint: 'You! Want ore cheap? Well. Cheaper.',
 };
 export const HAIL_DEFAULT = 'You there! A word?';

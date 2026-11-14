@@ -3,7 +3,8 @@
 // grantShare). Zahlen in content/ventures.js.
 
 import { VENTURES, SHARE_MAX, ventureOfShop } from '../content/ventures.js';
-import { shopStock } from '../content/shops.js';
+import { shopStock, buyPrice } from '../content/shops.js';
+import { ITEMS } from '../content/items.js';
 import { tell, float } from './events.js';
 import { questEvent } from './talk.js';
 
@@ -21,6 +22,15 @@ export function stockFor(p, shopId, date) {
   const v = ventureOfShop(shopId);
   if (!v || !sharesIn(p, v)) return base;
   return [...base, ...VENTURES[v].perks.filter((id) => !base.includes(id))];
+}
+
+// Was ein Ding bei diesem Händler diesen Spieler kostet (Tag 4, Gebet 7): Geschäfte mit discount geben
+// Teilhabern pro Anteil einen Nachlass (höchstens SHARE_MAX Anteile). Läuft auch im Browser mit dem Stand.
+export function priceFor(p, shopId, itemId) {
+  const base = buyPrice(ITEMS[itemId]?.value ?? 0);
+  const v = ventureOfShop(shopId);
+  const d = v ? (VENTURES[v].discount ?? 0) * sharesIn(p, v) : 0;
+  return d > 0 ? Math.max(1, Math.ceil(base * (1 - d))) : base;
 }
 
 export function canInvest(p, id) {
@@ -42,6 +52,8 @@ export function invest(world, p, id) {
   tell(world, p.id, `Coyne writes your name in the ledger: one share in ${v.name} (${sharesIn(p, id)} of ${SHARE_MAX}). It pays ${v.dividend} gold a day.`, 'good');
   if (sharesIn(p, id) === 1) tell(world, p.id, `As a partner you can now buy extra goods at ${v.name}.`, 'good');
   questEvent(world, p, 'action', { action: 'invest' });
+  // Tag 4: auch pro Geschäft (Quest „A Share of the Cart“: invest_flint)
+  questEvent(world, p, 'action', { action: `invest_${id}` });
 }
 
 // Ein geschenkter Anteil (Abels Schuldschein). Ist das Geschäft voll, gibt es den Preis in Gold.

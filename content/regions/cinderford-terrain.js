@@ -10,7 +10,7 @@ export const TILES = [
   '############ggssgsgss==ssgssgsss############',
   '##########sgssggggsss==sgsssgsggss##########',
   '##########gssssgsgsgs==ssgsssssgss##########',
-  '########sgsssssgssssg==sssssssgggsgg########',
+  '########sgsssssgssssg=======ssgggsgg########',
   '#######ggssgggsgsssss==ggsssssgssssg########',
   '######~~~~~~~~~~~~~~ssss~~~~~~~~~~~~~~######',
   '#####~~~~~~~~~~~~~~~ssss~~~~~~~~~~~~~~######',

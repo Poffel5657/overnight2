@@ -45,6 +45,9 @@ export function conditionHolds(p, cond = {}, world = null) {
   if (cond.noProf && p.profs[cond.noProf]) return false;
   if (cond.profSlot && Object.keys(p.profs).length >= MAX_PROFESSIONS) return false;
   if (cond.has && !P.hasAll(p, cond.has)) return false;
+  // profLevel (Tag 4): { beruf: n } = mindestens Stufe n in diesem Beruf; profBelow: { beruf: n } = gelernt, aber darunter
+  if (cond.profLevel && Object.entries(cond.profLevel).some(([k, n]) => P.profLevel(p, k) < n)) return false;
+  if (cond.profBelow && Object.entries(cond.profBelow).some(([k, n]) => !p.profs[k] || P.profLevel(p, k) >= n)) return false;
   if (cond.gold && (p.gold ?? 0) < cond.gold) return false;
   // Tageszeit: night = nach Einbruch der Dunkelheit (wie bei Quest-Schritten mit night)
   if (world && cond.night && world.daylight >= 0.5) return false;

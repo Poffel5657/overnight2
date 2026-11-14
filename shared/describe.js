@@ -19,7 +19,7 @@ export function describeAbility(id) {
   let effect;
   switch (a.kind) {
     case 'melee':
-      effect = `Strike a creature next to you for ${dmg}.${a.dazzle ? ` It cannot attack for ${secs(a.dazzle)}.` : ''}${a.dark ? ` In the dark (at night, away from fixed lights) it hits ${Math.round((a.dark - 1) * 100)}% harder.` : ''}`;
+      effect = `Strike a creature next to you for ${dmg}.${a.dazzle ? ` It cannot attack for ${secs(a.dazzle)}.` : ''}${a.root ? ` It is stuck in place for ${secs(a.root)}.` : ''}${a.dark ? ` In the dark (at night, away from fixed lights) it hits ${Math.round((a.dark - 1) * 100)}% harder.` : ''}`;
       break;
     case 'ranged':
       effect = [
@@ -68,6 +68,12 @@ export function describeAbility(id) {
       break;
     default:
       effect = '';
+  }
+  // exploit (Tag 4): mehr Schaden gegen Ziele, die schon brennen, geblendet sind oder festsitzen
+  if (a.exploit) {
+    const STATE = { burn: 'burning', dazzle: 'blinded', root: 'stuck in place' };
+    const ex = Object.entries(a.exploit).map(([k, f]) => `${Math.round((f - 1) * 100)}% harder against anything ${STATE[k]}`);
+    effect = `${effect} Hits ${ex.join(', and ')} (check it before you swing).`.trim();
   }
   const parts = [];
   if (a.oil) parts.push(`Costs ${a.oil} oil`);

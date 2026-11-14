@@ -16,6 +16,8 @@ export const SHOPS = {
   hollis: { name: 'The Lantern & Lark', npc: 'hollis', sells: ['hearth_stew', 'ember_ale', 'bread', 'lamp_oil'] },
   // Seit 2026-11-13: Hesk in Cinderford (Ausrüstung gegen Turnstones im Gespräch)
   hesk: { name: "Hesk's Stall", npc: 'hesk', sells: ['lamp_oil', 'cinder_cake', 'bitter_tonic', 'moss_salve'] },
+  // Tag 4 (Gebet 7): Flint gräbt unter Cinderford. Teilhaber zahlen pro Anteil weniger (discount in content/ventures.js).
+  flint: { name: "Flint's Ore Cart", npc: 'flint', sells: ['scrap', 'brass_bits', 'glimmer'] },
   marrow: { name: "Marrow's Stall", npc: 'marrow', sells: ['bread', 'lamp_oil', 'tin_lantern', 'scrap_hood', 'scrap_boots'] },
 };
 

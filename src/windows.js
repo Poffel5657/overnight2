@@ -7,7 +7,7 @@ import { CLASSES, WANDERER, UNLOCK_LEVEL, SPEC_LEVEL } from '../content/classes.
 import { ABILITIES } from '../content/abilities.js';
 import { PROFESSIONS, MAX_PROFESSIONS } from '../content/professions.js';
 import { QUESTS } from '../content/quests.js';
-import { RECIPES } from '../content/recipes.js';
+import { RECIPES, MASTERWORK_STEP } from '../content/recipes.js';
 import { SHOPS, buyPrice } from '../content/shops.js';
 import { allNpcs } from '../content/regions/index.js';
 import { xpForLevel } from '../shared/player.js';
@@ -23,6 +23,7 @@ import { favoursFor, PRAYER_MAX } from '../shared/community.js';
 import { TILE_TYPES } from '../content/tiles.js';
 import { STASH_SIZE, INN } from '../content/tavern.js';
 import { VENTURES } from '../content/ventures.js';
+import { priceFor } from '../shared/ventures.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -536,11 +537,12 @@ export function createWindows(handlers) {
         + (state.stash || []).reduce((s, x) => s + (x.id === id ? x.n : 0), 0);
       const rows = Object.entries(RECIPES).filter(([, r]) => r.prof === profId).map(([rid, r]) => {
         const out = ITEMS[r.out[0]];
-        const canLevel = known && known.level >= r.level;
+        const master = r.master ? (state.quests?.rook_masterwork?.done || (state.quests?.rook_masterwork?.step ?? -1) >= MASTERWORK_STEP) : true;
+        const canLevel = known && known.level >= r.level && master;
         const inputs = Object.entries(r.inputs).map(([id, n]) => `${ITEMS[id].name} ${count(id)}/${n}`).join(', ');
         const enough = Object.entries(r.inputs).every(([id, n]) => count(id) >= n);
         return h('li', { class: canLevel ? '' : 'dim', 'data-item': r.out[0] },
-          h('div', {}, iconEl('item', r.out[0], out.glyph, 'icon small'), ` ${out.name}${r.out[1] > 1 ? ` x${r.out[1]}` : ''} `, h('span', { class: 'muted' }, `LV ${r.level}`)),
+          h('div', {}, iconEl('item', r.out[0], out.glyph, 'icon small'), ` ${out.name}${r.out[1] > 1 ? ` x${r.out[1]}` : ''} `, h('span', { class: 'muted' }, `LV ${r.level}${r.master ? ' // MASTERWORK, ROOK\'S BENCH' : ''}`)),
           h('div', { class: 'muted small' }, inputs),
           canLevel ? h('div', { class: 'row-buttons' },
             btn('MAKE', () => handlers.craft(obj, rid, 1), { disabled: !enough }),
@@ -562,8 +564,9 @@ export function createWindows(handlers) {
       if (!state) return { heading: s.name.toUpperCase(), content: h('p', {}, '...') };
       const buy = (stock || s.sells).filter((id) => ITEMS[id]).map((id) => {
         const it = ITEMS[id];
-        const price = buyPrice(it.value);
-        return h('li', { 'data-item': id }, iconEl('item', id, it.glyph, 'icon small'), ` ${it.name} `, h('span', { class: 'muted' }, `${price}G `),
+        const price = priceFor(state, shop, id);
+        const off = price < buyPrice(it.value);
+        return h('li', { 'data-item': id }, iconEl('item', id, it.glyph, 'icon small'), ` ${it.name} `, h('span', { class: 'muted' }, `${price}G${off ? ' (PARTNER)' : ''} `),
           btn('BUY', () => handlers.buy(shop, id, 1), { disabled: state.gold < price }),
           it.stack ? btn('x5', () => handlers.buy(shop, id, 5), { disabled: state.gold < price * 5 }) : null);
       });

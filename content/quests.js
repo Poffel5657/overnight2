@@ -335,4 +335,52 @@ export const QUESTS = {
     ],
     reward: { xp: 1200, gold: 120, items: { turnstone: 5 } },
   },
+  // ---------- Tag 4 ----------
+  // Abstimmung (rook-masterwork): Rook zeigt einem die Meisterstücke an seiner guten Bank in der Werkstatt.
+  rook_masterwork: {
+    name: "Rook's Masterwork", giver: 'rook',
+    text: 'Old Rook has decided you can be trusted with his good bench. Mostly. He needs iron that Kindle does not have.',
+    steps: [
+      { type: 'have', item: 'cinder_iron', n: 3, text: 'Get three Cinder Iron. Flint the Miner sells it to his partners in Cinderford, and the Seam Lurkers deep in Copperdeep swallow it.' },
+      { type: 'talk', npc: 'rook', text: 'Bring the iron to Old Rook in the workshop yard.' },
+      { type: 'talk', npc: 'tansy', text: 'Rook has gone inside. Ask Tansy, in the workshop, for his old tongs.' },
+      { type: 'action', action: 'masterwork', text: 'Make a masterwork piece at Rook\'s good bench, inside the workshop.' },
+      { type: 'talk', npc: 'rook', text: 'Show your masterwork to Old Rook.' },
+    ],
+    reward: { xp: 1200, gold: 60, items: { cinder_iron: 2 } },
+  },
+  // Gebet 7: Flint, der Bergmann in Cinderford. Ein Anteil an seinem Karren macht seine Ware billiger.
+  flints_partner: {
+    name: 'A Share of the Cart', giver: 'flint',
+    text: 'Flint the Miner sells scrap, brass and glimmer from a cart in Cinderford. He would sell it cheaper to partners, if he had any.',
+    steps: [
+      { type: 'action', action: 'invest_flint', text: 'Buy a share in Flint\'s Ore Cart from Coyne, in the Counting House in Kindle.' },
+      { type: 'talk', npc: 'flint', text: 'Tell Flint he has a partner.' },
+    ],
+    reward: { xp: 120, gold: 0, items: { cinder_iron: 1, glimmer: 2 } },
+  },
+  // Nachschlag: Inhalt für Stufe 36 bis 40 in der Oberwelt
+  deep_seam: {
+    name: 'The Deep Seam', giver: 'flint',
+    text: 'Flint says the best iron under the hill came from a seam that runs east, all the way to Copperdeep. Something down there is eating it.',
+    steps: [
+      { type: 'kill', mob: 'seam_lurker', n: 4, text: 'Drive off four Seam Lurkers in the deep seam east of the Old Shaft, in Copperdeep.' },
+      { type: 'talk', npc: 'brack', text: 'Ask Brack at the Copperdeep camp what he knows about the deep seam.' },
+      { type: 'have', item: 'cinder_iron', n: 2, text: 'Bring Flint two Cinder Iron from the lurkers, so he can see they eat the good stuff.' },
+      { type: 'talk', npc: 'flint', text: 'Give the iron to Flint in Cinderford.' },
+    ],
+    reward: { xp: 3000, gold: 80, items: { cinder_cake: 3, moss_salve: 2 } },
+  },
+  // Bogen (Akt 1): Fen will Schatten fangen, und der Stranger hat keinen.
+  catch_a_shadow: {
+    name: 'Catch a Shadow', giver: 'fen',
+    text: 'Fen has invented a game: at night, the Beacon throws long shadows, and Fen draws round them in chalk.',
+    steps: [
+      { type: 'talk', npc: 'tallow', text: 'Ask Brother Tallow for a stick of chapel chalk. Fen used all theirs on the well.' },
+      { type: 'have', item: 'shadow_tracing', n: 1, text: 'After dark, trace your own shadow on Fen\'s chalk ring by the Beacon.' },
+      { type: 'talk', npc: 'stranger', text: 'After dark, ask the Stranger to stand on the chalk ring by the Beacon.' },
+      { type: 'talk', npc: 'fen', text: 'Tell Fen what you saw.' },
+    ],
+    reward: { xp: 320, gold: 20, items: { glow_draught: 1, bread: 2 } },
+  },
 };
