@@ -225,3 +225,20 @@ test('Nachschlag: Foraging 30 sammelt im Ember Thicket in Hushwood Emberroot fü
   }
   assert.ok(P.countItem(p, 'emberroot') >= 1);
 });
+
+test('Nachschlag: Cartography 30 vermisst den alten Pflock am Flöz (Survey Notes, manchmal Cinder Iron)', async () => {
+  const { NODES } = await import('../../content/nodes.js');
+  const lvl = NODES.seam_stake.level;
+  const w = S.createWorld(REGION, 470);
+  w.daylight = 1;
+  const stake = w.objects.find((o) => o.type === 'node' && o.node === 'seam_stake');
+  assert.equal(REGION.zoneAt(stake.x, stake.y), 'COPPERDEEP');
+  const p = veteran(w, 'a', { level: 36, equip: GEAR, bag: [{ id: 'moss_salve', n: 6 }], profs: { cartography: { level: lvl + 4, xp: P.xpForLevel(lvl + 4) } } });
+  for (let k = 0; k < 8 && P.countItem(p, 'survey_notes') < 1; k++) {
+    applyIntent(w, 'a', { t: 'act', kind: 'object', id: stake.id, action: 'gather' });
+    for (let i = 0; i < 400 && (p.goal || p.gather); i++) run(w, 1);
+    const foe = w.mobs.find((m) => !m.dead && m.angryAt === 'a');
+    if (foe) fightWithSalves(w, 'a', foe, ['bash', 'shield_slam']);
+  }
+  assert.ok(P.countItem(p, 'survey_notes') >= 1);
+});
