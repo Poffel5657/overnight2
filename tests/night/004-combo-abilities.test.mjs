@@ -121,3 +121,20 @@ test('Gruppe: Was der eine anrichtet, nutzt der andere (Flarecaster blendet, Dri
   run(w, 2, (ev) => { if (ev.some((e) => e.type === 'float' && e.ent === m.id && e.text === 'EXPLOIT' && e.to === 'd')) ex = true; });
   assert.ok(ex, 'der Drifter nutzt das Blenden des Flarecasters');
 });
+
+test('Früh verketten: Twin Cut nach Snare (Drifter 8), Sear nach Glare (Flarecaster 10) gegen Hushwood-Wölfe', () => {
+  assert.ok(ABILITIES.twin_cut.exploit?.root > 1 && ABILITIES.sear.exploit?.dazzle > 1 && ABILITIES.cinder_flick.exploit?.burn > 1);
+  for (const [cls, prep, hit, weapon] of [['drifter', 'snare', 'twin_cut', 'brass_shivs'], ['flarecaster', 'glare', 'sear', 'brass_lens']]) {
+    const w = S.createWorld(REGION, 455);
+    w.daylight = 1;
+    const m = w.mobs.find((x) => x.type === 'wolf');
+    const p = veteran(w, 'a', { cls, level: 12, equip: { main: weapon } });
+    p.x = m.x - 1; p.y = m.y; if (!S.walkable(w, p.x, p.y)) p.y = m.y - 1;
+    applyIntent(w, 'a', { t: 'target', id: m.id });
+    cast(w, prep, m);
+    let ex = false;
+    applyIntent(w, 'a', { t: 'ability', id: hit });
+    run(w, 2, (ev) => { if (ev.some((e) => e.type === 'float' && e.ent === m.id && e.text === 'EXPLOIT')) ex = true; });
+    assert.ok(ex || m.dead, `${hit} nach ${prep}`);
+  }
+});
