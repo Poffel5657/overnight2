@@ -21,6 +21,8 @@ export const ABILITIES = {
   punch: { name: 'Punch', desc: "Fists. Better than nothing, barely.", glyph: '·', kind: 'melee', hit: [1, 2], cd: 0, power: true },
 
   // Warden
+  // Tag 4 (Gebet 8): Ein paar frühe Fähigkeiten haben ein kleines exploit (1,3 bis 1,4), damit Verketten schon
+  // vor Stufe 36 etwas bringt: Sear nach Glare, Twin Cut nach Snare, Cinder Flick auf Brennendes (der Warden hat Anvil Blow).
   bash: { name: 'Bash', desc: "A plain shield blow. The Warden's bread and butter.", glyph: '/', kind: 'melee', hit: [3, 5], cd: 0, power: true },
   brace: { name: 'Brace', desc: "Plant your feet and let the shield take it.", glyph: '#', kind: 'self', brace: 10, cd: 30, text: 'You brace behind your shield.' },
   taunt: { name: 'Taunt', desc: "Bang the shield. Everything nearby forgets the others.", glyph: '!', kind: 'taunt', radius: 4, cd: 20, text: 'You bang your shield. Everything looks at you.' },
@@ -42,7 +44,7 @@ export const ABILITIES = {
   staff_rap: { name: 'Staff Rap', desc: "A smart rap with the staff. Menders are not helpless.", glyph: '|', kind: 'melee', hit: [1, 3], cd: 0, power: true },
   warmth: { name: 'Warmth', desc: "A slow, steady warmth that keeps working after you move on.", glyph: '~', kind: 'hot', radius: 3, heal: 3, ticks: 10, cd: 24, text: 'A slow warmth settles over everyone near.' },
   glow: { name: 'Glow', desc: "A soft glow that dulls every blow for a while.", glyph: 'o', kind: 'aura', radius: 3, brace: 8, oil: 6, cd: 40, text: 'A soft glow wraps your friends.' },
-  cinder_flick: { name: 'Cinder Flick', desc: "Flick a coal from the staff. Rude, but it works at a distance.", glyph: '.', kind: 'ranged', range: 4, hit: [4, 6], cd: 6, power: true },
+  cinder_flick: { name: 'Cinder Flick', desc: "Flick a coal from the staff. Rude, but it works at a distance.", glyph: '.', kind: 'ranged', range: 4, hit: [4, 6], exploit: { burn: 1.4 }, cd: 6, power: true },
   hearth_song: { name: 'Hearth Song', desc: "Hum the old hearth tune. Everyone near feels it for a long while.", glyph: '~', kind: 'hot', radius: 4, heal: 5, ticks: 14, oil: 6, cd: 45, text: 'You hum. The cold steps back from everyone near.' },
   rekindle: { name: 'Rekindle', desc: "Pour the ember into everyone close. For a moment, nobody is cold.", glyph: '+', kind: 'aura', radius: 3, heal: 24, brace: 6, oil: 12, cd: 60, text: 'The ember roars up. Every lantern near you burns brighter.' },
   smoulder: { name: 'Smoulder', desc: "Shake the staff. Embers settle on everything close and refuse to go out.", glyph: '%', kind: 'burst', radius: 2, hit: [3, 5], burn: { dmg: 4, ticks: 16 }, oil: 8, cd: 30, power: true, text: 'Embers drift from your staff and settle on everything near.' },
@@ -58,7 +60,7 @@ export const ABILITIES = {
   // Flarecaster
   flare_bolt: { name: 'Flare Bolt', desc: "A focused bolt of lantern light.", glyph: '-', kind: 'ranged', range: 5, hit: [3, 5], cd: 0, power: true },
   flare: { name: 'Flare', desc: "A white flash. Everything close is scorched and scared off.", glyph: '*', kind: 'burst', radius: 2.5, hit: [2, 3], scare: 8, oil: 10, cd: 16, text: 'Your lantern flares white.' },
-  sear: { name: 'Sear', desc: "A long, hot beam. Costs a little oil, hits hard.", glyph: '=', kind: 'ranged', range: 5, hit: [6, 9], oil: 4, cd: 10, power: true },
+  sear: { name: 'Sear', desc: "A long, hot beam. Costs a little oil, hits hard.", glyph: '=', kind: 'ranged', range: 5, hit: [6, 9], oil: 4, exploit: { dazzle: 1.3 }, cd: 10, power: true },
   glare: { name: 'Glare', desc: "Tilt the lens and put the whole lantern in its eyes.", glyph: 'O', kind: 'ranged', range: 5, hit: [4, 6], dazzle: 6, cd: 18, power: true },
   cinder_brand: { name: 'Cinder Brand', desc: "A hot point of light that stays lit on whatever it touches.", glyph: '^', kind: 'ranged', range: 5, hit: [3, 4], burn: { dmg: 4, ticks: 12 }, oil: 6, cd: 20, power: true, text: 'The spot of light catches, and keeps burning.' },
   starfall: { name: 'Starfall', desc: "Gather the light high up, then let it all fall at once.", glyph: '%', kind: 'zone', range: 6, radius: 2, hit: [10, 14], oil: 14, cd: 40, power: true, text: 'Light gathers overhead, and falls.' },
@@ -88,5 +90,5 @@ export const ABILITIES = {
   vanishing_cut: { name: 'Vanishing Cut', desc: "Step through the edge of the light and out the other side. The blade stays behind for a moment.", glyph: 'V', kind: 'melee', hit: [18, 23], dark: 1.6, cd: 36, power: true },
   // Tag 4 (Gebet 8): Stufe 36. Gegen Festsitzende (Snare, Caltrops) und Geblendete (Cheap Shot) der tiefste Schnitt.
   hamstring: { name: 'Hamstring', desc: "Something that cannot move or cannot see has no idea where you are. You know exactly where it is.", glyph: 'J', kind: 'melee', hit: [12, 15], exploit: { root: 1.8, dazzle: 1.4 }, cd: 14, power: true },
-  twin_cut: { name: 'Twin Cut', desc: "Both blades at once. Your hardest hit.", glyph: 'X', kind: 'melee', hit: [8, 11], cd: 12, power: true },
+  twin_cut: { name: 'Twin Cut', desc: "Both blades at once. Your hardest hit.", glyph: 'X', kind: 'melee', hit: [8, 11], exploit: { root: 1.3 }, cd: 12, power: true },
 };
