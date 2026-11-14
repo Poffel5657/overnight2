@@ -183,3 +183,24 @@ test('Nachschlag: Alchemie 28 und 32 brauen stärkere Heilung, die gegen Lurker 
     assert.ok(p.hp >= Math.min(p.maxHp, 10 + ITEMS[out].use.heal) - 1);
   }
 });
+
+test('Nachschlag: Salvage 32 holt Cinder Iron aus dem tiefen Flöz, darunter nicht', async () => {
+  const { NODES } = await import('../../content/nodes.js');
+  const lvl = NODES.deep_seam.level;
+  const w = S.createWorld(REGION, 468);
+  w.daylight = 1;
+  const seam = w.objects.find((o) => o.type === 'node' && o.node === 'deep_seam');
+  assert.equal(REGION.zoneAt(seam.x, seam.y), 'COPPERDEEP');
+  const low = veteran(w, 'b', { level: 36, equip: GEAR, profs: { salvage: { level: lvl - 1, xp: P.xpForLevel(lvl - 1) } } });
+  applyIntent(w, 'b', { t: 'act', kind: 'object', id: seam.id, action: 'gather' });
+  for (let i = 0; i < 400 && (low.goal || low.gather); i++) run(w, 1);
+  assert.equal(P.countItem(low, 'cinder_iron'), 0, 'zu wenig Salvage');
+  S.removePlayer(w, 'b');
+  const p = veteran(w, 'a', { level: 36, equip: GEAR, bag: [{ id: 'moss_salve', n: 10 }], profs: { salvage: { level: lvl + 4, xp: P.xpForLevel(lvl + 4) } } });
+  applyIntent(w, 'a', { t: 'act', kind: 'object', id: seam.id, action: 'gather' });
+  for (let i = 0; i < 600 && (p.goal || p.gather); i++) {
+    if (p.hp < p.maxHp * 0.4) { const s = p.bag.findIndex((x) => x?.id === 'moss_salve'); if (s >= 0) applyIntent(w, 'a', { t: 'use', slot: s }); }
+    run(w, 1);
+  }
+  assert.ok(P.countItem(p, 'cinder_iron') >= 1, 'Cinder Iron aus dem Flöz');
+});

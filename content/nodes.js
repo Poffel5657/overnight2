@@ -10,6 +10,8 @@ export const NODES = {
   copper_seam: { name: 'Copper Seam', prof: 'salvage', level: 13, item: 'brass_bits', extra: ['glimmer', 0.25], yields: 4, xp: 26, respawn: 90, look: 'seam', verb: 'Salvage' },
   glimmer_vein: { name: 'Glimmer Vein', prof: 'salvage', level: 18, item: 'glimmer', yields: 3, xp: 34, respawn: 110, look: 'vein', verb: 'Salvage' },
   sunken_cache: { name: 'Sunken Cache', prof: 'salvage', level: 23, item: 'greyglass', extra: ['glimmer', 0.3], yields: 3, xp: 44, respawn: 120, look: 'cache', verb: 'Salvage' },
+  // Tag 4, Nachschlag: das tiefe Flöz östlich des Old Shaft (zwischen den Seam Lurkern). Cinder Iron ohne Anteil und ohne Kampf, wenn man vorsichtig ist.
+  deep_seam: { name: 'Deep Seam', prof: 'salvage', level: 32, item: 'cinder_iron', extra: ['glimmer', 0.3], yields: 2, xp: 64, respawn: 160, look: 'vein', verb: 'Salvage' },
   old_shaft: { name: 'Old Shaft', prof: 'salvage', level: 26, item: 'glimmer', extra: ['greyglass', 0.2], yields: 3, xp: 52, respawn: 130, look: 'vein', verb: 'Salvage' },
   brass_wreck: { name: 'Brass Wreck', prof: 'salvage', level: 8, item: 'brass_bits', extra: ['glimmer', 0.12], yields: 3, xp: 18, respawn: 90, look: 'wreck', verb: 'Salvage' },
   bitterleaf_patch: { name: 'Bitterleaf', prof: 'foraging', level: 1, item: 'bitterleaf', yields: 4, xp: 8, respawn: 50, look: 'herbs', verb: 'Forage' },

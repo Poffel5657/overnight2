@@ -341,7 +341,7 @@ export const QUESTS = {
     name: "Rook's Masterwork", giver: 'rook',
     text: 'Old Rook has decided you can be trusted with his good bench. Mostly. He needs iron that Kindle does not have.',
     steps: [
-      { type: 'have', item: 'cinder_iron', n: 3, text: 'Get three Cinder Iron. Flint the Miner sells it to his partners in Cinderford, and the Seam Lurkers deep in Copperdeep swallow it.' },
+      { type: 'have', item: 'cinder_iron', n: 3, text: 'Get three Cinder Iron. Flint the Miner sells it to his partners in Cinderford, the Seam Lurkers deep in Copperdeep swallow it, and salvagers can pull it from the deep seam there.' },
       { type: 'talk', npc: 'rook', text: 'Bring the iron to Old Rook in the workshop yard.' },
       { type: 'talk', npc: 'tansy', text: 'Rook has gone inside. Ask Tansy, in the workshop, for his old tongs.' },
       { type: 'action', action: 'masterwork', text: 'Make a masterwork piece at Rook\'s good bench, inside the workshop.' },
