@@ -20,6 +20,9 @@ export const FAVOURS = {
   // Tag 3 (Bogen): die Gnawer am Nordrand und das Brot der Träger
   thin_gnawers: { from: 'brindle', type: 'kill', mob: 'grey_gnawer', n: 3, text: 'Grey Gnawers are chewing through whatever the carriers drop on the north edge. Brindle wants three fewer.', reward: { gold: 22, xp: 160 } },
   bread_for_stranger: { from: 'stranger', type: 'bring', item: 'hollow_ration', n: 2, text: 'The Stranger wants peat-smoked bread from the north edge. He does not say why.', reward: { gold: 20, xp: 140 } },
+  // Tag 4: das tiefe Flöz (Gruppen willkommen) und Cinder Iron für Rook
+  lurkers_for_flint: { from: 'flint', type: 'kill', mob: 'seam_lurker', n: 2, text: 'Flint hears the lurkers chewing the east seam again. Two fewer, please. Bring a friend.', reward: { gold: 36, xp: 520 } },
+  iron_for_rook: { from: 'rook', type: 'bring', item: 'cinder_iron', n: 1, text: 'Rook wants a bar of cinder iron to "listen to". He will not explain.', reward: { gold: 30, xp: 200 } },
   shoo_crows: { from: 'fen', type: 'kill', mob: 'crow', n: 3, text: 'The crows are judging the vegetable patch. Shoo them.', reward: { gold: 8, xp: 20 } },
 };
 
