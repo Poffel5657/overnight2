@@ -29,6 +29,6 @@ export const CHRONICLE = [
     day: 4,
     date: '2026-11-15',
     title: 'Iron under the hill, a shadow missing',
-    text: 'The altar voted for Old Rook, and he has finally gone inside: masterwork at his good bench, from cinder iron that Flint the Miner digs in Cinderford (cheaper for his partners). Every calling learned to strike what is already burning, blinded or stuck, something eats iron in the deep seam of Copperdeep, and Fen has noticed that one person at the Beacon throws no shadow.',
+    text: 'The altar voted for Old Rook, and he has finally gone inside: masterwork at his good bench, from cinder iron that Flint the Miner digs in Cinderford (cheaper for his partners). Every calling learned to strike what is already burning, blinded or stuck, all the way up to level 40, something eats iron in the deep seam of Copperdeep, and Fen has noticed that one person at the Beacon throws no shadow.',
   },
 ];

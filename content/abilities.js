@@ -76,6 +76,8 @@ export const ABILITIES = {
   corona: { name: 'Corona', desc: "Open the lantern all the way and stand in the middle of it. Everything close burns and cannot see.", glyph: '*', kind: 'burst', radius: 3, hit: [10, 13], dazzle: 5, burn: { dmg: 5, ticks: 10 }, oil: 16, cd: 50, power: true, text: 'Light pours out of you in a ring. Everything near you flinches and smokes.' },
   // Tag 4 (Gebet 8): Stufe 36. Trifft Geblendete viel härter: erst Glare oder Noonbrand, dann Flashpoint.
   flashpoint: { name: 'Flashpoint', desc: "Light finds the eyes it already blinded. Aim for the one that is still blinking.", glyph: '!', kind: 'ranged', range: 6, hit: [12, 15], exploit: { dazzle: 1.8 }, oil: 8, cd: 16, power: true },
+  // Tag 4, Nachschlag: Stufe 40. Der weiteste Schuss des Flarecasters, gegen Brennendes (Cinder Brand, Noonbrand) noch härter.
+  daybreak: { name: 'Daybreak', desc: "Pull the whole morning through the lens at once. Whatever is already burning learns what noon means.", glyph: '|', kind: 'ranged', range: 7, hit: [18, 24], exploit: { burn: 1.5 }, oil: 14, cd: 36, power: true, text: 'For a heartbeat it is morning, in a straight line.' },
   sunspot: { name: 'Sunspot', desc: "Drop a patch of hard light on a group.", glyph: '@', kind: 'zone', range: 5, radius: 1.5, hit: [4, 6], oil: 8, cd: 20, text: 'A patch of hard light lands on the ground.' },
 
   // Drifter
@@ -94,5 +96,7 @@ export const ABILITIES = {
   vanishing_cut: { name: 'Vanishing Cut', desc: "Step through the edge of the light and out the other side. The blade stays behind for a moment.", glyph: 'V', kind: 'melee', hit: [18, 23], dark: 1.6, cd: 36, power: true },
   // Tag 4 (Gebet 8): Stufe 36. Gegen Festsitzende (Snare, Caltrops) und Geblendete (Cheap Shot) der tiefste Schnitt.
   hamstring: { name: 'Hamstring', desc: "Something that cannot move or cannot see has no idea where you are. You know exactly where it is.", glyph: 'J', kind: 'melee', hit: [12, 15], exploit: { root: 1.8, dazzle: 1.4 }, cd: 14, power: true },
+  // Tag 4, Nachschlag: Stufe 40. Aus dem Rauch heraus: gegen Geblendete (Cheap Shot, Smoke Bomb, Lampblack Cut) und im Dunkeln tiefer.
+  nightfall: { name: 'Nightfall', desc: "Wait until they cannot see, then be the dark. It is over before they blink the soot out of their eyes.", glyph: 'N', kind: 'melee', hit: [16, 21], dark: 1.5, exploit: { dazzle: 1.6 }, cd: 30, power: true },
   twin_cut: { name: 'Twin Cut', desc: "Both blades at once. Your hardest hit.", glyph: 'X', kind: 'melee', hit: [8, 11], exploit: { root: 1.3 }, cd: 12, power: true },
 };
