@@ -69,3 +69,19 @@ test('The Unsent Letter: Pell, Abels Haus, Mabb errät man aus dem Brief, Ivy in
   assert.equal(p.gold, gold + QUESTS.unsent_letter.reward.gold);
   assert.ok(P.countItem(p, 'cinder_cake') >= QUESTS.unsent_letter.reward.items.cinder_cake);
 });
+
+test("Ivy's Reply: Ivys Karte von Kindle zu Mabb, dafür Duchess' Ersatzhut", () => {
+  const c = S.createWorld(regionFor('cinderford'), 496);
+  const p = veteran(c, 'a', { level: 3, quests: { kindling: { done: true }, unsent_letter: { done: true } } });
+  talk(c, 'a', 'ivy');
+  choose(c, 'a', 'send back to Mabb');
+  assert.equal(P.countItem(p, 'ivys_map'), 1);
+  const w = S.createWorld(REGION, 497);
+  const q = S.addPlayer(w, 'a', 'a', S.removePlayer(c, 'a'));
+  talk(w, 'a', 'mabb');
+  choose(w, 'a', 'sent you a map');
+  assert.equal(q.quests.ivys_reply.done, true);
+  assert.equal(P.countItem(q, 'ivys_map'), 0);
+  assert.equal(P.countItem(q, 'duchess_hat'), 1);
+  assert.equal(ITEMS.duchess_hat.slot, 'head');
+});
