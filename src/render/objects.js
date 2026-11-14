@@ -205,6 +205,14 @@ const BUILDERS = {
       g.add(box(0.2, 0.03, 0.14, '#e8dcc0', -0.1, 0.03, 0.18));
       return;
     }
+    if (o.look === 'letter_table') {
+      // Tag 4: ein kleiner Tisch mit einem halben Brief und einem Tintenfass
+      g.add(box(0.85, 0.08, 0.75, '#7a5a34', 0, 0.62, 0));
+      for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) g.add(box(0.07, 0.6, 0.07, '#5a4028', sx * 0.35, 0.3, sz * 0.3));
+      g.add(box(0.32, 0.02, 0.4, '#e8dcc0', -0.1, 0.67, 0.05).rotateY(0.2));
+      g.add(box(0.08, 0.1, 0.08, '#2a2430', 0.25, 0.71, -0.15));
+      return;
+    }
     if (o.look === 'pinned_map') {
       // Tag 4: eine Karte an der Wand, voller Kohlekreuze
       g.add(box(0.7, 0.55, 0.03, '#e8dcc0', 0, 1.2, -0.45));

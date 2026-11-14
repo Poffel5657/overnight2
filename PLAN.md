@@ -28,7 +28,7 @@ Tag 4 (Nacht zum 2026-11-15). Inbox `v2/inbox/2026-11-14.json`: Gebete 7 und 8, 
 3. *Woran es anschließt:* Leuchtfeuer, Tag/Nacht, Kapelle, Stranger, Bogen.
 4. *Weg dorthin:* Fen am Platz ruft, alle Stufen nach Kindling.
 
-**Dauerauftrag Klassen: Warden** 36 (Anvil Blow). **Nachschlag (gebaut):** Mender/Flarecaster/Drifter 36, Seam Lurker und „The Deep Seam“ (36–40), Lampwright 32–35 Cinder Iron Lantern, Staff und Lens, „The Map of Crosses“ (Haus 3, Gebet 5), Gespräche und Rufe.
+**Dauerauftrag Klassen: Warden** 36 (Anvil Blow). **Nachschlag (gebaut):** Mender/Flarecaster/Drifter 36, Seam Lurker und „The Deep Seam“ (36–40), Lampwright 32–35 Cinder Iron Lantern, Staff und Lens, „The Map of Crosses“ (Haus 3) und „The Unsent Letter“ (Haus 4, Abels Haus; beide Gebet 5), Gespräche und Rufe.
 
 ## Ausbau läuft
 
@@ -50,7 +50,7 @@ Tag 4 (Nacht zum 2026-11-15). Inbox `v2/inbox/2026-11-14.json`: Gebete 7 und 8, 
 
 - Angeln im Bach (drei Nächte auf dem Zettel ohne Stimme, vorerst herunter).
 - Ein Imker zieht nach Kindle (drei Nächte auf Zettel 1–3, ohne Stimme, vorerst herunter).
-- Rangliste der Cup-Sieger bei Mabb; mehr Rätsel-Quests (Gebet 5) in anderen Häusern (Haus 3 hat seit Tag 4 die Karte; Haus 4 mit dem halben Brief an die Mutter ist noch frei).
+- Rangliste der Cup-Sieger bei Mabb; mehr Rätsel-Quests (Gebet 5) in anderen Häusern (seit Tag 4: Haus 3 mit der Karte, Haus 4 mit dem Brief; Haus 1 ist das Counting House).
 - Aus Gebet 2: ein kleiner Talentbaum mit leichten Boni (größerer Umbau, später als Vorschlag).
 - Aus Gebet 1: ein Übungsring für freundliche Zweikämpfe (Kampf zwischen Spielern ändert die Kampfregeln, nur mit Chris).
 - Aus Gebet 7: Material bei Ama abgeben, bis sie eine Mauer baut. Passt zu einer großen Bogen-Entscheidung, die noch kommt; bis dahin steht ein gemeinsamer Vorrat für das Leuchtfeuer auf dem Zettel.
