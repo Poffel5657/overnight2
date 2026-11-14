@@ -733,6 +733,8 @@ function castAbility(world, p, id) {
         m.angryAt = p.id;
         m.tauntUntil = world.tick + 12;
         m.hitters.add(p.id);
+        // root (Tag 4, Hold the Line): alles im Umkreis steckt fest
+        if (a.root) m.rootUntil = world.tick + a.root;
       }
       // brace: Verbündete (und man selbst) im selben Umkreis nehmen kurz halben Schaden
       if (a.brace) for (const q of alliesNear(world, p, a.radius)) q.braceUntil = Math.max(q.braceUntil, world.tick + a.brace);

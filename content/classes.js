@@ -19,7 +19,7 @@ export const CLASSES = {
     name: 'Warden', role: 'TANK', teacher: 'ama', starter: 'scrap_shield', trial: 'trial_warden',
     hp: 36, hpPerLevel: 4,
     text: 'Stands in front. Holds the line, and the light.',
-    abilities: [['bash', 1], ['brace', 2], ['taunt', 4], ['lantern_ward', 6], ['shield_slam', 8], ['stand_fast', 12], ['beacon_slam', 16], ['bulwark', 20], ['last_light', 24], ['lantern_hook', 28], ['shield_wall', 32], ['anvil_blow', 36]],
+    abilities: [['bash', 1], ['brace', 2], ['taunt', 4], ['lantern_ward', 6], ['shield_slam', 8], ['stand_fast', 12], ['beacon_slam', 16], ['bulwark', 20], ['last_light', 24], ['lantern_hook', 28], ['shield_wall', 32], ['anvil_blow', 36], ['hold_the_line', 40]],
     specs: {},
   },
   mender: {

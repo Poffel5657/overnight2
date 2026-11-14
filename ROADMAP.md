@@ -26,9 +26,9 @@ Welche Andockpunkte in den nächsten Nächten wachsen, damit große Wünsche üb
 
 | Klasse | Fähigkeiten bis Stufe | Spezialisierungen (ab 50) |
 |---|---|---|
-| Warden | 36 (Stand Fast 12, Beacon Slam 16, Bulwark 20, Last Light 24, Lantern Hook 28, Shield Wall 32, Anvil Blow 36) | noch keine |
+| Warden | 40 (Stand Fast 12, Beacon Slam 16, Bulwark 20, Last Light 24, Lantern Hook 28, Shield Wall 32, Anvil Blow 36, Hold the Line 40) | noch keine |
 | Mender | 36 (Cinder Flick 11, Hearth Song 13, Rekindle 16, Smoulder 20, Kindred Glow 24, Ember Mend 28, Sanctuary 32, Cinder Bloom 36) | noch keine |
 | Flarecaster | 36 (Glare 10, Cinder Brand 13, Starfall 16, Sunlance 20, Prism Ward 24, Noonbrand 28, Corona 32, Flashpoint 36) | noch keine |
 | Drifter | 36 (Cheap Shot 10, Night Edge 13, Caltrops 16, Smoke Bomb 20, Gutter Strike 24, Lampblack Cut 28, Vanishing Cut 32, Hamstring 36) | noch keine |
 
-Alle vier Klassen haben seit Tag 4 Fähigkeiten bis Stufe 36; die Fähigkeiten auf 36 nutzen `exploit` (mehr Schaden gegen brennende, geblendete oder festsitzende Ziele). Nächster Schritt: Warden (40), dann Mender, Flarecaster, Drifter. Ausrüstung bis 37 (Meisterstücke), Wesen bis 38 (Seam Lurker) in der Oberwelt.
+Alle vier Klassen haben seit Tag 4 Fähigkeiten bis Stufe 36; die Fähigkeiten auf 36 nutzen `exploit` (mehr Schaden gegen brennende, geblendete oder festsitzende Ziele). Der Warden hat seit Tag 4 auch Stufe 40. Nächster Schritt: Mender, Flarecaster, Drifter auf 40, dann Warden 44. Ausrüstung bis 37 (Meisterstücke), Wesen bis 38 (Seam Lurker) in der Oberwelt.
