@@ -12,6 +12,8 @@ export const NODES = {
   sunken_cache: { name: 'Sunken Cache', prof: 'salvage', level: 23, item: 'greyglass', extra: ['glimmer', 0.3], yields: 3, xp: 44, respawn: 120, look: 'cache', verb: 'Salvage' },
   // Tag 4, Nachschlag: das tiefe Flöz östlich des Old Shaft (zwischen den Seam Lurkern). Cinder Iron ohne Anteil und ohne Kampf, wenn man vorsichtig ist.
   deep_seam: { name: 'Deep Seam', prof: 'salvage', level: 32, item: 'cinder_iron', extra: ['glimmer', 0.3], yields: 2, xp: 64, respawn: 160, look: 'vein', verb: 'Salvage' },
+  // Tag 4, Nachschlag: Foraging 30, am Nordrand von Hushwood, wo es nachts nach fremdem Rauch riecht. Zutaten für die Hearthroot Salve.
+  ember_thicket: { name: 'Ember Thicket', prof: 'foraging', level: 30, item: 'emberroot', extra: ['nightcap', 0.35], yields: 4, xp: 60, respawn: 140, look: 'ember', verb: 'Forage' },
   old_shaft: { name: 'Old Shaft', prof: 'salvage', level: 26, item: 'glimmer', extra: ['greyglass', 0.2], yields: 3, xp: 52, respawn: 130, look: 'vein', verb: 'Salvage' },
   brass_wreck: { name: 'Brass Wreck', prof: 'salvage', level: 8, item: 'brass_bits', extra: ['glimmer', 0.12], yields: 3, xp: 18, respawn: 90, look: 'wreck', verb: 'Salvage' },
   bitterleaf_patch: { name: 'Bitterleaf', prof: 'foraging', level: 1, item: 'bitterleaf', yields: 4, xp: 8, respawn: 50, look: 'herbs', verb: 'Forage' },

@@ -204,3 +204,24 @@ test('Nachschlag: Salvage 32 holt Cinder Iron aus dem tiefen Flöz, darunter nic
   }
   assert.ok(P.countItem(p, 'cinder_iron') >= 1, 'Cinder Iron aus dem Flöz');
 });
+
+test('Nachschlag: Foraging 30 sammelt im Ember Thicket in Hushwood Emberroot für die Hearthroot Salve', async () => {
+  const { NODES } = await import('../../content/nodes.js');
+  const { RECIPES } = await import('../../content/recipes.js');
+  assert.ok(RECIPES.a_hearth_salve.inputs.emberroot, 'Emberroot braucht die Salbe');
+  const lvl = NODES.ember_thicket.level;
+  const w = S.createWorld(REGION, 469);
+  w.daylight = 1;
+  const nodes = w.objects.filter((o) => o.type === 'node' && o.node === 'ember_thicket');
+  assert.equal(nodes.length, 2);
+  for (const n of nodes) assert.equal(REGION.zoneAt(n.x, n.y), 'HUSHWOOD');
+  const p = veteran(w, 'a', { level: 30, equip: GEAR, bag: [{ id: 'moss_salve', n: 6 }], profs: { foraging: { level: lvl + 4, xp: P.xpForLevel(lvl + 4) } } });
+  // Hushwood ist Wolfsland: Wer beim Sammeln angegriffen wird, wehrt sich und sammelt weiter.
+  for (let k = 0; k < 8 && P.countItem(p, 'emberroot') < 1; k++) {
+    applyIntent(w, 'a', { t: 'act', kind: 'object', id: nodes[0].id, action: 'gather' });
+    for (let i = 0; i < 400 && (p.goal || p.gather); i++) run(w, 1);
+    const foe = w.mobs.find((m) => !m.dead && m.angryAt === 'a');
+    if (foe) fightWithSalves(w, 'a', foe, ['bash', 'shield_slam']);
+  }
+  assert.ok(P.countItem(p, 'emberroot') >= 1);
+});

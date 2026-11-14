@@ -28,7 +28,7 @@ Tag 4 (Nacht zum 2026-11-15). Inbox `v2/inbox/2026-11-14.json`: Gebete 7 und 8, 
 3. *Woran es anschließt:* Leuchtfeuer, Tag/Nacht, Kapelle, Stranger, Bogen.
 4. *Weg dorthin:* Fen am Platz ruft, alle Stufen nach Kindling.
 
-**Dauerauftrag Klassen: Warden** 36 (Anvil Blow). **Nachschlag (gebaut):** Mender/Flarecaster/Drifter 36, alle vier Klassen auf 40 (Hold the Line, Banked Hearth, Daybreak, Nightfall), frühe Combos (Twin Cut, Sear, Cinder Flick), Seam Lurker und „The Deep Seam“ (36–40), Lampwright 32–35 Cinder Iron Lantern, Staff und Lens, „The Map of Crosses“ (Haus 3) und „The Unsent Letter“ und „Ivy's Reply“ (Haus 4, Abels Haus; Gebet 5), zwei Gefallen (Lurker für Flint, Eisen für Rook), Alchemie 28/32 (Hearthroot Salve, Deep Seam Tonic), Salvage 32 (Deep Seam), „Three Wheels“, Gespräche und Rufe.
+**Dauerauftrag Klassen: Warden** 36 (Anvil Blow). **Nachschlag (gebaut):** Mender/Flarecaster/Drifter 36, alle vier Klassen auf 40 (Hold the Line, Banked Hearth, Daybreak, Nightfall), frühe Combos (Twin Cut, Sear, Cinder Flick), Seam Lurker und „The Deep Seam“ (36–40), Lampwright 32–35 Cinder Iron Lantern, Staff und Lens, „The Map of Crosses“ (Haus 3) und „The Unsent Letter“ und „Ivy's Reply“ (Haus 4, Abels Haus; Gebet 5), zwei Gefallen (Lurker für Flint, Eisen für Rook), Alchemie 28/32 (Hearthroot Salve, Deep Seam Tonic), Salvage 32 (Deep Seam), Foraging 30 (Ember Thicket), „Three Wheels“, Gespräche und Rufe.
 
 ## Ausbau läuft
 
