@@ -125,6 +125,8 @@ export const REGION = {
     {type: 'door', to: 'drift', tx: 32, ty: 58, x: 50, y: 3, name: 'a tear in the Grey', look: 'rift'},
     // Seit Tag 2: der alte Schacht des Foreman im Nordosten von Copperdeep (Salvage 26)
     {type: 'node', node: 'old_shaft', x: 95, y: 27},
+    // Tag 4: das tiefe Flöz, zwischen den Seam Lurkern
+    {type: 'node', node: 'deep_seam', x: 95, y: 38},
     // Seit Tag 2: alte Steinmänner am Nordrand, die nach Norden zeigen (Cartography 26)
     {type: 'node', node: 'north_cairn', x: 60, y: 4},
     {type: 'node', node: 'north_cairn', x: 36, y: 4},
