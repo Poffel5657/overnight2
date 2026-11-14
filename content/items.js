@@ -128,6 +128,9 @@ export const ITEMS = {
   chapel_chalk: { name: 'Chapel Chalk', stack: true, value: 0, glyph: '/', text: 'A stick of white chalk from the chapel. Tallow uses it to write the hymn numbers. Fen uses it for everything else.' },
   shadow_tracing: { name: 'Shadow Tracing', stack: true, value: 0, glyph: '=', text: 'Your own shadow, drawn in chalk on a sheet of bark paper by Beacon-light. It looks taller than you. Fen says shadows always do.' },
   cinder_lantern: { name: 'Cinder Iron Lantern', slot: 'lantern', light: 3.8, burn: 0.4, value: 360, glyph: 'i', text: 'A heavy black lantern with a wisp core behind the glass. Iron holds the heat, so the oil lasts. Wren made the first one and will not stop talking about it.' },
+  cinder_staff: { name: 'Cinder Iron Staff', slot: 'main', cls: 'mender', delay: 10, power: 7, heal: 14, value: 480, glyph: '|', text: 'A black iron staff that stays warm all night. Wren set an ember in the top, and it has not gone out once.' },
+  cinder_lens: { name: 'Cinder Iron Lens', slot: 'main', cls: 'flarecaster', delay: 10, power: 14, value: 480, glyph: 'o', text: 'Greyglass ground thin and held in a ring of cinder iron. It throws light like a shovel throws dirt.' },
+  crossed_map: { name: 'Map Full of Crosses', stack: true, value: 0, glyph: '=', text: 'A charcoal map of everything around Kindle, every place crossed out. Only one spot, far north of the North Watch, has a circle instead. On the back: "Not here either."' },
   rooks_tongs: { name: "Rook's Old Tongs", stack: true, value: 0, glyph: '/', text: 'Iron tongs, worn smooth where nine fingers held them. Tansy says they belong on the good bench.' },
   keepers_lantern: { name: 'Keeper\'s Lantern', slot: 'lantern', light: 4, burn: 0.35, value: 600, glyph: 'i', text: 'Made from the lamp of a Keeper. It lights every corner at once, and seems to enjoy it.' },
 };

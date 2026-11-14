@@ -205,6 +205,13 @@ const BUILDERS = {
       g.add(box(0.2, 0.03, 0.14, '#e8dcc0', -0.1, 0.03, 0.18));
       return;
     }
+    if (o.look === 'pinned_map') {
+      // Tag 4: eine Karte an der Wand, voller Kohlekreuze
+      g.add(box(0.7, 0.55, 0.03, '#e8dcc0', 0, 1.2, -0.45));
+      for (const [x, y] of [[-0.2, 1.3], [0.05, 1.15], [0.2, 1.35], [-0.1, 1.05], [0.22, 1.05]]) g.add(box(0.08, 0.08, 0.02, '#2a2420', x, y, -0.43));
+      g.add(box(0.06, 0.06, 0.02, '#c84a2a', -0.05, 1.42, -0.43));
+      return;
+    }
     if (o.look === 'chalk_ring') {
       // Tag 4: Fens Kreidekreis auf dem Pflaster neben dem Leuchtfeuer, mit Kreidestrichen und einem Stück Kreide
       for (let i = 0; i < 12; i++) {

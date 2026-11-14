@@ -154,8 +154,9 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 **Nachschlag:**
 - **Mender, Flarecaster und Drifter auf Stufe 36** (Cinder Bloom, Flashpoint, Hamstring, siehe oben). Damit haben alle vier Klassen Fähigkeiten bis Stufe 36.
 - **Seam Lurker und „The Deep Seam“:** neues Wesen (Stufe 38, normal) im tiefen Flöz östlich des Old Shaft in Copperdeep, drei Stück, sie bleiben im Fels. Beute: Cinder Iron, Glimmer, manchmal Greyglass. Flints Quest ab Stufe 36: vier Lurker, Brack weiß vom alten Flöz (sein Großvater grub es, und manches Eisen ging „mit dem Glimmer nach Norden“), zwei Cinder Iron zurück zu Flint. Lohn: 3.000 EP. Erstes Oberwelt-Gebiet für 36 bis 40.
-- **Lampwright 32: Cinder Iron Lantern** (Licht 3,8, 60 % weniger Öl) an der Linsenbank; Wren erzählt davon.
-- Neue Gespräche und Rufe: Pell, Flint, Fen, Tansy, Brindle, Wren, Brack, Ama, Tallow, Stranger.
+- **Lampwright 32 bis 35: Cinder Iron Lantern, Staff und Lens** an der Linsenbank (Laterne Licht 3,8 und 60 % weniger Öl; Stab Heilung 14; Linse Kraft 14, je eins über Greyglass). Damit bekommen auch Mender und Flarecaster etwas aus dem neuen Eisen. Wren erzählt davon.
+- **„The Map of Crosses“** (Fen, nach „Not From Here“, aus Gebet 5: Häuser mit Zweck und Rätsel): Im leeren Haus südwestlich des Leuchtfeuers hängt eine Karte, auf der jemand jeden Ort um Kindle durchgestrichen hat, nur einen nicht. Fen deutet sie, vom Ausguck sieht man nachts, wo der Kreis liegt, Brindle vergleicht mit ihrem Buch: genau dort sitzt der Schein. Wer die Karte zeichnete, bleibt offen. Lohn: 520 EP, 30 Gold, Survey Notes, Glow Draught.
+- Neue Gespräche und Rufe: Pell, Flint, Fen, Tansy, Brindle, Wren, Brack, Ama, Tallow, Stranger; Hollis hat ein viertes Gerücht, Pip zwei neue Liedzeilen.
 
 **Balance-Notizen:**
 - Seam Lurker: 400 HP, 21–26 Schaden, line-Angriff mit 6 Takten Vorwarnung, 190 EP (Choir Wraith 36: 170 HP, 160 EP; die Klassen machen auf 36 inzwischen so viel Schaden, dass ein Wraith in 5 s fällt). Gemessen ohne Ausweichen, Greyglass-Ausrüstung, Stufe 36: Warden etwa 11 s und 40 % Leben, Flarecaster 10 s und 55–65 %, Drifter 11–19 s und 50–80 %. Stufe 26 mit Glimsteel verliert deutlich mehr. Lurker bewegen sich nicht (`moveEvery: 0`); das hält auch alte Tests mit Zufallsfolgen stabil.
