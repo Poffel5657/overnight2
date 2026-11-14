@@ -27,6 +27,8 @@ export const BARKS = {
       'Flint the Miner sells ore in Cinderford! Partners pay less!',
       'Fen draws shadows by the Beacon at night! Bring chalk!',
       'Hit them while they are down! Every calling has a new trick!',
+      'New seams, new thickets, new stakes! Salvagers, foragers and mapmakers, get out there!',
+      'Mabb got a letter delivered! Ask him, he will pretend he did not cry!',
     ],
   },
   band_corra: {
