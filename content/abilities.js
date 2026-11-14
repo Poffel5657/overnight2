@@ -57,6 +57,8 @@ export const ABILITIES = {
   sanctuary: { name: 'Sanctuary', desc: "Plant the staff and let the ember burn as a little hearth. Everyone near it is warm, and hard to hurt.", glyph: 'A', kind: 'aura', radius: 4, heal: 16, brace: 12, oil: 14, cd: 75, text: 'You plant the staff. For a moment there is a hearth here, and everyone stands closer to it.' },
   // Tag 4 (Gebet 8): Stufe 36. Bläst in die Glut, die Smoulder hinterlassen hat: Brennendes trifft es doppelt.
   cinder_bloom: { name: 'Cinder Bloom', desc: "Blow on the embers you left behind. Whatever is already smouldering goes up all at once.", glyph: '&', kind: 'burst', radius: 2.5, hit: [8, 11], exploit: { burn: 2 }, oil: 10, cd: 24, power: true, text: 'You breathe on the embers. They bloom.' },
+  // Tag 4, Nachschlag: Stufe 40. Die große, ruhige Gruppenheilung: lange Wärme für alle im Umkreis, gut gegen Seam Lurker und Bosse.
+  banked_hearth: { name: 'Banked Hearth', desc: "Bank the ember the way you bank a fire for the night. It does not blaze. It just keeps everyone warm for a long time.", glyph: 'm', kind: 'hot', radius: 5, heal: 12, ticks: 24, oil: 14, cd: 60, text: 'You bank the ember low and steady. Warmth settles over everyone near.' },
   kindle_burst: { name: 'Kindle Burst', desc: "The ember flares. Creatures flinch and run.", glyph: '*', kind: 'burst', radius: 2.5, hit: [3, 5], scare: 6, oil: 10, cd: 24, text: 'Your ember flares outward.' },
 
   // Flarecaster

@@ -153,3 +153,17 @@ test('Warden 40: Hold the Line nagelt alles im Umkreis fest, Anvil Blow nutzt es
   assert.equal(m.angryAt, 'a');
   assert.equal(cast(w, 'anvil_blow', m).exploit, true, 'gleich der erste Anvil Blow trifft härter');
 });
+
+test('Mender 40: Banked Hearth wärmt die ganze Gruppe lange (mehr als Kindred Glow)', () => {
+  assert.deepEqual(CLASSES.mender.abilities.find(([a]) => a === 'banked_hearth'), ['banked_hearth', 40]);
+  const total = (id) => ABILITIES[id].heal * Math.ceil(ABILITIES[id].ticks / 2);
+  assert.ok(total('banked_hearth') > total('kindred_glow'));
+  const w = S.createWorld(REGION, 457);
+  const m = veteran(w, 'm', { cls: 'mender', level: 40, equip: { main: 'cinder_staff' } });
+  const t = veteran(w, 't', { cls: 'warden', level: 40 });
+  t.x = m.x + 2; t.y = m.y;
+  t.hp = 20;
+  applyIntent(w, 'm', { t: 'ability', id: 'banked_hearth' });
+  run(w, ABILITIES.banked_hearth.ticks + 2);
+  assert.ok(t.hp >= 20 + total('banked_hearth') * 0.9 || t.hp === t.maxHp, `der Warden ist warm (${t.hp})`);
+});
