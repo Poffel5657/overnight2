@@ -104,3 +104,24 @@ test('Flint in Cinderford: Erz kaufen, Anteil bei Coyne, danach billiger und mit
   assert.equal(q.shares.flint ?? 0, 0);
   assert.equal(priceFor(q, 'flint', 'glimmer'), full);
 });
+
+test('Three Wheels: Flint braucht ein Rad, Rook macht es aus Schrott', () => {
+  let w = S.createWorld(regionFor('cinderford'), 408);
+  let p = veteran(w, 'a', { level: 5, bag: [{ id: 'scrap', n: 5 }] });
+  talk(w, 'a', 'flint');
+  choose(w, 'a', 'cart wobbles');
+  assert.equal(p.quests.three_wheels.step, 1, 'fünf Schrott sind schon da');
+  const save = S.removePlayer(w, 'a');
+  w = S.createWorld(REGION, 409);
+  p = S.addPlayer(w, 'a', 'a', save);
+  talk(w, 'a', 'rook');
+  choose(w, 'a', 'cart wheel');
+  assert.equal(P.countItem(p, 'cart_wheel'), 1);
+  assert.equal(P.countItem(p, 'scrap'), 0);
+  const back = S.createWorld(regionFor('cinderford'), 410);
+  const q = S.addPlayer(back, 'a', 'a', S.removePlayer(w, 'a'));
+  talk(back, 'a', 'flint');
+  choose(back, 'a', 'fourth wheel');
+  assert.equal(q.quests.three_wheels.done, true);
+  assert.ok(P.countItem(q, 'brass_bits') >= QUESTS.three_wheels.reward.items.brass_bits);
+});
