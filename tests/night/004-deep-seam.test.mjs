@@ -119,3 +119,45 @@ test('Unter Stufe und mit älterer Ausrüstung kostet ein Lurker deutlich mehr',
   assert.ok(low > high, `Stufe 26 verliert mehr (${Math.round(low * 100)} % gegen ${Math.round(high * 100)} %)`);
   assert.ok(high > 0.15, 'auch auf Stufe 36 kostet es Leben');
 });
+
+test('Gefallen: zwei Lurker für Flint, ein Cinder Iron für Rook (am Brett in Kindle)', async () => {
+  const { favoursFor } = await import('../../shared/community.js');
+  const { FAVOURS } = await import('../../content/dailies.js');
+  const find = (id) => {
+    for (let d = 1; d <= 400; d++) {
+      const s = new Date(Date.UTC(2026, 10, 14) + d * 864e5).toISOString().slice(0, 10);
+      if (favoursFor(s).includes(id)) return s;
+    }
+    return null;
+  };
+  const killDay = find('lurkers_for_flint');
+  assert.ok(killDay, 'der Lurker-Gefallen kommt vor');
+  let w = S.createWorld(REGION, 465);
+  w.date = killDay;
+  w.daylight = 1;
+  const p = veteran(w, 'a', { level: 36, equip: GEAR, bag: [{ id: 'moss_salve', n: 10 }] });
+  const gold = p.gold;
+  for (let k = 0; k < FAVOURS.lurkers_for_flint.n; k++) {
+    const m = w.mobs.filter((x) => x.type === 'seam_lurker' && !x.dead)[0];
+    p.x = m.x - 1; p.y = m.y; if (!S.walkable(w, p.x, p.y)) p.y = m.y - 1;
+    p.hp = p.maxHp;
+    fightWithSalves(w, 'a', m, ['anvil_blow', 'bash', 'shield_slam']);
+    assert.ok(m.dead);
+  }
+  assert.ok(p.daily.done.includes('lurkers_for_flint'));
+  assert.ok(p.gold >= gold + FAVOURS.lurkers_for_flint.reward.gold);
+
+  const bringDay = find('iron_for_rook');
+  assert.ok(bringDay, 'der Eisen-Gefallen kommt vor');
+  w = S.createWorld(REGION, 466);
+  w.date = bringDay;
+  const q = veteran(w, 'b', { level: 10, bag: [{ id: 'cinder_iron', n: 1 }] });
+  const board = w.objects.find((o) => o.type === 'board');
+  applyIntent(w, 'b', { t: 'act', kind: 'object', id: board.id, action: 'read' });
+  for (let i = 0; i < 400 && q.goal; i++) run(w, 1);
+  const g2 = q.gold;
+  applyIntent(w, 'b', { t: 'favour', id: 'iron_for_rook' });
+  run(w, 1);
+  assert.equal(P.countItem(q, 'cinder_iron'), 0);
+  assert.equal(q.gold, g2 + FAVOURS.iron_for_rook.reward.gold);
+});
