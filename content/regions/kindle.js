@@ -128,6 +128,8 @@ export const REGION = {
     // Tag 4: Foraging 30 in Hushwood
     {type: 'node', node: 'ember_thicket', x: 66, y: 12},
     {type: 'node', node: 'ember_thicket', x: 24, y: 10},
+    // Tag 4: Cartography 30, Vermessungspflock am alten Flöz
+    {type: 'node', node: 'seam_stake', x: 93, y: 31},
     // Tag 4: das tiefe Flöz, zwischen den Seam Lurkern
     {type: 'node', node: 'deep_seam', x: 95, y: 38},
     // Seit Tag 2: alte Steinmänner am Nordrand, die nach Norden zeigen (Cartography 26)
