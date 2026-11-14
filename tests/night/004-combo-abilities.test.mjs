@@ -20,7 +20,7 @@ function setup(cls, seed) {
   const w = S.createWorld(REGION, seed);
   w.daylight = 1;
   const m = w.mobs.find((x) => x.type === 'seam_lurker');
-  const p = veteran(w, 'a', { cls, level: 36, equip: { main: WEAPON[cls], body: 'masterwork_coat' } });
+  const p = veteran(w, 'a', { cls, level: 40, equip: { main: WEAPON[cls], body: 'masterwork_coat' } });
   // Nahkämpfer stehen daneben, Mender und Flarecaster zwei Felder weg (der Lurker bleibt im Fels)
   const d = cls === 'warden' || cls === 'drifter' ? 1 : 2;
   p.x = m.x - d; p.y = m.y;
@@ -166,4 +166,20 @@ test('Mender 40: Banked Hearth wärmt die ganze Gruppe lange (mehr als Kindred G
   applyIntent(w, 'm', { t: 'ability', id: 'banked_hearth' });
   run(w, ABILITIES.banked_hearth.ticks + 2);
   assert.ok(t.hp >= 20 + total('banked_hearth') * 0.9 || t.hp === t.maxHp, `der Warden ist warm (${t.hp})`);
+});
+
+test('Flarecaster 40 Daybreak nach Cinder Brand, Drifter 40 Nightfall nach Cheap Shot', () => {
+  assert.deepEqual(CLASSES.flarecaster.abilities.find(([a]) => a === 'daybreak'), ['daybreak', 40]);
+  assert.deepEqual(CLASSES.drifter.abilities.find(([a]) => a === 'nightfall'), ['nightfall', 40]);
+  {
+    const { w, m } = setup('flarecaster', 458);
+    cast(w, 'cinder_brand', m);
+    assert.ok(m.burn);
+    assert.equal(cast(w, 'daybreak', m).exploit, true);
+  }
+  {
+    const { w, m } = setup('drifter', 459);
+    cast(w, 'cheap_shot', m);
+    assert.equal(cast(w, 'nightfall', m).exploit, true);
+  }
 });

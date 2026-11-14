@@ -28,12 +28,12 @@ Tag 4 (Nacht zum 2026-11-15). Inbox `v2/inbox/2026-11-14.json`: Gebete 7 und 8, 
 3. *Woran es anschließt:* Leuchtfeuer, Tag/Nacht, Kapelle, Stranger, Bogen.
 4. *Weg dorthin:* Fen am Platz ruft, alle Stufen nach Kindling.
 
-**Dauerauftrag Klassen: Warden** 36 (Anvil Blow). **Nachschlag (gebaut):** Mender/Flarecaster/Drifter 36, Seam Lurker und „The Deep Seam“ (36–40), Lampwright 32–35 Cinder Iron Lantern, Staff und Lens, „The Map of Crosses“ (Haus 3) und „The Unsent Letter“ (Haus 4, Abels Haus; beide Gebet 5), zwei Gefallen (Lurker für Flint, Eisen für Rook), Gespräche und Rufe.
+**Dauerauftrag Klassen: Warden** 36 (Anvil Blow). **Nachschlag (gebaut):** Mender/Flarecaster/Drifter 36, alle vier Klassen auf 40 (Hold the Line, Banked Hearth, Daybreak, Nightfall), frühe Combos (Twin Cut, Sear, Cinder Flick), Seam Lurker und „The Deep Seam“ (36–40), Lampwright 32–35 Cinder Iron Lantern, Staff und Lens, „The Map of Crosses“ (Haus 3) und „The Unsent Letter“ (Haus 4, Abels Haus; beide Gebet 5), zwei Gefallen (Lurker für Flint, Eisen für Rook), Gespräche und Rufe.
 
 ## Ausbau läuft
 
 - **The Unending Maze** (seit 2026-11-13, von Chris gebaut aus Gebet 4): Stockwerke 1 bis 99 unter Cinderford, jeden Tag neu gewürfelt, Stufe = 3 + 2 × Stockwerk. Ausbau möglich: Rangliste auf dem Turn Board (braucht Chris: D1-Abfrage), weitere Keeper-Körper und -Eigenschaften (`BODIES`, `AFFIXES` in `content/regions/maze.js`), Rezepte aus Turnstones, mehr Gegenstände ab Stockwerk 25, Quests für tiefere Stockwerke (`keeper_10`, `keeper_20` gibt es schon).
-- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag): Stand in `ROADMAP.md`: alle vier bis Stufe 36, Warden und Mender bis 40. Nächste Nacht: Flarecaster (40), dann Drifter (40), Warden (44). Seit Tag 4 gibt es `exploit` (Schaden gegen brennende/geblendete/festsitzende Ziele): gut für weitere Stufen, auch kleinere exploit-Fähigkeiten für 12–30 wären schön (Gebet 8).
+- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag): Stand in `ROADMAP.md`: alle vier bis Stufe 40. Nächste Nacht: Warden (44), dann Mender, Flarecaster, Drifter. Seit Tag 4 gibt es `exploit` (Schaden gegen brennende/geblendete/festsitzende Ziele): gut für weitere Stufen, auch kleinere exploit-Fähigkeiten für 12–30 wären schön (Gebet 8).
 - **Der Bogen „The Second Light“**, Akt 1 endet bald (Tag 4: der Stranger ohne Schatten). Tag 5: ein verirrter Träger; Tag 6: Ama ruft das Weltproblem aus; Tag 7: erste Bogen-Option auf dem Zettel.
 - **The North Watch:** Text in `content/lookout.js` wächst mit dem Bogen (Tag 4: Schein so breit wie zwei Daumen).
 - **Counting House:** fünf Geschäfte seit Tag 4 (Flint mit Nachlass `discount`). Weitere (Wren, Sorrel, Rook), Ausschüttung in Waren, gemeinsames Ziel pro Geschäft (bräuchte einen dauerhaften Weltzähler, nur mit Chris).
@@ -41,7 +41,7 @@ Tag 4 (Nacht zum 2026-11-15). Inbox `v2/inbox/2026-11-14.json`: Gebete 7 und 8, 
 
 ## Nächste Nächte
 
-- Flarecaster und Drifter auf Stufe 40 (Warden und Mender haben 40 seit Tag 4). Danach Spezialisierungen vorbereiten (ab 50).
+- Warden auf Stufe 44, dann Mender, Flarecaster, Drifter (alle haben 40 seit Tag 4). Danach Spezialisierungen vorbereiten (ab 50).
 - Inhalt für 40+ in der Oberwelt (Tag 4: Seam Lurker 38 und „The Deep Seam“; der Lamplighter ist 40).
 - Bogen: Tag 5 der verirrte Träger (nur nachts, Fernmeadow), Tag 6 Ama und „The Beacon Starves“ vorbereiten.
 - Mehr Gefallen, die Gruppen belohnen.

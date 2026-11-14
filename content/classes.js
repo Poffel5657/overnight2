@@ -33,14 +33,14 @@ export const CLASSES = {
     name: 'Flarecaster', role: 'RANGED', teacher: 'wren', starter: 'cracked_lens', trial: 'trial_flarecaster',
     hp: 28, hpPerLevel: 3,
     text: 'Turns lantern light into something that hurts.',
-    abilities: [['flare_bolt', 1], ['flare', 2], ['sear', 4], ['sunspot', 7], ['glare', 10], ['cinder_brand', 13], ['starfall', 16], ['sunlance', 20], ['prism_ward', 24], ['noonbrand', 28], ['corona', 32], ['flashpoint', 36]],
+    abilities: [['flare_bolt', 1], ['flare', 2], ['sear', 4], ['sunspot', 7], ['glare', 10], ['cinder_brand', 13], ['starfall', 16], ['sunlance', 20], ['prism_ward', 24], ['noonbrand', 28], ['corona', 32], ['flashpoint', 36], ['daybreak', 40]],
     specs: {},
   },
   drifter: {
     name: 'Drifter', role: 'MELEE', teacher: 'stranger', starter: 'scrap_shivs', trial: 'trial_drifter',
     hp: 30, hpPerLevel: 3,
     text: 'Fast, quiet, and suspiciously comfortable in the dark.',
-    abilities: [['slash', 1], ['dusk_step', 2], ['snare', 4], ['fade', 6], ['twin_cut', 8], ['cheap_shot', 10], ['night_edge', 13], ['caltrops', 16], ['smoke_bomb', 20], ['gutter_strike', 24], ['lampblack_cut', 28], ['vanishing_cut', 32], ['hamstring', 36]],
+    abilities: [['slash', 1], ['dusk_step', 2], ['snare', 4], ['fade', 6], ['twin_cut', 8], ['cheap_shot', 10], ['night_edge', 13], ['caltrops', 16], ['smoke_bomb', 20], ['gutter_strike', 24], ['lampblack_cut', 28], ['vanishing_cut', 32], ['hamstring', 36], ['nightfall', 40]],
     specs: {},
   },
 };
