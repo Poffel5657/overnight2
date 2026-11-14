@@ -94,7 +94,8 @@ export const REGION = {
     { type: 'bed', x: 46, y: 11, w: 2, name: 'a bed', text: 'A bed with far too many pillows.' },
     // Tag 3: hier wohnte Abel, der alte Geldverleiher. Unter einer Diele liegt noch sein Rätsel (Quest „The Old Strongbox“).
     { type: 'shrine', look: 'floorboard', x: 52, y: 13, name: 'a loose floorboard', gives: 'abels_riddle', quest: 'old_strongbox', step: 0, text: 'One board by the wall sits a little higher than the others. It wobbles when you step on it.', found: 'You lift the board. Underneath lies a folded note in a small, tidy hand.', empty: 'Just dust under the board, and a very old button.' },
-    { type: 'table', x: 50, y: 14, name: 'a table', text: 'A half-finished letter: "Dear Mother, the fog is fine, the people are fine, I am fine..."' },
+    // Tag 4, Nachschlag (Gebet 5, Rätsel): der halbe Brief auf dem Tisch. Wer ihn schrieb, muss man erraten.
+    { type: 'shrine', look: 'letter_table', x: 50, y: 14, name: 'a table with a letter', gives: 'unsent_letter', quest: 'unsent_letter', step: 0, text: 'A table with a half-finished letter: "Dear Mother, the fog is fine, the people are fine, I am fine..."', found: 'You fold up the letter. It goes on: "...the one in the hat sends her love. I will bring her home when the road opens. Are your maps still wrong by evening?" It is not signed.', empty: 'A table. Somebody wrote a letter here once, and never sent it.' },
 
     // Taverne „The Lantern & Lark“: Tresen oben links, Bühne links, Tische in der Mitte,
     // Truhen an der rechten Wand, Betten hinter dem Vorhang rechts unten.

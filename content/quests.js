@@ -395,4 +395,16 @@ export const QUESTS = {
     ],
     reward: { xp: 520, gold: 30, items: { survey_notes: 3, glow_draught: 1 } },
   },
+  // Nachschlag (Gebet 5, Rätsel): Wer schrieb den halben Brief in Abels altem Haus? Die Hinweise stehen im Brief.
+  unsent_letter: {
+    name: 'The Unsent Letter', giver: 'pell',
+    text: 'Pell reads every scrap of paper in Kindle, except one: a letter on a table in Abel\'s old house by the campfire. It is not his to read.',
+    steps: [
+      { type: 'have', item: 'unsent_letter', n: 1, text: 'Find the letter on the table in Abel\'s old house, by the campfire.' },
+      { type: 'talk', npc: 'mabb', text: 'Find out who wrote it. The letter mentions someone in a hat, and a road that was closed. Read it again.' },
+      { type: 'talk', npc: 'ivy', text: 'Take the letter to the writer\'s mother. Her maps are wrong by evening.' },
+      { type: 'talk', npc: 'mabb', text: 'Tell Mabb his mother got the letter.' },
+    ],
+    reward: { xp: 240, gold: 25, items: { cinder_cake: 2 } },
+  },
 };
