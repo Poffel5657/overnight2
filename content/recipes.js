@@ -70,5 +70,7 @@ export const RECIPES = {
   l_shard_lantern: { prof: 'lampwright', level: 30, inputs: { lamp_shard: 1, greyglass: 3, glimmer: 2 }, out: ['shard_lantern', 1], xp: 220 },
   // Tag 4, Nachschlag: Lampwright 32, Cinder Iron aus Cinderford
   l_cinder_lantern: { prof: 'lampwright', level: 32, inputs: { cinder_iron: 2, glimmer: 3, wisp_core: 1 }, out: ['cinder_lantern', 1], xp: 240 },
+  l_cinder_staff: { prof: 'lampwright', level: 34, inputs: { cinder_iron: 3, greyglass: 2, emberroot: 2 }, out: ['cinder_staff', 1], xp: 250 },
+  l_cinder_lens: { prof: 'lampwright', level: 35, inputs: { cinder_iron: 3, greyglass: 3 }, out: ['cinder_lens', 1], xp: 255 },
   l_greyglass_staff: { prof: 'lampwright', level: 26, inputs: { greyglass: 2, glimmer: 2, lily_bulb: 2 }, out: ['greyglass_staff', 1], xp: 140 },
 };

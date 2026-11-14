@@ -89,3 +89,22 @@ test('Catch a Shadow: Kreide von Tallow, eigener Schatten nur nachts, der Strang
   assert.match(LOOKOUT.night, /two thumbs/);
   assert.ok(REGION.farLight.size > 1.25);
 });
+
+test('Gerüchte: Hollis und Pip wissen von Rook, Flint und dem fehlenden Schatten', async () => {
+  const { REGION: INSIDE } = await import('../../content/regions/kindle-inside.js');
+  const w = S.createWorld(INSIDE, 422);
+  const p = veteran(w, 'a', { level: 5 });
+  // Wie nach dem Hereinkommen durch die Tür der Taverne
+  const h = w.npcs.find((n) => n.id === 'hollis');
+  p.x = h.x; p.y = h.y + 1; if (!S.walkable(w, p.x, p.y)) p.y = h.y - 1;
+  talk(w, 'a', 'hollis');
+  choose(w, 'a', 'Heard anything');
+  choose(w, 'a', 'Anything else');
+  choose(w, 'a', 'And?');
+  choose(w, 'a', 'Anything newer');
+  assert.equal(p.dialog.page, 'rumour4');
+  talk(w, 'a', 'band_pip');
+  choose(w, 'a', 'Composing');
+  choose(w, 'a', 'new lines');
+  assert.equal(p.dialog.page, 'song2');
+});

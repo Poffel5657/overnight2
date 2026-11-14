@@ -124,3 +124,19 @@ test('Nachschlag: Lampwright 32 baut die Cinder Iron Lantern an der Linsenbank, 
   assert.equal(P.countItem(p, 'cinder_lantern'), 1);
   assert.ok(ITEMS.cinder_lantern.light > ITEMS.greyglass_lantern.light);
 });
+
+test('Nachschlag: Cinder Iron Staff und Lens (Lampwright 34/35) für Mender und Flarecaster, besser als Greyglass', () => {
+  for (const [rid, out, base] of [['l_cinder_staff', 'cinder_staff', 'greyglass_staff'], ['l_cinder_lens', 'cinder_lens', 'greyglass_lens']]) {
+    const r = RECIPES[rid];
+    assert.equal(r.out[0], out);
+    const w = S.createWorld(REGION, 416);
+    const p = veteran(w, 'a', { level: 34, profs: { lampwright: { level: r.level, xp: P.xpForLevel(r.level) } }, bag: Object.entries(r.inputs).map(([id, n]) => ({ id, n })) });
+    const bench = w.objects.find((o) => o.type === 'station' && o.station === 'lampbench');
+    applyIntent(w, 'a', { t: 'act', kind: 'object', id: bench.id, action: 'use' });
+    for (let i = 0; i < 300 && p.goal; i++) run(w, 1);
+    applyIntent(w, 'a', { t: 'craft', obj: bench.id, recipe: rid, n: 1 });
+    run(w, 1);
+    assert.equal(P.countItem(p, out), 1, `${out} gemacht`);
+    assert.ok(ITEMS[out].power > ITEMS[base].power || (ITEMS[out].heal ?? 0) > (ITEMS[base].heal ?? 0));
+  }
+});

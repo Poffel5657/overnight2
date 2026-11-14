@@ -383,4 +383,16 @@ export const QUESTS = {
     ],
     reward: { xp: 320, gold: 20, items: { glow_draught: 1, bread: 2 } },
   },
+  // Nachschlag (Gebet 5, Rätsel; Bogen am Rand): Die Karte voller Kreuze im leeren Haus südwestlich des Leuchtfeuers.
+  map_of_crosses: {
+    name: 'The Map of Crosses', giver: 'fen',
+    text: 'Someone who once lived in the empty house south-west of the Beacon drew a map of everything, and crossed it all out.',
+    steps: [
+      { type: 'have', item: 'crossed_map', n: 1, text: 'Find the map full of crosses in the empty house south-west of the Beacon.' },
+      { type: 'talk', npc: 'fen', text: 'Show the map to Fen. Fen knows every map in Kindle.' },
+      { type: 'action', action: 'watch', text: 'After dark, climb the North Watch and look for the one place on the map that is circled, not crossed.' },
+      { type: 'talk', npc: 'brindle', text: 'Ask Brindle what is out there, where the circle is.' },
+    ],
+    reward: { xp: 520, gold: 30, items: { survey_notes: 3, glow_draught: 1 } },
+  },
 };

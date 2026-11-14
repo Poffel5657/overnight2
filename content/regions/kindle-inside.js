@@ -84,7 +84,9 @@ export const REGION = {
     // Haus 3
     exit('house3', 36, 15),
     { type: 'hearth', x: 34, y: 11, light: 4.5, name: 'the hearth', text: 'The fire is low. Someone sleeps late here.' },
-    { type: 'bed', x: 38, y: 11, w: 2, name: 'a bed', text: 'Unmade. A map of the Grey is pinned above it, full of crosses.' },
+    { type: 'bed', x: 38, y: 11, w: 2, name: 'a bed', text: 'Unmade. A map of the Grey is pinned on the wall beside it, full of crosses.' },
+    // Tag 4, Nachschlag (Gebet 5, Rätsel): die Karte voller Kreuze. Wer hier wohnte, weiß niemand.
+    { type: 'shrine', look: 'pinned_map', x: 36, y: 11, name: 'a map full of crosses', gives: 'crossed_map', quest: 'map_of_crosses', step: 0, text: 'A hand-drawn map of everything around Kindle, pinned to the wall. Every place is crossed out in charcoal. Almost every place.', found: 'You unpin the map carefully. On the back, in charcoal: "Not here either."', empty: 'Four pin holes in the plaster, and a charcoal smudge where the map was.' },
     { type: 'barrel', x: 39, y: 14, name: 'a rain barrel', text: 'Rainwater. It tastes faintly of smoke.' },
     // Haus 4
     exit('house4', 48, 15),
