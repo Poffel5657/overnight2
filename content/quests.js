@@ -415,4 +415,15 @@ export const QUESTS = {
     ],
     reward: { xp: 120, gold: 10, items: { duchess_hat: 1 } },
   },
+  // Gebet 7, für Neue in Cinderford: Flints Karren hat nur drei Räder.
+  three_wheels: {
+    name: 'Three Wheels', giver: 'flint',
+    text: 'Flint\'s ore cart has three wheels and a lot of opinions. He wants a fourth wheel, and only one person makes them.',
+    steps: [
+      { type: 'have', item: 'scrap', n: 5, text: 'Get five scrap. Old Rook in Kindle makes wheels out of it.' },
+      { type: 'talk', npc: 'rook', text: 'Ask Old Rook in Kindle for a cart wheel.' },
+      { type: 'talk', npc: 'flint', text: 'Bring the wheel to Flint in Cinderford.' },
+    ],
+    reward: { xp: 160, gold: 15, items: { brass_bits: 3, bread: 2 } },
+  },
 };
