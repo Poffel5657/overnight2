@@ -55,7 +55,7 @@ export function describeAbility(id) {
       effect = `You and allies within ${tiles(a.radius)} heal ${a.heal} every 0.6s for ${secs(a.ticks)} (${a.heal * Math.ceil(a.ticks / 2)} in total, + half your staff's healing each time).`;
       break;
     case 'taunt':
-      effect = `Every creature within ${tiles(a.radius)} turns on you for 3.6s.${a.brace ? ` You and allies within ${tiles(a.radius)} take half damage for ${secs(a.brace)}.` : ''}`;
+      effect = `Every creature within ${tiles(a.radius)} turns on you for 3.6s.${a.root ? ` It is stuck in place for ${secs(a.root)}.` : ''}${a.brace ? ` You and allies within ${tiles(a.radius)} take half damage for ${secs(a.brace)}.` : ''}`;
       break;
     case 'dash':
       effect = `Jump ${tiles(a.dist)} away from your target and step out of the fight.`;

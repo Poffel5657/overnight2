@@ -33,7 +33,7 @@ Tag 4 (Nacht zum 2026-11-15). Inbox `v2/inbox/2026-11-14.json`: Gebete 7 und 8, 
 ## Ausbau läuft
 
 - **The Unending Maze** (seit 2026-11-13, von Chris gebaut aus Gebet 4): Stockwerke 1 bis 99 unter Cinderford, jeden Tag neu gewürfelt, Stufe = 3 + 2 × Stockwerk. Ausbau möglich: Rangliste auf dem Turn Board (braucht Chris: D1-Abfrage), weitere Keeper-Körper und -Eigenschaften (`BODIES`, `AFFIXES` in `content/regions/maze.js`), Rezepte aus Turnstones, mehr Gegenstände ab Stockwerk 25, Quests für tiefere Stockwerke (`keeper_10`, `keeper_20` gibt es schon).
-- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag): Stand in `ROADMAP.md`: alle vier bis Stufe 36. Nächste Nacht: Warden (40), dann Mender, Flarecaster, Drifter. Seit Tag 4 gibt es `exploit` (Schaden gegen brennende/geblendete/festsitzende Ziele): gut für weitere Stufen, auch kleinere exploit-Fähigkeiten für 12–30 wären schön (Gebet 8).
+- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag): Stand in `ROADMAP.md`: alle vier bis Stufe 36, der Warden bis 40. Nächste Nacht: Mender (40), dann Flarecaster, Drifter, Warden (44). Seit Tag 4 gibt es `exploit` (Schaden gegen brennende/geblendete/festsitzende Ziele): gut für weitere Stufen, auch kleinere exploit-Fähigkeiten für 12–30 wären schön (Gebet 8).
 - **Der Bogen „The Second Light“**, Akt 1 endet bald (Tag 4: der Stranger ohne Schatten). Tag 5: ein verirrter Träger; Tag 6: Ama ruft das Weltproblem aus; Tag 7: erste Bogen-Option auf dem Zettel.
 - **The North Watch:** Text in `content/lookout.js` wächst mit dem Bogen (Tag 4: Schein so breit wie zwei Daumen).
 - **Counting House:** fünf Geschäfte seit Tag 4 (Flint mit Nachlass `discount`). Weitere (Wren, Sorrel, Rook), Ausschüttung in Waren, gemeinsames Ziel pro Geschäft (bräuchte einen dauerhaften Weltzähler, nur mit Chris).
@@ -41,7 +41,7 @@ Tag 4 (Nacht zum 2026-11-15). Inbox `v2/inbox/2026-11-14.json`: Gebete 7 und 8, 
 
 ## Nächste Nächte
 
-- Warden auf Stufe 40, dann Mender, Flarecaster, Drifter. Danach Spezialisierungen vorbereiten (ab 50).
+- Mender, Flarecaster, Drifter auf Stufe 40 (der Warden hat 40 seit Tag 4). Danach Spezialisierungen vorbereiten (ab 50).
 - Inhalt für 40+ in der Oberwelt (Tag 4: Seam Lurker 38 und „The Deep Seam“; der Lamplighter ist 40).
 - Bogen: Tag 5 der verirrte Träger (nur nachts, Fernmeadow), Tag 6 Ama und „The Beacon Starves“ vorbereiten.
 - Mehr Gefallen, die Gruppen belohnen.

@@ -138,3 +138,18 @@ test('Früh verketten: Twin Cut nach Snare (Drifter 8), Sear nach Glare (Flareca
     assert.ok(ex || m.dead, `${hit} nach ${prep}`);
   }
 });
+
+test('Warden 40: Hold the Line nagelt alles im Umkreis fest, Anvil Blow nutzt es sofort', () => {
+  assert.deepEqual(CLASSES.warden.abilities.find(([a]) => a === 'hold_the_line'), ['hold_the_line', 40]);
+  assert.match(describeAbility('hold_the_line').effect, /stuck in place/);
+  const w = S.createWorld(REGION, 456);
+  w.daylight = 1;
+  const m = w.mobs.find((x) => x.type === 'seam_lurker');
+  const p = veteran(w, 'a', { cls: 'warden', level: 40, equip: { main: 'masterwork_shield' } });
+  p.x = m.x - 1; p.y = m.y; if (!S.walkable(w, p.x, p.y)) p.y = m.y - 1;
+  applyIntent(w, 'a', { t: 'target', id: m.id });
+  cast(w, 'hold_the_line', m);
+  assert.ok(w.tick < m.rootUntil, 'festgenagelt');
+  assert.equal(m.angryAt, 'a');
+  assert.equal(cast(w, 'anvil_blow', m).exploit, true, 'gleich der erste Anvil Blow trifft härter');
+});
