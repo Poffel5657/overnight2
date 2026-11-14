@@ -2,7 +2,7 @@
 
 import { ITEMS } from '../content/items.js';
 import { NODES } from '../content/nodes.js';
-import { RECIPES } from '../content/recipes.js';
+import { RECIPES, MASTERWORK_STEP } from '../content/recipes.js';
 import { PROFESSIONS } from '../content/professions.js';
 import { SHOPS, buyPrice } from '../content/shops.js';
 import { CLASSES } from '../content/classes.js';
@@ -10,7 +10,7 @@ import { cheb } from './path.js';
 import { tell, emit, float } from './events.js';
 import { questEvent, checkHave, TALK_RANGE } from './talk.js';
 import { takeWithStash, giveBack } from './stash.js';
-import { stockFor } from './ventures.js';
+import { stockFor, priceFor } from './ventures.js';
 import * as P from './player.js';
 import { queue } from './sim.js';
 
@@ -110,6 +110,9 @@ export function craft(world, p, objId, recipeId, n = 1) {
   const prof = PROFESSIONS[r.prof];
   if (!p.profs[r.prof]) return tell(world, p.id, `You do not know ${prof.name.toLowerCase()}.`, 'sys');
   if (P.profLevel(p, r.prof) < r.level) return tell(world, p.id, `You need ${prof.name} level ${r.level}.`, 'sys');
+  // Meisterstücke (Tag 4): nur an Rooks guter Bank drinnen, und erst, wenn Rook es einem gezeigt hat
+  if (r.master && !o.master) return tell(world, p.id, 'Masterwork needs Rook\'s good bench, inside the workshop.', 'sys');
+  if (r.master && !masterworkKnown(p)) return tell(world, p.id, 'Rook has not shown you masterwork yet.', 'sys');
   const times = Math.max(1, Math.min(MAX_CRAFT, n | 0));
   let made = 0;
   for (let i = 0; i < times; i++) {
@@ -132,7 +135,14 @@ export function craft(world, p, objId, recipeId, n = 1) {
   const item = ITEMS[r.out[0]];
   tell(world, p.id, `You make ${item.name}${made * r.out[1] > 1 ? ` x${made * r.out[1]}` : ''}.`, 'good');
   questEvent(world, p, 'action', { action: 'craft' });
+  if (r.master) questEvent(world, p, 'action', { action: 'masterwork' });
   checkHave(world, p);
+}
+
+// Hat Rook einem die Meisterstücke gezeigt? (Quest „Rook's Masterwork“ ab dem Schritt an der Bank)
+export function masterworkKnown(p) {
+  const q = p.quests?.rook_masterwork;
+  return !!q && (q.done || q.step >= MASTERWORK_STEP);
 }
 
 // ---------- Händler ----------
@@ -154,7 +164,7 @@ export function buy(world, p, shopId, itemId, n = 1) {
   if (!shop || !stockFor(p, shopId, world.date).includes(itemId)) return;
   const def = ITEMS[itemId];
   const k = Math.max(1, Math.min(20, n | 0));
-  const each = buyPrice(def.value);
+  const each = priceFor(p, shopId, itemId);
   const cost = each * k;
   if (p.gold < cost) return tell(world, p.id, `That costs ${cost} gold. You have ${p.gold}.`, 'sys');
   const lost = P.addItem(p, itemId, k);

@@ -205,6 +205,16 @@ const BUILDERS = {
       g.add(box(0.2, 0.03, 0.14, '#e8dcc0', -0.1, 0.03, 0.18));
       return;
     }
+    if (o.look === 'chalk_ring') {
+      // Tag 4: Fens Kreidekreis auf dem Pflaster neben dem Leuchtfeuer, mit Kreidestrichen und einem Stück Kreide
+      for (let i = 0; i < 12; i++) {
+        const a = (i / 12) * Math.PI * 2;
+        g.add(box(0.26, 0.02, 0.06, '#f0ece0', Math.cos(a) * 0.42, 0.02, Math.sin(a) * 0.42).rotateY(-a + Math.PI / 2));
+      }
+      g.add(box(0.5, 0.02, 0.06, '#e8e4d8', 0.05, 0.02, 0.05).rotateY(0.6));
+      g.add(box(0.06, 0.04, 0.16, '#ffffff', -0.15, 0.03, -0.1));
+      return;
+    }
     if (o.look === 'bell_frame') {
       // Ein schiefer Glockenrahmen, halb im Sumpf, mit einer kleinen grünen Glocke
       const frame = new THREE.Group();

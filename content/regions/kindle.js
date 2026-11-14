@@ -34,7 +34,7 @@ export const REGION = {
   // Im Lichtkreis des Leuchtfeuers brennt kein Öl, und hier wechselt man die Klasse.
   safeRadius: 10,
   // Nur Darstellung: ein warmer Schein über dem Nordrand, nachts sichtbar (der Bogen „The Second Light“).
-  farLight: { x: 40, y: -1, h: 3.5, size: 1.25 },
+  farLight: { x: 40, y: -1, h: 3.5, size: 1.4 },
   objects: [
     {type: 'beacon', x: 49, y: 49, w: 2, d: 2, light: 11, name: 'the Beacon'},
     {type: 'chapel', x: 41, y: 38, w: 5, d: 6, name: 'the Chapel', inside: inside('chapel')},
@@ -139,6 +139,8 @@ export const REGION = {
     {type: 'shrine', look: 'floorboard', x: 84, y: 45, name: 'a loose rock uphill', gives: 'abels_purse_3', quest: 'abels_caches', step: 2, text: 'A rock uphill of the mine camp fire, wedged in a little too neatly.', found: 'Behind the rock: the third purse. Somebody has scratched "3" on it.', empty: 'Rock, dust, and a smell of old beer from the camp below.'},
     // Der Ausguck am Nordrand von Hushwood (Tag 2, Abstimmung): Brindle hält Wache, nachts sieht man von oben das Licht
     {type: 'lookout', x: 43, y: 5, w: 2, d: 2, light: 3, name: 'the North Watch'},
+    // Tag 4 (Bogen): Fens Kreidekreis neben dem Leuchtfeuer. Nur nachts wirft das Leuchtfeuer lange Schatten.
+    {type: 'shrine', look: 'chalk_ring', x: 52, y: 50, name: 'Fen\'s chalk ring', gives: 'shadow_tracing', quest: 'catch_a_shadow', step: 1, night: true, needs: 'chapel_chalk', text: 'A ring of chalk on the cobbles, scuffed and redrawn many times. Inside it, outlines of shadows: a cat, a goose, Pell with his bell.', found: 'You stand in the ring with your back to the Beacon and trace round your shadow. It stretches all the way to the well.', dayText: 'In daylight the Beacon throws no shadow worth drawing. Come back after dark.', empty: 'Chalk outlines: a cat, a goose, Pell, you. One empty space, as if somebody stood there and left nothing behind.'},
   ],
   npcs: [
     {id: 'ama', name: 'Warden Ama', sprite: 'ama', x: 48, y: 47},
@@ -226,5 +228,9 @@ export const REGION = {
     {type: 'mire_lurker', x: 26, y: 93},
     {type: 'mire_lurker', x: 84, y: 95},
     {type: 'mire_lurker', x: 88, y: 92},
+    // Tag 4: Seam Lurker im tiefen Flöz östlich des Old Shaft (Stufe 38)
+    {type: 'seam_lurker', x: 98, y: 36},
+    {type: 'seam_lurker', x: 98, y: 40},
+    {type: 'seam_lurker', x: 98, y: 44},
   ],
 };

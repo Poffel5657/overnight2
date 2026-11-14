@@ -42,6 +42,9 @@ export const REGION = {
     // Hesk's Stand am Ostweg
     { type: 'stall', x: 34, y: 15, w: 3, d: 2, name: 'Hesk\'s Stall', awning: '#5a4a2a', light: 3, text: 'Rope, oil, chalk, cake, and a shelf of gear with prices in turnstones, not gold.' },
     { type: 'table', x: 25, y: 28, name: 'the Turn Board', text: 'A slab of slate covered in chalk: names, and how deep each delver got. The lowest marks are very small, as if whoever wrote them did not want to boast.' },
+    // Tag 4 (Gebet 7): Flints Erzkarren oben an den Stufen, wo das Erz zum alten Weg hinaufgeht
+    { type: 'stall', x: 27, y: 6, w: 3, d: 2, name: 'Flint\'s Ore Cart', awning: '#3a3632', light: 3, text: 'A mine cart full of scrap, brass and glimmer, with a slate of prices chalked on the side. Partners get the second slate.' },
+    { type: 'brazier', x: 31, y: 8, light: 4, name: 'a lamp by the ore cart' },
     // Der Eingang ins Labyrinth
     { type: 'door', to: 'maze_1', tx: mazeStart(1).x, ty: mazeStart(1).y, x: 21, y: 30, name: 'the Maze Mouth', look: 'stairs' },
     { type: 'brazier', x: 18, y: 29, light: 4, name: 'a lamp at the Maze Mouth' },
@@ -50,6 +53,7 @@ export const REGION = {
     { id: 'sorrel', name: 'Delvemaster Sorrel', sprite: 'sorrel', x: 24, y: 29 },
     { id: 'hesk', name: 'Hesk', sprite: 'hesk', x: 35, y: 18 },
     { id: 'ivy', name: 'Old Ivy', sprite: 'ivy', x: 10, y: 17 },
+    { id: 'flint', name: 'Flint the Miner', sprite: 'flint', x: 28, y: 8 },
   ],
   mobs: [],
 };

@@ -117,6 +117,18 @@ export const ITEMS = {
   delvers_hood: { name: 'Delver\'s Hood', slot: 'head', defence: 4, light: 0.5, value: 140, glyph: '^', text: 'Padded leather with a candle stub over the brow. Built for low ceilings.' },
   delvers_boots: { name: 'Delver\'s Boots', slot: 'feet', defence: 5, value: 160, glyph: 'u', text: 'Hobnailed. They leave scratches the Maze cannot quite rub out.' },
   delvers_coat: { name: 'Delver\'s Coat', slot: 'body', defence: 9, value: 300, glyph: 'M', text: 'A long coat sewn with turnstone buttons. Each one is warm on the side facing the way out.' },
+  // Tag 4 (Gebet 7): Flint in Cinderford gräbt Eisen aus dem Steinbruch; Seam Lurker im Old Shaft schlucken es.
+  cinder_iron: { name: 'Cinder Iron', stack: true, value: 16, glyph: '%', text: 'Black quarry iron from under the hill. It rings when you drop it, and Rook says it remembers being hit.' },
+  // Tag 4 (Abstimmung): Rooks Meisterstücke, nur an seiner guten Werkbank drinnen und erst nach „Rook's Masterwork“
+  masterwork_shield: { name: 'Masterwork Shield', slot: 'main', cls: 'warden', delay: 9, power: 12, defence: 10, value: 480, glyph: ']', text: 'Cinder iron, folded twice and riveted with greyglass. Rook put his mark on the inside, where only you can see it.' },
+  masterwork_shivs: { name: 'Masterwork Shivs', slot: 'main', cls: 'drifter', delay: 7, power: 15, value: 480, glyph: 'x', text: 'Two black blades that ring like a bell when they touch. Rook says do not let them touch.' },
+  masterwork_hood: { name: 'Masterwork Hood', slot: 'head', defence: 6, light: 0.5, value: 300, glyph: '^', text: 'An iron cap with a glimmer chip set over the brow. It fits like it was measured, because it was.' },
+  masterwork_boots: { name: 'Masterwork Boots', slot: 'feet', defence: 6, value: 300, glyph: 'u', text: 'Iron-toed, beetle-soled. They do not squeak. Rook made sure. Rook hates squeaks.' },
+  masterwork_coat: { name: 'Masterwork Coat', slot: 'body', defence: 10, value: 420, glyph: 'M', text: 'Overlapping plates of cinder iron on oiled leather. It weighs less than it looks and more than you hoped.' },
+  chapel_chalk: { name: 'Chapel Chalk', stack: true, value: 0, glyph: '/', text: 'A stick of white chalk from the chapel. Tallow uses it to write the hymn numbers. Fen uses it for everything else.' },
+  shadow_tracing: { name: 'Shadow Tracing', stack: true, value: 0, glyph: '=', text: 'Your own shadow, drawn in chalk on a sheet of bark paper by Beacon-light. It looks taller than you. Fen says shadows always do.' },
+  cinder_lantern: { name: 'Cinder Iron Lantern', slot: 'lantern', light: 3.8, burn: 0.4, value: 360, glyph: 'i', text: 'A heavy black lantern with a wisp core behind the glass. Iron holds the heat, so the oil lasts. Wren made the first one and will not stop talking about it.' },
+  rooks_tongs: { name: "Rook's Old Tongs", stack: true, value: 0, glyph: '/', text: 'Iron tongs, worn smooth where nine fingers held them. Tansy says they belong on the good bench.' },
   keepers_lantern: { name: 'Keeper\'s Lantern', slot: 'lantern', light: 4, burn: 0.35, value: 600, glyph: 'i', text: 'Made from the lamp of a Keeper. It lights every corner at once, and seems to enjoy it.' },
 };
 

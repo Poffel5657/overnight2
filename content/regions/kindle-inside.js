@@ -65,7 +65,7 @@ export const REGION = {
 
     // Old Rooks Werkstatt (seit Tag 3 doppelt so groß: hinten die gute Werkbank, Rooks Lehrling Tansy)
     exit('workshop', 23, 15),
-    { type: 'station', station: 'workbench', x: 19, y: 11, w: 1, d: 2, name: 'Rook\'s good bench' },
+    { type: 'station', station: 'workbench', x: 19, y: 11, w: 1, d: 2, name: 'Rook\'s good bench', master: true },
     { type: 'table', x: 26, y: 11, w: 2, name: 'a parts table', text: 'Gears laid out in rows, biggest to smallest. Tansy did this. Rook pretends not to notice it is useful.' },
     { type: 'barrel', x: 27, y: 14, name: 'a barrel of brass', text: 'Brass offcuts, sorted. The sign says "ASK FIRST". Underneath, smaller: "or do not, Rook is out".' },
     { type: 'candles', x: 27, y: 8, light: 4.5, name: 'a work lamp', text: 'A lamp on a long arm, so you can see what you are about to ruin.' },
