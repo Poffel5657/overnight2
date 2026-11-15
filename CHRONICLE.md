@@ -195,6 +195,7 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 
 **Nachschlag:**
 - **Mender, Flarecaster, Drifter auf 44:** **Vesper Bell** (burst Umkreis 3, blendet, Gruppe heilt 30 plus Stab), **Lanternfall** (Fläche, 50 % mehr gegen Geblendete), **Gloaming** (Nahschlag, im Dunkeln und gegen Festsitzende tiefer). Damit haben alle vier Klassen Fähigkeiten bis 44.
+- **Alle vier Klassen auf 48:** Warden **Lamp and Anvil** (burst, nagelt alles daneben fest und bindet es: danach trifft Anvil Blow voll), Mender **Second Dawn** (große Gruppenheilung 40, lange Abklingzeit), Flarecaster **Solar Lance** (Strahl auf 7 Felder, brennt nach, 40 % mehr gegen Brennendes), Drifter **Last Shadow** (gegen Geblendete 50 %, Festsitzende 30 %, im Dunkeln 30 % mehr). Damit reichen alle Klassen bis 48, die Spezialisierungen ab 50 können als Nächstes kommen.
 - **Tinkering 38 bis 40: Sumpwalker Boots, Hood, Coat** aus Verdigris und Cinder Iron, an der normalen Werkbank (eine Stufe über den Meisterstücken). Rook und Hesk erklären es.
 - **Lampwright 38/39: Verdigris Staff und Lens** (Heilung 16, Kraft 16), **Alchemie 36: Sluice Draught** (heilt 170, 25 Öl).
 - **Lampwright 22: Hollow-Glass Lantern** aus Glass Grit von der Mühle (Licht 3, halbes Öl). Wenna erzählt, dass die Mühle früher Glas für ihr Dorf mahlte; Wren gießt es nach.

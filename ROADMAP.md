@@ -26,11 +26,11 @@ Welche Andockpunkte in den nächsten Nächten wachsen, damit große Wünsche üb
 
 | Klasse | Fähigkeiten bis Stufe | Spezialisierungen (ab 50) |
 |---|---|---|
-| Warden | 44 (Stand Fast 12, Beacon Slam 16, Bulwark 20, Last Light 24, Lantern Hook 28, Shield Wall 32, Anvil Blow 36, Hold the Line 40, Hallowed Ground 44) | noch keine (Idee „Lightsworn“ auf Zettel 5) |
-| Mender | 44 (Cinder Flick 11, Hearth Song 13, Rekindle 16, Smoulder 20, Kindred Glow 24, Ember Mend 28, Sanctuary 32, Cinder Bloom 36, Banked Hearth 40, Vesper Bell 44) | noch keine |
-| Flarecaster | 44 (Glare 10, Cinder Brand 13, Starfall 16, Sunlance 20, Prism Ward 24, Noonbrand 28, Corona 32, Flashpoint 36, Daybreak 40, Lanternfall 44) | noch keine |
-| Drifter | 44 (Cheap Shot 10, Night Edge 13, Caltrops 16, Smoke Bomb 20, Gutter Strike 24, Lampblack Cut 28, Vanishing Cut 32, Hamstring 36, Nightfall 40, Gloaming 44) | noch keine |
+| Warden | 48 (Stand Fast 12, Beacon Slam 16, Bulwark 20, Last Light 24, Lantern Hook 28, Shield Wall 32, Anvil Blow 36, Hold the Line 40, Hallowed Ground 44, Lamp and Anvil 48) | noch keine (Idee „Lightsworn“ auf Zettel 5) |
+| Mender | 48 (Cinder Flick 11, Hearth Song 13, Rekindle 16, Smoulder 20, Kindred Glow 24, Ember Mend 28, Sanctuary 32, Cinder Bloom 36, Banked Hearth 40, Vesper Bell 44, Second Dawn 48) | noch keine |
+| Flarecaster | 48 (Glare 10, Cinder Brand 13, Starfall 16, Sunlance 20, Prism Ward 24, Noonbrand 28, Corona 32, Flashpoint 36, Daybreak 40, Lanternfall 44, Solar Lance 48) | noch keine |
+| Drifter | 48 (Cheap Shot 10, Night Edge 13, Caltrops 16, Smoke Bomb 20, Gutter Strike 24, Lampblack Cut 28, Vanishing Cut 32, Hamstring 36, Nightfall 40, Gloaming 44, Last Shadow 48) | noch keine |
 
 Alle vier Klassen haben seit Tag 4 Fähigkeiten bis Stufe 40; die Fähigkeiten auf 36 (und Daybreak, Nightfall auf 40) nutzen `exploit` (mehr Schaden gegen brennende, geblendete oder festsitzende Ziele). Nächster Schritt: Warden 44, dann Mender, Flarecaster, Drifter 44. Ausrüstung bis 37 (Meisterstücke), Wesen bis 38 (Seam Lurker) in der Oberwelt.
 
-Seit Tag 5 haben alle vier Klassen Fähigkeiten bis 44; Hallowed Ground und Vesper Bell nutzen `mend` (burst heilt die Gruppe). Nächster Schritt: Warden 48, dann Mender, Flarecaster, Drifter 48, danach die Spezialisierungen ab 50 (je Klasse zwei Wege mit je einer Fähigkeit). Wesen bis 46 (The Undertow), Ausrüstung bis 40 (Sumpwalker, Verdigris).
+Seit Tag 5 haben alle vier Klassen Fähigkeiten bis 48 (44 im Dauerauftrag, 48 im Nachschlag); Hallowed Ground und Vesper Bell nutzen `mend` (burst heilt die Gruppe). Nächster Schritt: die Spezialisierungen ab 50 (je Klasse zwei Wege mit je einer Fähigkeit), Klasse für Klasse, beginnend mit dem Warden. Wesen bis 46 (The Undertow), Ausrüstung bis 40 (Sumpwalker, Verdigris).

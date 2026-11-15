@@ -28,12 +28,12 @@ Tag 5 (Nacht zum 2026-11-16). Inbox `v2/inbox/2026-11-15.json`: Gebete 9 und 10,
 3. *Woran es anschließt:* Mühle, Leuchtfeuer/Öl, Kapelle (Opferkasten-Gebet), Stranger, Bogen.
 4. *Weg dorthin:* Folgt aus „Who Grinds at Night“; Fen und Pell erwähnen sie.
 
-**Dauerauftrag Klassen:** Warden 44 **Hallowed Ground** (neue Wirkung: burst heilt Verbündete, `mend`). **Nachschlag (gebaut):** Mender, Flarecaster, Drifter 44 (Vesper Bell, Lanternfall, Gloaming); Tinkering 38–40 Sumpwalker; Lampwright 38/39 Verdigris Staff und Lens; Alchemie 36 Sluice Draught; Glass Grit aus der Mühle und Lampwright 22 Hollow-Glass Lantern; „The Lamp Under the Hill“ (Gebet 9, Licht als Glaube); „The Miller's Ledger“; Gefallen rats_for_hesk, undertow_again und flour_for_hollis; Fundstellen in den Sumps (Salvage 38, Cartography 36, Foraging 36); Rufe, Gerücht, Ausguck. Gebet 10 (Spielerkampf) unter „Ideen für später“.
+**Dauerauftrag Klassen:** Warden 44 **Hallowed Ground** (neue Wirkung: burst heilt Verbündete, `mend`). **Nachschlag (gebaut):** Mender, Flarecaster, Drifter 44 (Vesper Bell, Lanternfall, Gloaming); alle vier auf 48 (Lamp and Anvil, Second Dawn, Solar Lance, Last Shadow); Tinkering 38–40 Sumpwalker; Lampwright 38/39 Verdigris Staff und Lens; Alchemie 36 Sluice Draught; Glass Grit aus der Mühle und Lampwright 22 Hollow-Glass Lantern; „The Lamp Under the Hill“ (Gebet 9, Licht als Glaube); „The Miller's Ledger“; Gefallen rats_for_hesk, undertow_again und flour_for_hollis; Fundstellen in den Sumps (Salvage 38, Cartography 36, Foraging 36); Rufe, Gerücht, Ausguck. Gebet 10 (Spielerkampf) unter „Ideen für später“.
 
 ## Ausbau läuft
 
 - **The Unending Maze** (seit 2026-11-13, von Chris gebaut aus Gebet 4): Stockwerke 1 bis 99 unter Cinderford, jeden Tag neu gewürfelt, Stufe = 3 + 2 × Stockwerk. Ausbau möglich: Rangliste auf dem Turn Board (braucht Chris: D1-Abfrage), weitere Keeper-Körper und -Eigenschaften (`BODIES`, `AFFIXES` in `content/regions/maze.js`), Rezepte aus Turnstones, mehr Gegenstände ab Stockwerk 25, Quests für tiefere Stockwerke (`keeper_10`, `keeper_20` gibt es schon).
-- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag): Stand in `ROADMAP.md`: alle vier bis Stufe 44 (Tag 5). Nächste Nacht: Warden (48), dann Mender, Flarecaster, Drifter. Seit Tag 5 kann `burst` auch `mend` (Gruppe heilt). Seit Tag 4 gibt es `exploit` (Schaden gegen brennende/geblendete/festsitzende Ziele): gut für weitere Stufen, auch kleinere exploit-Fähigkeiten für 12–30 wären schön (Gebet 8).
+- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag): Stand in `ROADMAP.md`: alle vier bis Stufe 48 (Tag 5). Nächste Nächte: Spezialisierungen ab 50, erst der Warden (zwei Wege mit je einer Fähigkeit auf 50; gewinnt „lightsworn“, ist einer davon der Lichtweg), dann Mender, Flarecaster, Drifter. Seit Tag 5 kann `burst` auch `mend` (Gruppe heilt). Seit Tag 4 gibt es `exploit` (Schaden gegen brennende/geblendete/festsitzende Ziele): gut für weitere Stufen, auch kleinere exploit-Fähigkeiten für 12–30 wären schön (Gebet 8).
 - **Der Bogen „The Second Light“**, Akt 1 endet (Tag 5: Wenna in der Mühle, „ihr Feuer hungert“). Tag 6: Ama ruft das Weltproblem aus; Tag 7: erste Bogen-Option auf dem Zettel. Wenna sitzt noch in der Mühle und kann später nach Norden aufbrechen.
 - **The North Watch:** Text in `content/lookout.js` wächst mit dem Bogen (Tag 4: Schein so breit wie zwei Daumen).
 - **Counting House:** fünf Geschäfte seit Tag 4 (Flint mit Nachlass `discount`). Weitere (Wren, Sorrel, Rook), Ausschüttung in Waren, gemeinsames Ziel pro Geschäft (bräuchte einen dauerhaften Weltzähler, nur mit Chris).
@@ -43,7 +43,7 @@ Tag 5 (Nacht zum 2026-11-16). Inbox `v2/inbox/2026-11-15.json`: Gebete 9 und 10,
 
 ## Nächste Nächte
 
-- Warden auf Stufe 48, dann Mender, Flarecaster, Drifter (alle haben 44 seit Tag 5). Danach Spezialisierungen (ab 50).
+- Spezialisierungen ab 50: Warden zuerst (alle Klassen haben seit Tag 5 Fähigkeiten bis 48).
 - Inhalt für 46+ (Tag 5: The Sumps bis 46).
 - Bogen: Tag 6 Ama und „The Beacon Starves“ vorbereiten (Wenna hat den Hunger angekündigt).
 - Mehr Gefallen, die Gruppen belohnen.

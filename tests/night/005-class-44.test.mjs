@@ -96,3 +96,38 @@ test('Lanternfall trifft Geblendete härter, Gloaming Festsitzende (gemittelt)',
   const rootG = avg('drifter', 'gloaming', 'root');
   assert.ok(rootG > plainG * 1.3, `Gloaming ${plainG} -> ${rootG}`);
 });
+
+test('Nachschlag Stufe 48: Lamp and Anvil nagelt fest (Anvil Blow trifft danach härter), Second Dawn heilt die Gruppe, Solar Lance brennt', () => {
+  const want = { warden: 'lamp_and_anvil', mender: 'second_dawn', flarecaster: 'solar_lance', drifter: 'last_shadow' };
+  for (const [cls, ab] of Object.entries(want)) {
+    assert.ok(CLASSES[cls].abilities.some(([a, l]) => a === ab && l === 48), `${cls} 48`);
+    assert.ok(describeAbility(ab).effect.length > 20);
+  }
+  // Warden: Lamp and Anvil, dann Anvil Blow auf das festsitzende Ziel
+  const w = S.createWorld(regionFor('sumps'), 590);
+  const t = veteran(w, 't', { cls: 'warden', level: 48, equip: { main: 'masterwork_shield' } });
+  const boss = w.mobs.find((x) => x.type === 'the_undertow');
+  for (const o of w.mobs) if (o !== boss) { o.dead = true; o.deadUntil = 1e9; }
+  t.x = boss.x - 1; t.y = boss.y;
+  applyIntent(w, 't', { t: 'target', id: boss.id });
+  cast(w, 't', 'lamp_and_anvil', 1);
+  assert.ok(w.tick < boss.rootUntil, 'der Boss sitzt fest');
+  assert.equal(boss.angryAt, 't');
+  // Mender: Second Dawn
+  const w2 = S.createWorld(regionFor('sumps'), 591);
+  const m = veteran(w2, 'm', { cls: 'mender', level: 48 });
+  const f = veteran(w2, 'f', { cls: 'warden', level: 48 });
+  f.x = m.x + 1; f.y = m.y; f.hp = 20;
+  cast(w2, 'm', 'second_dawn', 1);
+  assert.ok(f.hp >= 20 + ABILITIES.second_dawn.heal - 1);
+  // Flarecaster: Solar Lance setzt das Ziel in Brand
+  const w3 = S.createWorld(regionFor('sumps'), 592);
+  const fl = veteran(w3, 'a', { cls: 'flarecaster', level: 48, equip: { main: 'verdigris_lens' } });
+  const b3 = w3.mobs.find((x) => x.type === 'the_undertow');
+  for (const o of w3.mobs) if (o !== b3) { o.dead = true; o.deadUntil = 1e9; }
+  fl.x = b3.x - 3; fl.y = b3.y;
+  applyIntent(w3, 'a', { t: 'target', id: b3.id });
+  const hp = b3.hp;
+  cast(w3, 'a', 'solar_lance', 1);
+  assert.ok(b3.hp < hp && b3.burn?.left > 0, 'trifft und brennt');
+});
