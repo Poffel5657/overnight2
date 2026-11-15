@@ -187,3 +187,42 @@ test('Die Sumps im Spielstand: wer dort unterliegt, wacht in Cinderford auf; ein
   assert.ok(P.knownAbilities(p).includes('hallowed_ground') === false, 'Hallowed Ground erst ab 44');
   assert.equal(p.cls, 'warden');
 });
+
+test('Nachschlag: The Lamp Under the Hill (Hesk, Sorrel, drei Crawler, Tallow in Kindle, zurück zu Hesk)', () => {
+  let c = S.createWorld(regionFor('cinderford'), 540);
+  let p = veteran(c, 'a', { level: 43, equip: GEAR, quests: { kindling: { done: true }, the_drains: { done: true } }, bag: [{ id: 'seam_tonic', n: 8 }] });
+  talk(c, 'a', 'hesk');
+  choose(c, 'a', 'lamp under the hill');
+  assert.equal(p.quests.lamp_under_the_hill.step, 0);
+  talk(c, 'a', 'sorrel');
+  choose(c, 'a', 'What is the lamp under the hill');
+  assert.equal(p.quests.lamp_under_the_hill.step, 1);
+
+  const grate = c.objects.find((o) => o.type === 'door' && o.to === 'sumps');
+  actOn(c, 'a', grate, 'enter');
+  const w = S.createWorld(regionFor('sumps'), 541);
+  p = S.addPlayer(w, 'a', 'a', S.removePlayer(c, 'a'));
+  for (let k = 0; k < 3; k++) {
+    const m = nearest(w, p, 'silt_crawler');
+    p.hp = p.maxHp;
+    fightWithTonics(w, 'a', m, WARDEN);
+    assert.ok(m.dead, `Crawler ${k + 1}`);
+  }
+  assert.equal(p.quests.lamp_under_the_hill.step, 2);
+
+  // Hinauf nach Kindle (der Weg über Cinderford und den alten Weg ist in 002-cinderford-maze gespielt)
+  const k = S.createWorld(KINDLE, 542);
+  const q = S.addPlayer(k, 'a', 'a', { ...P.saveOf(p), region: 'kindle', x: 50, y: 53 });
+  talk(k, 'a', 'tallow');
+  choose(k, 'a', 'lamp under the hill');
+  assert.equal(q.quests.lamp_under_the_hill.step, 3);
+
+  c = S.createWorld(regionFor('cinderford'), 543);
+  const r = S.addPlayer(c, 'a', 'a', P.saveOf(q));
+  const xp = r.classes.warden.xp;
+  talk(c, 'a', 'hesk');
+  choose(c, 'a', 'chapel has an answer');
+  assert.equal(r.quests.lamp_under_the_hill.done, true);
+  assert.ok(r.classes.warden.xp >= xp + QUESTS.lamp_under_the_hill.reward.xp);
+  assert.ok(P.countItem(r, 'sluice_draught') >= 2);
+});
