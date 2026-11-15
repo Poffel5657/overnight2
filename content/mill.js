@@ -7,8 +7,10 @@
 export const MILL = {
   grinds: [
     { inputs: { barley: 2 }, out: ['mill_flour', 1], text: 'You tip the barley into the hopper. The stones rumble, and flour sifts out into the tray, warm and pale.' },
+    // Nachschlag: Die Mühle mahlte früher auch Glas, für ein Dorf im Norden, das daraus Laternen goss.
+    { inputs: { green_shard: 3 }, out: ['glass_grit', 1], text: 'The green shards crunch between the stones and come out as a fine, glittering grit. The stones seem to know the job.' },
   ],
-  nothing: 'The stones turn and turn with nothing between them. They want barley: two handfuls make a sack of flour. Crows steal it from the fields, and Marrow sells it.',
+  nothing: 'The stones turn and turn with nothing between them. They want barley (two handfuls make a sack of flour; crows steal it from the fields, Marrow sells it), or three shards of green glass.',
   first: 'You knock the flour from your hands. Somebody built this mill a long time ago, and it is glad to be working again.',
   xp: 20,
   xpPerLevel: 4,

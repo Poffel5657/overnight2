@@ -568,6 +568,7 @@ export const ITEM_ICONS = {
   cinder_iron: ['pile', 'black'], masterwork_shield: ['shield', 'black'], masterwork_shivs: ['shivs', 'black'], masterwork_hood: ['hood', 'black'], masterwork_boots: ['boots', 'black'], masterwork_coat: ['coat', 'black'], rooks_tongs: ['root', 'steel'], cinder_lantern: ['lantern', 'black'], cinder_staff: ['staff', 'black'], crossed_map: ['notes', 'paper'], unsent_letter: ['notes', 'pale'], ivys_map: ['notes', 'paper'], cart_wheel: ['ring', 'scrap'], hearth_salve: ['potion', 'red'], seam_tonic: ['potion', 'glim'], duchess_hat: ['hood', 'green'], cinder_lens: ['lens', 'black'], chapel_chalk: ['block', 'pale'], shadow_tracing: ['notes', 'pale'],
   verdigris: ['pile', 'moss'], sluice_handle: ['ring', 'black'], weir_lamp: ['lantern', 'moss'], sumpwalker_boots: ['boots', 'moss'], sumpwalker_hood: ['hood', 'moss'], sumpwalker_coat: ['coat', 'moss'],
   verdigris_staff: ['staff', 'moss'], verdigris_lens: ['lens', 'moss'], sluice_draught: ['potion', 'moss'],
+  glass_grit: ['pile', 'moss'], hollow_glass_lantern: ['lantern', 'moss'],
   barley: ['leaf', 'wax'], mill_flour: ['pile', 'pale'], millbread: ['bread', 'bread'], hollow_barley: ['leaf', 'stone'], wennas_lantern: ['lantern', 'green'],
   delvers_hood: ['hood', 'skin'], delvers_boots: ['boots', 'skin'], delvers_coat: ['coat', 'skin'], keepers_lantern: ['lantern', 'warm'],
 };

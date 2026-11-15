@@ -462,6 +462,18 @@ export const QUESTS = {
       { type: 'talk', npc: 'tallow', text: 'Wenna asked about a prayer. Ask Brother Tallow about the one under the white stone.' },
       { type: 'talk', npc: 'wenna', text: 'Bring the lantern, and Tallow\'s answer, back to Wenna at the mill after dark.' },
     ],
-    reward: { xp: 420, gold: 25, items: { hollow_ration: 2, glow_draught: 1 } },
+    reward: { xp: 420, gold: 25, items: { hollow_ration: 2, glow_draught: 1, glass_grit: 2 } },
+  },
+  // Tag 5, Nachschlag (Gebet 9: Licht als Glaube): Die Quarrymen beteten unter dem Hügel zu einer Lampe.
+  lamp_under_the_hill: {
+    name: 'The Lamp Under the Hill', giver: 'hesk',
+    text: 'The sluice-keepers lit their niches "for the lamp under the hill". Hesk always thought it was a rhyme. Now he is not sure.',
+    steps: [
+      { type: 'talk', npc: 'sorrel', text: 'Ask Delvemaster Sorrel what the quarrymen meant by the lamp under the hill.' },
+      { type: 'kill', mob: 'silt_crawler', n: 3, text: 'Silt Crawlers drink the oil from the niche lamps in the Sumps. Drive off three.' },
+      { type: 'talk', npc: 'tallow', text: 'Ask Brother Tallow in Kindle whether the chapel knows of a lamp under the hill.' },
+      { type: 'talk', npc: 'hesk', text: 'Tell Hesk what the chapel said.' },
+    ],
+    reward: { xp: 3200, gold: 60, items: { sluice_draught: 2 } },
   },
 };

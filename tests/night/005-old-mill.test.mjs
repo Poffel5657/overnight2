@@ -163,3 +163,27 @@ test('Gerste gibt es auch bei Marrow zu kaufen', () => {
   run(w, 1);
   assert.equal(P.countItem(p, 'barley'), 2);
 });
+
+test('Nachschlag: Die Mühle mahlt grünes Glas zu Grit, Wren gießt daraus die Hollow-Glass Lantern (Lampwright 22)', async () => {
+  const { RECIPES } = await import('../../content/recipes.js');
+  const w = S.createWorld(REGION, 546);
+  w.date = '2026-11-16';
+  const r = RECIPES.l_hollow_glass_lantern;
+  const p = veteran(w, 'a', { level: 14, profs: { lampwright: { level: r.level, xp: P.xpForLevel(r.level) } }, bag: [{ id: 'green_shard', n: 6 }, { id: 'brass_bits', n: 2 }, { id: 'survey_notes', n: 1 }] });
+  const stone = w.objects.find((o) => o.type === 'millstone');
+  actOn(w, 'a', stone, 'use');
+  actOn(w, 'a', stone, 'use');
+  run(w, 2);
+  assert.equal(P.countItem(p, 'glass_grit'), 2, 'zweimal gemahlen');
+  assert.equal(P.countItem(p, 'green_shard'), 0);
+  talk(w, 'a', 'wren');
+  choose(w, 'a', 'grit makes lanterns');
+  assert.equal(p.dialog.page, 'grit');
+  const bench = w.objects.find((o) => o.type === 'station' && o.station === 'lampbench');
+  applyIntent(w, 'a', { t: 'act', kind: 'object', id: bench.id, action: 'use' });
+  for (let i = 0; i < 400 && p.goal; i++) run(w, 1);
+  applyIntent(w, 'a', { t: 'craft', obj: bench.id, recipe: 'l_hollow_glass_lantern', n: 1 });
+  run(w, 1);
+  assert.equal(P.countItem(p, 'hollow_glass_lantern') + (p.equip.lantern === 'hollow_glass_lantern' ? 1 : 0), 1);
+  assert.ok(ITEMS.hollow_glass_lantern.light > ITEMS.glim_lantern.light);
+});
