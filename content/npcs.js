@@ -336,6 +336,7 @@ const haskel = {
       { text: 'Is anyone watching that glow?', to: 'en_early', if: { quest: { eyes_north: 'none' }, below: 10 } },
       { text: 'Why is it so quiet in here?', to: 'h_quiet' },
       { text: 'Seen anything odd lately?', to: 'h_light' },
+      { text: 'A carrier from the north is in the old mill.', to: 'h_wenna', if: { quest: { the_last_sack: 'active' } } },
       BYE,
     ],
   },
@@ -347,6 +348,7 @@ const haskel = {
   en_offer: { text: 'My sister is. Brindle. Ama asked for eyes on the north, and Brindle has the best eyes and the worst temper in the family. She is putting up a lookout at the top of the road. Go and help her before she builds it out of me.', options: [{ text: 'I will find her.' }] },
   en_early: { text: 'My sister Brindle is. She is building a lookout up at the north edge. It is wolf country up there, though. Come back with a few more levels. (Level 10)', options: [{ text: 'Fair.' }] },
   h_pack: { text: 'More every night. They come through the camp at a run and do not even look at my lunch. A wolf that ignores lunch is a frightened wolf.', options: [BYE] },
+  h_wenna: { text: 'Haskel puts down his axe. "In the mill? Then the smoke I smelled on the wolves was hers. Peat." He scratches his head. "Tell her the wolves are scared of her people, not the other way round. And tell her the north road is still there. Overgrown, but there. I cut it back as far as the stones, every spring. Nobody asked me to. Seemed rude not to."', options: [BYE] },
   h_quiet: { text: 'Hushwood eats sound. Shout in here and nobody hears it, not even you. Handy for wolves. Less handy for me.', options: [BYE] },
 };
 
@@ -479,6 +481,7 @@ const tansy = (() => {
         { text: 'I need another pair of Rook\'s tongs.', to: 'mw_spare', if: { quest: { rook_masterwork: 4 } }, do: [{ give: { rooks_tongs: 1 } }] },
         { text: 'Rook came inside!', to: 'mw_tansy', if: { quest: { rook_masterwork: 'done' } } },
         { text: 'Why is Rook outside?', to: 'yard', if: { quest: { rook_masterwork: 'none' } } },
+        { text: 'Rook says not to bring verdigris inside.', to: 'ts_verdigris', if: { has: { verdigris: 1 } } },
         { text: 'What is this bench?', to: 'bench' },
         BYE,
       ],
@@ -487,6 +490,7 @@ const tansy = (() => {
     mw_tongs: { text: 'Tansy takes a pair of tongs from behind a loose brick. "He leaves them in the yard and then shouts that somebody stole them. Now he has to come in." She hands them over. "Masterwork goes on the good bench, right here. Cinder iron, a bit of greyglass, and patience. You can make it at this bench and no other, he says. He is right, which he will not let me forget."', options: [{ text: 'Thanks, Tansy.' }] },
     mw_spare: { text: '"Another pair?" Tansy pulls a second set of tongs out from under the coal bin. "I hide one pair for him to find and one pair for when he loses those. Take them to him."', options: [BYE] },
     mw_tansy: { text: '"He came in, he sat down at the good bench, he said \'hm\' and he stayed for two hours." She looks quietly delighted. "He has already complained about the light, the draught and my shelves. Now he comes in for every masterwork and goes back out to shout at the weather. It is progress."', options: [BYE] },
+    ts_verdigris: { text: 'Tansy sniffs, and steps back. "He is right, for once. It smells like the bottom of a well that has been thinking about things." She points at the door with a spanner. "Workbench outside. Sumpwalker gear is a yard job. Rook will pretend he taught you. Let him."', options: [BYE] },
     bench: { text: '"Rook\'s good bench. Same as the one in the yard, but with a roof and a lamp, and nobody stepping on your fingers. Anything you can make out there, you can make in here. Warmer, too. And masterwork, which you can only make here. Ask Rook about that, if you are brave."', options: [BYE] },
     ...s.pages, ...k.pages,
   };
