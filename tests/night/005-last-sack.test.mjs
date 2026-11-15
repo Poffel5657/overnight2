@@ -109,3 +109,15 @@ test('Nachschlag: Brindle, Mothwick, Coyne und Pip wissen von Wenna und der Müh
   assert.equal(q.dialog.page, 'cy_mill');
   assert.ok(BARKS.band_pip.lines.some((l) => l.includes('mill')));
 });
+
+test('Nachschlag: Wenna sagt, wie viele Träger losgingen (nur nachts, während der Quest)', () => {
+  const w = S.createWorld(REGION, 555);
+  w.daylight = 0.1;
+  const p = veteran(w, 'a', { level: 10, quests: { kindling: { done: true }, who_grinds: { done: true }, the_last_sack: { step: 2, n: 0 } } });
+  talk(w, 'a', 'wenna');
+  choose(w, 'a', 'how many of you set out');
+  assert.equal(p.dialog.page, 'w_count');
+  w.daylight = 1;
+  talk(w, 'a', 'wenna');
+  assert.ok(!options(w, 'a').some((t) => t.includes('how many')), 'bei Tag schläft sie');
+});
