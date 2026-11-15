@@ -200,6 +200,7 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 - **Lampwright 22: Hollow-Glass Lantern** aus Glass Grit von der Mühle (Licht 3, halbes Öl). Wenna erzählt, dass die Mühle früher Glas für ihr Dorf mahlte; Wren gießt es nach.
 - **„The Lamp Under the Hill“** (Hesk nach „The Drains“, aus Gebet 9: Licht als Glaube): Sorrel erzählt vom Gebet der Quarrymen, drei Silt Crawler trinken die Nischen leer, Tallow vergleicht den Ertrunkenen Chor, die Quarrymen und Kindles Gebete („dasselbe Licht durch verschiedene Türen, die Kapelle ist sich nicht sicher“).
 - **„The Miller's Ledger“** (Hollis, ab Stufe 6): Das Buch des Müllers Dunnock liegt unter einem Stein an der Mühle. Jeden Monat Glasgrieß „die Nordstraße hinauf, für den Hollow“. Mabb erinnert sich an Dunnock, Brack legt es neben das Hauptbuch des Foreman: Glas, Glimmer, Eisen, alles nach Norden.
+- **Fundstellen in den Sumps:** Verdigris Pipe (Salvage 38: Verdigris, manchmal Cinder Iron), Sluice-Keeper's Mark (Cartography 36: Survey Notes, manchmal Verdigris), Lampcap Cluster (Foraging 36: Nightcap, manchmal Lily Bulb, beides für den Sluice Draught). Salvage ging bisher bis 32, Cartography und Foraging bis 30.
 - **Zwei Gefallen:** drei Drain Rats für Hesk (40 Gold, 560 EP), zwei Mehl für Hollis (14 Gold, 50 EP). Der Kern-Test „Gefallen erledigen“ bleibt grün.
 - Pell ruft die Nacht aus, neue Rufe für Pell, Hesk und Wenna, Hollis hat ein fünftes Gerücht, der Ausguck zeigt nachts nur noch zwei Lampen.
 
