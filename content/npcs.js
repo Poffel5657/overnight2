@@ -811,7 +811,7 @@ export const TALK = {
   snail_bramble: snail('bramble'), snail_pebble: snail('pebble'), snail_tom: snail('tom'),
   snail_duchess: snail('duchess'), snail_thistle: snail('thistle'),
   pell: {
-    start: { text: 'HEAR YE! The OLD MILL by the stream turns again, and anybody may grind there! Under Cinderford, Hesk wants the old drains cleared, and something lives in the weir! Wardens and Menders learned to heal while they hit! And Marrow wants to know who leaves flour on our doorsteps!', options: [
+    start: { text: 'HEAR YE! The OLD MILL by the stream turns again, and anybody may grind there! Under Cinderford, Hesk wants the old drains cleared, and something lives in the weir! Rook says the green crust from down there makes iron better than masterwork! Wardens and Menders learned to heal while they hit! And Marrow wants to know who leaves flour on our doorsteps!', options: [
       { text: 'Whose hand is this?', to: 'po_pell', if: { quest: { prayer_not_ours: 1 }, has: { prayer_slip: 1 } }, do: [{ advance: 'prayer_not_ours' }] },
       { text: 'Anything I can help with?', to: 'ul_offer', if: { quest: { kindling: 'done', unsent_letter: 'none' } }, do: [{ start: 'unsent_letter' }] },
       { text: 'Anything else?', to: 'more' }, BYE] },
