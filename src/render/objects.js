@@ -444,8 +444,8 @@ const BUILDERS = {
     g.add(box(0.6, 1.0, 0.06, '#3e2a18', 0, 0.5, o.d / 2 - 0.08));
     g.add(box(0.3, 0.3, 0.06, glowMat, -o.w / 4, 1.2, o.d / 2 - 0.08));
     const wheel = new THREE.Group();
-    wheel.add(new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.1, 0.3, 10, 1, true), mat('#5a4028')).rotateZ(Math.PI / 2));
-    for (let i = 0; i < 5; i++) wheel.add(box(0.36, 2.1, 0.12, '#6e5034', 0, 0, 0).rotateX((i / 5) * Math.PI));
+    wheel.add(new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.1, 0.3, 10, 1, true), mat('#9a7448')).rotateZ(Math.PI / 2));
+    for (let i = 0; i < 5; i++) wheel.add(box(0.36, 2.1, 0.12, '#b08a5a', 0, 0, 0).rotateX((i / 5) * Math.PI));
     wheel.add(box(0.5, 0.2, 0.2, '#3a3028', 0, 0, 0));
     wheel.position.set(o.w / 2 + 0.25, 0.6, 0);
     g.add(wheel);

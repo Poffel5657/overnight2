@@ -147,6 +147,9 @@ export const ITEMS = {
   sumpwalker_boots: { name: 'Sumpwalker Boots', slot: 'feet', defence: 7, value: 360, glyph: 'u', text: 'Tall iron-shod boots sealed with verdigris. Your feet stay dry, which down there feels like magic.' },
   sumpwalker_hood: { name: 'Sumpwalker Hood', slot: 'head', defence: 7, light: 0.5, value: 360, glyph: '^', text: 'A riveted hood with a little brass lamp-hook over the brow, copied from the sluice-keepers.' },
   sumpwalker_coat: { name: 'Sumpwalker Coat', slot: 'body', defence: 12, value: 500, glyph: 'M', text: 'Cinder iron plates on oilskin, green at every seam. It smells of the Sumps for a week, and then of nothing.' },
+  verdigris_staff: { name: 'Verdigris Staff', slot: 'main', cls: 'mender', delay: 10, power: 8, heal: 16, value: 520, glyph: '|', text: 'Cinder iron sealed in green brass, the ember sitting in a cup of it. It stays warm in the wettest dark.' },
+  verdigris_lens: { name: 'Verdigris Lens', slot: 'main', cls: 'flarecaster', delay: 10, power: 16, value: 520, glyph: 'o', text: 'Greyglass ground thin and set in a green brass ring. Light comes out of it like water out of a sluice.' },
+  sluice_draught: { name: 'Sluice Draught', stack: true, use: { heal: 170, oil: 25 }, value: 48, glyph: '!', text: 'Green, cold, and thick as the Sumps. The sluice-keepers drank it before going down. It tastes like a pipe.' },
   // ---------- Tag 5: The Old Mill (Abstimmung) und Wenna (Bogen) ----------
   barley: { name: 'Barley', stack: true, value: 2, glyph: '"', text: 'A handful of Fernmeadow barley. The crows planted most of it by accident, and want it back.' },
   mill_flour: { name: 'Mill Flour', stack: true, value: 6, glyph: '%', text: 'A small sack of flour from the Old Mill. Hollis at the tavern bakes it into millbread.' },
