@@ -175,3 +175,38 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 - Quest-Erfahrung: Deep Seam 3.000 (Stufe 36–38, etwa zwei Stufen), Masterwork 1.200 (Handwerksquest), Catch a Shadow 320 (für alle Stufen), Share of the Cart 120.
 
 **Abstimmung neu:** Zettel 4 mit cooking (zweite Nacht), north-road-fires (zweite Nacht), old-mill (zurück aus „Ideen für später“) und beacon-stockpile (neu, aus Gebet 7). beekeeper ist nach drei Nächten ohne Stimme heraus.
+
+## Tag 5 (Nacht zum 2026-11-16): Die Mühle dreht sich, die Abflüsse laufen
+
+**Inbox:** `v2/inbox/2026-11-15.json`. Zwei Gebete (IDs 9 und 10), Zettel 4: old-mill 1 Stimme (1 Wähler), cooking 0, north-road-fires 0, beacon-stockpile 0. 9 Charaktere, 3 aktiv in 24 Stunden. Leuchtfeuer: 362, 295, 350, 300 (Ziel 300).
+
+**Teil 1, Gebete: The Sumps unter Cinderford (Gebet 9).**
+- Gebet 9 (ID 9): *Gewünscht:* Eine große Stadt mit Burg und belebtem Markt, Kanälen und Verliesen zum Erkunden, vielleicht ein neuer Beruf, ein Paladin als Klasse und Glaube rund um das Licht. Im Kern: mehr Stadt zum Entdecken, ein Verlies, Licht als Religion. *Geliefert:* **The Sumps**, die alten Abflüsse unter Cinderford (neues Gebiet, dunkel, Stufe 40 bis 46). Ein Gitter am Ostende der Furt führt hinunter (ab Stufe 38). Drinnen: ein Eingang mit der Tafel der Schleusenwärter, ein langer Kanal mit Brettersteg, ein Rattennest, eine Zisterne, das Wehr. Drei neue Wesen: **Drain Rat** (40, nebenbei), **Silt Crawler** (43, normal, trinkt Lampenöl), **The Undertow** (46, Boss allein mit Einsatz). Neue Beute **Verdigris**, die **Weir Lamp** (Laterne Licht 4,2), ein Spind mit Beute. Quest **„The Drains“** (Hesk, ab 38): fünf Ratten, der Schiebergriff in der Nische der Quarrymen, The Undertow, zurück zu Hesk (4.500 EP). Für den Glauben an das Licht: Die Quarrymen hatten keine Kapelle, sondern Lampen-Nischen „für die Lampe unter dem Hügel“; daraus wurde im Nachschlag eine eigene Quest (siehe unten). Für den Paladin: Der Warden lernt auf 44 **Hallowed Ground** (Schlag, der den Boden weiht und die Gruppe heilt), und ein „Lightsworn“-Weg ab 50 steht auf dem Stimmzettel. *Fehlt noch:* Burg, Markt mit vielen Händlern, ein neuer Beruf, eine eigene Paladin-Klasse (eine fünfte Klasse ist ein großer Schritt; der Lightsworn-Weg als Spezialisierung des Wardens passt besser ins Gerüst).
+- Gebet 10 (ID 10): *Gewünscht:* Ein gegnerisches Lager, dem man beitreten kann und das das Hauptlager angreift (Spieler gegen Spieler). *Nicht gebaut:* Kampf zwischen Spielern ändert die Kampfregeln, das entscheidet nur Chris. In eigenen Worten unter „Ideen für später“. Der Bogen hat mit den Hollow Wardens eine Gruppe, die Kindles Brennstoff will; daran ließe sich später etwas Ähnliches ohne Spielerkampf hängen.
+
+**Teil 2, Abstimmung: The Old Mill.** Zettel 4: old-mill 1, cooking 0, north-road-fires 0, beacon-stockpile 0.
+- *Gewünscht:* Eine alte Mühle im Grey, die sich von selbst dreht. Wer mahlt da was?
+- *Geliefert:* **The Old Mill** am Bach westlich der Südstraße in Fernmeadow (Weg von der Westroute bis vor die Tür, das Rad dreht sich). Am **Mühlstein** darf jeder mahlen, ohne Beruf (neues Modul `shared/mill.js`, Regeln in `content/mill.js`): zwei **Barley** (Krähen tragen sie, Marrow verkauft sie) werden ein **Mill Flour**, drei grüne Scherben werden **Glass Grit**. Einmal am Tag gibt Mahlen ein wenig Erfahrung. **Hollis** backt aus einem Mehl zwei **Millbread** (heilt 45, füllt 5 Öl). Quest **„Who Grinds at Night“** (Marrow, ab Kindling): Gerste, mahlen, Hollis, nachts im Trichter liegt graue Torf-Gerste, zurück zu Marrow. Das führt zu Teil 3.
+- *Fehlt noch:* Ein Müller, der bleibt (Dunnock ist nach Norden gegangen, siehe Nachschlag).
+
+**Teil 3, Nightwright: Wenna (Bogen, Akt 1).** In der Mühle schläft tagsüber eine Frau im torfbraunen Mantel. Nachts mahlt sie das letzte Korn ihres Dorfs und legt das Mehl auf Kindles Türschwellen. Quest **„The Last Sack“** (nach „Who Grinds at Night“, nur nachts): zwei Millbread, ihre kalte grüne Laterne am Leuchtfeuer füllen, Tallow nach dem Birkenpapier-Gebet unter dem weißen Stein fragen, zurück zu ihr. Ama, Fen und der Stranger reagieren (der Stranger kennt ihren Namen und will nicht, dass sie ihn sieht). Wenna bittet, Ama auszurichten, dass ihr Feuer hungert. Ama: dann frisst das Licht im Norden alles in seiner Nähe, auch unseres.
+
+**Klassen (Dauerauftrag): Warden** Stufe 44: **Hallowed Ground** (burst Umkreis 2, 11–14 plus Waffe, Wesen halten sich an den Warden, er und Verbündete im Umkreis heilen 16). Neue Wirkung `mend` für `burst` in `shared/sim.js`, Tooltip aus `shared/describe.js`.
+
+**Nachschlag:**
+- **Mender, Flarecaster, Drifter auf 44:** **Vesper Bell** (burst Umkreis 3, blendet, Gruppe heilt 30 plus Stab), **Lanternfall** (Fläche, 50 % mehr gegen Geblendete), **Gloaming** (Nahschlag, im Dunkeln und gegen Festsitzende tiefer). Damit haben alle vier Klassen Fähigkeiten bis 44.
+- **Tinkering 38 bis 40: Sumpwalker Boots, Hood, Coat** aus Verdigris und Cinder Iron, an der normalen Werkbank (eine Stufe über den Meisterstücken). Rook und Hesk erklären es.
+- **Lampwright 38/39: Verdigris Staff und Lens** (Heilung 16, Kraft 16), **Alchemie 36: Sluice Draught** (heilt 170, 25 Öl).
+- **Lampwright 22: Hollow-Glass Lantern** aus Glass Grit von der Mühle (Licht 3, halbes Öl). Wenna erzählt, dass die Mühle früher Glas für ihr Dorf mahlte; Wren gießt es nach.
+- **„The Lamp Under the Hill“** (Hesk nach „The Drains“, aus Gebet 9: Licht als Glaube): Sorrel erzählt vom Gebet der Quarrymen, drei Silt Crawler trinken die Nischen leer, Tallow vergleicht den Ertrunkenen Chor, die Quarrymen und Kindles Gebete („dasselbe Licht durch verschiedene Türen, die Kapelle ist sich nicht sicher“).
+- **„The Miller's Ledger“** (Hollis, ab Stufe 6): Das Buch des Müllers Dunnock liegt unter einem Stein an der Mühle. Jeden Monat Glasgrieß „die Nordstraße hinauf, für den Hollow“. Mabb erinnert sich an Dunnock, Brack legt es neben das Hauptbuch des Foreman: Glas, Glimmer, Eisen, alles nach Norden.
+- **Zwei Gefallen:** drei Drain Rats für Hesk (40 Gold, 560 EP), zwei Mehl für Hollis (14 Gold, 50 EP). Der Kern-Test „Gefallen erledigen“ bleibt grün.
+- Pell ruft die Nacht aus, neue Rufe für Pell, Hesk und Wenna, Hollis hat ein fünftes Gerücht, der Ausguck zeigt nachts nur noch zwei Lampen.
+
+**Balance-Notizen** (Warden mit Meisterstücken und Cinder-Laterne, ohne Ausweichen):
+- Drain Rat (40, 230 HP, 160 EP): Warden 36 bis 40 in 8 s mit 90 % Leben, Drifter und Flarecaster in 5 bis 7 s mit 65 bis 75 %.
+- Silt Crawler (43, 520 HP, 20–24 Schaden, Linie 44–52 nach 6 Takten, 250 EP): Warden 16 s mit 85 %, Flarecaster 12 s mit 50 %, Drifter 13 bis 15 s mit 15 bis 25 % (Drifter sollen ausweichen). Erster Entwurf (24–29) ließ Drifter auf 3 %, deshalb gesenkt. Stufe 30 mit Greyglass verliert deutlich mehr (Test).
+- The Undertow (46, 3.000 HP, 26–31, Ring 70–82 und großes Kreuz 64–76, je 6 Takte Vorwarnung, 1.600 EP): Warden 40 bis 46 allein in etwa 85 s mit 30 bis 38 % Leben und einigen Tränken; Drifter und Flarecaster schaffen ihn ab 44 allein nur mit vielen Tränken und Ausweichen, zu zweit bequem.
+- Quest-Erfahrung: The Drains 4.500 (gut zwei Stufen auf 40), The Lamp Under the Hill 3.200, The Last Sack 420, Who Grinds at Night 260, The Miller's Ledger 240.
+
+**Abstimmung neu:** Zettel 5 mit cooking und north-road-fires (dritte und letzte Nacht), beacon-stockpile (zweite Nacht) und lightsworn (neu, aus Gebet 9: ein Lichtweg für Warden ab 50). old-mill ist gebaut.

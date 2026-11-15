@@ -4,7 +4,7 @@ Der Nightwright pflegt diese Datei jede Nacht (Regeln in `CLAUDE.md`).
 
 ## Inbox gelesen bis
 
-`v2/inbox/2026-11-14.json` (Tag 4). Die nächste Nacht liest alle Dateien nach `2026-11-14.json`.
+`v2/inbox/2026-11-15.json` (Tag 5). Die nächste Nacht liest alle Dateien nach `2026-11-15.json`.
 
 ## Heute in Arbeit
 
@@ -28,22 +28,24 @@ Tag 5 (Nacht zum 2026-11-16). Inbox `v2/inbox/2026-11-15.json`: Gebete 9 und 10,
 3. *Woran es anschließt:* Mühle, Leuchtfeuer/Öl, Kapelle (Opferkasten-Gebet), Stranger, Bogen.
 4. *Weg dorthin:* Folgt aus „Who Grinds at Night“; Fen und Pell erwähnen sie.
 
-**Dauerauftrag Klassen:** Warden 44 **Hallowed Ground** (neue Wirkung: burst heilt Verbündete, `mend`). **Nachschlag geplant:** Mender, Flarecaster, Drifter 44; Tinkering 38–40 aus Verdigris; Gefallen; Gebet 10 als großer Vorschlag/Idee.
+**Dauerauftrag Klassen:** Warden 44 **Hallowed Ground** (neue Wirkung: burst heilt Verbündete, `mend`). **Nachschlag (gebaut):** Mender, Flarecaster, Drifter 44 (Vesper Bell, Lanternfall, Gloaming); Tinkering 38–40 Sumpwalker; Lampwright 38/39 Verdigris Staff und Lens; Alchemie 36 Sluice Draught; Glass Grit aus der Mühle und Lampwright 22 Hollow-Glass Lantern; „The Lamp Under the Hill“ (Gebet 9, Licht als Glaube); „The Miller's Ledger“; Gefallen rats_for_hesk und flour_for_hollis; Rufe, Gerücht, Ausguck. Gebet 10 (Spielerkampf) unter „Ideen für später“.
 
 ## Ausbau läuft
 
 - **The Unending Maze** (seit 2026-11-13, von Chris gebaut aus Gebet 4): Stockwerke 1 bis 99 unter Cinderford, jeden Tag neu gewürfelt, Stufe = 3 + 2 × Stockwerk. Ausbau möglich: Rangliste auf dem Turn Board (braucht Chris: D1-Abfrage), weitere Keeper-Körper und -Eigenschaften (`BODIES`, `AFFIXES` in `content/regions/maze.js`), Rezepte aus Turnstones, mehr Gegenstände ab Stockwerk 25, Quests für tiefere Stockwerke (`keeper_10`, `keeper_20` gibt es schon).
-- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag): Stand in `ROADMAP.md`: alle vier bis Stufe 40. Nächste Nacht: Warden (44), dann Mender, Flarecaster, Drifter. Seit Tag 4 gibt es `exploit` (Schaden gegen brennende/geblendete/festsitzende Ziele): gut für weitere Stufen, auch kleinere exploit-Fähigkeiten für 12–30 wären schön (Gebet 8).
-- **Der Bogen „The Second Light“**, Akt 1 endet bald (Tag 4: der Stranger ohne Schatten). Tag 5: ein verirrter Träger; Tag 6: Ama ruft das Weltproblem aus; Tag 7: erste Bogen-Option auf dem Zettel.
+- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag): Stand in `ROADMAP.md`: alle vier bis Stufe 44 (Tag 5). Nächste Nacht: Warden (48), dann Mender, Flarecaster, Drifter. Seit Tag 5 kann `burst` auch `mend` (Gruppe heilt). Seit Tag 4 gibt es `exploit` (Schaden gegen brennende/geblendete/festsitzende Ziele): gut für weitere Stufen, auch kleinere exploit-Fähigkeiten für 12–30 wären schön (Gebet 8).
+- **Der Bogen „The Second Light“**, Akt 1 endet (Tag 5: Wenna in der Mühle, „ihr Feuer hungert“). Tag 6: Ama ruft das Weltproblem aus; Tag 7: erste Bogen-Option auf dem Zettel. Wenna sitzt noch in der Mühle und kann später nach Norden aufbrechen.
 - **The North Watch:** Text in `content/lookout.js` wächst mit dem Bogen (Tag 4: Schein so breit wie zwei Daumen).
 - **Counting House:** fünf Geschäfte seit Tag 4 (Flint mit Nachlass `discount`). Weitere (Wren, Sorrel, Rook), Ausschüttung in Waren, gemeinsames Ziel pro Geschäft (bräuchte einen dauerhaften Weltzähler, nur mit Chris).
+- **The Sumps** (seit Tag 5, Gebet 9): Stufe 40–46. Ausbau: ein zweiter Flügel hinter dem Wehr für 46–50, Gruppen-Wesen, eine Leiter zur Burg der Quarrymen (Gebet 9: Burg und Markt).
+- **The Old Mill** (seit Tag 5): mahlt Gerste und Glas. Ausbau: weitere Mahlregeln (`content/mill.js`), Cooking, falls gewählt.
 - **Meisterstücke:** Tinkering 32–37 seit Tag 4. Weiter: Meisterstücke für Lampwright (Linse, Stab) und Alchemie, Tinkering 38–45.
 
 ## Nächste Nächte
 
-- Warden auf Stufe 44, dann Mender, Flarecaster, Drifter (alle haben 40 seit Tag 4). Danach Spezialisierungen vorbereiten (ab 50).
-- Inhalt für 40+ in der Oberwelt (Tag 4: Seam Lurker 38 und „The Deep Seam“; der Lamplighter ist 40).
-- Bogen: Tag 5 der verirrte Träger (nur nachts, Fernmeadow), Tag 6 Ama und „The Beacon Starves“ vorbereiten.
+- Warden auf Stufe 48, dann Mender, Flarecaster, Drifter (alle haben 44 seit Tag 5). Danach Spezialisierungen (ab 50).
+- Inhalt für 46+ (Tag 5: The Sumps bis 46).
+- Bogen: Tag 6 Ama und „The Beacon Starves“ vorbereiten (Wenna hat den Hunger angekündigt).
 - Mehr Gefallen, die Gruppen belohnen.
 
 ## Ideen für später
@@ -54,6 +56,8 @@ Tag 5 (Nacht zum 2026-11-16). Inbox `v2/inbox/2026-11-15.json`: Gebete 9 und 10,
 - Aus Gebet 2: ein kleiner Talentbaum mit leichten Boni (größerer Umbau, später als Vorschlag).
 - Aus Gebet 1: ein Übungsring für freundliche Zweikämpfe (Kampf zwischen Spielern ändert die Kampfregeln, nur mit Chris).
 - Aus Gebet 7: Material bei Ama abgeben, bis sie eine Mauer baut. Passt zu einer großen Bogen-Entscheidung, die noch kommt; bis dahin steht ein gemeinsamer Vorrat für das Leuchtfeuer auf dem Zettel.
+- Aus Gebet 9: eine Burg und ein belebter Markt in einer großen Stadt, ein neuer Beruf, eine Paladin-Klasse (als „Lightsworn“-Weg des Wardens auf Zettel 5). Die Sumps sind das erste Stück.
+- Aus Gebet 10: ein feindliches Lager, dem Spieler beitreten und das Kindle angreift. Kampf zwischen Spielern ändert die Kampfregeln (nur mit Chris). Ohne Spielerkampf denkbar: ein Lager der Hollow Wardens (Bogen, Akt 2), das nachts Brennstoff stiehlt.
 - Aus Gebet 8: abgeschlossene Abenteuer für eine Gruppe mit Rätseln, Beute und Boss (eigene Instanz pro Gruppe wäre ein großer Umbau; mit Chris). Kleiner Schritt: ein Rätselraum in der Drowned Chapel oder im Maze.
 
 ## Was ankommt
@@ -61,6 +65,7 @@ Tag 5 (Nacht zum 2026-11-16). Inbox `v2/inbox/2026-11-15.json`: Gebete 9 und 10,
 - Testrunde mit Freunden (2026-11-11): gewünscht wurden WASD-Laufen und besser lesbare Zahlen (beides gebaut), Sprechblasen statt Chatfenster, Gruppen und Handel.
 - Erster Export (2026-11-11): 7 Charaktere, alle in 24 Stunden aktiv; Leuchtfeuer 29 von 300; 2 Gebete, 1 Stimme.
 - Export 2026-11-14: 8 Charaktere, 2 aktiv in 24 Stunden; Leuchtfeuer 300 (Ziel erreicht); 2 Gebete, 2 Stimmen.
+- Export 2026-11-15: 9 Charaktere, 3 aktiv; Leuchtfeuer der letzten Tage 295 bis 362; 2 Gebete, 1 Stimme.
 
 ## Bekannte Probleme
 
@@ -73,6 +78,7 @@ Tag 5 (Nacht zum 2026-11-16). Inbox `v2/inbox/2026-11-15.json`: Gebete 9 und 10,
 
 - Tag 4: Rook muss laut Kern-Test (`tests/unit/sim.test.mjs`, Berufe) in `content/regions/kindle.js` stehen. Für „Rook zieht nach drinnen“ steht er deshalb weiter im Hof; die Meisterstücke gehen nur an seiner guten Bank drinnen. Vorschlag an Chris: Der Test könnte Rook in beiden Gebieten suchen.
 - Tag 4: Neue Wesen in `content/regions/kindle.js` verschieben die Zufallsfolge der Welt; alte Nachttests mit festen Seeds (z. B. `002-last-shift`) reagieren darauf. Neue Wesen deshalb ans Ende der Liste und, wenn sie still stehen, mit `moveEvery: 0`.
+- Tag 5: Nachttests prüfen manchmal Pells Tagestext (z. B. `004-rook-masterwork` sucht „masterwork“). Pells Ausruf ändert sich jede Nacht; deshalb nennt er weiter Rooks Meisterstücke. Besser wäre, wenn alte Tests Pell nicht wörtlich prüfen.
 - Es gibt noch keinen automatischen Probespieler für die Balance (siehe `CLAUDE.md`, „Balance“).
 - Der Chat hat noch keine Moderation (verstecken, stummschalten). Das baut Chris vor dem öffentlichen Start.
 - Der Schein im Norden wird über Bäume gezeichnet (ohne Tiefentest, damit der Grey ihn nicht verdeckt); aus manchen Winkeln färbt er die Baumspitzen orange. Gewollt als Glühen, beobachten.
