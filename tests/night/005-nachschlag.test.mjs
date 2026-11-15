@@ -123,3 +123,28 @@ test('Nachschlag: Fundstellen in den Sumps für Salvage 38, Cartography 36 und F
     assert.ok(P.countItem(p, item) >= 1, `${node}: ${item} gesammelt`);
   }
 });
+
+test('Nachschlag: Gefallen „The Undertow noch einmal“ kommt vor und zählt den Boss in den Sumps', () => {
+  const day = dayWith('undertow_again');
+  assert.ok(day, 'der Boss-Gefallen kommt vor');
+  const w = S.createWorld(regionFor('sumps'), 585);
+  w.date = day;
+  // Zu zweit, wie der Gefallen rät: Warden und Mender auf 42 mit Meisterstücken
+  const t = veteran(w, 't', { cls: 'warden', level: 42, equip: { main: 'masterwork_shield', body: 'masterwork_coat', head: 'masterwork_hood', feet: 'masterwork_boots' } });
+  const m = veteran(w, 'm', { cls: 'mender', level: 42, equip: { main: 'cinder_staff', body: 'masterwork_coat' } });
+  const boss = w.mobs.find((x) => x.type === 'the_undertow');
+  for (const o of w.mobs) if (o !== boss) { o.dead = true; o.deadUntil = 1e9; }
+  t.x = boss.x - 1; t.y = boss.y;
+  m.x = boss.x - 3; m.y = boss.y;
+  applyIntent(w, 't', { t: 'act', kind: 'mob', id: boss.id, action: 'attack' });
+  applyIntent(w, 'm', { t: 'act', kind: 'mob', id: boss.id, action: 'attack' });
+  const gold = t.gold;
+  for (let i = 0; i < 2500 && !boss.dead && t.hp > 0; i++) {
+    applyIntent(w, 't', { t: 'ability', id: ['hallowed_ground', 'anvil_blow', 'bash', 'shield_slam', 'stand_fast'][i % 5] });
+    applyIntent(w, 'm', { t: 'ability', id: ['ember_mend', 'vesper_bell', 'banked_hearth', 'ember_touch'][i % 4] });
+    run(w, 1);
+  }
+  assert.ok(boss.dead, 'zu zweit fällt The Undertow');
+  assert.ok(t.daily.done.includes('undertow_again'));
+  assert.ok(t.gold >= gold + FAVOURS.undertow_again.reward.gold);
+});
