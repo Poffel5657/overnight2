@@ -500,4 +500,13 @@ export const QUESTS = {
     ],
     reward: { xp: 110, gold: 10, items: { millbread: 2, barley: 4 } },
   },
+  // Tag 5, Nachschlag (Rätsel, Gebet 5): Hesks Großmutter war Schleusenwärterin. Ihr Spind hat drei Zahlenräder.
+  grans_locker: {
+    name: "Gran's Locker", giver: 'hesk',
+    text: 'Hesk\'s gran kept the sluice. Her locker under his stall has three number dials, and she said the answer was "on the slate".',
+    steps: [
+      { type: 'talk', npc: 'hesk', text: 'Read the sluice-keepers\' slate by the ladder in the Sumps, then try the dials on Gran\'s locker at Hesk\'s stall.' },
+    ],
+    reward: { xp: 2000, gold: 40, items: { weir_lamp: 1 } },
+  },
 };
