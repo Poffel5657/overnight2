@@ -32,6 +32,8 @@ export const REGION = {
     { type: 'brazier', x: 40, y: 15, light: 3.5, name: 'a lamp niche by the weir' },
     { type: 'table', x: 9, y: 3, name: 'the sluice-keepers\' slate', text: 'A slate bolted to the wall. Chalk marks: water levels, one per day, for years. The last three read 4, then 9, then 13, and the 13 is underlined twice. Under it, smaller: "Something in the weir. Not opening it again." Somebody has scratched a little dial next to the numbers.' },
     { type: 'chest', chest: 'sumps', x: 12, y: 20, name: 'a sluice-keeper\'s locker' },
+    // Nachschlag: die Kiste der Schleusenwärter am Wehr, hinter The Undertow
+    { type: 'chest', chest: 'sumps', x: 41, y: 26, name: 'the weir-keeper\'s chest' },
     // Die alte Nische mit dem Schieberad (Quest „The Drains“): der Griff liegt in der Zisterne
     { type: 'shrine', look: 'niche', x: 28, y: 14, name: 'the quarrymen\'s niche', gives: 'sluice_handle', quest: 'the_drains', step: 1, text: 'A deep niche cut into the cistern wall, black with old soot. Somebody carved a lamp over it, and under the lamp a line of words worn almost smooth.', found: 'Behind the soot, on a hook, hangs a heavy iron handle shaped like a spoked wheel. The words under the lamp read: "Light one for the lamp under the hill, and it will light one for you."', empty: 'Soot, a hook, and the carved lamp. The words read: "Light one for the lamp under the hill, and it will light one for you."' },
     // Tag 5, Nachschlag: Fundstellen für Sammelberufe (Salvage 38, Cartography 36, Foraging 36)
