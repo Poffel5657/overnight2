@@ -5,6 +5,7 @@
 import { TILES, HEIGHTS } from './cinderford-terrain.js';
 import { ARRIVE } from './kindle.js';
 import { CINDER, mazeStart } from './maze.js';
+import { SUMPS_START } from './sumps.js';
 
 export const REGION = {
   id: 'cinderford',
@@ -45,6 +46,8 @@ export const REGION = {
     // Tag 4 (Gebet 7): Flints Erzkarren oben an den Stufen, wo das Erz zum alten Weg hinaufgeht
     { type: 'stall', x: 27, y: 6, w: 3, d: 2, name: 'Flint\'s Ore Cart', awning: '#3a3632', light: 3, text: 'A mine cart full of scrap, brass and glimmer, with a slate of prices chalked on the side. Partners get the second slate.' },
     { type: 'brazier', x: 31, y: 8, light: 4, name: 'a lamp by the ore cart' },
+    // Tag 5 (Gebet 9): Am Ostende der Furt verschwindet der Bach im Fels. Ein Gitter führt hinunter in die Sumps.
+    { type: 'door', to: 'sumps', tx: SUMPS_START.x, ty: SUMPS_START.y, x: 37, y: 12, name: 'the sump grate', look: 'grate', needs: { classLevel: 38 }, locked: 'The grate is rusted shut, and the dark below smells of old water and teeth. Hesk at the stall knows who goes down there. (Level 38)' },
     // Der Eingang ins Labyrinth
     { type: 'door', to: 'maze_1', tx: mazeStart(1).x, ty: mazeStart(1).y, x: 21, y: 30, name: 'the Maze Mouth', look: 'stairs' },
     { type: 'brazier', x: 18, y: 29, light: 4, name: 'a lamp at the Maze Mouth' },

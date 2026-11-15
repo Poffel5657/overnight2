@@ -140,6 +140,19 @@ export const ITEMS = {
   seam_tonic: { name: 'Deep Seam Tonic', stack: true, use: { heal: 140, oil: 20 }, value: 40, glyph: '!', text: 'Lily, nightcap and a pinch of ground glimmer. Flint swears by it. Flint swears by most things.' },
   rooks_tongs: { name: "Rook's Old Tongs", stack: true, value: 0, glyph: '/', text: 'Iron tongs, worn smooth where nine fingers held them. Tansy says they belong on the good bench.' },
   keepers_lantern: { name: 'Keeper\'s Lantern', slot: 'lantern', light: 4, burn: 0.35, value: 600, glyph: 'i', text: 'Made from the lamp of a Keeper. It lights every corner at once, and seems to enjoy it.' },
+  // ---------- Tag 5: The Sumps unter Cinderford (Gebet 9) ----------
+  verdigris: { name: 'Verdigris', stack: true, value: 20, glyph: '%', text: 'Green crust scraped off the old brass pipes under Cinderford. Rook says it is brass that has been thinking for too long.' },
+  sluice_handle: { name: 'Sluice Handle', stack: true, value: 0, glyph: '*', text: 'A heavy iron wheel with six spokes, black with lamp soot. It fits the weir at the end of the Sumps.' },
+  weir_lamp: { name: 'Weir Lamp', slot: 'lantern', light: 4.2, burn: 0.45, value: 640, glyph: 'i', text: 'The sluice-keepers\' old lamp, dragged out of the weir. Green brass, thick glass, and a flame that leans downstream.' },
+  sumpwalker_boots: { name: 'Sumpwalker Boots', slot: 'feet', defence: 7, value: 360, glyph: 'u', text: 'Tall iron-shod boots sealed with verdigris. Your feet stay dry, which down there feels like magic.' },
+  sumpwalker_hood: { name: 'Sumpwalker Hood', slot: 'head', defence: 7, light: 0.5, value: 360, glyph: '^', text: 'A riveted hood with a little brass lamp-hook over the brow, copied from the sluice-keepers.' },
+  sumpwalker_coat: { name: 'Sumpwalker Coat', slot: 'body', defence: 12, value: 500, glyph: 'M', text: 'Cinder iron plates on oilskin, green at every seam. It smells of the Sumps for a week, and then of nothing.' },
+  // ---------- Tag 5: The Old Mill (Abstimmung) und Wenna (Bogen) ----------
+  barley: { name: 'Barley', stack: true, value: 2, glyph: '"', text: 'A handful of Fernmeadow barley. The crows planted most of it by accident, and want it back.' },
+  mill_flour: { name: 'Mill Flour', stack: true, value: 6, glyph: '%', text: 'A small sack of flour from the Old Mill. Hollis at the tavern bakes it into millbread.' },
+  millbread: { name: 'Millbread', stack: true, use: { heal: 45, oil: 5 }, value: 10, glyph: 'n', text: 'A round loaf from the Old Mill\'s flour, baked by Hollis. Still warm in the middle for hours, which helps a lamp along.' },
+  hollow_barley: { name: 'Grey Barley', stack: true, value: 0, glyph: '"', text: 'Small grey grains with a smell of peat smoke. They did not grow anywhere near Kindle.' },
+  wennas_lantern: { name: 'Wenna\'s Lantern', stack: true, value: 0, glyph: 'i', text: 'A carrier\'s lantern of thick green glass, empty and cold. The handle is wrapped in birch bark.' },
 };
 
 // Ausrüstungsplätze in der Reihenfolge, in der das Fenster sie zeigt.

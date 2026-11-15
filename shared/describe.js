@@ -6,6 +6,7 @@ import { CLASSES } from '../content/classes.js';
 import { RECIPES } from '../content/recipes.js';
 import { PROFESSIONS } from '../content/professions.js';
 import { BEACON_FUEL } from '../content/dailies.js';
+import { MILL } from '../content/mill.js';
 
 const TICK_S = 0.3;
 const secs = (ticks) => `${Math.round(ticks * TICK_S * 10) / 10}s`;
@@ -40,6 +41,7 @@ export function describeAbility(id) {
         a.hold ? 'It turns on you for 3.6s.' : '',
         a.root ? `It is stuck in place for ${secs(a.root)}.` : '',
         a.burn ? `It burns for ${a.burn.dmg} (+ a quarter of your level) every 0.6s for ${secs(a.burn.ticks)}.` : '',
+        a.mend ? `At the same time you and allies within ${tiles(a.radius)} heal ${a.mend} (+ your weapon's healing).` : '',
       ].filter(Boolean).join(' ');
       break;
     case 'self':
@@ -115,6 +117,9 @@ export function describeItem(id) {
   const made = Object.values(RECIPES).find((r) => r.out[0] === id);
   if (made) uses.push(`Made by ${PROFESSIONS[made.prof]?.name ?? made.prof} (level ${made.level})`);
   if (BEACON_FUEL[id]) uses.push(`Feeds the Beacon (+${BEACON_FUEL[id]})`);
+  // Tag 5: Was die Old Mill daraus mahlt (content/mill.js)
+  const ground = MILL.grinds.find((g) => g.inputs[id]);
+  if (ground) uses.push(`Ground at the Old Mill: ${ground.inputs[id]} make ${ITEMS[ground.out[0]].name}`);
   return {
     name: it.name,
     kind: it.stack ? `${kind} · stacks` : kind,

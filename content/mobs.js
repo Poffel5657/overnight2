@@ -17,7 +17,7 @@ export const MOBS = {
   crow: {
     name: 'Crow', sprite: 'crow', level: 1, ai: 'animal',
     hp: 6, hit: [1, 1], attackEvery: 5, aggro: 0, leash: 6, respawn: 25, xp: 3,
-    drops: [['crow_feather', 0.7, 1, 2]], gold: [0, 1],
+    drops: [['crow_feather', 0.7, 1, 2], ['barley', 0.6, 1, 2]], gold: [0, 1],
     examine: 'It is judging you. Crows judge everyone.',
   },
   greyling: {
@@ -156,6 +156,37 @@ export const MOBS = {
     drops: [['greyglass', 0.35, 1, 1], ['grey_wisp', 0.5, 1, 2], ['sodden_hymnal', 0.3, 1, 1]], gold: [10, 20],
     special: { every: 3, delay: 6, pattern: 'ring', hit: [35, 45], text: 'The pilgrim lifts its lamp. Water rises around it.' },
     examine: 'It came here to pray a long time ago. It is still praying, to something else.',
+  },
+  // ---------- The Sumps unter Cinderford (Tag 5, Gebet 9) ----------
+  drain_rat: {
+    // Rolle nebenbei, Stufe 40. Kommen zu zweit oder dritt aus dem Rattennest; Lampen stören sie nicht (beast).
+    name: 'Drain Rat', sprite: 'drain_rat', level: 40, ai: 'beast',
+    hp: 230, hit: [17, 21], attackEvery: 4, aggro: 5, leash: 8, respawn: 90, xp: 160,
+    drops: [['verdigris', 0.35, 1, 1], ['scrap', 0.4, 1, 3], ['brass_bits', 0.3, 1, 2]], gold: [12, 22],
+    special: { every: 3, delay: 5, pattern: 'plus', hit: [36, 44], text: 'The rat rears up and shrieks. Its friends in the walls shriek back.' },
+    examine: 'A rat the size of a dog, wearing a crust of green brass from the old pipes. It has opinions about lanterns.',
+  },
+  silt_crawler: {
+    // Rolle normal, Stufe 43. Liegt im Schlamm der Zisterne und meidet die Lampen-Nischen (grey).
+    name: 'Silt Crawler', sprite: 'silt_crawler', level: 43, ai: 'grey',
+    hp: 520, hit: [20, 24], attackEvery: 4, aggro: 5, leash: 8, respawn: 120, xp: 250, drainOil: 2,
+    drops: [['verdigris', 0.5, 1, 2], ['greyglass', 0.2, 1, 1], ['grey_wisp', 0.4, 1, 2]], gold: [16, 30],
+    special: { every: 3, delay: 6, pattern: 'line', hit: [44, 52], text: 'The crawler sucks in a long breath of silt. Mud is about to come out of the other end, fast.' },
+    examine: 'Mostly mud, partly eel, entirely unpleasant. It drinks lamp oil if you let it get close.',
+  },
+  the_undertow: {
+    // Rolle Boss (allein mit Einsatz), Stufe 46. Sitzt im Wehr am Ende der Sumps und zieht alles hinunter.
+    // Ohne Phase 2 (wie The Old Foreman): heilt sich, wenn alle gehen.
+    name: 'The Undertow', sprite: 'the_undertow', level: 46, ai: 'beast', moveEvery: 2,
+    hp: 3000, hit: [26, 31], attackEvery: 4, aggro: 5, leash: 10, respawn: 600, xp: 1600,
+    drops: [['verdigris', 1, 2, 4], ['weir_lamp', 0.25, 1, 1], ['greyglass', 0.7, 1, 2]], gold: [60, 110],
+    specials: [
+      { every: 1, delay: 6, pattern: 'ring', hit: [70, 82], text: 'The Undertow sinks and turns. The water all around it starts to pull.' },
+      { every: 1, delay: 6, pattern: 'bigplus', hit: [64, 76], text: 'The Undertow rises out of the weir. Four streams of black water lift toward you.' },
+    ],
+    specialEvery: 3,
+    boss: { deathText: 'The Undertow lets go. Somewhere far below, the weir grinds open, and the water runs clear for the first time in years.' },
+    examine: 'A knot of water that should not hold a shape, wrapped round a rusted sluice wheel. It pulls at your boots from three steps away.',
   },
   // ---------- The Unending Maze (seit 2026-11-13, Gebet 4) ----------
   // Vorlagen: Die echten Werte rechnet content/regions/maze.js nach dem Stockwerk aus (maze: Faktoren auf die

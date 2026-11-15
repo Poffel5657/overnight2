@@ -24,6 +24,7 @@ import { tickRace, refundBet } from './races.js';
 import { INN } from '../content/tavern.js';
 import { LOOKOUT } from '../content/lookout.js';
 import { keeperFell } from './delve.js';
+import { grindAtMill } from './mill.js';
 
 export { saveOf, xpForLevel, MAX_LEVEL } from './player.js';
 
@@ -255,6 +256,8 @@ export function objectActions(o) {
     case 'inn_bed': return [['rest', `Sleep (${INN.price} gold)`], ['examine', 'Examine']];
     case 'station': return [['use', 'Use'], ['examine', 'Examine']];
     case 'lookout': return [['use', 'Climb up'], ['examine', 'Examine']];
+    // Tag 5: der Mühlstein der Old Mill (content/mill.js)
+    case 'millstone': return [['use', 'Grind'], ['examine', 'Examine']];
     case 'node': return [['gather', NODES[o.node].verb], ['examine', 'Examine']];
     default: return [['examine', 'Examine']];
   }
@@ -560,6 +563,8 @@ function doAction(world, p, goal) {
     startGather(world, p, t);
   } else if (goal.action === 'use' && t.type === 'lookout') {
     climbLookout(world, p);
+  } else if (goal.action === 'use' && t.type === 'millstone') {
+    grindAtMill(world, p);
   } else if (goal.action === 'use' && t.type === 'station') {
     emit(world, { to: p.id, type: 'craft', obj: t.id, station: t.station });
   } else if (goal.action === 'enter' && t.inside) {
@@ -708,6 +713,12 @@ function castAbility(world, p, id) {
           m.tauntUntil = world.tick + 12;
         }
         hitMob(world, p, m, Math.round(abilityDamage(world, p, a) * ex));
+      }
+      // mend (Tag 5): Der Schlag heilt zugleich den Werfer und alle Verbündeten im selben Umkreis
+      // (Hallowed Ground, Vesper Bell). Der Stab des Werfers zählt mit wie bei aura.
+      if (a.mend) {
+        const bonus = P.equipped(p, 'main')?.heal ?? 0;
+        for (const q of alliesNear(world, p, a.radius)) healPlayer(world, q, a.mend + bonus);
       }
       break;
     case 'self':

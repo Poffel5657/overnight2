@@ -566,6 +566,8 @@ export const ITEM_ICONS = {
   // Tag 3
   snail_cup: ['cup', 'brass'], abels_riddle: ['notes', 'paper'], hollow_ration: ['bread', 'bread'], tally_stick: ['root', 'scrap'], carriers_wraps: ['boots', 'paper'], sealed_ledger: ['notes', 'red'], abels_purse_1: ['pile', 'bread'], abels_purse_2: ['pile', 'bread'], abels_purse_3: ['pile', 'bread'],
   cinder_iron: ['pile', 'black'], masterwork_shield: ['shield', 'black'], masterwork_shivs: ['shivs', 'black'], masterwork_hood: ['hood', 'black'], masterwork_boots: ['boots', 'black'], masterwork_coat: ['coat', 'black'], rooks_tongs: ['root', 'steel'], cinder_lantern: ['lantern', 'black'], cinder_staff: ['staff', 'black'], crossed_map: ['notes', 'paper'], unsent_letter: ['notes', 'pale'], ivys_map: ['notes', 'paper'], cart_wheel: ['ring', 'scrap'], hearth_salve: ['potion', 'red'], seam_tonic: ['potion', 'glim'], duchess_hat: ['hood', 'green'], cinder_lens: ['lens', 'black'], chapel_chalk: ['block', 'pale'], shadow_tracing: ['notes', 'pale'],
+  verdigris: ['pile', 'moss'], sluice_handle: ['ring', 'black'], weir_lamp: ['lantern', 'moss'], sumpwalker_boots: ['boots', 'moss'], sumpwalker_hood: ['hood', 'moss'], sumpwalker_coat: ['coat', 'moss'],
+  barley: ['leaf', 'wax'], mill_flour: ['pile', 'pale'], millbread: ['bread', 'bread'], hollow_barley: ['leaf', 'stone'], wennas_lantern: ['lantern', 'green'],
   delvers_hood: ['hood', 'skin'], delvers_boots: ['boots', 'skin'], delvers_coat: ['coat', 'skin'], keepers_lantern: ['lantern', 'warm'],
 };
 
@@ -576,4 +578,6 @@ export const ABILITY_ICONS = {
   ember_touch: ['flame', 'ember'], staff_rap: ['staff', 'brass'], warmth: ['waves', 'warm'], glow: ['ring', 'warm'], kindle_burst: ['star', 'ember'], cinder_flick: ['bolt', 'ember'], hearth_song: ['waves', 'light'], rekindle: ['flame', 'warm'], smoulder: ['star', 'red'], kindred_glow: ['waves', 'ember'], ember_mend: ['cross', 'ember'], sanctuary: ['ring', 'ember'], cinder_bloom: ['flame', 'ember'], banked_hearth: ['waves', 'red'],
   flare_bolt: ['bolt', 'light'], flare: ['star', 'light'], sear: ['beam', 'ember'], sunspot: ['sun', 'light'], glare: ['ring', 'pale'], cinder_brand: ['flame', 'red'], starfall: ['star', 'cold'], sunlance: ['beam', 'light'], prism_ward: ['ring', 'glim'], noonbrand: ['sun', 'red'], corona: ['sun', 'light'], flashpoint: ['bang', 'light'], daybreak: ['beam', 'warm'],
   slash: ['slash', 'steel'], dusk_step: ['arrow', 'dark'], snare: ['trap', 'steel'], fade: ['ghost', 'dark'], twin_cut: ['cross', 'steel'], cheap_shot: ['fist', 'dark'], night_edge: ['slash', 'dark'], caltrops: ['trap', 'dark'], smoke_bomb: ['ghost', 'stone'], gutter_strike: ['slash', 'red'], lampblack_cut: ['slash', 'black'], vanishing_cut: ['cross', 'dark'], hamstring: ['slash', 'stone'], nightfall: ['cross', 'black'],
+  // Tag 5: Stufe 44
+  hallowed_ground: ['star', 'warm'], vesper_bell: ['ring', 'pale'], lanternfall: ['star', 'light'], gloaming: ['slash', 'purple'],
 };

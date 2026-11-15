@@ -230,6 +230,25 @@ const BUILDERS = {
       g.add(box(0.06, 0.04, 0.16, '#ffffff', -0.15, 0.03, -0.1));
       return;
     }
+    if (o.look === 'hopper') {
+      // Tag 5: ein hölzerner Trichter über dem Mühlstein, mit Mehlstaub
+      g.add(box(0.12, 0.8, 0.12, '#5a4028', -0.3, 0.4, -0.3));
+      g.add(box(0.12, 0.8, 0.12, '#5a4028', 0.3, 0.4, 0.3));
+      const h = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.12, 0.5, 4), mat('#7a5a34'));
+      h.rotation.y = Math.PI / 4;
+      h.position.y = 1.05;
+      g.add(h);
+      g.add(box(0.5, 0.03, 0.5, '#e8e0c8', 0, 1.29, 0));
+      return;
+    }
+    if (o.look === 'niche') {
+      // Tag 5: eine rußige Nische der Quarrymen in der Wand, darüber eine eingeritzte Lampe
+      g.add(box(0.9, 1.4, 0.3, '#3a3632', 0, 0.7, -0.35));
+      g.add(box(0.5, 0.6, 0.06, '#0e0c0a', 0, 0.6, -0.2));
+      g.add(box(0.2, 0.26, 0.04, '#c8a040', 0, 1.15, -0.18));
+      g.add(box(0.08, 0.08, 0.04, glowMat, 0, 1.12, -0.16));
+      return;
+    }
     if (o.look === 'bell_frame') {
       // Ein schiefer Glockenrahmen, halb im Sumpf, mit einer kleinen grünen Glocke
       const frame = new THREE.Group();
@@ -254,6 +273,17 @@ const BUILDERS = {
       g.add(box(0.75, 1.35, 0.06, '#6a4a2a', 0, 0.7, 0.38));
       g.add(box(0.08, 0.08, 0.06, '#c8a040', 0.25, 0.7, 0.42));
       g.add(box(0.7, 0.04, 0.04, glowMat, 0, 0.03, 0.4));
+    } else if (o.look === 'grate') {
+      // Tag 5: ein rostiges Gitter im Boden am Ende der Furt, darunter Dunkel und ein Leiterholm
+      g.add(box(0.95, 0.04, 0.95, '#0a0a0c', 0, 0.02, 0));
+      for (let i = -2; i <= 2; i++) g.add(box(0.06, 0.08, 0.95, '#4a3a2e', i * 0.18, 0.06, 0));
+      for (const z of [-0.3, 0.3]) g.add(box(0.95, 0.08, 0.06, '#4a3a2e', 0, 0.06, z));
+      g.add(box(0.08, 0.5, 0.08, '#3a2a1a', 0.42, 0.25, -0.42));
+    } else if (o.look === 'ladder') {
+      // Tag 5: eine Eisenleiter an der Wand, oben ein Lichtschein vom Gitter
+      for (const x of [-0.25, 0.25]) g.add(box(0.07, 2.2, 0.07, '#5a4a3a', x, 1.1, -0.4));
+      for (let i = 0; i < 6; i++) g.add(box(0.5, 0.05, 0.05, '#6a5a48', 0, 0.25 + i * 0.36, -0.4));
+      g.add(box(0.7, 0.05, 0.5, glowMat, 0, 2.2, -0.3));
     } else if (o.look === 'stairs') {
       for (let i = 0; i < 4; i++) g.add(box(0.9, 0.12, 0.25, '#6a6660', 0, 0.06 + i * 0.12, 0.35 - i * 0.22));
       g.add(box(1.1, 1.6, 0.15, '#4a4844', 0, 0.8, -0.45));
@@ -406,6 +436,32 @@ const BUILDERS = {
     g.add(box(0.4, 0.4, 0.4, '#7a5a34', -1.1, 0.7, 0.3));
     g.add(box(0.7, 0.35, 0.3, '#4a4a50', -0.4, 0.45, -0.6));
   },
+  mill(o, g, ctx) {
+    // Tag 5: die Old Mill. Steinhaus mit Schieferdach, Tür nach Süden, Wasserrad an der Ostseite (zum Bach).
+    const wall = 1.8;
+    g.add(box(o.w - 0.2, wall + 1, o.d - 0.2, '#8a8478', 0, (wall - 1) / 2, 0));
+    g.add(roof(o.w + 0.2, o.d + 0.2, 1.2, o.roof || '#4a4a52', wall));
+    g.add(box(0.6, 1.0, 0.06, '#3e2a18', 0, 0.5, o.d / 2 - 0.08));
+    g.add(box(0.3, 0.3, 0.06, glowMat, -o.w / 4, 1.2, o.d / 2 - 0.08));
+    const wheel = new THREE.Group();
+    wheel.add(new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.1, 0.3, 10, 1, true), mat('#5a4028')).rotateZ(Math.PI / 2));
+    for (let i = 0; i < 5; i++) wheel.add(box(0.36, 2.1, 0.12, '#6e5034', 0, 0, 0).rotateX((i / 5) * Math.PI));
+    wheel.add(box(0.5, 0.2, 0.2, '#3a3028', 0, 0, 0));
+    wheel.position.set(o.w / 2 + 0.25, 0.6, 0);
+    g.add(wheel);
+    // Das Rad dreht sich von selbst (der Bach treibt es)
+    ctx.spin?.(wheel, 'x', 0.6);
+  },
+  millstone(o, g) {
+    // Zwei Mühlsteine unter einem kleinen Schutzdach
+    g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.2, 10), mat('#8a847a')).translateY(0.1));
+    g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.18, 10), mat('#9a948a')).translateY(0.3));
+    g.add(box(0.05, 0.2, 0.05, '#5a4028', 0, 0.48, 0));
+    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) g.add(box(0.08, 1.3, 0.08, '#5a4028', sx * 0.45, 0.65, sz * 0.45));
+    const r = box(1.15, 0.06, 1.15, '#6b5a40', 0, 1.32, 0);
+    r.rotation.x = 0.12;
+    g.add(r);
+  },
   stall(o, g) {
     g.add(box(o.w - 0.4, 0.7, o.d - 0.6, '#7a5a34', 0, 0.35, 0));
     for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
@@ -477,6 +533,8 @@ export function buildObjects(world, region, heightAt) {
   const flameByObject = new Map();
   const groupByObject = new Map();
   const blocked = new Set();
+  // Tag 5: Dinge, die sich von selbst drehen (das Mühlrad). Gedreht wird jedes Bild in pulseGlow.
+  const spinners = [];
 
   for (const o of world.objects) {
     for (let y = o.y; y < o.y + o.d; y++) for (let x = o.x; x < o.x + o.w; x++) blocked.add(`${x},${y}`);
@@ -490,6 +548,7 @@ export function buildObjects(world, region, heightAt) {
         flames.push(s);
         flameByObject.set(o.id, s);
       },
+      spin(obj, axis, speed) { spinners.push({ obj, axis, speed }); },
     };
     (BUILDERS[o.type] || BUILDERS.house)(o, g, ctx);
     g.position.set(o.x + o.w / 2, footprintBase(o, heightAt), o.y + o.d / 2);
@@ -594,6 +653,7 @@ export function buildObjects(world, region, heightAt) {
   // Jedes Bild: sanftes Pulsieren
   function pulseGlow(t) {
     profGlowMat.opacity = 0.22 + 0.18 * (0.5 + 0.5 * Math.sin(t * 2.2));
+    for (const sp of spinners) sp.obj.rotation[sp.axis] = t * sp.speed;
   }
 
   return { root, pickables, flames, flameByObject, setDepleted, setGlow, pulseGlow };

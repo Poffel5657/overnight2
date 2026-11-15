@@ -8,27 +8,27 @@ Der Nightwright pflegt diese Datei jede Nacht (Regeln in `CLAUDE.md`).
 
 ## Heute in Arbeit
 
-Tag 4 (Nacht zum 2026-11-15). Inbox `v2/inbox/2026-11-14.json`: Gebete 7 und 8, Zettel 3: rook-masterwork 2 Stimmen, sonst keine.
+Tag 5 (Nacht zum 2026-11-16). Inbox `v2/inbox/2026-11-15.json`: Gebete 9 und 10, Zettel 4: old-mill 1 Stimme, sonst keine. 9 Charaktere, 3 aktiv.
 
-**Teil 1, aus den Gebeten: Flint in Cinderford (Gebet 7) und exploit im Kampf (Gebet 8)**
-1. *Was der Spieler will:* Rohstoffe kaufen können, statt nur zu sammeln, und dass ein Anteil sich beim Einkaufen spürbar lohnt (7). Im Kampf Entscheidungen statt einer Taste (8).
-2. *Woran er es merkt:* Flint mit Erzkarren oben an den Stufen in Cinderford, Ware mit „(PARTNER)“-Preis, fünftes Geschäft bei Coyne, Quest „A Share of the Cart“, Cinder Iron für Teilhaber; neue Fähigkeiten auf 36 mit EXPLOIT über dem Ziel, Tooltip erklärt die Vorbereitung, Pell ruft es aus.
-3. *Woran es anschließt:* Counting House (Anteile), Händler, Cinderford, Tinkering (Cinder Iron für Meisterstücke); Klassen, Gruppen (Blenden, Festsetzen, Brennen).
-4. *Weg dorthin:* Pell und der Ruf von Flint; Coyne listet das Geschäft; neue Fähigkeit erscheint mit Stufe 36.
+**Teil 1, aus den Gebeten: The Sumps unter Cinderford (Gebet 9)**
+1. *Was der Spieler will:* Eine Stadt, die sich groß anfühlt, mit Kanälen und Verliesen zum Erkunden, und Licht als Glauben. Darunter: Neues zum Entdecken für hohe Stufen.
+2. *Woran er es merkt:* Ein Gitter am Bach in Cinderford führt in die Sumps (Stufe 40–46): Drain Rats, Silt Crawler, alte Lampen-Nischen der Quarrymen (Kohlebecken), eine Truhe, ein Boss **The Undertow** am Wehr. Hesk sucht jemanden, der die Abflüsse frei macht (Quest-Kette in 3 Schritten), Sorrel und Flint reden davon, neue Beute (Verdigris) für Rezepte.
+3. *Woran es anschließt:* Cinderford, Kampf/Klassen (Stufe 40+), Tinkering (neue Rezepte aus Verdigris), Licht/Kohlebecken, Truhen, Gefallen.
+4. *Weg dorthin:* Pell ruft es aus, Hesk ab Stufe 38 („The Drains“), Flint erwähnt das Wasser.
 
-**Teil 2, aus der Abstimmung: Rooks Meisterstücke (rook-masterwork, 2 Stimmen)**
-1. *Was der Spieler will:* Etwas, das nach den Greyglass-Rezepten kommt, und Rook als Lehrer mit eigener Bank drinnen.
-2. *Woran er es merkt:* Rook bietet ab Tinkering 30 „Rook's Masterwork“ an, Tansy hat die Zangen, die gute Bank drinnen macht fünf Meisterstücke (32–37), das Fenster markiert sie.
-3. *Woran es anschließt:* Tinkering, Werkstatt/Tansy, Cinderford (Cinder Iron), Copperdeep (Seam Lurker), Ausrüstung für 32–40.
-4. *Weg dorthin:* Rook im Hof, Pell, Tansy.
+**Teil 2, aus der Abstimmung: The Old Mill (old-mill, 1 Stimme)**
+1. *Was der Spieler will:* Ein rätselhafter Ort, der etwas tut, und eine Antwort auf „wer mahlt hier was“.
+2. *Woran er es merkt:* Mühle am Bach westlich der Straße nach Süden, das Rad dreht sich; am Mühlstein kann jeder mahlen (Gerste zu Mehl, Glas zu Glasgrieß), Gerste von Krähen und von Marrow; Hollis backt aus Mehl Millbread; nachts hat jemand im Trichter fremde Gerste gemahlen. Quest „Who Grinds at Night“.
+3. *Woran es anschließt:* Händler (Marrow), Taverne (Hollis), Lampwright (Glasgrieß), Quests, Bogen.
+4. *Weg dorthin:* Pell, Marrow schickt einen hin, Weg von der Straße bis vor die Mühle.
 
-**Teil 3, vom Nightwright: „Catch a Shadow“ (Bogen, Akt 1)**
-1. *Was der Spieler will:* Das Rätsel um den Stranger ein Stück weiter, ohne es aufzulösen.
-2. *Woran er es merkt:* Fen zeichnet nachts Schatten am Leuchtfeuer, Kreidekreis als Objekt, Tallow gibt Kreide, der Stranger wirft nachts keinen Schatten, Ama, Fen und Tallow reagieren; Ama sagt, das Leuchtfeuer frisst mehr.
-3. *Woran es anschließt:* Leuchtfeuer, Tag/Nacht, Kapelle, Stranger, Bogen.
-4. *Weg dorthin:* Fen am Platz ruft, alle Stufen nach Kindling.
+**Teil 3, vom Nightwright: Wenna, eine verirrte Trägerin (Bogen, Akt 1)**
+1. *Was der Spieler will:* Endlich jemanden aus dem Norden treffen, ohne alles zu erfahren.
+2. *Woran er es merkt:* Nachts mahlt eine erschöpfte Frau mit leerer grüner Laterne in der Mühle (tagsüber schläft sie). Quest „The Last Sack“: Brot bringen, ihre Laterne an der Leuchtfeuer füllen, sie zum Gebet fragen; sie erkennt das Birkenpapier-Gebet. Stranger und Ama reagieren.
+3. *Woran es anschließt:* Mühle, Leuchtfeuer/Öl, Kapelle (Opferkasten-Gebet), Stranger, Bogen.
+4. *Weg dorthin:* Folgt aus „Who Grinds at Night“; Fen und Pell erwähnen sie.
 
-**Dauerauftrag Klassen: Warden** 36 (Anvil Blow). **Nachschlag (gebaut):** Mender/Flarecaster/Drifter 36, alle vier Klassen auf 40 (Hold the Line, Banked Hearth, Daybreak, Nightfall), frühe Combos (Twin Cut, Sear, Cinder Flick), Seam Lurker und „The Deep Seam“ (36–40), Lampwright 32–35 Cinder Iron Lantern, Staff und Lens, „The Map of Crosses“ (Haus 3) und „The Unsent Letter“ und „Ivy's Reply“ (Haus 4, Abels Haus; Gebet 5), zwei Gefallen (Lurker für Flint, Eisen für Rook), Alchemie 28/32 (Hearthroot Salve, Deep Seam Tonic), Salvage 32 (Deep Seam), Foraging 30 (Ember Thicket), Cartography 30 (Old Survey Stake), „Three Wheels“, Gespräche und Rufe.
+**Dauerauftrag Klassen:** Warden 44 **Hallowed Ground** (neue Wirkung: burst heilt Verbündete, `mend`). **Nachschlag geplant:** Mender, Flarecaster, Drifter 44; Tinkering 38–40 aus Verdigris; Gefallen; Gebet 10 als großer Vorschlag/Idee.
 
 ## Ausbau läuft
 
