@@ -85,3 +85,27 @@ test('Wenna kommt erst nach „Who Grinds at Night“ ins Gespräch', () => {
   assert.equal(p.dialog.page, 'w_shy');
   assert.equal(p.quests.the_last_sack, undefined);
 });
+
+test('Nachschlag: Brindle, Mothwick, Coyne und Pip wissen von Wenna und der Mühle', async () => {
+  const { regionFor } = await import('../../content/regions/index.js');
+  const { BARKS } = await import('../../content/barks.js');
+  const w = S.createWorld(REGION, 553);
+  w.daylight = 0.1;
+  const p = veteran(w, 'a', { level: 20, quests: { kindling: { done: true }, who_grinds: { done: true }, the_last_sack: { step: 2, n: 0 } } });
+  talk(w, 'a', 'brindle');
+  choose(w, 'a', 'carriers is in the old mill');
+  assert.equal(p.dialog.page, 'br_wenna');
+  p.quests.the_last_sack = { done: true };
+  talk(w, 'a', 'mothwick');
+  choose(w, 'a', 'called Wenna');
+  assert.equal(p.dialog.page, 'mw_wenna');
+  // Coyne im Counting House
+  const house = w.objects.find((o) => o.name === 'the Counting House');
+  actOn(w, 'a', house, 'enter');
+  const d = S.createWorld(regionFor('kindle_inside'), 554);
+  const q = S.addPlayer(d, 'a', 'a', S.removePlayer(w, 'a'));
+  talk(d, 'a', 'coyne');
+  choose(d, 'a', 'share in the old mill');
+  assert.equal(q.dialog.page, 'cy_mill');
+  assert.ok(BARKS.band_pip.lines.some((l) => l.includes('mill')));
+});
