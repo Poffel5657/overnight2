@@ -121,3 +121,18 @@ test('Nachschlag: Wenna sagt, wie viele Träger losgingen (nur nachts, während 
   talk(w, 'a', 'wenna');
   assert.ok(!options(w, 'a').some((t) => t.includes('how many')), 'bei Tag schläft sie');
 });
+
+test('Nachschlag: Nach „The Last Sack“ backt Wenna nachts Torfbrot aus Gerste (für den Gefallen des Strangers)', async () => {
+  const { FAVOURS } = await import('../../content/dailies.js');
+  assert.equal(FAVOURS.bread_for_stranger.item, 'hollow_ration');
+  const w = S.createWorld(REGION, 556);
+  w.daylight = 0.1;
+  const p = veteran(w, 'a', { level: 10, quests: { kindling: { done: true }, who_grinds: { done: true }, the_last_sack: { done: true } }, bag: [{ id: 'barley', n: 6 }] });
+  talk(w, 'a', 'wenna');
+  choose(w, 'a', 'bake with this barley');
+  assert.equal(P.countItem(p, 'hollow_ration'), 1);
+  assert.equal(P.countItem(p, 'barley'), 3);
+  w.daylight = 1;
+  talk(w, 'a', 'wenna');
+  assert.ok(!options(w, 'a').some((t) => t.includes('bake')), 'bei Tag schläft sie');
+});
