@@ -9,6 +9,8 @@ export const BARKS = {
     range: 14, every: 25, news: true, shout: true,
     lines: [
       'HEAR YE! Feed the Beacon before midnight!',
+      'The Old Mill turns again! Barley in, flour out! No miller required!',
+      'Rats under Cinderford! Hesk pays for fewer!',
       'Favours on the notice board! Gold for honest work!',
       'Pray at the chapel, and the world may answer!',
       'The Night Market opens at dusk! Bring gold, and a lantern!',
@@ -35,6 +37,11 @@ export const BARKS = {
     range: 9, every: 20,
     lines: ['*fiddles a quick jig*', 'One more! One more!', '*the fiddle squeaks, on purpose*', 'This one is called The Lark\'s Jig!'],
   },
+  // Tag 5 (Bogen): Wenna in der Old Mill (tagsüber schläft sie, die Rufe kommen trotzdem leise)
+  wenna: {
+    range: 6, every: 40,
+    lines: ['*grinds, slowly*', 'Less to carry. Less to carry.', '*holds her cold lantern close*', 'Your bread tastes of sun.'],
+  },
   band_oswin: {
     range: 9, every: 26,
     lines: ['*drums on whatever is nearest*', 'Ba-dum, tss.', 'Everybody clap! No? Fine.'],
@@ -56,7 +63,7 @@ export const BARKS = {
   },
   hesk: {
     range: 8, every: 40,
-    lines: ['Oil! Chalk! Cake! Rope!', 'Gear for turnstones, gold for everything else.', '*counts rope under his breath*'],
+    lines: ['Oil! Chalk! Cake! Rope!', 'Gear for turnstones, gold for everything else.', '*counts rope under his breath*', 'Hear that? Water. Under the floor. Where it should not be.', 'Lamps for the Sumps! More lamps than that!'],
   },
   coyne: {
     range: 6, every: 50,

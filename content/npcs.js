@@ -597,7 +597,8 @@ const hollis = {
   chests: { text: 'One for every regular. Leave what you do not want to carry, take it back when you need it. Any chest opens to your own things. I stopped asking why. So should you.', options: [{ text: 'Thanks.', to: 'start' }, BYE] },
   rumour: { text: 'Woodcutters come in at night talking about a glow up north. Mothwick says it is a hearth that nobody feeds. Tallow has been in here twice this week, and Tallow does not drink. Something is going on.', options: [{ text: 'Anything else?', to: 'rumour2' }, { text: 'Interesting.', to: 'start' }, BYE] },
   rumour3: { text: 'There is a woman in the old moneylender\'s house counting everybody\'s coins, and Marrow has started saying "partner" like it is a swear word. And the woodcutters say they saw lamps walking along the north edge, in a line, with nobody they knew under them.', options: [{ text: 'Anything newer?', to: 'rumour4' }, { text: 'Interesting.', to: 'start' }, BYE] },
-  rumour4: { text: 'Rook came in for a pint and said "hm" about the roof. Rook, indoors, on purpose. A miner from Cinderford called Flint sold Marrow a cart of brass and they argued for an hour about who robbed whom. And Fen has drawn chalk shadows all round the Beacon. Fen says one of them is missing. Fen says a lot of things.', options: [{ text: 'Interesting.', to: 'start' }, BYE] },
+  rumour4: { text: 'Rook came in for a pint and said "hm" about the roof. Rook, indoors, on purpose. A miner from Cinderford called Flint sold Marrow a cart of brass and they argued for an hour about who robbed whom. And Fen has drawn chalk shadows all round the Beacon. Fen says one of them is missing. Fen says a lot of things.', options: [{ text: 'And?', to: 'rumour5' }, { text: 'Interesting.', to: 'start' }, BYE] },
+  rumour5: { text: 'Somebody has been leaving little bags of flour on doorsteps, grey and smoky, and the old mill by the stream turns all night with nobody in it. And Hesk from Cinderford says the water under his stall is "talking". Hesk never says anything is talking.', options: [{ text: 'Interesting.', to: 'start' }, BYE] },
   rumour2: { text: 'Brindle came down for stew and would not stop writing in her little book. Marrow is buying up every drop of oil in Kindle. And Brack swears the Old Foreman tipped his helmet at him once. Brack also swears at beetles, so.', options: [{ text: 'And?', to: 'rumour3' }, { text: 'Interesting.', to: 'start' }, BYE] },
 };
 
@@ -800,7 +801,7 @@ export const TALK = {
   snail_bramble: snail('bramble'), snail_pebble: snail('pebble'), snail_tom: snail('tom'),
   snail_duchess: snail('duchess'), snail_thistle: snail('thistle'),
   pell: {
-    start: { text: 'HEAR YE! Old Rook has gone INSIDE, and teaches masterwork at his good bench! A miner called Flint sells ore in Cinderford, cheaper for partners! Fen is drawing shadows by the Beacon! And every calling learned to hit what is already down!', options: [
+    start: { text: 'HEAR YE! The OLD MILL by the stream turns again, and anybody may grind there! Under Cinderford, Hesk wants the old drains cleared, and something lives in the weir! Wardens and Menders learned to heal while they hit! And Marrow wants to know who leaves flour on our doorsteps!', options: [
       { text: 'Whose hand is this?', to: 'po_pell', if: { quest: { prayer_not_ours: 1 }, has: { prayer_slip: 1 } }, do: [{ advance: 'prayer_not_ours' }] },
       { text: 'Anything I can help with?', to: 'ul_offer', if: { quest: { kindling: 'done', unsent_letter: 'none' } }, do: [{ start: 'unsent_letter' }] },
       { text: 'Anything else?', to: 'more' }, BYE] },

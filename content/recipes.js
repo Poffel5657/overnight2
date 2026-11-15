@@ -57,6 +57,8 @@ export const RECIPES = {
   // Tag 4, Nachschlag: Alchemie 28 und 32, Heilung für die Lurker im tiefen Flöz
   a_hearth_salve: { prof: 'alchemy', level: 28, inputs: { emberroot: 2, moss_tuft: 2, nightcap: 1 }, out: ['hearth_salve', 2], xp: 110 },
   a_seam_tonic: { prof: 'alchemy', level: 32, inputs: { lily_bulb: 2, nightcap: 2, glimmer: 1 }, out: ['seam_tonic', 2], xp: 130 },
+  // Tag 5, Nachschlag: Alchemie 36. Der Trank der Schleusenwärter: Verdigris bindet das Öl, die Lilie heilt.
+  a_sluice_draught: { prof: 'alchemy', level: 36, inputs: { verdigris: 1, lily_bulb: 2, nightcap: 1 }, out: ['sluice_draught', 2], xp: 150 },
   a_lily_oil: { prof: 'alchemy', level: 21, inputs: { lily_bulb: 2 }, out: ['lily_oil', 2], xp: 86 },
 
   // Lampwright (Linsenbank in der Werkstatt)
@@ -79,5 +81,8 @@ export const RECIPES = {
   l_cinder_lantern: { prof: 'lampwright', level: 32, inputs: { cinder_iron: 2, glimmer: 3, wisp_core: 1 }, out: ['cinder_lantern', 1], xp: 240 },
   l_cinder_staff: { prof: 'lampwright', level: 34, inputs: { cinder_iron: 3, greyglass: 2, emberroot: 2 }, out: ['cinder_staff', 1], xp: 250 },
   l_cinder_lens: { prof: 'lampwright', level: 35, inputs: { cinder_iron: 3, greyglass: 3 }, out: ['cinder_lens', 1], xp: 255 },
+  // Tag 5 (Sumps, Nachschlag): Verdigris hält die Feuchte aus dem Eisen. Stab und Linse eine Stufe über Cinder Iron.
+  l_verdigris_staff: { prof: 'lampwright', level: 38, inputs: { verdigris: 3, cinder_iron: 2, emberroot: 2 }, out: ['verdigris_staff', 1], xp: 290 },
+  l_verdigris_lens: { prof: 'lampwright', level: 39, inputs: { verdigris: 3, cinder_iron: 2, greyglass: 2 }, out: ['verdigris_lens', 1], xp: 300 },
   l_greyglass_staff: { prof: 'lampwright', level: 26, inputs: { greyglass: 2, glimmer: 2, lily_bulb: 2 }, out: ['greyglass_staff', 1], xp: 140 },
 };
