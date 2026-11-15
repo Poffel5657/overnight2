@@ -203,6 +203,7 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 - **Fundstellen in den Sumps:** Verdigris Pipe (Salvage 38: Verdigris, manchmal Cinder Iron), Sluice-Keeper's Mark (Cartography 36: Survey Notes, manchmal Verdigris), Lampcap Cluster (Foraging 36: Nightcap, manchmal Lily Bulb, beides für den Sluice Draught). Salvage ging bisher bis 32, Cartography und Foraging bis 30.
 - **Zwei Gefallen:** drei Drain Rats für Hesk (40 Gold, 560 EP), zwei Mehl für Hollis (14 Gold, 50 EP). Der Kern-Test „Gefallen erledigen“ bleibt grün.
 - **Neue Gespräche:** Brindle zählt nach (fünf, vier, drei, zwei Lampen: „Sie sind nicht heimgegangen“), Mothwick kaufte ihr Papier einst von einer älteren Frau mit derselben grünen Laterne („wenn sie jetzt die Jungen schicken, gehen die Alten nicht mehr“), Coyne findet in Abels Büchern ein Konto des Müllers (offen: eine Fuhre Gerste an Kindle), Pip singt von der Mühle.
+- Eine Lampe an der Mühlentür hält nachts die Greylinge vom Gespräch mit Wenna fern (im Bild geprüft).
 - Pell ruft die Nacht aus, neue Rufe für Pell, Hesk und Wenna, Hollis hat ein fünftes Gerücht, der Ausguck zeigt nachts nur noch zwei Lampen.
 
 **Balance-Notizen** (Warden mit Meisterstücken und Cinder-Laterne, ohne Ausweichen):
