@@ -31,4 +31,10 @@ export const CHRONICLE = [
     title: 'Iron under the hill, a shadow missing',
     text: 'The altar voted for Old Rook, and he has finally gone inside: masterwork at his good bench, from cinder iron that Flint the Miner digs in Cinderford (cheaper for his partners). Every calling learned to strike what is already burning, blinded or stuck, all the way up to level 40, something eats iron in the deep seam of Copperdeep, and Fen has noticed that one person at the Beacon throws no shadow.',
   },
+  {
+    day: 5,
+    date: '2026-11-16',
+    title: 'The mill turns, the drains run',
+    text: 'The altar voted for the Old Mill, and it turns again by the stream: anybody can grind barley or green glass there, Hollis bakes millbread, and somebody has been grinding at night. Under Cinderford, Hesk opened the grate to the Sumps, where rats, crawlers and the Undertow wait for anyone level 40 and up, and every calling learned something new at level 44.',
+  },
 ];
