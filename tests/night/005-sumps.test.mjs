@@ -226,3 +226,15 @@ test('Nachschlag: The Lamp Under the Hill (Hesk, Sorrel, drei Crawler, Tallow in
   assert.ok(r.classes.warden.xp >= xp + QUESTS.lamp_under_the_hill.reward.xp);
   assert.ok(P.countItem(r, 'sluice_draught') >= 2);
 });
+
+test('Nachschlag: Sorrel zählt Hesk, Ivy zeichnet die Sumps (die sich nicht bewegen)', () => {
+  const c = S.createWorld(regionFor('cinderford'), 545);
+  const p = veteran(c, 'a', { level: 40, quests: { kindling: { done: true }, the_drains: { step: 1, n: 0 } } });
+  talk(c, 'a', 'sorrel');
+  choose(c, 'a', 'count the Sumps');
+  assert.equal(p.dialog.page, 'so_sumps');
+  p.quests.the_drains = { done: true };
+  talk(c, 'a', 'ivy');
+  choose(c, 'a', 'do not move');
+  assert.equal(p.dialog.page, 'iv_sumps');
+});
