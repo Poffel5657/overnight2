@@ -35,6 +35,9 @@ export const ABILITIES = {
   // Tag 5 (Gebet 9: Licht als Glaube, ein Paladin): Stufe 44. Der Schlag weiht den Boden: Wesen im Umkreis werden
   // getroffen und halten sich an den Warden, er und alle Verbündeten darin heilen zugleich (neue Wirkung mend).
   hallowed_ground: { name: 'Hallowed Ground', desc: "Strike the ground with the lantern held high. Where the light lands, the Grey burns and friends breathe easier.", glyph: '+', kind: 'burst', radius: 2, hit: [11, 14], hold: true, mend: 16, oil: 8, cd: 30, power: true, text: 'You strike the ground. For a moment it is holy, or at least well lit.' },
+  // Tag 5, Nachschlag: Stufe 48. Schild und Laterne auf den Boden: alles daneben sitzt fest und hält sich an den Warden.
+  // Danach trifft Anvil Blow (exploit root) und der Drifter mit Hamstring/Gloaming voll.
+  lamp_and_anvil: { name: 'Lamp and Anvil', desc: "Bring the lantern down on the shield like a hammer on an anvil. Everything close is nailed to the spot, and very cross with you.", glyph: 'T', kind: 'burst', radius: 1.5, hit: [16, 20], root: 10, hold: true, oil: 10, cd: 24, power: true, text: 'Lamp meets shield with a sound like a forge. Nothing near you moves.' },
   stand_fast: { name: 'Stand Fast', desc: "Dig in behind the shield and get your breath back.", glyph: 'H', kind: 'self', heal: 18, brace: 8, cd: 36, text: 'You dig in. The shield holds, and so do you.' },
   beacon_slam: { name: 'Beacon Slam', desc: "Slam the lantern into the shield. The flash rings every head nearby.", glyph: '*', kind: 'burst', radius: 1.5, hit: [7, 10], dazzle: 5, hold: true, oil: 5, cd: 24, text: 'Lantern meets shield. Everything close sees stars.' },
   bulwark: { name: 'Bulwark', desc: "Raise the shield and the lantern together. Everything looks at you, and everyone behind you breathes easier.", glyph: 'U', kind: 'taunt', radius: 4, brace: 10, oil: 8, cd: 45, text: 'You raise shield and lantern. Everything turns to you, and your friends stand easier.' },
@@ -64,6 +67,8 @@ export const ABILITIES = {
   // Tag 5: Stufe 44. Eine Glocke aus Licht: alles in der Nähe ist geblendet (angekündigte Angriffe zählen weiter),
   // die Gruppe heilt kräftig (mend). Der große Rettungsmoment des Menders.
   vesper_bell: { name: 'Vesper Bell', desc: "Ring the ember like the chapel bell at evening. Everything near stops to listen, and everyone near feels better for it.", glyph: 'A', kind: 'burst', radius: 3, hit: [4, 6], dazzle: 6, mend: 30, oil: 14, cd: 60, text: 'A low note rings out of the staff. Everything stops to listen.' },
+  // Tag 5, Nachschlag: Stufe 48. Die große Rettung: viel Wärme auf einmal für alle in der Nähe, mit langer Abklingzeit.
+  second_dawn: { name: 'Second Dawn', desc: "Pour the whole ember out at once, the way the sun comes up after a long night. Use it when everything else has gone wrong.", glyph: 'O', kind: 'aura', radius: 4, heal: 40, brace: 8, oil: 18, cd: 90, text: 'For a moment it is morning around you, and everybody remembers how to stand.' },
   // Tag 4, Nachschlag: Stufe 40. Die große, ruhige Gruppenheilung: lange Wärme für alle im Umkreis, gut gegen Seam Lurker und Bosse.
   banked_hearth: { name: 'Banked Hearth', desc: "Bank the ember the way you bank a fire for the night. It does not blaze. It just keeps everyone warm for a long time.", glyph: 'm', kind: 'hot', radius: 5, heal: 12, ticks: 24, oil: 14, cd: 60, text: 'You bank the ember low and steady. Warmth settles over everyone near.' },
   kindle_burst: { name: 'Kindle Burst', desc: "The ember flares. Creatures flinch and run.", glyph: '*', kind: 'burst', radius: 2.5, hit: [3, 5], scare: 6, oil: 10, cd: 24, text: 'Your ember flares outward.' },
@@ -87,6 +92,8 @@ export const ABILITIES = {
   daybreak: { name: 'Daybreak', desc: "Pull the whole morning through the lens at once. Whatever is already burning learns what noon means.", glyph: '|', kind: 'ranged', range: 7, hit: [18, 24], exploit: { burn: 1.5 }, oil: 14, cd: 36, power: true, text: 'For a heartbeat it is morning, in a straight line.' },
   // Tag 5: Stufe 44. Ein Lichtregen auf eine Gruppe, besonders hart gegen Geblendete (nach Glare, Noonbrand).
   lanternfall: { name: 'Lanternfall', desc: "Throw the light up and let it come down on all of them. Whatever is already blinded never sees it land.", glyph: '*', kind: 'zone', range: 6, radius: 1.5, hit: [16, 21], exploit: { dazzle: 1.5 }, oil: 12, cd: 28, power: true, text: 'Light goes up like a thrown lantern and comes down everywhere.' },
+  // Tag 5, Nachschlag: Stufe 48. Ein langer, heißer Strahl, der nachbrennt und Brennendes noch tiefer trifft.
+  solar_lance: { name: 'Solar Lance', desc: "Focus the lens until the light turns white, then let it go in one long line. It keeps burning after it lands.", glyph: '|', kind: 'ranged', range: 7, hit: [22, 28], burn: { dmg: 6, ticks: 12 }, exploit: { burn: 1.4 }, oil: 10, cd: 24, power: true, text: 'A white line of light, and then smoke.' },
   sunspot: { name: 'Sunspot', desc: "Drop a patch of hard light on a group.", glyph: '@', kind: 'zone', range: 5, radius: 1.5, hit: [4, 6], oil: 8, cd: 20, text: 'A patch of hard light lands on the ground.' },
 
   // Drifter
@@ -109,5 +116,7 @@ export const ABILITIES = {
   nightfall: { name: 'Nightfall', desc: "Wait until they cannot see, then be the dark. It is over before they blink the soot out of their eyes.", glyph: 'N', kind: 'melee', hit: [16, 21], dark: 1.5, exploit: { dazzle: 1.6 }, cd: 30, power: true },
   // Tag 5: Stufe 44. Der Schnitt aus der Dämmerung: im Dunkeln tiefer, gegen Festsitzende (Snare, Caltrops, Hold the Line) noch tiefer.
   gloaming: { name: 'Gloaming', desc: "The hour when nothing is quite where it seems. Least of all you.", glyph: 'G', kind: 'melee', hit: [20, 26], dark: 1.4, exploit: { root: 1.5 }, cd: 20, power: true },
+  // Tag 5, Nachschlag: Stufe 48. Der letzte Schnitt aus dem Schatten: gegen Geblendete am tiefsten, gegen Festsitzende auch.
+  last_shadow: { name: 'Last Shadow', desc: "Become the last shadow they ever look for. They will not find it.", glyph: 'L', kind: 'melee', hit: [24, 30], dark: 1.3, exploit: { dazzle: 1.5, root: 1.3 }, cd: 26, power: true },
   twin_cut: { name: 'Twin Cut', desc: "Both blades at once. Your hardest hit.", glyph: 'X', kind: 'melee', hit: [8, 11], exploit: { root: 1.3 }, cd: 12, power: true },
 };

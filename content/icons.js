@@ -583,4 +583,5 @@ export const ABILITY_ICONS = {
   slash: ['slash', 'steel'], dusk_step: ['arrow', 'dark'], snare: ['trap', 'steel'], fade: ['ghost', 'dark'], twin_cut: ['cross', 'steel'], cheap_shot: ['fist', 'dark'], night_edge: ['slash', 'dark'], caltrops: ['trap', 'dark'], smoke_bomb: ['ghost', 'stone'], gutter_strike: ['slash', 'red'], lampblack_cut: ['slash', 'black'], vanishing_cut: ['cross', 'dark'], hamstring: ['slash', 'stone'], nightfall: ['cross', 'black'],
   // Tag 5: Stufe 44
   hallowed_ground: ['star', 'warm'], vesper_bell: ['ring', 'pale'], lanternfall: ['star', 'light'], gloaming: ['slash', 'purple'],
+  lamp_and_anvil: ['shield', 'black'], second_dawn: ['sun', 'warm'], solar_lance: ['beam', 'pale'], last_shadow: ['ghost', 'purple'],
 };
