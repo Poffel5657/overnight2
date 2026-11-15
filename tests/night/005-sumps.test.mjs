@@ -12,6 +12,7 @@ import { ITEMS } from '../../content/items.js';
 import * as S from '../../shared/sim.js';
 import * as P from '../../shared/player.js';
 import { applyIntent } from '../../shared/protocol.js';
+import { TALK } from '../../content/npcs.js';
 import { run, talk, choose, veteran, actOn } from './helpers.mjs';
 
 // Ausrüstung, die man auf Stufe 38 bis 44 realistisch hat: Meisterstücke (Tinkering 32-37) und die Cinder-Laterne.
@@ -237,4 +238,43 @@ test('Nachschlag: Sorrel zählt Hesk, Ivy zeichnet die Sumps (die sich nicht bew
   talk(c, 'a', 'ivy');
   choose(c, 'a', 'do not move');
   assert.equal(p.dialog.page, 'iv_sumps');
+});
+
+test("Nachschlag: Gran's Locker (Rätsel): die Zahlen stehen auf der Tafel in den Sumps, falsche Wege sehen gleich aus", () => {
+  let c = S.createWorld(regionFor('cinderford'), 546);
+  let p = veteran(c, 'a', { level: 40, quests: { kindling: { done: true }, the_drains: { done: true } } });
+  talk(c, 'a', 'hesk');
+  choose(c, 'a', 'old locker under your stall');
+  assert.equal(p.quests.grans_locker.step, 0);
+  // Hinunter und die Tafel lesen
+  const grate = c.objects.find((o) => o.type === 'door' && o.to === 'sumps');
+  actOn(c, 'a', grate, 'enter');
+  const w = S.createWorld(regionFor('sumps'), 547);
+  p = S.addPlayer(w, 'a', 'a', S.removePlayer(c, 'a'));
+  const slate = w.objects.find((o) => o.type === 'table');
+  const seen = [];
+  applyIntent(w, 'a', { t: 'act', kind: 'object', id: slate.id, action: 'examine' });
+  run(w, 2, (ev) => seen.push(...ev.filter((e) => e.type === 'log' && e.to === 'a').map((e) => e.text)));
+  const clue = seen.find((t) => t.includes('slate'));
+  assert.ok(clue && /4, then 9, then 13/.test(clue), 'die Tafel nennt die Zahlen');
+  // Zurück hinauf
+  c = S.createWorld(regionFor('cinderford'), 548);
+  const q = S.addPlayer(c, 'a', 'a', { ...P.saveOf(p), region: 'cinderford', x: 35, y: 18 });
+  // Erst falsch: sieht gleich aus, endet im Nichts
+  talk(c, 'a', 'hesk');
+  choose(c, 'a', 'try Gran');
+  choose(c, 'a', 'Turn it to 7');
+  assert.equal(TALK.hesk[q.dialog.page].text, TALK.hesk.gl_2.text, 'falscher Weg sieht gleich aus');
+  choose(c, 'a', 'Turn it to 9');
+  choose(c, 'a', 'Turn it to 13');
+  assert.equal(q.dialog.page, 'gl_stuck');
+  assert.equal(q.quests.grans_locker.step, 0);
+  // Dann richtig
+  choose(c, 'a', 'Try again');
+  choose(c, 'a', 'Turn it to 4');
+  choose(c, 'a', 'Turn it to 9');
+  choose(c, 'a', 'Turn it to 13');
+  assert.equal(q.dialog.page, 'gl_done');
+  assert.equal(q.quests.grans_locker.done, true);
+  assert.ok(P.countItem(q, 'weir_lamp') === 1 || q.equip.lantern === 'weir_lamp', 'die Weir Lamp');
 });

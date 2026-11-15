@@ -28,7 +28,7 @@ Tag 5 (Nacht zum 2026-11-16). Inbox `v2/inbox/2026-11-15.json`: Gebete 9 und 10,
 3. *Woran es anschließt:* Mühle, Leuchtfeuer/Öl, Kapelle (Opferkasten-Gebet), Stranger, Bogen.
 4. *Weg dorthin:* Folgt aus „Who Grinds at Night“; Fen und Pell erwähnen sie.
 
-**Dauerauftrag Klassen:** Warden 44 **Hallowed Ground** (neue Wirkung: burst heilt Verbündete, `mend`). **Nachschlag (gebaut):** Mender, Flarecaster, Drifter 44 (Vesper Bell, Lanternfall, Gloaming); alle vier auf 48 (Lamp and Anvil, Second Dawn, Solar Lance, Last Shadow); Tinkering 38–40 Sumpwalker; Lampwright 38/39 Verdigris Staff und Lens; Alchemie 36 Sluice Draught; Glass Grit aus der Mühle und Lampwright 22 Hollow-Glass Lantern; „The Lamp Under the Hill“ (Gebet 9, Licht als Glaube); „The Miller's Ledger“; „Crows in the Barley“ (Fen, Vogelscheuche); Gefallen rats_for_hesk, undertow_again und flour_for_hollis; Fundstellen in den Sumps (Salvage 38, Cartography 36, Foraging 36); Rufe, Gerücht, Ausguck. Gebet 10 (Spielerkampf) unter „Ideen für später“.
+**Dauerauftrag Klassen:** Warden 44 **Hallowed Ground** (neue Wirkung: burst heilt Verbündete, `mend`). **Nachschlag (gebaut):** Mender, Flarecaster, Drifter 44 (Vesper Bell, Lanternfall, Gloaming); alle vier auf 48 (Lamp and Anvil, Second Dawn, Solar Lance, Last Shadow); Tinkering 38–40 Sumpwalker; Lampwright 38/39 Verdigris Staff und Lens; Alchemie 36 Sluice Draught; Glass Grit aus der Mühle und Lampwright 22 Hollow-Glass Lantern; „The Lamp Under the Hill“ (Gebet 9, Licht als Glaube); „The Miller's Ledger“; „Crows in the Barley“ (Fen, Vogelscheuche); „Gran's Locker“ (Rätsel, Hesk); Gefallen rats_for_hesk, undertow_again und flour_for_hollis; Fundstellen in den Sumps (Salvage 38, Cartography 36, Foraging 36); Rufe, Gerücht, Ausguck. Gebet 10 (Spielerkampf) unter „Ideen für später“.
 
 ## Ausbau läuft
 
@@ -52,7 +52,7 @@ Tag 5 (Nacht zum 2026-11-16). Inbox `v2/inbox/2026-11-15.json`: Gebete 9 und 10,
 
 - Angeln im Bach (drei Nächte auf dem Zettel ohne Stimme, vorerst herunter).
 - Ein Imker zieht nach Kindle (drei Nächte auf Zettel 1–3, ohne Stimme, vorerst herunter).
-- Rangliste der Cup-Sieger bei Mabb; mehr Rätsel-Quests (Gebet 5) in anderen Häusern (seit Tag 4: Haus 3 mit der Karte, Haus 4 mit dem Brief; Haus 1 ist das Counting House).
+- Rangliste der Cup-Sieger bei Mabb; mehr Rätsel-Quests (Gebet 5) in anderen Häusern (seit Tag 4: Haus 3 mit der Karte, Haus 4 mit dem Brief; Haus 1 ist das Counting House; seit Tag 5 Gran's Locker bei Hesk).
 - Aus Gebet 2: ein kleiner Talentbaum mit leichten Boni (größerer Umbau, später als Vorschlag).
 - Aus Gebet 1: ein Übungsring für freundliche Zweikämpfe (Kampf zwischen Spielern ändert die Kampfregeln, nur mit Chris).
 - Aus Gebet 7: Material bei Ama abgeben, bis sie eine Mauer baut. Passt zu einer großen Bogen-Entscheidung, die noch kommt; bis dahin steht ein gemeinsamer Vorrat für das Leuchtfeuer auf dem Zettel.
