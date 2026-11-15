@@ -151,6 +151,7 @@ export const REGION = {
     // Tag 5 (Abstimmung „old-mill“): die Old Mill am Bach westlich der Straße nach Süden. Das Rad dreht sich von selbst.
     {type: 'mill', x: 28, y: 53, w: 3, d: 3, roof: '#5a4a3a', name: 'the Old Mill', text: 'A stone mill with a slate roof and a wheel in the stream. The wheel turns. Nobody has turned it on. The door has no lock, only a latch worn shiny by somebody\'s hand.'},
     {type: 'millstone', x: 30, y: 57, name: 'the millstones', text: 'Two round stones under a lean-to, turning slowly against each other. Put barley in the hopper, and flour comes out of the side.'},
+    {type: 'shrine', look: 'floorboard', x: 31, y: 56, name: 'a loose stone by the mill', gives: 'millers_ledger', quest: 'millers_ledger', step: 0, text: 'A flat stone by the mill wall, worn at the edges by fingers.', found: 'Under the stone, wrapped in oilcloth: an account book, thick with flour.', empty: 'Just a stone, and a dry hollow under it the shape of a book.'},
     {type: 'shrine', look: 'hopper', x: 31, y: 57, name: 'the mill hopper', gives: 'hollow_barley', quest: 'who_grinds', step: 3, night: true, text: 'A wooden hopper over the millstones, dusted with flour.', found: 'At the bottom of the hopper, under fresh flour, are a few grains of small grey barley that smell of peat smoke. Somebody was grinding here an hour ago.', dayText: 'By day the hopper is empty and swept. Whoever uses it comes at night.', empty: 'The hopper smells of flour and, faintly, of peat smoke.'},
   ],
   npcs: [

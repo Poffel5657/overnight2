@@ -156,6 +156,7 @@ export const ITEMS = {
   millbread: { name: 'Millbread', stack: true, use: { heal: 45, oil: 5 }, value: 10, glyph: 'n', text: 'A round loaf from the Old Mill\'s flour, baked by Hollis. Still warm in the middle for hours, which helps a lamp along.' },
   glass_grit: { name: 'Glass Grit', stack: true, value: 14, glyph: '%', text: 'Green glass ground fine at the Old Mill. Somebody used to pour it into lanterns. Somebody up north still does.' },
   hollow_glass_lantern: { name: 'Hollow-Glass Lantern', slot: 'lantern', light: 3, burn: 0.5, value: 200, glyph: 'i', text: 'Thick green glass poured from mill grit, the way Wenna says they do it at home. The light it throws is a little green, and very steady.' },
+  millers_ledger: { name: "The Miller's Ledger", stack: true, value: 0, glyph: '=', text: 'A flour-dusted account book. Sacks of flour for Kindle, and every month, sacks of glass grit "up the north road, for the Hollow". The last page is a list of names, crossed out one by one.' },
   hollow_barley: { name: 'Grey Barley', stack: true, value: 0, glyph: '"', text: 'Small grey grains with a smell of peat smoke. They did not grow anywhere near Kindle.' },
   wennas_lantern: { name: 'Wenna\'s Lantern', stack: true, value: 0, glyph: 'i', text: 'A carrier\'s lantern of thick green glass, empty and cold. The handle is wrapped in birch bark.' },
 };

@@ -569,6 +569,7 @@ export const ITEM_ICONS = {
   verdigris: ['pile', 'moss'], sluice_handle: ['ring', 'black'], weir_lamp: ['lantern', 'moss'], sumpwalker_boots: ['boots', 'moss'], sumpwalker_hood: ['hood', 'moss'], sumpwalker_coat: ['coat', 'moss'],
   verdigris_staff: ['staff', 'moss'], verdigris_lens: ['lens', 'moss'], sluice_draught: ['potion', 'moss'],
   glass_grit: ['pile', 'moss'], hollow_glass_lantern: ['lantern', 'moss'],
+  millers_ledger: ['notes', 'paper'],
   barley: ['leaf', 'wax'], mill_flour: ['pile', 'pale'], millbread: ['bread', 'bread'], hollow_barley: ['leaf', 'stone'], wennas_lantern: ['lantern', 'green'],
   delvers_hood: ['hood', 'skin'], delvers_boots: ['boots', 'skin'], delvers_coat: ['coat', 'skin'], keepers_lantern: ['lantern', 'warm'],
 };

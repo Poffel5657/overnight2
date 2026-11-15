@@ -476,4 +476,16 @@ export const QUESTS = {
     ],
     reward: { xp: 3200, gold: 60, items: { sluice_draught: 2 } },
   },
+  // Tag 5, Nachschlag (Old Mill): Wer war der Müller, und wohin ging sein Glas? Für alle ab Stufe 6.
+  millers_ledger: {
+    name: "The Miller's Ledger", giver: 'hollis',
+    text: 'Hollis remembers flour from the old mill, but not the miller. Somebody must have kept accounts. (Level 6)',
+    steps: [
+      { type: 'have', item: 'millers_ledger', n: 1, text: 'Search the loose stone by the mill door for the miller\'s accounts.' },
+      { type: 'talk', npc: 'mabb', text: 'Mabb has lived in Kindle longer than most. Ask him about the miller.' },
+      { type: 'talk', npc: 'brack', text: 'The ledger mentions glass for "the north road", like the Foreman\'s crates. Show it to Brack at the Copperdeep camp.' },
+      { type: 'talk', npc: 'hollis', text: 'Bring the ledger back to Hollis.' },
+    ],
+    reward: { xp: 240, gold: 20, items: { millbread: 3, mill_flour: 1 } },
+  },
 };
