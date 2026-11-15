@@ -17,6 +17,8 @@ function zoneAt(x, y) {
   if (Math.hypot(x - 49.5, y - 49.5) <= 10) return 'KINDLE';
   if (Math.hypot(x - 44.5, y - 6.5) <= 4) return 'THE NORTH WATCH';
   if (x < 8 && Math.abs(y - 50) <= 3) return 'THE OLD ROAD WEST';
+  // Tag 5: die Old Mill am Bach (eigener Name auf der Karte und beim Betreten)
+  if (Math.hypot(x - 29.5, y - 56) <= 3.5) return 'THE OLD MILL';
   if (y < 26) return 'HUSHWOOD';
   if (y > 76) return 'SINKMARSH';
   if (x > 74) return 'COPPERDEEP';

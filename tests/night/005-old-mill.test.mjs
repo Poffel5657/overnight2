@@ -47,7 +47,8 @@ function leave(d, pid, seed) {
 test('Die Mühle steht am Bach, mit Weg von der Straße, Mühlstein und Trichter davor', () => {
   const mill = REGION.objects.find((o) => o.type === 'mill');
   assert.ok(mill);
-  assert.equal(REGION.zoneAt(mill.x, mill.y), 'FERNMEADOW');
+  assert.equal(REGION.zoneAt(mill.x + 1, mill.y + 2), 'THE OLD MILL', 'eigener Name auf der Karte');
+  assert.equal(REGION.zoneAt(mill.x, mill.y - 8), 'FERNMEADOW', 'mitten in Fernmeadow');
   // Wasser direkt östlich (das Rad hängt im Bach)
   const east = [...Array(mill.d)].some((_, k) => REGION.tiles[mill.y + k].slice(mill.x + mill.w, mill.x + mill.w + 3).includes('~'));
   assert.ok(east, 'der Bach fließt neben der Mühle');

@@ -289,7 +289,7 @@ export function createWindows(handlers) {
     const g = c.getContext('2d');
     g.drawImage(base.canvas, 0, 0);
     for (const o of d.objects) {
-      const big = o.inside || ['house', 'chapel', 'workshop', 'tavern'].includes(o.type);
+      const big = o.inside || ['house', 'chapel', 'workshop', 'tavern', 'mill'].includes(o.type);
       if (big) { g.fillStyle = '#5a3a26'; g.fillRect(o.x * s, o.y * s, o.w * s, o.d * s); continue; }
       const col = OBJ_COLOR[o.type];
       if (!col) continue;
