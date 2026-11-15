@@ -404,7 +404,9 @@ function barks(now) {
       if (dist > b.range) continue;
       if (!barkNext.has(e.id)) { barkNext.set(e.id, now + 2000 + Math.random() * 3000); continue; }
       if (now < next) continue;
-      const lines = b.news ? [...newsLines(), ...b.lines] : b.lines;
+      // Tag 5: dayLines = andere Rufe bei Tag (Wenna schläft tagsüber in der Mühle)
+      const base = b.dayLines && skyState(gameDate()).day > 0.5 ? b.dayLines : b.lines;
+      const lines = b.news ? [...newsLines(), ...base] : base;
       const i = (barkIdx.get(e.id) ?? 0) % lines.length;
       barkIdx.set(e.id, i + 1);
       ui.bubble(e.id, lines[i], 5000, b.shout ? 'npc shout' : 'npc');

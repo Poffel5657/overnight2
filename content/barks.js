@@ -3,6 +3,7 @@
 // - Der Crier ruft regelmäßig (das ist sein Beruf). news: zuerst die letzte Nacht und das Leuchtfeuer.
 // - Wer eine Quest für dich hat ("!"), ruft einmal, wenn du vorbeigehst (hail), dann lange Ruhe.
 // range: Felder. every: Sekunden zwischen zwei Rufen (ungefähr). Der Nightwright kann Zeilen ergänzen.
+// dayLines (Tag 5): andere Zeilen bei Tag (sonst gelten lines immer).
 
 export const BARKS = {
   pell: {
@@ -41,6 +42,7 @@ export const BARKS = {
   wenna: {
     range: 6, every: 40,
     lines: ['*grinds, slowly*', 'Less to carry. Less to carry.', '*holds her cold lantern close*', 'Your bread tastes of sun.'],
+    dayLines: ['*snores, very quietly, under the sacks*', '*mumbles in her sleep: forty... twenty... twelve...*'],
   },
   band_oswin: {
     range: 9, every: 26,
