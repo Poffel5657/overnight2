@@ -247,3 +247,13 @@ test('Nachschlag: Crows in the Barley (Fen, vier Krähen, Federn, Rooks Blechges
   const sc = REGION.objects.find((o) => o.type === 'scarecrow');
   assert.ok(Math.hypot(sc.x - 29, sc.y - 55) < 7, 'die Vogelscheuche steht bei der Mühle');
 });
+
+test('Nachschlag: Nach dem Buch des Müllers füttert man Mabbs Schnecken mit Torfbrot', () => {
+  const w = S.createWorld(REGION, 550);
+  const p = veteran(w, 'a', { level: 8, quests: { kindling: { done: true }, millers_ledger: { done: true } }, bag: [{ id: 'hollow_ration', n: 1 }] });
+  talk(w, 'a', 'mabb');
+  choose(w, 'a', 'Peat bread, for the snails');
+  assert.equal(p.dialog.page, 'mb_bread');
+  assert.equal(P.countItem(p, 'hollow_ration'), 0);
+  assert.equal(P.countItem(p, 'barley'), 3);
+});
