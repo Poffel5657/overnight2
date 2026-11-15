@@ -34,6 +34,13 @@ export const REGION = {
     { type: 'chest', chest: 'sumps', x: 12, y: 20, name: 'a sluice-keeper\'s locker' },
     // Die alte Nische mit dem Schieberad (Quest „The Drains“): der Griff liegt in der Zisterne
     { type: 'shrine', look: 'niche', x: 28, y: 14, name: 'the quarrymen\'s niche', gives: 'sluice_handle', quest: 'the_drains', step: 1, text: 'A deep niche cut into the cistern wall, black with old soot. Somebody carved a lamp over it, and under the lamp a line of words worn almost smooth.', found: 'Behind the soot, on a hook, hangs a heavy iron handle shaped like a spoked wheel. The words under the lamp read: "Light one for the lamp under the hill, and it will light one for you."', empty: 'Soot, a hook, and the carved lamp. The words read: "Light one for the lamp under the hill, and it will light one for you."' },
+    // Tag 5, Nachschlag: Fundstellen für Sammelberufe (Salvage 38, Cartography 36, Foraging 36)
+    { type: 'node', node: 'verdigris_pipe', x: 3, y: 14 },
+    { type: 'node', node: 'verdigris_pipe', x: 41, y: 18 },
+    { type: 'node', node: 'sluice_mark', x: 11, y: 7 },
+    { type: 'node', node: 'sluice_mark', x: 16, y: 14 },
+    { type: 'node', node: 'lampcap_cluster', x: 16, y: 23 },
+    { type: 'node', node: 'lampcap_cluster', x: 31, y: 26 },
   ],
   npcs: [],
   mobs: [

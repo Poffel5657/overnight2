@@ -103,3 +103,23 @@ test('Pell ruft die Mühle und die Sumps aus, Hollis kennt das Gerücht', () => 
   for (const step of ['Heard anything', 'Anything else', 'And?', 'Anything newer', 'And?']) choose(d, 'a', step);
   assert.equal(q.dialog?.page, 'rumour5');
 });
+
+test('Nachschlag: Fundstellen in den Sumps für Salvage 38, Cartography 36 und Foraging 36', async () => {
+  const { NODES } = await import('../../content/nodes.js');
+  for (const [node, prof, item] of [['verdigris_pipe', 'salvage', 'verdigris'], ['sluice_mark', 'cartography', 'survey_notes'], ['lampcap_cluster', 'foraging', 'nightcap']]) {
+    const lvl = NODES[node].level;
+    const w = S.createWorld(regionFor('sumps'), 590);
+    // Wesen in Ruhe lassen: Wer sammelt, achtet auf Abstand (hier: alle fort, damit nur das Sammeln zählt)
+    for (const m of w.mobs) { m.dead = true; m.deadUntil = 1e9; }
+    const spot = w.objects.find((o) => o.type === 'node' && o.node === node);
+    const low = veteran(w, 'b', { level: 40, profs: { [prof]: { level: lvl - 1, xp: P.xpForLevel(lvl - 1) } } });
+    actOn(w, 'b', spot, 'gather');
+    for (let i = 0; i < 200 && low.gather; i++) run(w, 1);
+    assert.equal(P.countItem(low, item), 0, `${node}: unter Stufe ${lvl} nichts`);
+    S.removePlayer(w, 'b');
+    const p = veteran(w, 'a', { level: 40, profs: { [prof]: { level: lvl + 4, xp: P.xpForLevel(lvl + 4) } } });
+    actOn(w, 'a', spot, 'gather');
+    for (let i = 0; i < 400 && p.gather; i++) run(w, 1);
+    assert.ok(P.countItem(p, item) >= 1, `${node}: ${item} gesammelt`);
+  }
+});

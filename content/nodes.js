@@ -16,6 +16,10 @@ export const NODES = {
   ember_thicket: { name: 'Ember Thicket', prof: 'foraging', level: 30, item: 'emberroot', extra: ['nightcap', 0.35], yields: 4, xp: 60, respawn: 140, look: 'ember', verb: 'Forage' },
   // Tag 4, Nachschlag: Cartography 30. Die Vermessungspflöcke von Bracks Großvater am alten Flöz; manchmal steckt Eisen daran.
   seam_stake: { name: 'Old Survey Stake', prof: 'cartography', level: 30, item: 'survey_notes', extra: ['cinder_iron', 0.15], yields: 4, xp: 60, respawn: 140, look: 'waymark', verb: 'Survey' },
+  // Tag 5, Nachschlag: in den Sumps unter Cinderford (Stufe 36 bis 38). Verdigris ohne Kampf, wenn man leise ist.
+  verdigris_pipe: { name: 'Verdigris Pipe', prof: 'salvage', level: 38, item: 'verdigris', extra: ['cinder_iron', 0.2], yields: 3, xp: 72, respawn: 160, look: 'vein', verb: 'Salvage' },
+  sluice_mark: { name: 'Sluice-Keeper\'s Mark', prof: 'cartography', level: 36, item: 'survey_notes', extra: ['verdigris', 0.25], yields: 4, xp: 70, respawn: 150, look: 'waymark', verb: 'Survey' },
+  lampcap_cluster: { name: 'Lampcap Cluster', prof: 'foraging', level: 36, item: 'nightcap', extra: ['lily_bulb', 0.35], yields: 4, xp: 70, respawn: 150, look: 'shrooms', verb: 'Forage' },
   old_shaft: { name: 'Old Shaft', prof: 'salvage', level: 26, item: 'glimmer', extra: ['greyglass', 0.2], yields: 3, xp: 52, respawn: 130, look: 'vein', verb: 'Salvage' },
   brass_wreck: { name: 'Brass Wreck', prof: 'salvage', level: 8, item: 'brass_bits', extra: ['glimmer', 0.12], yields: 3, xp: 18, respawn: 90, look: 'wreck', verb: 'Salvage' },
   bitterleaf_patch: { name: 'Bitterleaf', prof: 'foraging', level: 1, item: 'bitterleaf', yields: 4, xp: 8, respawn: 50, look: 'herbs', verb: 'Forage' },
