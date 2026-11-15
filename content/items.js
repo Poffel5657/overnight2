@@ -157,6 +157,7 @@ export const ITEMS = {
   glass_grit: { name: 'Glass Grit', stack: true, value: 14, glyph: '%', text: 'Green glass ground fine at the Old Mill. Somebody used to pour it into lanterns. Somebody up north still does.' },
   hollow_glass_lantern: { name: 'Hollow-Glass Lantern', slot: 'lantern', light: 3, burn: 0.5, value: 200, glyph: 'i', text: 'Thick green glass poured from mill grit, the way Wenna says they do it at home. The light it throws is a little green, and very steady.' },
   millers_ledger: { name: "The Miller's Ledger", stack: true, value: 0, glyph: '=', text: 'A flour-dusted account book. Sacks of flour for Kindle, and every month, sacks of glass grit "up the north road, for the Hollow". The last page is a list of names, crossed out one by one.' },
+  tin_face: { name: 'Tin Face', stack: true, value: 0, glyph: 'o', text: 'A tin plate hammered into a face with a very rude expression. Rook says it is a portrait of a crow\'s worst nightmare. It looks a bit like Rook.' },
   hollow_barley: { name: 'Grey Barley', stack: true, value: 0, glyph: '"', text: 'Small grey grains with a smell of peat smoke. They did not grow anywhere near Kindle.' },
   wennas_lantern: { name: 'Wenna\'s Lantern', stack: true, value: 0, glyph: 'i', text: 'A carrier\'s lantern of thick green glass, empty and cold. The handle is wrapped in birch bark.' },
 };

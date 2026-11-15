@@ -153,6 +153,8 @@ export const REGION = {
     // Tag 5 (Abstimmung „old-mill“): die Old Mill am Bach westlich der Straße nach Süden. Das Rad dreht sich von selbst.
     {type: 'mill', x: 28, y: 53, w: 3, d: 3, roof: '#5a4a3a', name: 'the Old Mill', text: 'A stone mill with a slate roof and a wheel in the stream. The wheel turns. Nobody has turned it on. The door has no lock, only a latch worn shiny by somebody\'s hand.'},
     {type: 'millstone', x: 30, y: 57, name: 'the millstones', text: 'Two round stones under a lean-to, turning slowly against each other. Put barley in the hopper, and flour comes out of the side.'},
+    // Fens Vogelscheuche auf dem Gerstenfeld westlich der Mühle (Quest „Crows in the Barley“)
+    {type: 'scarecrow', x: 24, y: 55, name: 'Fen\'s scarecrow', text: 'A scarecrow in Pell\'s old coat, with a feather collar and a tin face that looks a lot like Rook. The crows give it a wide berth. Mostly.'},
     // Eine Lampe an der Mühlentür, damit Greylinge Abstand halten, wenn man nachts mit Wenna redet
     {type: 'brazier', x: 26, y: 57, light: 3.5, name: 'a lamp by the mill door'},
     {type: 'shrine', look: 'floorboard', x: 31, y: 56, name: 'a loose stone by the mill', gives: 'millers_ledger', quest: 'millers_ledger', step: 0, text: 'A flat stone by the mill wall, worn at the edges by fingers.', found: 'Under the stone, wrapped in oilcloth: an account book, thick with flour.', empty: 'Just a stone, and a dry hollow under it the shape of a book.'},
