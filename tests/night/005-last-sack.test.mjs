@@ -136,3 +136,19 @@ test('Nachschlag: Nach „The Last Sack“ backt Wenna nachts Torfbrot aus Gerst
   talk(w, 'a', 'wenna');
   assert.ok(!options(w, 'a').some((t) => t.includes('bake')), 'bei Tag schläft sie');
 });
+
+test('Nachschlag: Haskel kennt den Torfrauch, Tansy riecht das Verdigris', async () => {
+  const { regionFor } = await import('../../content/regions/index.js');
+  const w = S.createWorld(REGION, 557);
+  const p = veteran(w, 'a', { level: 12, quests: { kindling: { done: true }, the_last_sack: { step: 2, n: 0 } }, bag: [{ id: 'verdigris', n: 1 }] });
+  talk(w, 'a', 'haskel');
+  choose(w, 'a', 'carrier from the north');
+  assert.equal(p.dialog.page, 'h_wenna');
+  const shop = w.objects.find((o) => o.type === 'workshop');
+  actOn(w, 'a', shop, 'enter');
+  const d = S.createWorld(regionFor('kindle_inside'), 558);
+  const q = S.addPlayer(d, 'a', 'a', S.removePlayer(w, 'a'));
+  talk(d, 'a', 'tansy');
+  choose(d, 'a', 'verdigris inside');
+  assert.equal(q.dialog.page, 'ts_verdigris');
+});
