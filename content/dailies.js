@@ -25,6 +25,7 @@ export const FAVOURS = {
   iron_for_rook: { from: 'rook', type: 'bring', item: 'cinder_iron', n: 1, text: 'Rook wants a bar of cinder iron to "listen to". He will not explain.', reward: { gold: 30, xp: 200 } },
   // Tag 5: Ratten in den Sumps unter Cinderford (Gruppen willkommen) und Mehl aus der Old Mill für Hollis
   rats_for_hesk: { from: 'hesk', type: 'kill', mob: 'drain_rat', n: 3, text: 'Hesk heard rats in the pipes under his stall again. Three fewer, please, down in the Sumps.', reward: { gold: 40, xp: 560 } },
+  undertow_again: { from: 'hesk', type: 'kill', mob: 'the_undertow', n: 1, text: 'The ford has gone quiet again. Something is back in the weir. Hesk says bring a friend, and lamps.', reward: { gold: 60, xp: 1400 } },
   flour_for_hollis: { from: 'hollis', type: 'bring', item: 'mill_flour', n: 2, text: 'Hollis wants two sacks of flour from the Old Mill. Breakfast does not bake itself.', reward: { gold: 14, xp: 50 } },
   shoo_crows: { from: 'fen', type: 'kill', mob: 'crow', n: 3, text: 'The crows are judging the vegetable patch. Shoo them.', reward: { gold: 8, xp: 20 } },
 };
