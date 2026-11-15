@@ -1,2 +1,2 @@
 // Erzeugt von tools/build-sig.mjs (npm run sig). Nicht von Hand ändern.
-export const BUILD = '193ak0i';
+export const BUILD = 'eeu8e5';

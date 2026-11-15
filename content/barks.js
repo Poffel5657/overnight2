@@ -12,6 +12,8 @@ export const BARKS = {
       'HEAR YE! Feed the Beacon before midnight!',
       'The Old Mill turns again! Barley in, flour out! No miller required!',
       'Rats under Cinderford! Hesk pays for fewer!',
+      'Flour on the doorsteps again! Marrow demands to know who! Marrow is not grateful!',
+      'Fen\'s new scarecrow has a face like Old Rook! The crows agree!',
       'Favours on the notice board! Gold for honest work!',
       'Pray at the chapel, and the world may answer!',
       'The Night Market opens at dusk! Bring gold, and a lantern!',
