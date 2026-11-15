@@ -187,3 +187,36 @@ test('Nachschlag: Die Mühle mahlt grünes Glas zu Grit, Wren gießt daraus die 
   assert.equal(P.countItem(p, 'hollow_glass_lantern') + (p.equip.lantern === 'hollow_glass_lantern' ? 1 : 0), 1);
   assert.ok(ITEMS.hollow_glass_lantern.light > ITEMS.glim_lantern.light);
 });
+
+test("Nachschlag: The Miller's Ledger (Hollis, Stein an der Mühle, Mabb, Brack in Copperdeep, zurück zu Hollis)", () => {
+  const w = S.createWorld(REGION, 547);
+  w.daylight = 1;
+  const p = veteran(w, 'a', { level: 8, quests: { kindling: { done: true }, who_grinds: { done: true } } });
+  const t = enterTavern(w, 'a');
+  talk(t.d, 'a', 'hollis');
+  choose(t.d, 'a', 'Who was the miller');
+  assert.equal(t.q.quests.millers_ledger.step, 0);
+  const back = leave(t.d, 'a', 548);
+  const k = back.w;
+  const q = back.p;
+  k.daylight = 1;
+  const stone = k.objects.find((o) => o.type === 'shrine' && o.quest === 'millers_ledger');
+  actOn(k, 'a', stone, 'search');
+  run(k, 2);
+  assert.equal(P.countItem(q, 'millers_ledger'), 1);
+  assert.equal(q.quests.millers_ledger.step, 1);
+  talk(k, 'a', 'mabb');
+  choose(k, 'a', 'remember the miller');
+  assert.equal(q.quests.millers_ledger.step, 2);
+  talk(k, 'a', 'brack');
+  choose(k, 'a', 'miller\'s ledger');
+  assert.equal(q.quests.millers_ledger.step, 3);
+  const t2 = enterTavern(k, 'a');
+  const xp = t2.q.classes.warden.xp;
+  talk(t2.d, 'a', 'hollis');
+  choose(t2.d, 'a', 'The miller\'s ledger');
+  assert.equal(t2.q.quests.millers_ledger.done, true);
+  assert.equal(P.countItem(t2.q, 'millers_ledger'), 0);
+  assert.ok(t2.q.classes.warden.xp >= xp + QUESTS.millers_ledger.reward.xp);
+  void p;
+});
