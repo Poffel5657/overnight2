@@ -488,4 +488,16 @@ export const QUESTS = {
     ],
     reward: { xp: 240, gold: 20, items: { millbread: 3, mill_flour: 1 } },
   },
+  // Tag 5, Nachschlag (Old Mill), für Neue ab Stufe 2: Krähen stehlen die Gerste, Fen baut eine Vogelscheuche.
+  crows_in_the_barley: {
+    name: 'Crows in the Barley', giver: 'fen',
+    text: 'The crows are eating the barley by the Old Mill, and Fen has decided the scarecrow there is not scary enough.',
+    steps: [
+      { type: 'kill', mob: 'crow', n: 4, text: 'Shoo four crows off the fields. Fen says they are "on notice".' },
+      { type: 'have', item: 'crow_feather', n: 3, text: 'Collect three crow feathers. Fen says crows hate seeing their own feathers on a scarecrow.' },
+      { type: 'talk', npc: 'rook', text: 'Ask Old Rook to hammer a tin face for the scarecrow.' },
+      { type: 'talk', npc: 'fen', text: 'Bring the feathers and the tin face to Fen.' },
+    ],
+    reward: { xp: 110, gold: 10, items: { millbread: 2, barley: 4 } },
+  },
 };

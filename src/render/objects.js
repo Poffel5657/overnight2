@@ -452,6 +452,17 @@ const BUILDERS = {
     // Das Rad dreht sich von selbst (der Bach treibt es)
     ctx.spin?.(wheel, 'x', 0.6);
   },
+  scarecrow(o, g) {
+    // Tag 5: Fens Vogelscheuche. Pfahl, Querholz, Pells alter Mantel, Federkragen, Blechgesicht.
+    g.add(box(0.1, 1.6, 0.1, '#5a4028', 0, 0.8, 0));
+    g.add(box(1.2, 0.08, 0.08, '#5a4028', 0, 1.25, 0));
+    g.add(box(0.6, 0.6, 0.25, '#7a3b26', 0, 1.05, 0));
+    g.add(box(0.5, 0.08, 0.3, '#1a1a1e', 0, 1.36, 0));
+    g.add(box(0.32, 0.32, 0.06, '#a8a8b0', 0, 1.6, 0.04));
+    g.add(box(0.06, 0.04, 0.02, '#2a2a2e', -0.07, 1.65, 0.08));
+    g.add(box(0.06, 0.04, 0.02, '#2a2a2e', 0.07, 1.65, 0.08));
+    g.add(box(0.4, 0.12, 0.4, '#3a3a2a', 0, 1.82, 0));
+  },
   millstone(o, g) {
     // Zwei Mühlsteine unter einem kleinen Schutzdach
     g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.2, 10), mat('#8a847a')).translateY(0.1));

@@ -221,3 +221,29 @@ test("Nachschlag: The Miller's Ledger (Hollis, Stein an der Mühle, Mabb, Brack 
   assert.ok(t2.q.classes.warden.xp >= xp + QUESTS.millers_ledger.reward.xp);
   void p;
 });
+
+test('Nachschlag: Crows in the Barley (Fen, vier Krähen, Federn, Rooks Blechgesicht, zurück zu Fen)', () => {
+  const w = S.createWorld(REGION, 549);
+  w.daylight = 1;
+  const p = veteran(w, 'a', { level: 2 });
+  talk(w, 'a', 'fen');
+  choose(w, 'a', 'plotting');
+  assert.equal(p.quests.crows_in_the_barley.step, 0);
+  for (let k = 0; k < 30 && (p.quests.crows_in_the_barley.step < 2); k++) {
+    const crow = w.mobs.filter((m) => m.type === 'crow' && !m.dead).sort((a, b) => Math.hypot(a.x - p.x, a.y - p.y) - Math.hypot(b.x - p.x, b.y - p.y))[0];
+    if (!crow) { run(w, 30); continue; }
+    fight(w, 'a', crow, ['bash']);
+    run(w, 2);
+  }
+  assert.ok(p.quests.crows_in_the_barley.step >= 2, 'Krähen und Federn');
+  talk(w, 'a', 'rook');
+  choose(w, 'a', 'horrible tin face');
+  assert.equal(P.countItem(p, 'tin_face'), 1);
+  talk(w, 'a', 'fen');
+  choose(w, 'a', 'tin face from Rook');
+  assert.equal(p.quests.crows_in_the_barley.done, true);
+  assert.equal(P.countItem(p, 'tin_face'), 0);
+  assert.ok(P.countItem(p, 'barley') >= 4, 'Gerste für die Mühle');
+  const sc = REGION.objects.find((o) => o.type === 'scarecrow');
+  assert.ok(Math.hypot(sc.x - 29, sc.y - 55) < 7, 'die Vogelscheuche steht bei der Mühle');
+});
