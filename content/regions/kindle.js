@@ -148,6 +148,10 @@ export const REGION = {
     {type: 'lookout', x: 43, y: 5, w: 2, d: 2, light: 3, name: 'the North Watch'},
     // Tag 4 (Bogen): Fens Kreidekreis neben dem Leuchtfeuer. Nur nachts wirft das Leuchtfeuer lange Schatten.
     {type: 'shrine', look: 'chalk_ring', x: 52, y: 50, name: 'Fen\'s chalk ring', gives: 'shadow_tracing', quest: 'catch_a_shadow', step: 1, night: true, needs: 'chapel_chalk', text: 'A ring of chalk on the cobbles, scuffed and redrawn many times. Inside it, outlines of shadows: a cat, a goose, Pell with his bell.', found: 'You stand in the ring with your back to the Beacon and trace round your shadow. It stretches all the way to the well.', dayText: 'In daylight the Beacon throws no shadow worth drawing. Come back after dark.', empty: 'Chalk outlines: a cat, a goose, Pell, you. One empty space, as if somebody stood there and left nothing behind.'},
+    // Tag 5 (Abstimmung „old-mill“): die Old Mill am Bach westlich der Straße nach Süden. Das Rad dreht sich von selbst.
+    {type: 'mill', x: 28, y: 53, w: 3, d: 3, roof: '#5a4a3a', name: 'the Old Mill', text: 'A stone mill with a slate roof and a wheel in the stream. The wheel turns. Nobody has turned it on. The door has no lock, only a latch worn shiny by somebody\'s hand.'},
+    {type: 'millstone', x: 30, y: 57, name: 'the millstones', text: 'Two round stones under a lean-to, turning slowly against each other. Put barley in the hopper, and flour comes out of the side.'},
+    {type: 'shrine', look: 'hopper', x: 31, y: 57, name: 'the mill hopper', gives: 'hollow_barley', quest: 'who_grinds', step: 3, night: true, text: 'A wooden hopper over the millstones, dusted with flour.', found: 'At the bottom of the hopper, under fresh flour, are a few grains of small grey barley that smell of peat smoke. Somebody was grinding here an hour ago.', dayText: 'By day the hopper is empty and swept. Whoever uses it comes at night.', empty: 'The hopper smells of flour and, faintly, of peat smoke.'},
   ],
   npcs: [
     {id: 'ama', name: 'Warden Ama', sprite: 'ama', x: 48, y: 47},
@@ -170,6 +174,8 @@ export const REGION = {
     // Seit Tag 3 (Snail Cup): zwei neue Bahnen südlich der alten
     {id: 'snail_duchess', name: 'Duchess', sprite: 'snail_duchess', x: 42, y: 61},
     {id: 'snail_thistle', name: 'Thistle', sprite: 'snail_thistle', x: 42, y: 62},
+    // Tag 5 (Bogen): Wenna, eine verirrte Trägerin aus dem Norden, in der Old Mill (tagsüber schläft sie)
+    {id: 'wenna', name: 'Wenna', sprite: 'wenna', x: 28, y: 58},
   ],
   mobs: [
     {type: 'greyling', x: 35, y: 29},

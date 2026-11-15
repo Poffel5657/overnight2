@@ -426,4 +426,42 @@ export const QUESTS = {
     ],
     reward: { xp: 160, gold: 15, items: { brass_bits: 3, bread: 2 } },
   },
+  // Tag 5 (Gebet 9: Kanäle und Verliese unter der Stadt): Hesk schickt Delver ab Stufe 38 in die Sumps.
+  the_drains: {
+    name: 'The Drains', giver: 'hesk',
+    text: 'Water is backing up under Cinderford, and the rats are coming up with it. Hesk wants the old drains cleared, all the way to the weir.',
+    steps: [
+      { type: 'kill', mob: 'drain_rat', n: 5, text: 'Go down the sump grate at the east end of the ford and drive off five Drain Rats.' },
+      { type: 'have', item: 'sluice_handle', n: 1, text: 'Find the sluice handle. The sluice-keepers kept it in the quarrymen\'s niche, in the cistern.' },
+      { type: 'kill', mob: 'the_undertow', n: 1, text: 'Something sits in the weir at the far end of the Sumps. Make it let go.' },
+      { type: 'talk', npc: 'hesk', text: 'Tell Hesk the water runs again.' },
+    ],
+    reward: { xp: 4500, gold: 120, items: { seam_tonic: 2, verdigris: 3 } },
+  },
+  // Tag 5 (Abstimmung „old-mill“): Die Old Mill am Bach dreht sich von selbst. Wer mahlt dort nachts?
+  who_grinds: {
+    name: 'Who Grinds at Night', giver: 'marrow',
+    text: 'Somebody has been leaving flour on doorsteps in Kindle, and Marrow did not sell it to them. The old mill by the stream is turning again.',
+    steps: [
+      { type: 'have', item: 'barley', n: 2, text: 'Get two handfuls of barley. The crows in the fields carry it, or Marrow sells it.' },
+      { type: 'action', action: 'grind', text: 'Grind the barley at the Old Mill, by the stream west of the south road.' },
+      { type: 'talk', npc: 'hollis', text: 'Take the flour to Hollis at the Lantern & Lark. Hollis knows flour.' },
+      { type: 'have', item: 'hollow_barley', n: 1, text: 'After dark, look in the mill\'s hopper. Somebody grinds there when nobody is watching.' },
+      { type: 'talk', npc: 'marrow', text: 'Show Marrow what was in the hopper.' },
+    ],
+    reward: { xp: 260, gold: 20, items: { mill_flour: 2, millbread: 2 } },
+  },
+  // Tag 5 (Bogen): Wenna, eine verirrte Trägerin, mahlt nachts in der Old Mill ihr letztes Korn.
+  the_last_sack: {
+    name: 'The Last Sack', giver: 'wenna',
+    text: 'A carrier from the north is hiding in the Old Mill, grinding the last of her village\'s barley. She has not eaten in days, and her lantern is cold.',
+    steps: [
+      { type: 'have', item: 'millbread', n: 2, text: 'Bring Wenna two loaves of millbread. Hollis bakes them from mill flour.' },
+      { type: 'talk', npc: 'wenna', text: 'Give Wenna the bread, at the mill, after dark.' },
+      { type: 'action', action: 'refill', text: 'Fill Wenna\'s cold lantern at the Beacon.' },
+      { type: 'talk', npc: 'tallow', text: 'Wenna asked about a prayer. Ask Brother Tallow about the one under the white stone.' },
+      { type: 'talk', npc: 'wenna', text: 'Bring the lantern, and Tallow\'s answer, back to Wenna at the mill after dark.' },
+    ],
+    reward: { xp: 420, gold: 25, items: { hollow_ration: 2, glow_draught: 1 } },
+  },
 };

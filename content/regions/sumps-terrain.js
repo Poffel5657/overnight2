@@ -1,0 +1,38 @@
+// The Sumps (Tag 5, Gebet 9: Kanäle und Verliese unter der großen Stadt): die alten Abflüsse unter Cinderford.
+// Der Bach der Furt verschwindet am Ostende im Fels und läuft hier unten durch Kanäle der Quarrymen bis zum Wehr.
+// Legende in content/tiles.js: f Steinsteg, w flaches Wasser, ~ tiefer Kanal, p Brettersteg.
+export const TILES = [
+  '############################################',
+  '############################################',
+  '###fffffffff################################',
+  '###fffffffff################################',
+  '###fffffffff################################',
+  '###fffffffff################################',
+  '###fffffffff################################',
+  '###fffffffff################################',
+  '######fff###################################',
+  '###ffffffffffffffffffffffffffffffffffffff###',
+  '###ffffffffffffffffffffffffffffffffffffff###',
+  '###~~~~pp~~~~~~~~~~~~pp~~~~~~~~~~~~pp~~~~###',
+  '###ffffffffffffffffffffffffffffffffffffff###',
+  '#######ff############ff############ff#######',
+  '###fffffffffff##ffffffffffffff#####ff#######',
+  '###fffffffffff##fwwfffffffffff#fffffffffff##',
+  '###ffwwfffffff##fffffffffffffw#fffffffffff##',
+  '###fffffffffff##ffff~~~~~~ffff#fffffffffff##',
+  '###ffffffffwff##ffff~~~~~~ffff#fffffffffff##',
+  '###ffffffwwfff##ffff~~~~~~ffff#fffwfffffff##',
+  '###fwfffffffff##ffff~~~~~~ffff#fffffffffff##',
+  '###fffffffffff##fffwffffffffffffffffffffff##',
+  '################wffffffffffwwf#ffffffffwwf##',
+  '################ffffffffffffff#fffffffffff##',
+  '###############################fwwffffffff##',
+  '###############################fffffffffff##',
+  '###############################ffwffffwfff##',
+  '###############################~~~~~~~~~~~##',
+  '###############################~~~~~~~~~~~##',
+  '############################################',
+  '############################################',
+  '############################################',
+];
+export const HEIGHTS = TILES.map((r) => [...r].map((c) => (c === '#' ? 'e' : c === '~' ? 'a' : c === 'w' ? 'a' : 'b')).join(''));

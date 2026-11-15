@@ -40,6 +40,10 @@ export const RECIPES = {
   t_mw_shivs: { prof: 'tinkering', level: 34, master: true, inputs: { cinder_iron: 3, greyglass: 2 }, out: ['masterwork_shivs', 1], xp: 240 },
   t_mw_shield: { prof: 'tinkering', level: 35, master: true, inputs: { cinder_iron: 4, greyglass: 2 }, out: ['masterwork_shield', 1], xp: 250 },
   t_mw_coat: { prof: 'tinkering', level: 37, master: true, inputs: { cinder_iron: 4, greyglass: 2, wolf_pelt: 2 }, out: ['masterwork_coat', 1], xp: 280 },
+  // Tag 5 (Sumps): Sumpwalker-Ausrüstung aus Verdigris und Cinder Iron, an der normalen Werkbank (eine Stufe über den Meisterstücken)
+  t_sw_boots: { prof: 'tinkering', level: 38, inputs: { verdigris: 3, cinder_iron: 2 }, out: ['sumpwalker_boots', 1], xp: 300 },
+  t_sw_hood: { prof: 'tinkering', level: 39, inputs: { verdigris: 3, cinder_iron: 2, glimmer: 1 }, out: ['sumpwalker_hood', 1], xp: 310 },
+  t_sw_coat: { prof: 'tinkering', level: 40, inputs: { verdigris: 5, cinder_iron: 3, greyglass: 1 }, out: ['sumpwalker_coat', 1], xp: 340 },
   t_greyglass_coat: { prof: 'tinkering', level: 28, inputs: { greyglass: 4, beetle_shell: 2 }, out: ['greyglass_coat', 1], xp: 160 },
 
   // Alchemy (Destille in der Kapelle)

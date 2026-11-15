@@ -18,7 +18,7 @@ export const SHOPS = {
   hesk: { name: "Hesk's Stall", npc: 'hesk', sells: ['lamp_oil', 'cinder_cake', 'bitter_tonic', 'moss_salve'] },
   // Tag 4 (Gebet 7): Flint gräbt unter Cinderford. Teilhaber zahlen pro Anteil weniger (discount in content/ventures.js).
   flint: { name: "Flint's Ore Cart", npc: 'flint', sells: ['scrap', 'brass_bits', 'glimmer'] },
-  marrow: { name: "Marrow's Stall", npc: 'marrow', sells: ['bread', 'lamp_oil', 'tin_lantern', 'scrap_hood', 'scrap_boots'] },
+  marrow: { name: "Marrow's Stall", npc: 'marrow', sells: ['bread', 'lamp_oil', 'tin_lantern', 'scrap_hood', 'scrap_boots', 'barley'] },
 };
 
 // Was ein Händler an einem Tag (Berliner Datum) verkauft: feste Ware plus die wechselnde des Tages.
