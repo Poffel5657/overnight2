@@ -32,7 +32,7 @@ Tag 6 (Nacht zum 2026-11-17). **Die Inbox-Datei `v2/inbox/2026-11-16.json` fehlt
 ## Ausbau läuft
 
 - **The Unending Maze** (seit 2026-11-13, von Chris gebaut aus Gebet 4): Stockwerke 1 bis 99 unter Cinderford, jeden Tag neu gewürfelt, Stufe = 3 + 2 × Stockwerk. Ausbau möglich: Rangliste auf dem Turn Board (braucht Chris: D1-Abfrage), weitere Keeper-Körper und -Eigenschaften (`BODIES`, `AFFIXES` in `content/regions/maze.js`), Rezepte aus Turnstones, mehr Gegenstände ab Stockwerk 25, Quests für tiefere Stockwerke (`keeper_10`, `keeper_20` gibt es schon).
-- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag): Stand in `ROADMAP.md`: alle vier bis Stufe 48, seit Tag 6 jede Klasse mit zwei Wegen und je einer Fähigkeit auf 50 (Warden Lightsworn/Ironwall, Mender Hearthkeeper/Ashbinder, Flarecaster Sunwright/Prismist, Drifter Nightblade/Snarewright). Warden-Wege seit Tag 6 auch auf 54 (Lantern Oath, Anvil Stance). Nächste Nächte: Mender, Flarecaster, Drifter je beide Wege auf 54, dann alle auf 58 usw. Seit Tag 6 kann `zone` dazzle, root und burn. Seit Tag 5 kann `burst` auch `mend` (Gruppe heilt). Seit Tag 4 gibt es `exploit` (Schaden gegen brennende/geblendete/festsitzende Ziele): gut für weitere Stufen, auch kleinere exploit-Fähigkeiten für 12–30 wären schön (Gebet 8).
+- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag): Stand in `ROADMAP.md`: alle vier bis Stufe 48, seit Tag 6 jede Klasse mit zwei Wegen und je einer Fähigkeit auf 50 (Warden Lightsworn/Ironwall, Mender Hearthkeeper/Ashbinder, Flarecaster Sunwright/Prismist, Drifter Nightblade/Snarewright). Seit dem Nachschlag von Tag 6 haben alle acht Wege auch eine Fähigkeit auf 54. Nächste Nächte: pro Nacht eine Klasse, beide Wege auf 58 (Warden zuerst), dann 62 usw. Seit Tag 6 kann `zone` dazzle, root und burn. Seit Tag 5 kann `burst` auch `mend` (Gruppe heilt). Seit Tag 4 gibt es `exploit` (Schaden gegen brennende/geblendete/festsitzende Ziele): gut für weitere Stufen, auch kleinere exploit-Fähigkeiten für 12–30 wären schön (Gebet 8).
 - **Der Bogen „The Second Light“**: Tag 6 hat Ama „The Beacon is starving“ ausgerufen (nach „Oil for the Road“), Wenna geht „morgen Nacht“. Tag 7: Wenna ist fort (Mühle leer, Zettel für Marrow), Weltproblem 1 sichtbar machen; Zettel 6 trägt die erste Bogen-Wahl (bread-north gegen bar-north-road).
 - **Ama's Woodpile** (seit Tag 6): Stapel wächst mit dem Tageszähler. Ausbau: ein Vorrat über mehrere Tage (Weltzähler im Worker, nur mit Chris), Belohnung für die Gemeinschaft, wenn der Stapel voll ist, mehr Totholz in Copperdeep/Sinkmarsh.
 - **The Spillway** (seit Tag 6): Stufe 46 bis 50. Ausbau: Inhalt 50 bis 56 (ein weiterer Gang, ein Gruppen-Wesen), Rezepte aus Sluicegate-Eisen.
@@ -46,7 +46,7 @@ Tag 6 (Nacht zum 2026-11-17). **Die Inbox-Datei `v2/inbox/2026-11-16.json` fehlt
 
 - Tag 7 ist eine **Aufräumnacht** (7 teilbar): erst alle drei Teile, dann Code-Review der Tage 1 bis 7, Aufräumen, Tests, Doku.
 - Inbox: prüfen, ob `2026-11-16.json` nachträglich kam (Gebete nachholen).
-- Klassen: Mender-Wege auf 54 (Hearthkeeper, Ashbinder).
+- Klassen: Warden-Wege auf 58 (Lightsworn, Ironwall).
 - Inhalt für 50+ (Spillway reicht bis 50).
 - Bogen: Wenna ist fort, Weltproblem 1 sichtbar; Zettel 6 auswerten (bread-north / bar-north-road).
 - Mehr Gefallen, die Gruppen belohnen.
