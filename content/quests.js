@@ -535,4 +535,16 @@ export const QUESTS = {
     ],
     reward: { xp: 520, gold: 30, items: { carriers_lamp: 1, hollow_ration: 1 } },
   },
+  // Tag 6, Nachschlag: the Spillway, der Überlauf unter der Zisterne der Sumps (Stufe 46 bis 50).
+  below_the_weir: {
+    name: 'Below the Weir', giver: 'hesk',
+    text: 'Since the water runs again, something has come up the old overflow under the Sumps. Hesk wants to know what, and what her grandmother\'s old sluicegate is doing.',
+    steps: [
+      { type: 'kill', mob: 'weir_eel', n: 4, text: 'Go down the passage at the bottom of the cistern into the Spillway and drive off four Weir Eels.' },
+      { type: 'have', item: 'spillway_slate', n: 1, text: 'Find the overflow-keepers\' slate in the Spillway. Gran wrote on everything.' },
+      { type: 'kill', mob: 'old_sluicegate', n: 1, text: 'At the end of the Spillway, the Old Sluicegate is walking. Stop it.' },
+      { type: 'talk', npc: 'hesk', text: 'Bring the slate to Hesk in Cinderford.' },
+    ],
+    reward: { xp: 7000, gold: 160, items: { spillway_mail: 1, sluice_draught: 2 } },
+  },
 };

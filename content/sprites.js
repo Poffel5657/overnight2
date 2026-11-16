@@ -607,6 +607,47 @@ export const SPRITES = {
       'wwkkwwwwkkww',
     ],
   },
+  weir_eel: {
+    // Tag 6: ein langer schwarzer Aal mit einem grünen Messingkamm und hellen Augen.
+    px: 1 / 12,
+    palette: { k: '#0a0c0e', m: '#1e2a2e', M: '#2e4044', g: '#4a8a6a', e: '!#d8ffb0', w: '#2a4a5a' },
+    rows: [
+      '...kkkk.....',
+      '..kMMMMk....',
+      '.kMeMMeMk...',
+      '.kMMMMMMk...',
+      '..kgggkMk...',
+      '...kMMMMk...',
+      '....kmMMk...',
+      '.....kMMMk..',
+      '..kk..kmMMk.',
+      '.kMMkkkMMmk.',
+      '.kmMMMMMMk..',
+      'wwkkkkkkkwww',
+    ],
+  },
+  old_sluicegate: {
+    // Tag 6: ein eisernes Schütz auf drei krummen Beinen, mit einer eingeritzten Lampe im Querbalken.
+    px: 1 / 10,
+    palette: { k: '#0e0c0a', r: '#6a3a22', R: '#9a5a32', v: '#4a8a6a', l: '!#ffcf70', w: '#2a4a5a' },
+    rows: [
+      '..kkkkkkkkkkkk..',
+      '.kRRRRRRRRRRRRk.',
+      '.kRrRRRlRRRRrRk.',
+      '.kRRRRlllRRRRRk.',
+      '.kkkkkkkkkkkkkk.',
+      '.krvrkrvrkrvrrk.',
+      '.krrrkrrrkrrrrk.',
+      '.krvrkrrrkrvrrk.',
+      '.krrrkrvrkrrrrk.',
+      '.krrrkrrrkrrvrk.',
+      '.kkkkkkkkkkkkkk.',
+      '..kRk..kRk..kRk.',
+      '..kRk..kRk..kRk.',
+      '.kRk...kRk...kRk',
+      'wkkwwwwkkwwwwkkw',
+    ],
+  },
   the_undertow: {
     // Ein Knoten aus schwarzem Wasser um ein rostiges Schieberad.
     px: 1 / 10,

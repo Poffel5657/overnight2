@@ -98,6 +98,9 @@ export const ITEMS = {
   split_log: { name: 'Split Log', stack: true, value: 2, glyph: '=', text: 'Dry deadfall, broken into lengths. Ama likes them bark-up on the pile.' },
   // Tag 6 (Oil for the Road): Wennas Dank. Grünes Glas, ein Docht aus Torffaser, Griff in Birkenrinde.
   carriers_lamp: { name: 'Carrier\'s Lamp', slot: 'lantern', light: 2.2, burn: 0.5, value: 160, glyph: 'i', text: 'A small lamp of thick green glass with a birch-bark grip. Carriers make them to last a whole road on one filling.' },
+  // Tag 6, Nachschlag (the Spillway): Rüstung für Stufe 48 bis 50 und die Tafel der Überlaufwärter
+  spillway_mail: { name: 'Spillway Mail', slot: 'body', defence: 14, value: 640, glyph: 'M', text: 'Scale mail riveted from the old sluicegate, green at every edge. It sheds water, and most other things.' },
+  spillway_slate: { name: 'Spillway Slate', glyph: '#', value: 0, text: 'A small slate from the overflow, chalk still on it: "Overflow runs north. Keep it running. They need it more than we do."' },
   singed_tuft: { name: 'Singed Tuft', stack: true, value: 2, glyph: '&', text: 'A tuft of wolf fur, burnt at the tips. It smells of woodsmoke, and the wood was not from here.' },
   // Tag 3: der Pokal vom Snail Cup. Man trägt ihn auf dem Kopf, Mabb besteht darauf.
   snail_cup: { name: 'The Kindle Snail Cup', slot: 'head', defence: 1, light: 0.5, value: 5, glyph: 'U', text: 'A little brass cup hammered from an old kettle. It fits any head. Polish it and it catches the lantern light.' },

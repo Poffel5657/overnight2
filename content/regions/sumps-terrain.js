@@ -1,5 +1,6 @@
 // The Sumps (Tag 5, Gebet 9: Kanäle und Verliese unter der großen Stadt): die alten Abflüsse unter Cinderford.
 // Der Bach der Furt verschwindet am Ostende im Fels und läuft hier unten durch Kanäle der Quarrymen bis zum Wehr.
+// Tag 6, Nachschlag: unter der Zisterne der Überlauf (the Spillway, Stufe 46 bis 50), Durchgang bei x 20/21.
 // Legende in content/tiles.js: f Steinsteg, w flaches Wasser, ~ tiefer Kanal, p Brettersteg.
 export const TILES = [
   '############################################',
@@ -26,11 +27,11 @@ export const TILES = [
   '###fffffffffff##fffwffffffffffffffffffffff##',
   '################wffffffffffwwf#ffffffffwwf##',
   '################ffffffffffffff#fffffffffff##',
-  '###############################fwwffffffff##',
-  '###############################fffffffffff##',
-  '###############################ffwffffwfff##',
-  '###############################~~~~~~~~~~~##',
-  '###############################~~~~~~~~~~~##',
+  '####################ff#########fwwffffffff##',
+  '######ffffffffffffffffffffff###fffffffffff##',
+  '####fffffffffffffffffffffffff##ffwffffwfff##',
+  '####ffww~~~fffffffff~~~wwffff##~~~~~~~~~~~##',
+  '####fffffffffffffffffffffffff##~~~~~~~~~~~##',
   '############################################',
   '############################################',
   '############################################',
