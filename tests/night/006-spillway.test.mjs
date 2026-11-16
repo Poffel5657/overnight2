@@ -116,3 +116,25 @@ test('Below the Weir: Hesk, vier Eels, die Tafel, das Old Sluicegate, zurück zu
   assert.equal(P.countItem(q, 'spillway_mail'), 1, 'Lohn: Spillway Mail');
   assert.equal(P.countItem(q, 'spillway_slate'), 0, 'die Tafel bleibt bei Hesk');
 });
+
+test('Gefallen „eels_for_hesk“: drei Eels an einem Tag, an dem er dran ist', async () => {
+  const { favoursFor } = await import('../../shared/community.js');
+  const { FAVOURS } = await import('../../content/dailies.js');
+  let date = null;
+  for (let d = new Date('2026-11-17T12:00:00Z'); !date; d.setUTCDate(d.getUTCDate() + 1)) {
+    const iso = d.toISOString().slice(0, 10);
+    if (favoursFor(iso).includes('eels_for_hesk')) date = iso;
+  }
+  const w = S.createWorld(regionFor('sumps'), 664);
+  w.date = date;
+  const p = veteran(w, 'a', { level: 49, equip: GEAR, bag: [{ id: 'sluice_draught', n: 10 }] });
+  for (const m of w.mobs) if (m.type !== 'weir_eel') { m.dead = true; m.deadUntil = 1e9; }
+  const gold = p.gold;
+  for (let k = 0; k < FAVOURS.eels_for_hesk.n; k++) {
+    const m = w.mobs.filter((x) => x.type === 'weir_eel' && !x.dead)[0];
+    if (!m) { run(w, MOBS.weir_eel.respawn + 2); k--; continue; }
+    fight(w, 'a', m);
+    assert.ok(m.dead);
+  }
+  assert.ok(p.gold >= gold + FAVOURS.eels_for_hesk.reward.gold, `Gefallen am ${date} erledigt`);
+});
