@@ -71,6 +71,8 @@ export const BARKS = {
       'Brighter than Tuesday. I am sure of it.',
       'Lamps on the tree line again. Five. No, four.',
       'Three lamps last night. And the glow is wider again.',
+      'No lamps at all last night. Not one.',
+      'One, two, three cairns. Then nothing.',
     ],
   },
   hesk: {
@@ -91,7 +93,7 @@ export const BARKS = {
   },
   fen: {
     range: 7, every: 60,
-    lines: ['*draws round a goose\'s shadow*', 'Stand still! You moved!', 'Everybody has a shadow. Everybody.'],
+    lines: ['*draws round a goose\'s shadow*', 'Stand still! You moved!', 'Everybody has a shadow. Everybody.', '*adds another goose to a map*', 'North is where the goose points.'],
   },
   sorrel: {
     range: 8, every: 45,
