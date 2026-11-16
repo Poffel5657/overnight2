@@ -604,4 +604,5 @@ export const ABILITY_ICONS = {
   oath_of_embers: ['star', 'amber'], cinder_bastion: ['shield', 'stone'], hearthfire: ['flame', 'warm'], ash_bloom: ['flame', 'black'],
   zenith: ['sun', 'pale'], prism_storm: ['star', 'glim'], moonless_cut: ['slash', 'black'], tangle_wire: ['trap', 'steel'],
   lantern_oath: ['waves', 'amber'], anvil_stance: ['shield', 'black'],
+  hearthstone: ['ring', 'warm'], cinder_lash: ['bolt', 'red'], meridian: ['beam', 'light'], refraction: ['star', 'pale'], umbral_cut: ['slash', 'purple'], wire_ring: ['trap', 'dark'],
 };

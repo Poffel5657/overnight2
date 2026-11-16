@@ -172,3 +172,18 @@ test('Warden-Wege auf 54: Lantern Oath (Lightsworn) wärmt die Gruppe lange, Anv
   assert.ok(f.hp >= 30 + 3 * ABILITIES.lantern_oath.heal, `Freund wird warm (${f.hp})`);
   assert.match(describeAbility('anvil_stance').effect, /half damage/);
 });
+
+test('Alle Wege haben auf 54 eine zweite Fähigkeit, die man vorher nicht hat', () => {
+  for (const [cls, def] of Object.entries(CLASSES)) {
+    for (const [id, sp] of Object.entries(def.specs)) {
+      const at54 = sp.abilities.filter(([, l]) => l === 54).map(([a]) => a);
+      assert.equal(at54.length, 1, `${cls}/${id}: eine Fähigkeit auf 54`);
+      const w = S.createWorld(REGION, 670);
+      const p53 = veteran(w, 'x', { cls, level: 53 });
+      const p54 = veteran(w, 'y', { cls, level: 54 });
+      p53.specs = { [cls]: id }; p54.specs = { [cls]: id };
+      assert.ok(!P.knownAbilities(p53).includes(at54[0]) && P.knownAbilities(p54).includes(at54[0]));
+      assert.ok(describeAbility(at54[0]).effect.length > 20);
+    }
+  }
+});
