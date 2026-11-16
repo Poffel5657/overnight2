@@ -191,6 +191,7 @@ const tallow = (() => {
         { text: 'About the folded prayer...', to: 'po_done', if: { quest: { prayer_not_ours: 3 }, has: { prayer_slip: 1 } }, do: [{ take: { prayer_slip: 1 } }, { advance: 'prayer_not_ours' }] },
         { text: 'I brought your chalk back.', to: 'cs_back', if: { quest: { catch_a_shadow: 'done' }, has: { chapel_chalk: 1 } }, do: [{ take: { chapel_chalk: 1 } }, { give: { lamp_oil: 2 } }] },
         { text: 'Fen needs chalk.', to: 'cs_chalk', if: { quest: { catch_a_shadow: 0 } }, do: [{ give: { chapel_chalk: 1 } }, { advance: 'catch_a_shadow' }] },
+        { text: 'I swore to the light. Ama says I am Lightsworn.', to: 'ls_tallow', if: { spec: 'lightsworn' } },
         ...t.options, ...sp.options, ...f.options, ...a.options, { text: 'I want to pray.', to: 'pray' }, { text: 'Does it ever answer?', to: 'answer' },
         { text: 'How did the drowned choir end a hymn?', to: 'sb_tallow', if: { quest: { old_strongbox: 1 } } },
         BYE,
@@ -212,6 +213,7 @@ const tallow = (() => {
     po_offer: { text: '"There is a prayer in the offering box that is not ours. I know every hand in Kindle. Ama writes like she is chopping wood, Fen draws geese in the margins. This one is neat and brown and folded very small." He frowns. "It says: to the hearth that feeds us, we are feeding you what we have left. Go and look. Then show it to Pell. Pell reads everything in this village."', options: [{ text: 'I will look.' }] },
     po_done: { text: 'He listens, then folds the prayer up again. "Bark paper from the north, in a hand nobody here knows. Somebody out there prays to a fire, and the fire is still hungry." He sets it on the altar under a white stone. "The Nightwright can read it there. It is not ours to keep."', options: [{ text: 'Thank you, Brother.' }] },
     answer: { text: 'Every morning. Not in words. In forests and doors and the odd surprised goose.', options: [BYE] },
+    ls_tallow: { text: 'Tallow puts both hands on your shield, which nobody has ever done, and closes his eyes. "To the light." He opens them again. "I do not know if the Nightwright hears vows. The Quarrymen thought their lamp did. The choir thought theirs did." He lets go. "But I hear them. Come here when it gets heavy. That is what a chapel is for."', options: [BYE] },
     ...f.pages, ...a.pages, ...t.pages, ...sp.pages,
   };
 })();
@@ -220,9 +222,11 @@ const rook = (() => {
   const s = teaches('salvage', 'Heaps, wrecks, anything the Grey spat out. Pull the good bits, leave the bad bits, and do not cut yourself. Much.');
   const k = teaches('tinkering', 'The workbench by my shop. Scrap in, something useful out. If it falls apart, that is a lesson.');
   return {
+    iw_rook: { text: 'Rook looks at your shield, then at you, then back at the shield, as if deciding which of you is the better piece of work. "Ironwall." He knocks on the rim with one knuckle and listens. "Cinder iron does not bend. It does not break either, until it does, all at once. Remember that." He goes back to his bench. "Bring it to me when it rings wrong. Not before."', options: [BYE] },
     start: {
       text: 'Old Rook. I fix things. Bring me scrap from the Grey, and I make it into something that is not scrap.',
       options: [
+        { text: 'Ama says I am Ironwall now.', to: 'iw_rook', if: { spec: 'ironwall' } },
         { text: 'You look busy.', to: 'r_offer', if: { quest: { kindling: 'done', rooks_bad_week: 'none' } }, do: [{ start: 'rooks_bad_week' }] },
         { text: 'Here is your scrap.', to: 'r_done', if: { quest: { rooks_bad_week: 1 }, has: { scrap: 6 } }, do: [{ take: { scrap: 6 } }, { advance: 'rooks_bad_week' }] },
         { text: 'Flint needs a cart wheel.', to: 'tw_rook', if: { quest: { three_wheels: 1 }, has: { scrap: 5 } }, do: [{ take: { scrap: 5 } }, { give: { cart_wheel: 1 } }, { advance: 'three_wheels' }] },
