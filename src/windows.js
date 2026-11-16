@@ -634,7 +634,7 @@ export function createWindows(handlers) {
           h('p', {}, 'Everyone in Kindle feeds the same fire. If it blazes by midnight, the Grey has to step back further tonight.'),
           beaconBar(),
           h('ul', { class: 'rows' }, fuels),
-          h('p', { class: 'muted small' }, 'Lamp oil from alchemists or Marrow, wax from foragers, wisps from Greylings.'),
+          h('p', { class: 'muted small' }, 'Lamp oil from alchemists or Marrow, wax from foragers, wisps from Greylings. Split logs from deadfall along the woods; stack them all at once on Ama\'s woodpile beside the fire.'),
         ],
       };
     },
