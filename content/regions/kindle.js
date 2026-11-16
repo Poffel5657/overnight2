@@ -168,6 +168,9 @@ export const REGION = {
     {type: 'deadfall', x: 44, y: 16, name: 'deadfall', text: 'Deadfall near the woodcutters\' camp. Haskel leaves it for whoever needs it.'},
     {type: 'deadfall', x: 58, y: 22, name: 'deadfall', text: 'A pine the Grey knocked over some winter. The needles are long gone.'},
     {type: 'deadfall', x: 64, y: 27, name: 'deadfall', text: 'A fallen alder at the woods\' edge, dry as paper.'},
+    // Nachschlag: im Sinkmarsh liegen alte Weiden, die der Sumpf umgeworfen hat (für höhere Stufen unterwegs)
+    {type: 'deadfall', x: 36, y: 79, name: 'deadfall', text: 'A drowned willow, pale as bone, lying across the marsh. The top half dried out years ago.'},
+    {type: 'deadfall', x: 69, y: 80, name: 'deadfall', text: 'A willow trunk the marsh gave back. It smells of peat, but the inside is dry.'},
   ],
   npcs: [
     {id: 'ama', name: 'Warden Ama', sprite: 'ama', x: 48, y: 47},
