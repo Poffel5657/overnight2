@@ -138,3 +138,11 @@ test('Gefallen „eels_for_hesk“: drei Eels an einem Tag, an dem er dran ist',
   }
   assert.ok(p.gold >= gold + FAVOURS.eels_for_hesk.reward.gold, `Gefallen am ${date} erledigt`);
 });
+
+test('Brack schreibt das Wasser auf seine Liste', () => {
+  const w = S.createWorld(regionFor('kindle'), 665);
+  const p = veteran(w, 'a', { level: 49, quests: { kindling: { done: true }, below_the_weir: { done: true } } });
+  talk(w, 'a', 'brack');
+  choose(w, 'a', 'overflow water ran north');
+  assert.equal(p.dialog.page, 'sw_brack');
+});

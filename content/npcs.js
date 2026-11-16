@@ -435,6 +435,7 @@ const brack = {
       { text: 'Flint asks about the deep seam.', to: 'ds_brack', if: { quest: { deep_seam: 1 } }, do: [{ advance: 'deep_seam' }] },
       { text: 'Look at this miller\'s ledger.', to: 'ml_brack', if: { quest: { millers_ledger: 2 }, has: { millers_ledger: 1 } }, do: [{ advance: 'millers_ledger' }] },
       { text: 'What is down there?', to: 'b_deep' },
+      { text: 'Under Cinderford, the overflow water ran north too.', to: 'sw_brack', if: { quest: { below_the_weir: 'done' } } },
       BYE,
     ],
   },
@@ -448,6 +449,8 @@ const brack = {
   ml_brack: { text: 'Brack holds the miller\'s ledger next to the Foreman\'s in his head and whistles. "Glass grit from the mill, glimmer from the mine, iron from the deep seam. All up the north road, all for the Hollow." He hands the book back. "Somebody up there was building something out of all of Kindle, a little every month. And then everyone down here forgot. That is not forgetting. That is being made to forget." He spits in the fire. "Or I need a nap."', options: [{ text: 'Take a nap, Brack.' }] },
   ds_brack: { text: '"Flint? From under the hill?" Brack scratches his beard. "The deep seam. My grandfather dug it, before the Grey covered the far end. Black iron, east of the old shaft. The Foreman\'s ledger says it went north with the glimmer, some years." He looks east, then north, and frowns at both. "Tell Flint the seam is his if he wants it. Tell him to bring his own beetles."', options: [{ text: 'I will tell him.' }] },
   b_deep: { text: 'Brass, glimmer, the odd worm. Further in, the Grey. We do not dig that way.', options: [BYE] },
+  sw_brack: { text: 'Brack takes out a scrap of paper that has clearly been folded and unfolded a great many times. On it, in his blocky hand: GLASS (mill). GLIMMER (mine). IRON (deep seam). He licks his pencil and adds: WATER (Cinderford). "Water," he says. "Uphill, into the Grey." He looks at the list for a long time. "Whoever was up there did not just need things from us. They needed everything. Like a village that had to be built twice."',
+    options: [BYE] },
 };
 
 // Der Ausguck am Nordrand von Hushwood (Tag 2, Abstimmung „north-lookout“): Brindle, Haskels Schwester.
