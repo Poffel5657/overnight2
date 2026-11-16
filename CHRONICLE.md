@@ -239,6 +239,7 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 - **The Spillway** (Stufe 46 bis 50): neuer Flügel unter der Zisterne der Sumps, mit **Weir Eels** (47, normal) und **The Old Sluicegate** (49, Boss allein mit Einsatz), zwei Lampen-Nischen, einer Kiste. Quest **„Below the Weir“** (Hesk, ab 46): vier Eels, die Tafel der Überlaufwärter („Overflow runs north“), das Sluicegate, zurück zu Hesk. Lohn **Spillway Mail** (Abwehr 14, besser als Sumpwalker), seltene Beute vom Sluicegate.
 - **„Fen's Map“** (Fen, niedrige Stufen): Brindle zeichnet die Steine, Haskel die Wolfsbaue, Fen die Gans, Wenna bekommt die Karte.
 - **Lampwright 16: Carrier's Lamp** nachbauen (Glass Grit, ein Split Log für den Griff, Wachs für den Docht). Wren erklärt sie, wenn man Wennas Lampe zeigt. Damit haben die Scheite einen zweiten Zweck.
+- Hollis hat ein sechstes Gerücht (Ama hat geschrien, Wennas Säcke sind gefaltet), Mothwick will Wenna fast Mottenwachs mitgeben.
 - Neue Rufe (Ama am Stapel, Pell, Wenna, Pip), neuer Ausguck-Text.
 
 **Balance-Notizen** (Warden mit Meisterschild, Sumpwalker, Weir Lamp, vier Sluice Draughts):
