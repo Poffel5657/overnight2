@@ -603,4 +603,5 @@ export const ABILITY_ICONS = {
   // Tag 6: Spezialisierungen auf 50
   oath_of_embers: ['star', 'amber'], cinder_bastion: ['shield', 'stone'], hearthfire: ['flame', 'warm'], ash_bloom: ['flame', 'black'],
   zenith: ['sun', 'pale'], prism_storm: ['star', 'glim'], moonless_cut: ['slash', 'black'], tangle_wire: ['trap', 'steel'],
+  lantern_oath: ['waves', 'amber'], anvil_stance: ['shield', 'black'],
 };

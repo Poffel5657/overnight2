@@ -149,3 +149,26 @@ test('Mit dem Weg kämpfen: Ein Lightsworn-Warden auf 50 schlägt den Undertow a
   assert.ok(m.dead, 'der Undertow fällt');
   assert.ok(low < start * 0.9, `es kostet (tiefster Stand ${low} von ${start})`);
 });
+
+test('Warden-Wege auf 54: Lantern Oath (Lightsworn) wärmt die Gruppe lange, Anvil Stance (Ironwall) hält aus', () => {
+  const w = S.createWorld(REGION, 660);
+  const ls = veteran(w, 'l', { cls: 'warden', level: 54 });
+  talk(w, 'l', 'ama');
+  choose(w, 'l', 'path of my own');
+  choose(w, 'l', 'Lightsworn:');
+  assert.ok(P.knownAbilities(ls).includes('lantern_oath') && !P.knownAbilities(ls).includes('anvil_stance'));
+  const iw = veteran(w, 'i', { cls: 'warden', level: 53 });
+  talk(w, 'i', 'ama');
+  choose(w, 'i', 'path of my own');
+  choose(w, 'i', 'Ironwall:');
+  assert.ok(!P.knownAbilities(iw).includes('anvil_stance'), 'erst ab 54');
+  // Wirkung: Lantern Oath heilt einen Freund über Zeit
+  const f = veteran(w, 'f', { cls: 'mender', level: 40 });
+  f.x = ls.x + 1; f.y = ls.y;
+  if (!S.walkable(w, f.x, f.y)) f.x = ls.x - 1;
+  f.hp = 30;
+  applyIntent(w, 'l', { t: 'ability', id: 'lantern_oath' });
+  run(w, 12);
+  assert.ok(f.hp >= 30 + 3 * ABILITIES.lantern_oath.heal, `Freund wird warm (${f.hp})`);
+  assert.match(describeAbility('anvil_stance').effect, /half damage/);
+});
