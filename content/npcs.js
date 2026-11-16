@@ -59,10 +59,33 @@ function trial(cls, offerText, doneText, handIn = []) {
   };
 }
 
+// Tag 6: Spezialisierungen ab SPEC_LEVEL beim Lehrer der Klasse (content/classes.js, specs). Nur mit der Waffe
+// dieser Klasse in der Hand (Bedingung cls). Die Wahl gilt für immer (eine pro Klasse).
+function specPath(cls, offerText, doneText) {
+  const specs = Object.entries(CLASSES[cls].specs);
+  return {
+    options: [
+      { text: 'I am ready for a path of my own.', to: 'spec_choose', if: { cls, specLevel: true, noSpec: true } },
+      { text: 'About the path I chose...', to: 'spec_mine', if: { cls, hasSpec: true } },
+    ],
+    pages: {
+      spec_choose: { text: offerText, options: [
+        ...specs.map(([id, sp]) => ({ text: `${sp.name}: ${sp.text}`, to: 'spec_done', do: [{ chooseSpec: id }] })),
+        { text: 'Not yet. I want to think about it.', to: 'start' },
+      ] },
+      spec_done: { text: doneText, options: [{ text: 'Thank you.', to: 'start' }] },
+      spec_mine: { text: 'It is yours now. Walk it far. There is more of it than you can see from here, and every few steps it will show you something new.', options: [{ text: 'I will.', to: 'start' }] },
+    },
+  };
+}
+
 const ama = (() => {
   const t = trial('warden',
     'Ama looks at how you stand. "Six Greylings. Then come back, and we will see about a shield."',
     '"Fine. Shield up, lantern low." She hands you a scrap shield. You can take up the Warden\'s calling in Kindle now.');
+  const sp = specPath('warden',
+    'Ama looks at your shield for a long time: the dents, the scorch marks, the place where you always catch the blow. "Fifty. You have stood in front long enough to know which way you lean." She holds up two fingers. "Some Wardens swear to the light. They hit, and the people behind them get warmer. Some swear to iron. Nothing gets past them, ever, and they do not need a reason." She lowers her hand. "Choose. You do not get to choose again."',
+    'Ama nods once, the way she nods at a well-stacked log. "Good. Then that is what you are." She goes back to the fire. You feel the shield sit differently on your arm.');
   return {
     start: {
       text: 'Warden Ama. I keep the Beacon lit, and I count every log that goes in.',
@@ -76,7 +99,13 @@ const ama = (() => {
         { text: 'Any more wolves?', to: 'rp_after', if: { quest: { restless_pack: 'done' } } },
         { text: 'There is a carrier hiding in the old mill.', to: 'ls_ama', if: { quest: { the_last_sack: 'active' } } },
         { text: 'Wenna says their fire is going hungry.', to: 'ls_ama_after', if: { quest: { the_last_sack: 'done' } } },
-        ...t.options,
+        // Tag 6: Ama's Woodpile (Abstimmung) und Wennas Aufbruch (Bogen)
+        { text: 'What is that woodpile by the Beacon?', to: 'wp_offer', if: { quest: { kindling: 'done', the_woodpile: 'none' } }, do: [{ start: 'the_woodpile' }, { give: { split_log: 1 } }] },
+        { text: 'Logs on the pile.', to: 'wp_done', if: { quest: { the_woodpile: 2 } }, do: [{ advance: 'the_woodpile' }] },
+        { text: 'How high is the pile?', to: 'wp_after', if: { quest: { the_woodpile: 'done' } } },
+        { text: 'Wenna is walking home, north.', to: 'or_ama', if: { quest: { oil_for_the_road: 'active' } } },
+        { text: 'The Beacon is starving, is it not?', to: 'ama_starves', if: { quest: { oil_for_the_road: 'done' } } },
+        ...t.options, ...sp.options,
         { text: 'Can I fill my lantern?', to: 'oil', do: [{ refill: true }] },
         { text: 'What is out there?', to: 'grey' },
         { text: 'What does a Warden carry, besides a shield?', to: 'sb_ama', if: { quest: { old_strongbox: 1 } } },
@@ -118,10 +147,15 @@ const ama = (() => {
     rp_after: { text: 'Every night. I count them from up here, like logs. Brindle counts the light from up there. Between the two of us we will know exactly how worried to be.', options: [BYE] },
     ls_ama: { text: 'Ama does not look surprised. She looks like somebody adding a number to a column she does not like. "Feed her. Let her rest. Do not let Pell near her, he will put her in the morning news." She looks at the Beacon. "If they walk south with fewer lamps every week, whatever they keep alight up there is getting less. And ours eats more every night. I do not like two things being true at the same time."', options: [BYE] },
     ls_ama_after: { text: 'Ama stops counting logs. "Hungry." She says it the way she says "rain". "Then the glow up north is a fire running out of wood, and it is pulling at every light in the Grey to stay alive, ours too." She picks the log back up. "Tell everybody to bring wood. Not today. Every day."', options: [BYE] },
+    wp_offer: { text: '"Mine. Well, everybody\'s." Ama pats the stack beside the Beacon, bark side up. "The Beacon eats more every night, and I am not standing here feeding it one log at a time while you all walk past with your hands in your pockets. There is deadfall all along the edge of the woods: west of the fields, and up along Hushwood by Haskel\'s camp. Anybody can break it. Split some, stack it here, and I will chalk it on the board." She hands you a log. "That is what dry looks like. Bring me more of it."', options: [{ text: 'I will bring wood.' }] },
+    wp_done: { text: 'Ama looks at the pile, then at the tally board, and draws a line with the chalk. "Yours." She does not smile, exactly, but she stops frowning at the fire for a moment. "Every evening. Whatever you can carry. A pile that everybody fills does not run out."', options: [{ text: 'Every evening.' }] },
+    wp_after: { text: '"Higher than yesterday. Not as high as I want." She knocks on the pile with her knuckles. "When it reaches my shoulder, the Beacon has enough for the night. When it reaches my head, the Grey steps back. When it reaches the top of the board, I will think about smiling."', options: [BYE] },
+    or_ama: { text: 'Ama keeps her eyes on the fire for a long time. "Good. Somebody should go home." She pulls a log off the pile and weighs it in her hand. "If she wants to put wood on our pile before she goes, let her. People who are given everything do not walk as far as people who paid their way."', options: [BYE] },
+    ama_starves: { text: 'Ama does not answer at once. She chalks the tally board, rubs it out, chalks it again. "Yes. It ate the whole pile last night and asked for more. No wind. No rain." She points north with the chalk. "That light up there is a fire running out, and a fire running out pulls at every other fire it can feel. Ours is the nearest." She turns to the square and raises her voice, which she never does. "THE BEACON IS STARVING. Everybody brings wood. Every evening. Deadfall, oil, anything that burns. I am not asking." Then, quieter, to you: "Now we find out what kind of village this is."', options: [{ text: 'I will bring wood.' }] },
     oil: { text: 'Take what you need. The Beacon has more than you do. Come back before your wick goes blue.', options: [{ text: 'Thanks.' }] },
     grey: { text: 'The Grey. Every night it pulls back a little and leaves something behind. Some of it bites.', options: [{ text: 'Who pushes it back?', to: 'nw' }, BYE] },
     nw: { text: 'Tallow says the Nightwright. I say someone should, and I am glad it is not me.', options: [BYE] },
-    ...t.pages,
+    ...t.pages, ...sp.pages,
   };
 })();
 
@@ -131,6 +165,9 @@ const tallow = (() => {
   const t = trial('mender',
     '"Warmth starts with bitterleaf. Bring me three, and I will show you what to do with your hands."',
     '"There. Feel that? That is you, being warm at people." He gives you an ember staff.', ['bitterleaf', 3]);
+  const sp = specPath('mender',
+    'Tallow puts down his candle. "Fifty. You have kept a great many people warm." He turns the ember staff in your hands so the coal faces you. "There are two ways to carry this, from here. You can keep the hearth: bigger, steadier, and nobody near you falls over. Or you can remember that a coal is also a fire, and bind it into ash for anything that comes too close." He smiles, a little sadly. "The Nightwright gives and never takes. A path, once chosen, is the same."',
+    'Tallow presses his thumb to the coal, which should hurt and does not. "There. Go and be that." He picks up his candle again, then puts it back down. "I will pray for you. It may even help."');
   return {
     start: {
       text: 'Brother Tallow, of the Chapel. The Nightwright listens here. Mostly, anyway.',
@@ -148,7 +185,7 @@ const tallow = (() => {
         { text: 'About the folded prayer...', to: 'po_done', if: { quest: { prayer_not_ours: 3 }, has: { prayer_slip: 1 } }, do: [{ take: { prayer_slip: 1 } }, { advance: 'prayer_not_ours' }] },
         { text: 'I brought your chalk back.', to: 'cs_back', if: { quest: { catch_a_shadow: 'done' }, has: { chapel_chalk: 1 } }, do: [{ take: { chapel_chalk: 1 } }, { give: { lamp_oil: 2 } }] },
         { text: 'Fen needs chalk.', to: 'cs_chalk', if: { quest: { catch_a_shadow: 0 } }, do: [{ give: { chapel_chalk: 1 } }, { advance: 'catch_a_shadow' }] },
-        ...t.options, ...f.options, ...a.options, { text: 'I want to pray.', to: 'pray' }, { text: 'Does it ever answer?', to: 'answer' },
+        ...t.options, ...sp.options, ...f.options, ...a.options, { text: 'I want to pray.', to: 'pray' }, { text: 'Does it ever answer?', to: 'answer' },
         { text: 'How did the drowned choir end a hymn?', to: 'sb_tallow', if: { quest: { old_strongbox: 1 } } },
         BYE,
       ],
@@ -169,7 +206,7 @@ const tallow = (() => {
     po_offer: { text: '"There is a prayer in the offering box that is not ours. I know every hand in Kindle. Ama writes like she is chopping wood, Fen draws geese in the margins. This one is neat and brown and folded very small." He frowns. "It says: to the hearth that feeds us, we are feeding you what we have left. Go and look. Then show it to Pell. Pell reads everything in this village."', options: [{ text: 'I will look.' }] },
     po_done: { text: 'He listens, then folds the prayer up again. "Bark paper from the north, in a hand nobody here knows. Somebody out there prays to a fire, and the fire is still hungry." He sets it on the altar under a white stone. "The Nightwright can read it there. It is not ours to keep."', options: [{ text: 'Thank you, Brother.' }] },
     answer: { text: 'Every morning. Not in words. In forests and doors and the odd surprised goose.', options: [BYE] },
-    ...f.pages, ...a.pages, ...t.pages,
+    ...f.pages, ...a.pages, ...t.pages, ...sp.pages,
   };
 })();
 
@@ -226,6 +263,7 @@ const fen = (() => {
         { text: 'The Stranger has no shadow.', to: 'cs_done', if: { quest: { catch_a_shadow: 3 } }, do: [{ advance: 'catch_a_shadow' }] },
         { text: 'Still catching shadows?', to: 'cs_after', if: { quest: { catch_a_shadow: 'done' } } },
         { text: 'There is a carrier in the old mill.', to: 'fen_wenna', if: { quest: { the_last_sack: 'active' } } },
+        { text: 'Wenna is walking home, north.', to: 'or_fen', if: { quest: { oil_for_the_road: 'active' } } },
         { text: 'You look like you are plotting.', to: 'cb_offer', if: { quest: { kindling: 'done', crows_in_the_barley: 'none' }, classLevel: 2 }, do: [{ start: 'crows_in_the_barley' }] },
         { text: 'Feathers, and a tin face from Rook.', to: 'cb_done', if: { quest: { crows_in_the_barley: 3 }, has: { crow_feather: 3, tin_face: 1 } }, do: [{ take: { crow_feather: 3, tin_face: 1 } }, { advance: 'crows_in_the_barley' }] },
         { text: 'Whose is the empty house by the well?', to: 'mc_offer', if: { quest: { not_from_here: 'done', map_of_crosses: 'none' } }, do: [{ start: 'map_of_crosses' }] },
@@ -242,6 +280,7 @@ const fen = (() => {
     cs_done: { text: 'Fen stares at you. Then at the ring. Then at the Beacon. "Everybody has a shadow. The goose has a shadow." Fen is quiet for a whole three seconds, which is a record. "I am not scared. I am writing it down. In pencil, in case it comes back." Fen hands over a bread roll that has been in a pocket a long time, and the glow draught Tallow gave for emergencies. "This is an emergency."', options: [{ text: 'Do not follow him, Fen.' }] },
     cs_after: { text: '"Every night. The cat, the goose, Pell, you. And one empty space." Fen has drawn a little circle round the empty space. "I asked Ama. Ama said some people do not have much light to spare. That is not an answer. That is an Ama answer."', options: [BYE] },
     fen_wenna: { text: '"A REAL one? From the light?" Fen is already halfway to the mill road before you catch the collar. "Does she have a shadow? Can I carry something for her? I am very strong. I carried the goose once." Fen thinks. "The goose did not like it."', options: [BYE] },
+    or_fen: { text: 'Fen sits down very hard on the ground. "Without me?" A long, wounded silence, about four seconds. "Then I am drawing her a map. A good one. With the stones on it, and the tower, and where the wolves sleep, and a goose so she knows it is from me." Fen is already looking for chalk.', options: [BYE] },
     cb_offer: { text: '"Plotting? No. Planning." Fen whispers. "The crows are eating all the barley by the Old Mill. There is a scarecrow, but it is wearing Pell\'s old coat, and the crows think it is Pell. Nobody is scared of Pell." Fen counts on muddy fingers. "Shoo some crows. Get feathers, crows hate seeing their own feathers. And Rook has to make it a face. A horrible one."', options: [{ text: 'A horrible face. Got it.' }] },
     cb_done: { text: 'Fen runs off toward the mill and comes back much later, muddy and delighted. "Feather collar. Tin face. I made it wave." Fen shows you how it waves. "Three crows fell over. One of them was Pell\'s favourite." Fen presses bread and barley into your hands. "From Hollis, for the mill. I said you did most of it. You did some of it."', options: [{ text: 'Good scarecrow, Fen.' }] },
     shards: { text: 'MORE? The wolves have it, and the moss spirits, like they walked past a lot of broken lanterns. Put two on the notice board for me some days, I am keeping count. And Wren can grind three into a lens, if you know lamps.', options: [BYE] },
@@ -259,6 +298,9 @@ const wren = (() => {
   const t = trial('flarecaster',
     '"Light hurts them. You have seen it. Bring me five grey wisps and I will show you why."',
     '"Look through this." The cracked lens burns a little dot onto your hand. "That. Do that to them."', ['grey_wisp', 5]);
+  const sp = specPath('flarecaster',
+    'Wren holds your lens up to the window and squints through it. "Fifty, and you have not cracked it. Impressive." She hands it back. "Two ways to grind from here. Sunwright: all the light you have, in one point, on one thing. Prismist: split it into every colour and blind the whole room." She shrugs. "I cannot regrind it after. Glass only goes one way."',
+    'Wren takes the lens, does something quick and ugly to it with a file, and gives it back. It throws a different light now. "There. That is yours. Do not bring it back to me crying."');
   return {
     start: {
       text: 'Wren. I grind lenses. Mind the glass dust, it gets everywhere, including into opinions.',
@@ -270,7 +312,7 @@ const wren = (() => {
         { text: 'Wenna says this grit makes lanterns.', to: 'grit', if: { has: { glass_grit: 1 } } },
         { text: 'What do you make of this glass?', to: 'nf_glass', if: { quest: { not_from_here: 1 }, has: { cold_glass: 1 } }, do: [{ advance: 'not_from_here' }] },
         { text: 'Can you read this tally stick?', to: 'cd_tally', if: { quest: { carriers_dark: 3 }, has: { tally_stick: 1 } }, do: [{ advance: 'carriers_dark' }] },
-        ...t.options, ...l.options, BYE,
+        ...t.options, ...sp.options, ...l.options, BYE,
       ],
     },
     grit: { text: 'Wren pours a little into her palm and tilts it to the light. "Ground glass, green, fine as flour. You do not grind glass for fun. You grind it to pour it again, thicker." She is already reaching for a crucible. "Two of this, brass, and a page of survey notes for the reflector, and I can teach any lampwright to pour a lantern like the cold one on the north edge. Lampwright 22. And tell nobody I was excited."', options: [BYE] },
@@ -280,7 +322,7 @@ const wren = (() => {
     en_wisps: { text: 'A spyglass? Fine. Glass I have. To polish it I need grey wisps, three of them. They hate the light so much that they rub every speck of it smooth.', options: [{ text: 'Three wisps.' }] },
     nf_glass: { text: 'Green, poured thick, full of tiny bubbles. Nobody in Kindle pours glass like this, and I would know. Whoever made it had sand, a hot fire and no patience. Show the Stranger. He looks at lanterns like he misses one.', options: [{ text: 'I will.' }] },
     cd_tally: { text: 'Wren runs a thumb down the notches. "Forty to a row. Forty, forty, forty, for years of rows. A carrier\'s tally: one notch for every load that arrived." Wren turns it over. "And then the rows get short. Twenty. Twelve. The last one has eight." The stick comes back to you. "Somebody used to carry forty of something, every time. Now they carry what they can find."', options: [{ text: 'Forty. Like the crates in the ledger.' }] },
-    ...l.pages, ...t.pages,
+    ...l.pages, ...t.pages, ...sp.pages,
   };
 })();
 
@@ -288,6 +330,9 @@ const stranger = (() => {
   const t = trial('drifter',
     '"Go out after dark. Put down three of them. Do not run home to the fire after each one."',
     '"You came back. Most do, the first time." Two shivs, without a word about where they came from.');
+  const sp = specPath('drifter',
+    'The Stranger watches you for a while before he speaks. "Fifty. Where I come from, that is when they ask you what kind of dark you are." He holds up one shiv. "Nightblade: you are the dark, and it cuts." Then a coil of fine wire from his sleeve. "Snarewright: you are the dark, and they walk into it." He puts both away. "Choose. People who choose twice are not trusted with either."',
+    'He nods, once. "Good." For a moment you think he will say something about home. He does not.');
   return {
     start: {
       text: '...',
@@ -303,7 +348,8 @@ const stranger = (() => {
         { text: 'You have no shadow.', to: 'cs_none', if: { quest: { catch_a_shadow: 'done' } } },
         { text: 'There is a carrier called Wenna in the old mill.', to: 'ls_stranger', if: { quest: { the_last_sack: 'active' } } },
         { text: 'Wenna is going home, north.', to: 'ls_stranger_after', if: { quest: { the_last_sack: 'done' } } },
-        ...t.options, { text: 'Where are you from?', to: 'from' }, BYE,
+        { text: 'Wenna leaves tomorrow night.', to: 'or_stranger', if: { quest: { oil_for_the_road: 'active' } } },
+        ...t.options, ...sp.options, { text: 'Where are you from?', to: 'from' }, BYE,
       ],
     },
     fl_offer: { text: '"I know. I followed it here." A long pause. "It goes out, or this village does. Take friends. When he puts the lights out, put them back."', options: [{ text: 'We will.' }] },
@@ -318,8 +364,9 @@ const stranger = (() => {
     cs_none: { text: '"I have one." He holds up his hand to the Beacon and looks at the ground where it should fall. "It is at home. Where the light is mine." He puts the hand in his pocket. "Keep your wick trimmed."', options: [BYE] },
     ls_stranger: { text: 'He goes very still. "Wenna." He says the name the way you would pick up something hot. "Still carrying, then. Good." He looks at the mill road and does not move toward it. "Do not tell her I am here. She would ask me why I have not gone home yet, and I would have to answer."', options: [BYE] },
     ls_stranger_after: { text: '"North, along the stones that point." He turns his hand over in the Beacon light, where the shadow ought to be. "She will tell them your fire still lights other fires. That will matter more than you think." He does not say to whom.', options: [BYE] },
+    or_stranger: { text: 'He takes the piece of green glass out of his coat and holds it out to you, as if to send it with her. Then he puts it back. "No." He looks at the mill road. "If she asks whether anybody else from home came this way, tell her you do not know." A pause. "It will even be true, if you stop asking me questions."', options: [BYE] },
     cd_who: { text: '"People who remember a road you have forgotten." He says it gently, which is worse.', options: [BYE] },
-    ...t.pages,
+    ...t.pages, ...sp.pages,
   };
 })();
 
@@ -337,6 +384,7 @@ const haskel = {
       { text: 'Why is it so quiet in here?', to: 'h_quiet' },
       { text: 'Seen anything odd lately?', to: 'h_light' },
       { text: 'A carrier from the north is in the old mill.', to: 'h_wenna', if: { quest: { the_last_sack: 'active' } } },
+      { text: 'Ama wants dry wood for the Beacon.', to: 'wp_haskel', if: { quest: { kindling: 'done' } } },
       BYE,
     ],
   },
@@ -349,6 +397,7 @@ const haskel = {
   en_early: { text: 'My sister Brindle is. She is building a lookout up at the north edge. It is wolf country up there, though. Come back with a few more levels. (Level 10)', options: [{ text: 'Fair.' }] },
   h_pack: { text: 'More every night. They come through the camp at a run and do not even look at my lunch. A wolf that ignores lunch is a frightened wolf.', options: [BYE] },
   h_wenna: { text: 'Haskel puts down his axe. "In the mill? Then the smoke I smelled on the wolves was hers. Peat." He scratches his head. "Tell her the wolves are scared of her people, not the other way round. And tell her the north road is still there. Overgrown, but there. I cut it back as far as the stones, every spring. Nobody asked me to. Seemed rude not to."', options: [BYE] },
+  wp_haskel: { text: 'Haskel points with his axe, which is how he points at everything. "Deadfall. Not the standing trees, they bite back. There is a dry pine by the camp, a bough up the west path, a couple along the edge east of the road, and two at the bottom of the woods west of the fields, close to the village. Break them with your boot, it is old wood." He spits on his hands. "Take what is dry. The wet stays till tomorrow. And tell Ama I want my name on her board too."', options: [BYE] },
   h_quiet: { text: 'Hushwood eats sound. Shout in here and nobody hears it, not even you. Handy for wolves. Less handy for me.', options: [BYE] },
 };
 
@@ -394,6 +443,7 @@ const brindle = {
       { text: 'I followed the carriers.', to: 'cd_done', if: { quest: { carriers_dark: 5 } }, do: [{ advance: 'carriers_dark' }] },
       { text: 'Seen the carriers again?', to: 'cd_after', if: { quest: { carriers_dark: 'done' } } },
       { text: 'One of the carriers is in the old mill.', to: 'br_wenna', if: { quest: { the_last_sack: 'active' } } },
+      { text: 'Wenna wants to walk north. Is the road clear?', to: 'or_brindle', if: { quest: { oil_for_the_road: 4 } }, do: [{ advance: 'oil_for_the_road' }] },
       { text: 'What is out there, where this circle is?', to: 'mc_done', if: { quest: { map_of_crosses: 3 } }, do: [{ take: { crossed_map: 1 } }, { advance: 'map_of_crosses' }] },
       { text: 'What do you see up there?', to: 'see' },
       { text: 'Can I read your book?', to: 'book', if: { quest: { eyes_north: 'done' } } },
@@ -406,6 +456,7 @@ const brindle = {
   cd_done: { text: 'She writes it all down: the frame, the tally, the bread, what Wren said, what the Stranger said, and underlines "the old way south" three times. "So the glow up north has people under it. Hungry people, walking." She closes the book. "Here: the wraps one of them dropped, and Haskel\'s salve. I will keep counting. Tell Ama. No, I will tell Ama. She listens to me when I shout."', options: [{ text: 'Thanks, Brindle.' }] },
   cd_after: { text: '"Twice more. Always at night, always heading east along the trees, always fewer lamps than the time before. Last night, three." She does not look up from her book.', options: [BYE] },
   br_wenna: { text: 'Brindle\'s pencil stops. "One of the lamps." She flips back through her book. "Five, four, three, two. I thought the missing ones had gone home." She writes something and underlines it. "They did not go home. They got lost, or they stopped." She closes the book hard. "Feed her. And ask her, gently, how many there were when they set out."', options: [BYE] },
+  or_brindle: { text: 'Brindle opens her book to a page covered in tiny drawings of stones. "I count them every night. The cairns, the ones that point. One, two, three: clear, nobody on them, nothing sitting by them." Her pencil moves on. "After the third I lose them in the dark. No lamps came south this week. Not one." She taps the glow at the top of the page, drawn wider than last week. "And that ate two lamps last week and wants more. Tell her: clear to the third cairn. After that she is on her own, and so is the light."', options: [{ text: 'Clear to the third cairn.' }] },
   en_hello: { text: 'Good, hands. The tower is up, more or less. The wind up there could peel an apple. I need three wolf pelts for a windbreak, and the wolves are, helpfully, all around us. After that, a proper glass.', options: [{ text: 'Three pelts.' }] },
   en_pelts: { text: 'She nails them up along the rail, fur side in. "Better. Now I can stay up there long enough to see something. What I need next is a spyglass. Wren in Kindle grinds lenses. Wren will want something for it. Wren always does."', options: [{ text: 'I will ask Wren.' }] },
   en_glass: { text: 'She fits the lens into a brass tube and squints through it at a tree. "Hah. That tree has a beetle on it." She hands you the tube back. "You did the work, you get the first look. Wait for dark, climb up and look north. Then come and tell me I am not mad."', options: [{ text: 'After dark, then.' }] },
@@ -832,6 +883,11 @@ const wenna = {
       { text: 'Bread, from this mill\'s own flour.', to: 'w_bread', if: { night: true, quest: { the_last_sack: 1 }, has: { millbread: 2 } }, do: [{ take: { millbread: 2 } }, { advance: 'the_last_sack' }, { give: { wennas_lantern: 1 } }] },
       { text: 'Your lantern, lit. And an answer from the chapel.', to: 'w_done', if: { night: true, quest: { the_last_sack: 4 }, has: { wennas_lantern: 1 } }, do: [{ take: { wennas_lantern: 1 } }, { advance: 'the_last_sack' }] },
       { text: 'Where will you go?', to: 'w_after', if: { night: true, quest: { the_last_sack: 'done' } } },
+      // Tag 6 (Bogen): Oil for the Road
+      { text: 'You want to go home.', to: 'or_offer', if: { night: true, quest: { the_last_sack: 'done', oil_for_the_road: 'none' } }, do: [{ start: 'oil_for_the_road' }] },
+      { text: 'Three flasks of oil, for the road.', to: 'or_oil', if: { night: true, quest: { oil_for_the_road: 1 }, has: { lamp_oil: 3 } }, do: [{ take: { lamp_oil: 3 } }, { advance: 'oil_for_the_road' }] },
+      { text: 'Brindle has been watching the road.', to: 'or_done', if: { night: true, quest: { oil_for_the_road: 5 } }, do: [{ advance: 'oil_for_the_road' }] },
+      { text: 'When do you leave?', to: 'or_after', if: { night: true, quest: { oil_for_the_road: 'done' } } },
       { text: 'Could you bake with this barley?', to: 'w_bake', if: { night: true, quest: { the_last_sack: 'done' }, has: { barley: 3 } }, do: [{ take: { barley: 3 } }, { give: { hollow_ration: 1 } }] },
       { text: 'Brindle asks how many of you set out.', to: 'w_count', if: { night: true, quest: { the_last_sack: 'active' } } },
       { text: 'Where are you from?', to: 'w_from', if: { night: true } },
@@ -847,6 +903,10 @@ const wenna = {
   w_bake: { text: 'Wenna grinds the barley on the old stones, wets it, and bakes it flat on a hot tile over the mill lamp, with a pinch of peat from her pocket. It comes out brown and smoky and wrapped in birch bark. "The way we do it at home. Three handfuls of yours for one of ours. Fair, your Marrow would say. He would be wrong, but he would say it."', options: [{ text: 'Thank you, Wenna.' }] },
   w_after: { text: '"North, when my feet let me. Along the stones that point, the old way." She taps the green glass. "This will last me. Your fire burns long." She does not say when.', options: [BYE] },
   w_from: { text: '"North. Past the trees, past the stones that point. There is a light there, and it is ours, and it is hungry." She will not say more than that.', options: [BYE] },
+  or_offer: { text: 'Wenna is lacing her boots when you come in, and she does not stop. "My feet are better. Your bread did that." She ties the second knot. "North is four nights if the stones are where I left them, six if they are not. My lamp will not last six on what it has. Three flasks of oil, and I can carry the rest of the way on my own." She looks up. "And I want to give something back to your fire before I take from it again. At home we say: the hearth that feeds you, you feed."', options: [{ text: 'Three flasks of oil.' }] },
+  or_oil: { text: 'She tucks the flasks into her coat one by one, the way you would tuck in something asleep. "Now the other thing. Your Warden keeps a woodpile by the big fire. Put some wood on it for me, in my name. I cannot carry an axe and a lamp both." She hesitates. "And somebody should look along the stones from your tower at night, to see if anything is walking on them. I would rather know before I am out there."', options: [{ text: 'Wood in your name, and a look from the tower.' }] },
+  or_done: { text: 'You tell her what Brindle saw: the stones clear to the third cairn, no lamps coming south, and a glow that ate two lamps last week and wants more. Wenna listens without moving. "Clear to the third cairn. That is two nights." She turns her green lamp in her hands. "Then I go tomorrow night, when the moon is down. Before I lose my nerve." She presses something into your hands: a small lamp of green glass with a birch-bark grip. "A carrier\'s lamp. Mine is the one your fire lit. This one is for you. It lasts a whole road on one filling. Use it to come and find us, one day."', options: [{ text: 'Keep your wick trimmed, Wenna.' }] },
+  or_after: { text: '"Tomorrow night, when the moon is down." She has folded the empty sacks into a neat pile by the door, the way you leave a room you are not coming back to. "Tell your Warden the pile is a good idea. Ours used to be taller than the houses."', options: [BYE] },
 };
 
 export const TALK = {
@@ -855,7 +915,7 @@ export const TALK = {
   snail_bramble: snail('bramble'), snail_pebble: snail('pebble'), snail_tom: snail('tom'),
   snail_duchess: snail('duchess'), snail_thistle: snail('thistle'),
   pell: {
-    start: { text: 'HEAR YE! The OLD MILL by the stream turns again, and anybody may grind there! Under Cinderford, Hesk wants the old drains cleared, and something lives in the weir! Rook says the green crust from down there makes iron better than masterwork! Wardens and Menders learned to heal while they hit! And Marrow wants to know who leaves flour on our doorsteps!', options: [
+    start: { text: 'HEAR YE! Warden Ama has built a WOODPILE by the Beacon, and EVERYBODY is to fill it! Deadfall lies along the woods, and any boot can break it! The carrier in the mill wants oil for the road home! Wardens may swear to the light, or to iron, and the other callings have found paths of their own at fifty! The mill still turns, Rook still makes masterwork, and the Beacon is HUNGRY!', options: [
       { text: 'Whose hand is this?', to: 'po_pell', if: { quest: { prayer_not_ours: 1 }, has: { prayer_slip: 1 } }, do: [{ advance: 'prayer_not_ours' }] },
       { text: 'Anything I can help with?', to: 'ul_offer', if: { quest: { kindling: 'done', unsent_letter: 'none' } }, do: [{ start: 'unsent_letter' }] },
       { text: 'Anything else?', to: 'more' }, BYE] },

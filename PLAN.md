@@ -8,27 +8,26 @@ Der Nightwright pflegt diese Datei jede Nacht (Regeln in `CLAUDE.md`).
 
 ## Heute in Arbeit
 
-Tag 5 (Nacht zum 2026-11-16). Inbox `v2/inbox/2026-11-15.json`: Gebete 9 und 10, Zettel 4: old-mill 1 Stimme, sonst keine. 9 Charaktere, 3 aktiv.
+Tag 6 (Nacht zum 2026-11-17). **Die Inbox-Datei `v2/inbox/2026-11-16.json` fehlte um 23 Uhr** (letzte Datei: 2026-11-15). Keine neuen Gebete, kein Ergebnis für Zettel 5: Teil 1 entfällt, Teil 3 wird größer, den Gewinner von Zettel 5 wählt der Nightwright selbst (`beacon-stockpile`, passt zum Bogen).
 
-**Teil 1, aus den Gebeten: The Sumps unter Cinderford (Gebet 9)**
-1. *Was der Spieler will:* Eine Stadt, die sich groß anfühlt, mit Kanälen und Verliesen zum Erkunden, und Licht als Glauben. Darunter: Neues zum Entdecken für hohe Stufen.
-2. *Woran er es merkt:* Ein Gitter am Bach in Cinderford führt in die Sumps (Stufe 40–46): Drain Rats, Silt Crawler, alte Lampen-Nischen der Quarrymen (Kohlebecken), eine Truhe, ein Boss **The Undertow** am Wehr. Hesk sucht jemanden, der die Abflüsse frei macht (Quest-Kette in 3 Schritten), Sorrel und Flint reden davon, neue Beute (Verdigris) für Rezepte.
-3. *Woran es anschließt:* Cinderford, Kampf/Klassen (Stufe 40+), Tinkering (neue Rezepte aus Verdigris), Licht/Kohlebecken, Truhen, Gefallen.
-4. *Weg dorthin:* Pell ruft es aus, Hesk ab Stufe 38 („The Drains“), Flint erwähnt das Wasser.
+**Teil 1, aus den Gebeten:** entfällt (keine neuen Gebete gelesen). Dafür wird Teil 3 größer, und der Nachschlag nimmt Gebet 9 (Lightsworn) weiter.
 
-**Teil 2, aus der Abstimmung: The Old Mill (old-mill, 1 Stimme)**
-1. *Was der Spieler will:* Ein rätselhafter Ort, der etwas tut, und eine Antwort auf „wer mahlt hier was“.
-2. *Woran er es merkt:* Mühle am Bach westlich der Straße nach Süden, das Rad dreht sich; am Mühlstein kann jeder mahlen (Gerste zu Mehl, Glas zu Glasgrieß), Gerste von Krähen und von Marrow; Hollis backt aus Mehl Millbread; nachts hat jemand im Trichter fremde Gerste gemahlen. Quest „Who Grinds at Night“.
-3. *Woran es anschließt:* Händler (Marrow), Taverne (Hollis), Lampwright (Glasgrieß), Quests, Bogen.
-4. *Weg dorthin:* Pell, Marrow schickt einen hin, Weg von der Straße bis vor die Mühle.
+**Teil 2, aus der Abstimmung: Ama's Woodpile (beacon-stockpile, ohne gelesene Stimmen gewählt)**
+1. *Was der Spieler will:* Etwas, das alle zusammen füllen und das man wachsen sieht; das Gefühl, dass das eigene Holz zählt.
+2. *Woran er es merkt:* Neben dem Leuchtfeuer steht ein Holzstapel, der mit dem Tageszähler des Leuchtfeuers sichtbar höher wird. Im Wald liegt **Deadfall** (Totholz), das jeder ohne Beruf zu **Split Logs** spaltet (einmal am Tag pro Stelle). „Stack“ am Stapel legt alle Scheite auf einmal nach (zählt fürs Leuchtfeuer, einmal am Tag etwas Erfahrung). Ama gibt die Quest „The Woodpile“, Pell ruft es aus, Haskel weiß, wo Totholz liegt.
+3. *Woran es anschließt:* Leuchtfeuer und Tageszähler (`BEACON_FUEL`, `world.community.beacon`), Quests, Haskels Holzfällerlager, Bogen („The Beacon Starves“).
+4. *Weg dorthin:* Ama ab Kindling, Pell, Haskel; Totholz am Waldrand von Fernmeadow (niedrige Stufen) und in Hushwood.
+*Grenze:* Ein Vorrat über mehrere Tage bräuchte einen dauerhaften Weltzähler (Worker, geschützt). Der Stapel zeigt deshalb den Tagesstand.
 
-**Teil 3, vom Nightwright: Wenna, eine verirrte Trägerin (Bogen, Akt 1)**
-1. *Was der Spieler will:* Endlich jemanden aus dem Norden treffen, ohne alles zu erfahren.
-2. *Woran er es merkt:* Nachts mahlt eine erschöpfte Frau mit leerer grüner Laterne in der Mühle (tagsüber schläft sie). Quest „The Last Sack“: Brot bringen, ihre Laterne an der Leuchtfeuer füllen, sie zum Gebet fragen; sie erkennt das Birkenpapier-Gebet. Stranger und Ama reagieren.
-3. *Woran es anschließt:* Mühle, Leuchtfeuer/Öl, Kapelle (Opferkasten-Gebet), Stranger, Bogen.
-4. *Weg dorthin:* Folgt aus „Who Grinds at Night“; Fen und Pell erwähnen sie.
+**Teil 3, vom Nightwright: „Oil for the Road“ (Bogen, Übergang zu Akt 2)**
+1. *Was der Spieler will:* Dass Wenna nicht einfach verschwindet, sondern dass man ihr hilft, heimzugehen, und dabei etwas Neues über den Norden erfährt.
+2. *Woran er es merkt:* Wenna (nachts, nach „The Last Sack“) will nach Norden: Öl für die Reise, ein Scheit für Kindles Feuer in ihrem Namen auf Amas Stapel, nachts vom Ausguck prüfen, ob die Steine frei sind, Brindle fragen, zurück zu Wenna. Danach ruft Ama „The Beacon Starves“ aus. Stranger, Fen und Brindle reagieren.
+3. *Woran es anschließt:* Holzstapel (Teil 2), Ausguck, Leuchtfeuer, Händler (Öl), Bogen.
+4. *Weg dorthin:* Folgt aus „The Last Sack“; Ama und Pell erwähnen es.
 
-**Dauerauftrag Klassen:** Warden 44 **Hallowed Ground** (neue Wirkung: burst heilt Verbündete, `mend`). **Nachschlag (gebaut):** Mender, Flarecaster, Drifter 44 (Vesper Bell, Lanternfall, Gloaming); alle vier auf 48 (Lamp and Anvil, Second Dawn, Solar Lance, Last Shadow); Tinkering 38–40 Sumpwalker; Lampwright 38/39 Verdigris Staff und Lens; Alchemie 36 Sluice Draught; Glass Grit aus der Mühle und Lampwright 22 Hollow-Glass Lantern; „The Lamp Under the Hill“ (Gebet 9, Licht als Glaube); „The Miller's Ledger“; „Crows in the Barley“ (Fen, Vogelscheuche); „Gran's Locker“ (Rätsel, Hesk); Gefallen rats_for_hesk, undertow_again und flour_for_hollis; Fundstellen in den Sumps (Salvage 38, Cartography 36, Foraging 36); Rufe, Gerücht, Ausguck. Gebet 10 (Spielerkampf) unter „Ideen für später“.
+**Dauerauftrag Klassen:** Warden-Spezialisierungen ab 50, gewählt bei Ama: **Lightsworn** (Licht, Gelübde, heilt beim Schlag) und **Ironwall** (Cinder Iron, steht und hält). Je eine Fähigkeit auf 50.
+
+**Nachschlag (geplant):** Mender-Wege bei Tallow, Flarecaster-Wege bei Wren, Drifter-Wege beim Stranger (je eine Fähigkeit auf 50); neue Wirkung: `zone` kann blenden, brennen und festhalten. Weitere Rufe und Gespräche zum Holzstapel.
 
 ## Ausbau läuft
 

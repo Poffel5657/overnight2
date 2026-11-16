@@ -3,7 +3,7 @@
 // Der Nightwright passt die Texte an, wenn sich das Licht im Norden verändert.
 export const LOOKOUT = {
   day: 'You climb up and look north. In daylight the Grey is just grey, a wall of nothing past the trees. Come back after dark.',
-  night: 'You climb up and look north through Brindle\'s spyglass. Past the trees, past miles of Grey, a warm light sits low on the edge of the world, still as wide as two thumbs. Tonight it gutters: bright, then low, then bright, like a hearth fed in handfuls by somebody running out of handfuls. Closer in, along the edge of the trees, two tiny lights move in a line toward the south. Last week there were three.',
+  night: 'You climb up and look north through Brindle\'s spyglass. Past the trees, past miles of Grey, a warm light sits low on the edge of the world, wider than two thumbs now. It gutters and catches, gutters and catches, like a hearth somebody is feeding with whatever is left. Along the edge of the trees, no tiny lights move tonight, south or north. Closer in, the stones that point stand clear in the dark, one, two, three, and then the Grey has them. Behind you, in Kindle, the Beacon is burning very bright.',
   first: 'You note it down, the way Brindle does. Somebody should.',
   xp: 30,
   xpPerLevel: 4,

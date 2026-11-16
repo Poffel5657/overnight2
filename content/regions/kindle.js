@@ -159,6 +159,15 @@ export const REGION = {
     {type: 'brazier', x: 26, y: 57, light: 3.5, name: 'a lamp by the mill door'},
     {type: 'shrine', look: 'floorboard', x: 31, y: 56, name: 'a loose stone by the mill', gives: 'millers_ledger', quest: 'millers_ledger', step: 0, text: 'A flat stone by the mill wall, worn at the edges by fingers.', found: 'Under the stone, wrapped in oilcloth: an account book, thick with flour.', empty: 'Just a stone, and a dry hollow under it the shape of a book.'},
     {type: 'shrine', look: 'hopper', x: 31, y: 57, name: 'the mill hopper', gives: 'hollow_barley', quest: 'who_grinds', step: 3, night: true, text: 'A wooden hopper over the millstones, dusted with flour.', found: 'At the bottom of the hopper, under fresh flour, are a few grains of small grey barley that smell of peat smoke. Somebody was grinding here an hour ago.', dayText: 'By day the hopper is empty and swept. Whoever uses it comes at night.', empty: 'The hopper smells of flour and, faintly, of peat smoke.'},
+    // Tag 6 (Abstimmung „beacon-stockpile“): Ama's Woodpile neben dem Leuchtfeuer, gleich bei Ama und ihrer Zähltafel.
+    // Der Stapel wächst im Bild mit dem Tageszähler des Leuchtfeuers. Totholz am Waldrand spaltet jeder (content/woodpile.js).
+    {type: 'woodpile', x: 51, y: 47, w: 2, d: 1, name: 'Ama\'s woodpile', text: 'Logs stacked bark-up beside the Beacon, and a tally board with chalk lines. The higher the pile, the better the Beacon eats tonight.'},
+    {type: 'deadfall', x: 35, y: 33, name: 'deadfall', text: 'A fallen birch at the edge of the woods, grey and dry. It would break into good lengths.'},
+    {type: 'deadfall', x: 34, y: 27, name: 'deadfall', text: 'An old pine lying where the wind left it. Dry enough to split.'},
+    {type: 'deadfall', x: 36, y: 13, name: 'deadfall', text: 'A dead oak bough, half buried in moss. The top side is dry.'},
+    {type: 'deadfall', x: 44, y: 16, name: 'deadfall', text: 'Deadfall near the woodcutters\' camp. Haskel leaves it for whoever needs it.'},
+    {type: 'deadfall', x: 58, y: 22, name: 'deadfall', text: 'A pine the Grey knocked over some winter. The needles are long gone.'},
+    {type: 'deadfall', x: 64, y: 27, name: 'deadfall', text: 'A fallen alder at the woods\' edge, dry as paper.'},
   ],
   npcs: [
     {id: 'ama', name: 'Warden Ama', sprite: 'ama', x: 48, y: 47},

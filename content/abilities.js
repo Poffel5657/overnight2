@@ -118,5 +118,19 @@ export const ABILITIES = {
   gloaming: { name: 'Gloaming', desc: "The hour when nothing is quite where it seems. Least of all you.", glyph: 'G', kind: 'melee', hit: [20, 26], dark: 1.4, exploit: { root: 1.5 }, cd: 20, power: true },
   // Tag 5, Nachschlag: Stufe 48. Der letzte Schnitt aus dem Schatten: gegen Geblendete am tiefsten, gegen Festsitzende auch.
   last_shadow: { name: 'Last Shadow', desc: "Become the last shadow they ever look for. They will not find it.", glyph: 'L', kind: 'melee', hit: [24, 30], dark: 1.3, exploit: { dazzle: 1.5, root: 1.3 }, cd: 26, power: true },
+
+  // Tag 6: Spezialisierungen ab Stufe 50 (content/classes.js, specs). Jede Klasse zwei Wege mit je einer Fähigkeit auf 50.
+  // Warden (bei Ama): Lightsworn (Gebet 9, ein Lichtweg) und Ironwall
+  oath_of_embers: { name: 'Oath of Embers', desc: "Speak the vow out loud and strike the ground with the lantern. Everything close is blinded and turns on you, and everyone near you is warmer for it.", glyph: '+', kind: 'burst', radius: 2.5, hit: [18, 22], dazzle: 4, hold: true, mend: 26, oil: 12, cd: 32, power: true, text: 'You speak the oath. The lantern answers.' },
+  cinder_bastion: { name: 'Cinder Bastion', desc: "Set your heels like cinder iron set in stone. Everything near you comes to you and stays there, and everything behind you is safe.", glyph: '#', kind: 'taunt', radius: 4, root: 8, brace: 20, oil: 12, cd: 50, text: 'You set your heels. Nothing gets past.' },
+  // Mender (bei Tallow): Hearthkeeper und Ashbinder
+  hearthfire: { name: 'Hearthfire', desc: "Make the ember into a real hearth for a moment, the kind people sit around. Nobody near it is allowed to fall over.", glyph: 'A', kind: 'aura', radius: 4, heal: 30, brace: 16, oil: 16, cd: 55, text: 'For a moment there is a hearth here, and everyone draws in close.' },
+  ash_bloom: { name: 'Ash Bloom', desc: "Throw a handful of embers that land as a flower of ash and keep burning. Embers are for warmth. Ashes are for everything else.", glyph: '*', kind: 'zone', range: 6, radius: 2, hit: [12, 16], burn: { dmg: 6, ticks: 10 }, exploit: { burn: 1.3 }, oil: 12, cd: 30, power: true, text: 'Embers fall like petals, and catch.' },
+  // Flarecaster (bei Wren): Sunwright und Prismist
+  zenith: { name: 'Zenith', desc: "All the light you have, in one point, at the top of the sky. One target. It will not need a second.", glyph: '|', kind: 'ranged', range: 7, hit: [30, 38], exploit: { burn: 1.4, dazzle: 1.3 }, oil: 14, cd: 30, power: true, text: 'Noon, in one place, all at once.' },
+  prism_storm: { name: 'Prism Storm', desc: "Split the light through the lens into every colour at once. Everything under it is dazzled and cannot strike back.", glyph: '%', kind: 'zone', range: 6, radius: 2, hit: [12, 16], dazzle: 6, oil: 14, cd: 40, power: true, text: 'The light breaks into colours, and so does everything under it.' },
+  // Drifter (beim Stranger): Nightblade und Snarewright
+  moonless_cut: { name: 'Moonless Cut', desc: "A cut from the part of the night where there is no moon at all. In the dark it is worse. Against anything that cannot see, worse still.", glyph: 'L', kind: 'melee', hit: [28, 34], dark: 1.5, exploit: { dazzle: 1.4 }, cd: 24, power: true },
+  tangle_wire: { name: 'Tangle Wire', desc: "Wire, soot and patience. Throw it, and everything nearby walks into it.", glyph: '#', kind: 'zone', range: 4, radius: 1.5, hit: [10, 13], root: 10, cd: 36, power: true, text: 'The wire snaps tight. Nobody is going anywhere.' },
   twin_cut: { name: 'Twin Cut', desc: "Both blades at once. Your hardest hit.", glyph: 'X', kind: 'melee', hit: [8, 11], exploit: { root: 1.3 }, cd: 12, power: true },
 };

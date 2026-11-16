@@ -34,7 +34,15 @@ export const BARKS = {
       'Hit them while they are down! Every calling has a new trick!',
       'New seams, new thickets, new stakes! Salvagers, foragers and mapmakers, get out there!',
       'Mabb got a letter delivered! Ask him, he will pretend he did not cry!',
+      'Ama\'s WOODPILE stands by the Beacon! Everybody fills it! Deadfall along the woods!',
+      'The Beacon is HUNGRY! Ama says bring wood every evening! Ama is not asking!',
+      'Wardens swear to the light, or to iron! Ask Ama at fifty!',
     ],
+  },
+  // Tag 6: Ama am Holzstapel (ruft bei Abend, wer vorbeigeht, soll Holz bringen)
+  ama: {
+    range: 7, every: 45,
+    lines: ['*chalks a line on the tally board*', 'Bark up. Always bark up.', 'Deadfall along the woods. Any boot can break it.', 'It ate the whole pile last night.', '*weighs a log in her hand, frowns at the fire*'],
   },
   band_corra: {
     range: 9, every: 20,
@@ -43,7 +51,7 @@ export const BARKS = {
   // Tag 5 (Bogen): Wenna in der Old Mill (tagsüber schläft sie, die Rufe kommen trotzdem leise)
   wenna: {
     range: 6, every: 40,
-    lines: ['*grinds, slowly*', 'Less to carry. Less to carry.', '*holds her cold lantern close*', 'Your bread tastes of sun.'],
+    lines: ['*grinds, slowly*', 'Less to carry. Less to carry.', '*holds her cold lantern close*', 'Your bread tastes of sun.', '*laces her boots, unlaces them, laces them again*', 'Four nights if the stones are where I left them.'],
     dayLines: ['*snores, very quietly, under the sacks*', '*mumbles in her sleep: forty... twenty... twelve...*'],
   },
   band_oswin: {
@@ -52,7 +60,7 @@ export const BARKS = {
   },
   band_pip: {
     range: 9, every: 31,
-    lines: ['*a thin, happy tune on the pipe*', '*toot*', 'There is a light in the north... la la...', '...and Brindle is watching it... la la...', '...and lamps walk by in the dark... la la...', '...and the mill grinds all night... la la...', '...two lamps now, only two... la...'],
+    lines: ['*a thin, happy tune on the pipe*', '*toot*', 'There is a light in the north... la la...', '...and Brindle is watching it... la la...', '...and lamps walk by in the dark... la la...', '...and the mill grinds all night... la la...', '...two lamps now, only two... la...', '...and the pile by the fire grows... la la...'],
   },
   brindle: {
     range: 8, every: 50,

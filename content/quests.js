@@ -509,4 +509,30 @@ export const QUESTS = {
     ],
     reward: { xp: 2000, gold: 40, items: { weir_lamp: 1 } },
   },
+  // Tag 6, Abstimmung „beacon-stockpile“: Ama's Woodpile. Totholz spalten, am Stapel nachlegen (content/woodpile.js).
+  the_woodpile: {
+    name: 'The Woodpile', giver: 'ama',
+    text: 'The Beacon eats more every night. Ama has started a woodpile beside it that anybody can fill, and wants everyone to know where the dry wood is.',
+    steps: [
+      { type: 'action', action: 'split', text: 'Split a deadfall at the edge of the woods (west of the fields, or along Hushwood). Haskel knows where it lies.' },
+      { type: 'action', action: 'stack', text: 'Stack your split logs on Ama\'s woodpile, beside the Beacon.' },
+      { type: 'talk', npc: 'ama', text: 'Tell Warden Ama.' },
+    ],
+    reward: { xp: 110, gold: 15, items: { lamp_oil: 2, bread: 2 } },
+  },
+  // Tag 6, vom Nightwright (Bogen „The Second Light“): Wenna will nach Norden. Öl für die Reise, ein Scheit für Kindles
+  // Feuer in ihrem Namen, vom Ausguck die Steine prüfen, Brindle fragen. Danach ruft Ama „The Beacon Starves“ aus.
+  oil_for_the_road: {
+    name: 'Oil for the Road', giver: 'wenna',
+    text: 'Wenna wants to walk home, north along the stones that point. She needs oil for the road, and she will not take from Kindle\'s fire without giving something back.',
+    steps: [
+      { type: 'have', item: 'lamp_oil', n: 3, text: 'Bring Wenna three flasks of lamp oil for the road (Marrow, Hollis and Mothwick sell it).' },
+      { type: 'talk', npc: 'wenna', text: 'Bring the oil to Wenna at the mill, after dark.' },
+      { type: 'action', action: 'stack', text: 'Wenna asked you to put wood on Ama\'s woodpile in her name. Split some deadfall and stack it.' },
+      { type: 'action', action: 'watch', text: 'Climb the North Watch at night and look along the stones that point north.' },
+      { type: 'talk', npc: 'brindle', text: 'Ask Brindle what she has seen on the north road.' },
+      { type: 'talk', npc: 'wenna', text: 'Tell Wenna what Brindle saw, at the mill after dark.' },
+    ],
+    reward: { xp: 520, gold: 30, items: { carriers_lamp: 1, hollow_ration: 1 } },
+  },
 };

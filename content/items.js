@@ -94,6 +94,10 @@ export const ITEMS = {
   foremans_ledger: { name: 'Foreman\'s Ledger', stack: true, value: 0, glyph: '=', text: 'A damp mine ledger. Shift lists, wages, and page after page of crates sent north.' },
   green_shard: { name: 'Green Glass Shard', stack: true, value: 5, glyph: '*', text: 'A curved shard of thick green glass, like the cold lantern up north. Things in Hushwood keep finding them.' },
   wisp_core: { name: 'Wisp Core', stack: true, value: 12, glyph: 'o', text: 'The cold bead left when a will-o\'-wisp goes out. It still pulls at your lantern, very gently.' },
+  // Tag 6 (Ama's Woodpile): Totholz vom Waldrand, gespalten. Jeder darf es spalten; Amas Stapel und das Leuchtfeuer nehmen es.
+  split_log: { name: 'Split Log', stack: true, value: 2, glyph: '=', text: 'Dry deadfall, broken into lengths. Ama likes them bark-up on the pile.' },
+  // Tag 6 (Oil for the Road): Wennas Dank. Grünes Glas, ein Docht aus Torffaser, Griff in Birkenrinde.
+  carriers_lamp: { name: 'Carrier\'s Lamp', slot: 'lantern', light: 2.2, burn: 0.5, value: 160, glyph: 'i', text: 'A small lamp of thick green glass with a birch-bark grip. Carriers make them to last a whole road on one filling.' },
   singed_tuft: { name: 'Singed Tuft', stack: true, value: 2, glyph: '&', text: 'A tuft of wolf fur, burnt at the tips. It smells of woodsmoke, and the wood was not from here.' },
   // Tag 3: der Pokal vom Snail Cup. Man trägt ihn auf dem Kopf, Mabb besteht darauf.
   snail_cup: { name: 'The Kindle Snail Cup', slot: 'head', defence: 1, light: 0.5, value: 5, glyph: 'U', text: 'A little brass cup hammered from an old kettle. It fits any head. Polish it and it catches the lantern light.' },
