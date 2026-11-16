@@ -747,8 +747,10 @@ const band_oswin = {
 const band_pip = {
   start: {
     text: 'Pip lowers a little tin pipe. "Shh. I am composing."',
-    options: [{ text: 'Composing what?', to: 'song' }, BYE],
+    options: [{ text: 'Composing what?', to: 'song' }, { text: 'Is there a song about the woodpile?', to: 'pile_song' }, BYE],
   },
+  // Tag 6: Pips Lied über Amas Holzstapel (reimt „log“ auf „fog“, viel zu oft)
+  pile_song: { text: 'Pip stands on the bench. "It is called The Pile." Corra groans. Pip sings: "Bring me a log, bring me a log, bark side up against the fog. Ama counts it, one by one; Haskel says he brought a ton. Bring me a log, the fire is thin, somebody north has let it in..." Pip stops. "That last line is new. I do not know where it came from." Pip looks at the window, toward the north. "I will fix it."', options: [{ text: 'Do not fix it.' }, BYE] },
   song: { text: '"A song about the light in the north. I have two lines now! \'There is a light in the north, and Brindle is watching it.\' The rest depends on what it is. And on what rhymes with Brindle."', options: [{ text: 'Any new lines?', to: 'song2' }, BYE] },
   song2: { text: '"Two more! \'Lamps walk by in the dark, three where there used to be five. And one by the fire throws no shadow at all.\' Corra says it is too sad for a jig. I say it is a slow jig." Pip plays it. It is quite sad.', options: [BYE] },
 };

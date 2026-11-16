@@ -138,3 +138,15 @@ test('Hollis hat ein sechstes Gerücht, Mothwick weiß von Wennas Weg', async ()
   for (const next of ['Anything else?', 'And?', 'Anything newer?', 'And?', 'Anything newer?']) choose(d, 'a', next);
   assert.equal(q.dialog.page, 'rumour6');
 });
+
+test('Pip singt das Lied vom Holzstapel', async () => {
+  const { regionFor } = await import('../../content/regions/index.js');
+  const w = S.createWorld(REGION, 616);
+  veteran(w, 'a', { level: 2 });
+  actOn(w, 'a', w.objects.find((o) => o.type === 'tavern'), 'enter');
+  const d = S.createWorld(regionFor('kindle_inside'), 615);
+  const p = S.addPlayer(d, 'a', 'a', S.removePlayer(w, 'a'));
+  talk(d, 'a', 'band_pip');
+  choose(d, 'a', 'woodpile');
+  assert.equal(p.dialog.page, 'pile_song');
+});
