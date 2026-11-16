@@ -264,6 +264,10 @@ const fen = (() => {
         { text: 'Still catching shadows?', to: 'cs_after', if: { quest: { catch_a_shadow: 'done' } } },
         { text: 'There is a carrier in the old mill.', to: 'fen_wenna', if: { quest: { the_last_sack: 'active' } } },
         { text: 'Wenna is walking home, north.', to: 'or_fen', if: { quest: { oil_for_the_road: 'active' } } },
+        { text: 'Can I help with the map?', to: 'fm_offer', if: { quest: { oil_for_the_road: 'active', fens_map: 'none' } }, do: [{ start: 'fens_map' }] },
+        { text: 'Can I help with the map?', to: 'fm_offer', if: { quest: { oil_for_the_road: 'done', fens_map: 'none' } }, do: [{ start: 'fens_map' }] },
+        { text: 'The stones, and where the wolves sleep.', to: 'fm_fen', if: { quest: { fens_map: 2 } }, do: [{ advance: 'fens_map' }] },
+        { text: 'Wenna has your map.', to: 'fm_done', if: { quest: { fens_map: 'done' } } },
         { text: 'You look like you are plotting.', to: 'cb_offer', if: { quest: { kindling: 'done', crows_in_the_barley: 'none' }, classLevel: 2 }, do: [{ start: 'crows_in_the_barley' }] },
         { text: 'Feathers, and a tin face from Rook.', to: 'cb_done', if: { quest: { crows_in_the_barley: 3 }, has: { crow_feather: 3, tin_face: 1 } }, do: [{ take: { crow_feather: 3, tin_face: 1 } }, { advance: 'crows_in_the_barley' }] },
         { text: 'Whose is the empty house by the well?', to: 'mc_offer', if: { quest: { not_from_here: 'done', map_of_crosses: 'none' } }, do: [{ start: 'map_of_crosses' }] },
@@ -281,6 +285,9 @@ const fen = (() => {
     cs_after: { text: '"Every night. The cat, the goose, Pell, you. And one empty space." Fen has drawn a little circle round the empty space. "I asked Ama. Ama said some people do not have much light to spare. That is not an answer. That is an Ama answer."', options: [BYE] },
     fen_wenna: { text: '"A REAL one? From the light?" Fen is already halfway to the mill road before you catch the collar. "Does she have a shadow? Can I carry something for her? I am very strong. I carried the goose once." Fen thinks. "The goose did not like it."', options: [BYE] },
     or_fen: { text: 'Fen sits down very hard on the ground. "Without me?" A long, wounded silence, about four seconds. "Then I am drawing her a map. A good one. With the stones on it, and the tower, and where the wolves sleep, and a goose so she knows it is from me." Fen is already looking for chalk.', options: [BYE] },
+    fm_offer: { text: 'Fen holds up a sheet of chapel paper with a goose on it. Only a goose. "This is the start. I need the stones that point. Brindle draws them every night, she will not let me up the ladder. And I need where the wolves sleep, so Wenna can not go there. Haskel knows. Haskel knows everything about wolves and nothing about geese."', options: [{ text: 'Stones from Brindle, wolves from Haskel.' }] },
+    fm_fen: { text: 'Fen spreads everything out on the ground: Brindle\'s stones, neat and numbered; Haskel\'s wolf dens, drawn as angry circles. Fen copies it all very carefully and adds the goose at the top, pointing north, "so she knows which way is up". Then Fen rolls it up and ties it with a bootlace. "You give it to her. I would cry, and carriers do not cry. Brindle says."', options: [{ text: 'I will give it to her.' }] },
+    fm_done: { text: '"Did she like the goose?" Fen does not wait for an answer. "She liked the goose."', options: [BYE] },
     cb_offer: { text: '"Plotting? No. Planning." Fen whispers. "The crows are eating all the barley by the Old Mill. There is a scarecrow, but it is wearing Pell\'s old coat, and the crows think it is Pell. Nobody is scared of Pell." Fen counts on muddy fingers. "Shoo some crows. Get feathers, crows hate seeing their own feathers. And Rook has to make it a face. A horrible one."', options: [{ text: 'A horrible face. Got it.' }] },
     cb_done: { text: 'Fen runs off toward the mill and comes back much later, muddy and delighted. "Feather collar. Tin face. I made it wave." Fen shows you how it waves. "Three crows fell over. One of them was Pell\'s favourite." Fen presses bread and barley into your hands. "From Hollis, for the mill. I said you did most of it. You did some of it."', options: [{ text: 'Good scarecrow, Fen.' }] },
     shards: { text: 'MORE? The wolves have it, and the moss spirits, like they walked past a lot of broken lanterns. Put two on the notice board for me some days, I am keeping count. And Wren can grind three into a lens, if you know lamps.', options: [BYE] },
@@ -385,6 +392,7 @@ const haskel = {
       { text: 'Seen anything odd lately?', to: 'h_light' },
       { text: 'A carrier from the north is in the old mill.', to: 'h_wenna', if: { quest: { the_last_sack: 'active' } } },
       { text: 'Ama wants dry wood for the Beacon.', to: 'wp_haskel', if: { quest: { kindling: 'done' } } },
+      { text: 'Fen wants to know where the wolves sleep.', to: 'fm_haskel', if: { quest: { fens_map: 1 } }, do: [{ advance: 'fens_map' }] },
       BYE,
     ],
   },
@@ -398,6 +406,7 @@ const haskel = {
   h_pack: { text: 'More every night. They come through the camp at a run and do not even look at my lunch. A wolf that ignores lunch is a frightened wolf.', options: [BYE] },
   h_wenna: { text: 'Haskel puts down his axe. "In the mill? Then the smoke I smelled on the wolves was hers. Peat." He scratches his head. "Tell her the wolves are scared of her people, not the other way round. And tell her the north road is still there. Overgrown, but there. I cut it back as far as the stones, every spring. Nobody asked me to. Seemed rude not to."', options: [BYE] },
   wp_haskel: { text: 'Haskel points with his axe, which is how he points at everything. "Deadfall. Not the standing trees, they bite back. There is a dry pine by the camp, a bough up the west path, a couple along the edge east of the road, and two at the bottom of the woods west of the fields, close to the village. Break them with your boot, it is old wood." He spits on his hands. "Take what is dry. The wet stays till tomorrow. And tell Ama I want my name on her board too."', options: [BYE] },
+  fm_haskel: { text: 'Haskel takes the page and draws three rough circles with a burnt stick, then a fourth, then crosses out the fourth. "They moved out of that one when the carriers came through. Smelled the peat." He hands it back. "Tell the kid wolves do not sleep in a line. Fen will draw them in a line."', options: [{ text: 'I will tell Fen.' }] },
   h_quiet: { text: 'Hushwood eats sound. Shout in here and nobody hears it, not even you. Handy for wolves. Less handy for me.', options: [BYE] },
 };
 
@@ -444,6 +453,7 @@ const brindle = {
       { text: 'Seen the carriers again?', to: 'cd_after', if: { quest: { carriers_dark: 'done' } } },
       { text: 'One of the carriers is in the old mill.', to: 'br_wenna', if: { quest: { the_last_sack: 'active' } } },
       { text: 'Wenna wants to walk north. Is the road clear?', to: 'or_brindle', if: { quest: { oil_for_the_road: 4 } }, do: [{ advance: 'oil_for_the_road' }] },
+      { text: 'Fen wants the stones that point, for a map.', to: 'fm_brindle', if: { quest: { fens_map: 0 } }, do: [{ advance: 'fens_map' }] },
       { text: 'What is out there, where this circle is?', to: 'mc_done', if: { quest: { map_of_crosses: 3 } }, do: [{ take: { crossed_map: 1 } }, { advance: 'map_of_crosses' }] },
       { text: 'What do you see up there?', to: 'see' },
       { text: 'Can I read your book?', to: 'book', if: { quest: { eyes_north: 'done' } } },
@@ -457,6 +467,7 @@ const brindle = {
   cd_after: { text: '"Twice more. Always at night, always heading east along the trees, always fewer lamps than the time before. Last night, three." She does not look up from her book.', options: [BYE] },
   br_wenna: { text: 'Brindle\'s pencil stops. "One of the lamps." She flips back through her book. "Five, four, three, two. I thought the missing ones had gone home." She writes something and underlines it. "They did not go home. They got lost, or they stopped." She closes the book hard. "Feed her. And ask her, gently, how many there were when they set out."', options: [BYE] },
   or_brindle: { text: 'Brindle opens her book to a page covered in tiny drawings of stones. "I count them every night. The cairns, the ones that point. One, two, three: clear, nobody on them, nothing sitting by them." Her pencil moves on. "After the third I lose them in the dark. No lamps came south this week. Not one." She taps the glow at the top of the page, drawn wider than last week. "And that ate two lamps last week and wants more. Tell her: clear to the third cairn. After that she is on her own, and so is the light."', options: [{ text: 'Clear to the third cairn.' }] },
+  fm_brindle: { text: 'Brindle sighs the sigh of an aunt. "Fen." She tears a page from the back of her book and copies the cairns: one, two, three, each with its little arrow, and then a careful dotted line into nothing. "Tell Fen the dotted bit means I do not know. Not that there is a road. Fen will draw a road. Tell Fen anyway."', options: [{ text: 'I will tell Fen.' }] },
   en_hello: { text: 'Good, hands. The tower is up, more or less. The wind up there could peel an apple. I need three wolf pelts for a windbreak, and the wolves are, helpfully, all around us. After that, a proper glass.', options: [{ text: 'Three pelts.' }] },
   en_pelts: { text: 'She nails them up along the rail, fur side in. "Better. Now I can stay up there long enough to see something. What I need next is a spyglass. Wren in Kindle grinds lenses. Wren will want something for it. Wren always does."', options: [{ text: 'I will ask Wren.' }] },
   en_glass: { text: 'She fits the lens into a brass tube and squints through it at a tree. "Hah. That tree has a beetle on it." She hands you the tube back. "You did the work, you get the first look. Wait for dark, climb up and look north. Then come and tell me I am not mad."', options: [{ text: 'After dark, then.' }] },
@@ -895,6 +906,7 @@ const wenna = {
       { text: 'Three flasks of oil, for the road.', to: 'or_oil', if: { night: true, quest: { oil_for_the_road: 1 }, has: { lamp_oil: 3 } }, do: [{ take: { lamp_oil: 3 } }, { advance: 'oil_for_the_road' }] },
       { text: 'Brindle has been watching the road.', to: 'or_done', if: { night: true, quest: { oil_for_the_road: 5 } }, do: [{ advance: 'oil_for_the_road' }] },
       { text: 'When do you leave?', to: 'or_after', if: { night: true, quest: { oil_for_the_road: 'done' } } },
+      { text: 'Fen drew you a map.', to: 'fm_wenna', if: { night: true, quest: { fens_map: 3 } }, do: [{ advance: 'fens_map' }] },
       { text: 'Could you bake with this barley?', to: 'w_bake', if: { night: true, quest: { the_last_sack: 'done' }, has: { barley: 3 } }, do: [{ take: { barley: 3 } }, { give: { hollow_ration: 1 } }] },
       { text: 'Brindle asks how many of you set out.', to: 'w_count', if: { night: true, quest: { the_last_sack: 'active' } } },
       { text: 'Where are you from?', to: 'w_from', if: { night: true } },
@@ -914,6 +926,7 @@ const wenna = {
   or_oil: { text: 'She tucks the flasks into her coat one by one, the way you would tuck in something asleep. "Now the other thing. Your Warden keeps a woodpile by the big fire. Put some wood on it for me, in my name. I cannot carry an axe and a lamp both." She hesitates. "And somebody should look along the stones from your tower at night, to see if anything is walking on them. I would rather know before I am out there."', options: [{ text: 'Wood in your name, and a look from the tower.' }] },
   or_done: { text: 'You tell her what Brindle saw: the stones clear to the third cairn, no lamps coming south, and a glow that ate two lamps last week and wants more. Wenna listens without moving. "Clear to the third cairn. That is two nights." She turns her green lamp in her hands. "Then I go tomorrow night, when the moon is down. Before I lose my nerve." She presses something into your hands: a small lamp of green glass with a birch-bark grip. "A carrier\'s lamp. Mine is the one your fire lit. This one is for you. It lasts a whole road on one filling. Use it to come and find us, one day."', options: [{ text: 'Keep your wick trimmed, Wenna.' }] },
   or_after: { text: '"Tomorrow night, when the moon is down." She has folded the empty sacks into a neat pile by the door, the way you leave a room you are not coming back to. "Tell your Warden the pile is a good idea. Ours used to be taller than the houses."', options: [BYE] },
+  fm_wenna: { text: 'Wenna unrolls it by the mill lamp: three cairns, a dotted line, wolves in a very straight row, and at the top a goose pointing north. She looks at it for a long time. "At home, the children draw the road to you," she says. "With the big fire at the end. We pin them up by the door." She rolls it carefully and puts it inside her coat, next to the oil. "Tell your Fen the goose is right. North is that way."', options: [{ text: 'I will tell Fen.' }] },
 };
 
 export const TALK = {

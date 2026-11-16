@@ -37,4 +37,10 @@ export const CHRONICLE = [
     title: 'The mill turns, the drains run',
     text: 'The altar voted for the Old Mill, and it turns again by the stream: anybody can grind barley or green glass there, Hollis bakes millbread, and somebody has been grinding at night. Under Cinderford, Hesk opened the grate to the Sumps, where rats, crawlers and the Undertow wait for anyone level 40 and up, and every calling learned something new at level 44.',
   },
+  {
+    day: 6,
+    date: '2026-11-17',
+    title: 'The woodpile, and the road north',
+    text: 'The altar chose Ama\'s woodpile, so it stands by the Beacon and grows as everyone fills it, with deadfall along the woods for any boot to break. Wenna wants oil for the road home, Ama says out loud that the Beacon is starving, every calling found two paths at level 50, and below the Sumps the Spillway has opened, with eels and an iron gate that walks.',
+  },
 ];

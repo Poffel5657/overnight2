@@ -218,3 +218,33 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 - Quest-Erfahrung: The Drains 4.500 (gut zwei Stufen auf 40), The Lamp Under the Hill 3.200, The Last Sack 420, Gran's Locker 2.000 (Rätsel, Stufe 40+), Who Grinds at Night 260, The Miller's Ledger 240, Crows in the Barley 110.
 
 **Abstimmung neu:** Zettel 5 mit cooking und north-road-fires (dritte und letzte Nacht), beacon-stockpile (zweite Nacht) und lightsworn (neu, aus Gebet 9: ein Lichtweg für Warden ab 50). old-mill ist gebaut.
+
+## Tag 6 (Nacht zum 2026-11-17): Der Holzstapel und der Weg nach Norden
+
+**Inbox:** Die Datei `v2/inbox/2026-11-16.json` lag um 23 Uhr nicht vor (und kam bis zum Ende der Nacht nicht an). Keine neuen Gebete gelesen, kein Ergebnis für Zettel 5. Letzter Stand: 9 Charaktere, 3 aktiv (Export 2026-11-15).
+
+**Teil 1, Gebete:** entfällt, weil keine neuen Gebete ankamen. Dafür ist Teil 3 größer, und der Klassen-Ausbau nimmt Gebet 9 weiter (Lightsworn als Lichtweg des Wardens).
+
+**Teil 2, Abstimmung: Ama's Woodpile (beacon-stockpile).** Zettel 5 ohne gelesene Stimmen (Datei fehlte): cooking, north-road-fires, beacon-stockpile, lightsworn. Der Nightwright wählte beacon-stockpile, weil es den Bogen trägt und zum ersten Mal ein gemeinsames Ziel sichtbar macht; lightsworn kam als Dauerauftrag ohnehin.
+- *Gewünscht:* Ein Holzvorrat für das Leuchtfeuer, den alle zusammen füllen.
+- *Geliefert:* **Ama's Woodpile** neben dem Leuchtfeuer: Er wächst im Bild mit dem Tageszähler (fünf Lagen bis zum Ziel). Am Waldrand liegt **Deadfall** (sechs Stellen: zwei westlich der Felder nahe am Dorf, vier in Hushwood), das jeder ohne Beruf zu **Split Logs** spaltet (zwei pro Stelle und Tag). „Stack“ am Stapel legt alle Scheite auf einmal nach (je 4 für das Leuchtfeuer, erstes Stapeln am Tag gibt Erfahrung). Quest **„The Woodpile“** (Ama, ab Kindling), Haskel weiß, wo Totholz liegt, neuer Gefallen „logs_for_ama“, Pell und Ama rufen es aus. Neues Modul `shared/woodpile.js`, Regeln in `content/woodpile.js`.
+- *Fehlt noch:* Ein Vorrat über mehrere Tage (bräuchte einen dauerhaften Weltzähler im Worker, nur mit Chris). Der Stapel zeigt den Tagesstand.
+
+**Teil 3, Nightwright: „Oil for the Road“ (Bogen, Übergang zu Akt 2).** Wenna will heim: drei Flaschen Öl, in ihrem Namen Holz auf Amas Stapel, nachts vom Ausguck die Steine prüfen, Brindle fragen (frei bis zum dritten Steinmann, keine Lampen kamen nach Süden), zurück zu Wenna. Sie geht „morgen Nacht, wenn der Mond unten ist“ und schenkt eine **Carrier's Lamp** (Licht 2,2, halbes Öl). Danach ruft Ama laut aus: **„The Beacon is starving.“** Der Stranger will ihr fast sein grünes Glas mitgeben und lässt es. Fen und Ama reagieren. Der Ausguck zeigt einen breiteren, flackernden Schein und keine Lampen mehr.
+
+**Klassen (Dauerauftrag): Warden-Wege ab 50** bei Ama: **Lightsworn** (Gebet 9: Oath of Embers, burst, blendet, bindet, Gruppe heilt 26) und **Ironwall** (Cinder Bastion, taunt mit root und halbem Schaden für alle dahinter). Neue Bedingung `cls` (aktive Klasse), Gesprächshelfer `specPath` in `content/npcs.js`.
+
+**Nachschlag:**
+- **Wege ab 50 für alle Klassen:** Mender bei Tallow (**Hearthkeeper**: Hearthfire; **Ashbinder**: Ash Bloom), Flarecaster bei Wren (**Sunwright**: Zenith; **Prismist**: Prism Storm), Drifter beim Stranger (**Nightblade**: Moonless Cut; **Snarewright**: Tangle Wire). Neue Wirkung: `zone` kann jetzt blenden, festhalten und anzünden.
+- **The Spillway** (Stufe 46 bis 50): neuer Flügel unter der Zisterne der Sumps, mit **Weir Eels** (47, normal) und **The Old Sluicegate** (49, Boss allein mit Einsatz), zwei Lampen-Nischen, einer Kiste. Quest **„Below the Weir“** (Hesk, ab 46): vier Eels, die Tafel der Überlaufwärter („Overflow runs north“), das Sluicegate, zurück zu Hesk. Lohn **Spillway Mail** (Abwehr 14, besser als Sumpwalker), seltene Beute vom Sluicegate.
+- **„Fen's Map“** (Fen, niedrige Stufen): Brindle zeichnet die Steine, Haskel die Wolfsbaue, Fen die Gans, Wenna bekommt die Karte.
+- Neue Rufe (Ama am Stapel, Pell, Wenna, Pip), neuer Ausguck-Text.
+
+**Balance-Notizen** (Warden mit Meisterschild, Sumpwalker, Weir Lamp, vier Sluice Draughts):
+- The Undertow auf Stufe 50: ohne Weg 3 von 4 Siegen (74 s, tiefster Stand 8 %), Lightsworn 4/4 (68 s, 22 %), Ironwall 4/4 (75 s, 16 %). Die Wege helfen spürbar, ohne den Boss zu entwerten.
+- Weir Eel (47, 620 HP, 21–25, Linie 44–52 nach 6 Takten, 340 EP): Warden 15 s mit 64 %, Drifter 12 s mit 43 %, Flarecaster 15 s mit 35 %, Mender 17 s mit 30 %. Erster Entwurf (23–27, 640 HP) war für den Warden zu teuer.
+- The Old Sluicegate (49, 3.200 HP, 27–31, großes Kreuz 66–78 und Ring 70–82 nach 6/7 Takten, 2.000 EP): Warden 49 allein in etwa 75 s mit 25 % Leben; Drifter 49 schafft es mit Tränken knapp, Flarecaster und Mender allein nicht. `boss-probe`: 2× Stufe 26 verlieren nach 19 s, Tank und Heiler auf 38 siegen nach 87 s, 4× 38 nach 30 s.
+- Bekannt: Fernkämpfer können den Undertow über die Mauer der Zisterne beschießen, ohne dass er sie erreicht (es gibt keine Sichtlinie im Kampf). Steht unter „Bekannte Probleme“.
+- Quest-Erfahrung: Below the Weir 7.000 (knapp zwei Stufen auf 48), Oil for the Road 520, Fen's Map 180, The Woodpile 110.
+
+**Abstimmung neu:** Zettel 6 mit zwei Bogen-Optionen (Brot und Öl nach Norden schicken, oder die Nordstraße nachts sperren) und zwei aus „Ideen für später“ (Rangliste der Cup-Sieger, ein Rätselraum für Gruppen in der Drowned Chapel aus Gebet 8). cooking und north-road-fires waren drei Nächte auf dem Zettel und gehen herunter; beacon-stockpile und lightsworn sind gebaut.

@@ -89,3 +89,34 @@ test('Oil for the Road: Öl, Holz in Wennas Namen, Ausguck bei Nacht, Brindle, W
   assert.ok(QUESTS.oil_for_the_road.reward.xp > 0);
 });
 
+
+test("Fen's Map: Brindle zeichnet die Steine, Haskel die Wölfe, Fen die Gans, Wenna bekommt die Karte", () => {
+  const w = S.createWorld(REGION, 612);
+  w.date = '2026-11-17';
+  w.daylight = 1;
+  const p = veteran(w, 'a', { level: 6, quests: { kindling: { done: true }, who_grinds: { done: true }, the_last_sack: { done: true }, oil_for_the_road: { step: 2, n: 0 } } });
+  talk(w, 'a', 'fen');
+  choose(w, 'a', 'help with the map');
+  assert.equal(p.dialog.page, 'fm_offer');
+  // Erst Brindle, dann Haskel (in anderer Reihenfolge geht es nicht)
+  talk(w, 'a', 'haskel');
+  assert.ok(!options(w, 'a').some((t) => t.includes('wolves sleep')), 'erst die Steine');
+  talk(w, 'a', 'brindle');
+  choose(w, 'a', 'stones that point');
+  talk(w, 'a', 'haskel');
+  choose(w, 'a', 'wolves sleep');
+  talk(w, 'a', 'fen');
+  choose(w, 'a', 'The stones, and where');
+  assert.equal(p.quests.fens_map.step, 3);
+  // Wenna nur nachts
+  talk(w, 'a', 'wenna');
+  assert.ok(!options(w, 'a').some((t) => t.includes('Fen drew')), 'bei Tag schläft sie');
+  w.daylight = 0.1;
+  talk(w, 'a', 'wenna');
+  choose(w, 'a', 'Fen drew you a map');
+  assert.equal(p.dialog.page, 'fm_wenna');
+  assert.ok(p.quests.fens_map.done);
+  talk(w, 'a', 'fen');
+  choose(w, 'a', 'Wenna has your map');
+  assert.equal(p.dialog.page, 'fm_done');
+});
