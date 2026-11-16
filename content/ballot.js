@@ -2,11 +2,11 @@
 // Der Nightwright füllt den Zettel jede Nacht neu (Ideen aus Gebeten, in eigenen Worten).
 // day: Nummer des Zettels.  options: { id, text } (Text englisch, höchstens 90 Zeichen).
 export const BALLOT = {
-  day: 5,
+  day: 6,
   options: [
-    { id: 'cooking', text: 'Hollis teaches cooking: hot food that heals and keeps you warm at night.' },
-    { id: 'north-road-fires', text: 'Signal fires along the north road, so night walkers have somewhere to stop.' },
-    { id: 'beacon-stockpile', text: 'Ama builds a woodpile for the Beacon that everyone can fill together.' },
-    { id: 'lightsworn', text: 'A sworn path of light for Wardens at level 50: shield, lamp and a vow.' },
+    { id: 'bread-north', text: 'Send bread and oil north along the stones, for the carriers who still walk.' },
+    { id: 'bar-north-road', text: 'Bar the north road at night, so nothing hungry walks into Kindle.' },
+    { id: 'cup-ladder', text: 'Mabb keeps a ladder of Snail Cup winners, with a prize for the best.' },
+    { id: 'chapel-riddle-room', text: 'A locked room in the Drowned Chapel that opens only for a group that thinks.' },
   ],
 };

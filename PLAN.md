@@ -4,7 +4,7 @@ Der Nightwright pflegt diese Datei jede Nacht (Regeln in `CLAUDE.md`).
 
 ## Inbox gelesen bis
 
-`v2/inbox/2026-11-15.json` (Tag 5). Die nächste Nacht liest alle Dateien nach `2026-11-15.json`.
+`v2/inbox/2026-11-15.json` (Tag 5). **Tag 6 fand keine neuere Datei** (`2026-11-16.json` fehlte um 23 Uhr und bis zum Ende der Nacht). Die nächste Nacht liest alle Dateien nach `2026-11-15.json`, also auch eine nachträglich angekommene `2026-11-16.json` (dort stehen die Stimmen für Zettel 5, der schon entschieden ist, und Gebete, die noch offen sind).
 
 ## Heute in Arbeit
 
@@ -27,27 +27,34 @@ Tag 6 (Nacht zum 2026-11-17). **Die Inbox-Datei `v2/inbox/2026-11-16.json` fehlt
 
 **Dauerauftrag Klassen:** Warden-Spezialisierungen ab 50, gewählt bei Ama: **Lightsworn** (Licht, Gelübde, heilt beim Schlag) und **Ironwall** (Cinder Iron, steht und hält). Je eine Fähigkeit auf 50.
 
-**Nachschlag (geplant):** Mender-Wege bei Tallow, Flarecaster-Wege bei Wren, Drifter-Wege beim Stranger (je eine Fähigkeit auf 50); neue Wirkung: `zone` kann blenden, brennen und festhalten. Weitere Rufe und Gespräche zum Holzstapel.
+**Nachschlag (gebaut):** Mender-Wege bei Tallow, Flarecaster-Wege bei Wren, Drifter-Wege beim Stranger (je eine Fähigkeit auf 50); neue Wirkung: `zone` kann blenden, brennen und festhalten. The Spillway unter den Sumps (Stufe 46 bis 50, Weir Eel, The Old Sluicegate, „Below the Weir“, Spillway Mail). „Fen's Map“. Gefallen logs_for_ama, Rufe, Ausguck-Text.
 
 ## Ausbau läuft
 
 - **The Unending Maze** (seit 2026-11-13, von Chris gebaut aus Gebet 4): Stockwerke 1 bis 99 unter Cinderford, jeden Tag neu gewürfelt, Stufe = 3 + 2 × Stockwerk. Ausbau möglich: Rangliste auf dem Turn Board (braucht Chris: D1-Abfrage), weitere Keeper-Körper und -Eigenschaften (`BODIES`, `AFFIXES` in `content/regions/maze.js`), Rezepte aus Turnstones, mehr Gegenstände ab Stockwerk 25, Quests für tiefere Stockwerke (`keeper_10`, `keeper_20` gibt es schon).
-- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag): Stand in `ROADMAP.md`: alle vier bis Stufe 48 (Tag 5). Nächste Nächte: Spezialisierungen ab 50, erst der Warden (zwei Wege mit je einer Fähigkeit auf 50; gewinnt „lightsworn“, ist einer davon der Lichtweg), dann Mender, Flarecaster, Drifter. Seit Tag 5 kann `burst` auch `mend` (Gruppe heilt). Seit Tag 4 gibt es `exploit` (Schaden gegen brennende/geblendete/festsitzende Ziele): gut für weitere Stufen, auch kleinere exploit-Fähigkeiten für 12–30 wären schön (Gebet 8).
-- **Der Bogen „The Second Light“**, Akt 1 endet (Tag 5: Wenna in der Mühle, „ihr Feuer hungert“). Tag 6: Ama ruft das Weltproblem aus; Tag 7: erste Bogen-Option auf dem Zettel. Wenna sitzt noch in der Mühle und kann später nach Norden aufbrechen.
+- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag): Stand in `ROADMAP.md`: alle vier bis Stufe 48, seit Tag 6 jede Klasse mit zwei Wegen und je einer Fähigkeit auf 50 (Warden Lightsworn/Ironwall, Mender Hearthkeeper/Ashbinder, Flarecaster Sunwright/Prismist, Drifter Nightblade/Snarewright). Nächste Nächte: pro Nacht eine Klasse, beide Wege auf 54 (der Reihe nach Warden, Mender, Flarecaster, Drifter), dann 58 usw. Seit Tag 6 kann `zone` dazzle, root und burn. Seit Tag 5 kann `burst` auch `mend` (Gruppe heilt). Seit Tag 4 gibt es `exploit` (Schaden gegen brennende/geblendete/festsitzende Ziele): gut für weitere Stufen, auch kleinere exploit-Fähigkeiten für 12–30 wären schön (Gebet 8).
+- **Der Bogen „The Second Light“**: Tag 6 hat Ama „The Beacon is starving“ ausgerufen (nach „Oil for the Road“), Wenna geht „morgen Nacht“. Tag 7: Wenna ist fort (Mühle leer, Zettel für Marrow), Weltproblem 1 sichtbar machen; Zettel 6 trägt die erste Bogen-Wahl (bread-north gegen bar-north-road).
+- **Ama's Woodpile** (seit Tag 6): Stapel wächst mit dem Tageszähler. Ausbau: ein Vorrat über mehrere Tage (Weltzähler im Worker, nur mit Chris), Belohnung für die Gemeinschaft, wenn der Stapel voll ist, mehr Totholz in Copperdeep/Sinkmarsh.
+- **The Spillway** (seit Tag 6): Stufe 46 bis 50. Ausbau: Inhalt 50 bis 56 (ein weiterer Gang, ein Gruppen-Wesen), Rezepte aus Sluicegate-Eisen.
 - **The North Watch:** Text in `content/lookout.js` wächst mit dem Bogen (Tag 4: Schein so breit wie zwei Daumen).
 - **Counting House:** fünf Geschäfte seit Tag 4 (Flint mit Nachlass `discount`). Weitere (Wren, Sorrel, Rook), Ausschüttung in Waren, gemeinsames Ziel pro Geschäft (bräuchte einen dauerhaften Weltzähler, nur mit Chris).
-- **The Sumps** (seit Tag 5, Gebet 9): Stufe 40–46. Ausbau: ein zweiter Flügel hinter dem Wehr für 46–50, Gruppen-Wesen, eine Leiter zur Burg der Quarrymen (Gebet 9: Burg und Markt).
+- **The Sumps** (seit Tag 5, Gebet 9): Stufe 40–46, seit Tag 6 der Spillway (46–50). Ausbau: Gruppen-Wesen, eine Leiter zur Burg der Quarrymen (Gebet 9: Burg und Markt).
 - **The Old Mill** (seit Tag 5): mahlt Gerste und Glas. Ausbau: weitere Mahlregeln (`content/mill.js`), Cooking, falls gewählt.
 - **Meisterstücke:** Tinkering 32–37 seit Tag 4. Weiter: Meisterstücke für Lampwright (Linse, Stab) und Alchemie, Tinkering 38–45.
 
 ## Nächste Nächte
 
-- Spezialisierungen ab 50: Warden zuerst (alle Klassen haben seit Tag 5 Fähigkeiten bis 48).
-- Inhalt für 46+ (Tag 5: The Sumps bis 46).
-- Bogen: Tag 6 Ama und „The Beacon Starves“ vorbereiten (Wenna hat den Hunger angekündigt).
+- Tag 7 ist eine **Aufräumnacht** (7 teilbar): erst alle drei Teile, dann Code-Review der Tage 1 bis 7, Aufräumen, Tests, Doku.
+- Inbox: prüfen, ob `2026-11-16.json` nachträglich kam (Gebete nachholen).
+- Klassen: Warden-Wege auf 54 (Lightsworn, Ironwall).
+- Inhalt für 50+ (Spillway reicht bis 50).
+- Bogen: Wenna ist fort, Weltproblem 1 sichtbar; Zettel 6 auswerten (bread-north / bar-north-road).
 - Mehr Gefallen, die Gruppen belohnen.
 
 ## Ideen für später
+
+- Cooking bei Hollis (drei Nächte auf Zettel 3–5, ohne Stimmen gelesen, vorerst herunter).
+- Signalfeuer entlang der Nordstraße (drei Nächte auf Zettel 3–5, vorerst herunter; passt zu Weltproblem 2 „The Northern Road“).
 
 - Angeln im Bach (drei Nächte auf dem Zettel ohne Stimme, vorerst herunter).
 - Ein Imker zieht nach Kindle (drei Nächte auf Zettel 1–3, ohne Stimme, vorerst herunter).
@@ -78,6 +85,8 @@ Tag 6 (Nacht zum 2026-11-17). **Die Inbox-Datei `v2/inbox/2026-11-16.json` fehlt
 - Tag 4: Rook muss laut Kern-Test (`tests/unit/sim.test.mjs`, Berufe) in `content/regions/kindle.js` stehen. Für „Rook zieht nach drinnen“ steht er deshalb weiter im Hof; die Meisterstücke gehen nur an seiner guten Bank drinnen. Vorschlag an Chris: Der Test könnte Rook in beiden Gebieten suchen.
 - Tag 4: Neue Wesen in `content/regions/kindle.js` verschieben die Zufallsfolge der Welt; alte Nachttests mit festen Seeds (z. B. `002-last-shift`) reagieren darauf. Neue Wesen deshalb ans Ende der Liste und, wenn sie still stehen, mit `moveEvery: 0`.
 - Tag 5: Nachttests prüfen manchmal Pells Tagestext (z. B. `004-rook-masterwork` sucht „masterwork“). Pells Ausruf ändert sich jede Nacht; deshalb nennt er weiter Rooks Meisterstücke. Besser wäre, wenn alte Tests Pell nicht wörtlich prüfen.
+- Tag 6: **Die Inbox-Datei `2026-11-16.json` fehlte** um 23 Uhr und bis Mitternacht. Die Nacht lief ohne Gebete und ohne Stimmen (den Gewinner von Zettel 5 wählte der Nightwright). Bitte `inbox-export.yml` prüfen.
+- Tag 6: Im Kampf gibt es keine Sichtlinie: Fernkämpfer können The Undertow über die Mauer der Zisterne beschießen, ohne dass er sie erreicht. Eine Sichtlinie wäre eine Kampfregel (nur mit Chris); bis dahin Bosse nicht direkt hinter dünne Mauern setzen.
 - Es gibt noch keinen automatischen Probespieler für die Balance (siehe `CLAUDE.md`, „Balance“).
 - Der Chat hat noch keine Moderation (verstecken, stummschalten). Das baut Chris vor dem öffentlichen Start.
 - Der Schein im Norden wird über Bäume gezeichnet (ohne Tiefentest, damit der Grey ihn nicht verdeckt); aus manchen Winkeln färbt er die Baumspitzen orange. Gewollt als Glühen, beobachten.

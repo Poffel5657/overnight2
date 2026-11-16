@@ -547,4 +547,16 @@ export const QUESTS = {
     ],
     reward: { xp: 7000, gold: 160, items: { spillway_mail: 1, sluice_draught: 2 } },
   },
+  // Tag 6, Nachschlag (Bogen, für niedrige Stufen): Fen will Wenna eine Karte mitgeben.
+  fens_map: {
+    name: 'Fen\'s Map', giver: 'fen',
+    text: 'Fen is not allowed to walk north with Wenna, so Fen is drawing her a map instead. A good one. It needs the stones, the wolves, and a goose.',
+    steps: [
+      { type: 'talk', npc: 'brindle', text: 'Ask Brindle at the North Watch to draw the stones that point.' },
+      { type: 'talk', npc: 'haskel', text: 'Ask Haskel where the wolves sleep.' },
+      { type: 'talk', npc: 'fen', text: 'Bring it all back to Fen.' },
+      { type: 'talk', npc: 'wenna', text: 'Give Fen\'s map to Wenna at the mill, after dark.' },
+    ],
+    reward: { xp: 180, gold: 12, items: { bread: 2, lamp_oil: 1 } },
+  },
 };
