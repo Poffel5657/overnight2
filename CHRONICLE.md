@@ -243,7 +243,7 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 - **Lampwright 16: Carrier's Lamp** nachbauen (Glass Grit, ein Split Log für den Griff, Wachs für den Docht). Wren erklärt sie, wenn man Wennas Lampe zeigt. Damit haben die Scheite einen zweiten Zweck.
 - Tallow segnet Lightsworn-Wardens, Rook klopft Ironwall-Schilde ab (neue Bedingung `spec`).
 - Hollis hat ein sechstes Gerücht (Ama hat geschrien, Wennas Säcke sind gefaltet), Mothwick will Wenna fast Mottenwachs mitgeben.
-- Neue Rufe (Ama am Stapel, Pell, Wenna, Pip), neuer Ausguck-Text.
+- Pip singt auf Wunsch „The Pile“ (und weiß nicht, woher die letzte Zeile kam). Neue Rufe (Ama am Stapel, Pell, Wenna, Pip, Brindle, Fen), neuer Ausguck-Text; das Leuchtfeuer-Fenster nennt Totholz und Stapel.
 
 **Balance-Notizen** (Warden mit Meisterschild, Sumpwalker, Weir Lamp, vier Sluice Draughts):
 - The Undertow auf Stufe 50: ohne Weg 3 von 4 Siegen (74 s, tiefster Stand 8 %), Lightsworn 4/4 (68 s, 22 %), Ironwall 4/4 (75 s, 16 %). Die Wege helfen spürbar, ohne den Boss zu entwerten.
