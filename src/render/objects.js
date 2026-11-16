@@ -463,6 +463,43 @@ const BUILDERS = {
     g.add(box(0.06, 0.04, 0.02, '#2a2a2e', 0.07, 1.65, 0.08));
     g.add(box(0.4, 0.12, 0.4, '#3a3a2a', 0, 1.82, 0));
   },
+  woodpile(o, g, ctx) {
+    // Tag 6: Ama's Woodpile. Ein Bett aus zwei Balken, fünf Lagen Scheite (Rinde nach oben), eine Zähltafel.
+    // Die Lagen erscheinen nach und nach mit dem Tageszähler des Leuchtfeuers (setPile in buildObjects).
+    g.add(box(o.w - 0.2, 0.08, 0.12, '#4a3420', 0, 0.04, -0.3));
+    g.add(box(o.w - 0.2, 0.08, 0.12, '#4a3420', 0, 0.04, 0.3));
+    for (const sx of [-1, 1]) g.add(box(0.08, 1.5, 0.08, '#5a4028', sx * (o.w / 2 - 0.15), 0.75, 0));
+    const tiers = [];
+    for (let t = 0; t < 5; t++) {
+      const tier = new THREE.Group();
+      const n = 6 - (t % 2);
+      for (let i = 0; i < n; i++) {
+        const log = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.13, 0.8, 6), mat(hash(o.x + i, t, 11) < 0.5 ? '#7a5434' : '#8a6440'));
+        log.rotation.x = Math.PI / 2;
+        log.position.set(-o.w / 2 + 0.38 + i * ((o.w - 0.76) / (n - 1)) + (t % 2) * 0.1, 0.2 + t * 0.24, 0);
+        tier.add(log);
+        const end = box(0.2, 0.2, 0.02, '#c8a070', log.position.x, log.position.y, 0.41);
+        tier.add(end);
+      }
+      g.add(tier);
+      tiers.push(tier);
+    }
+    // Zähltafel an der Ostseite, mit Kreidestrichen
+    g.add(box(0.06, 0.9, 0.6, '#3a3028', o.w / 2 + 0.12, 0.85, 0));
+    for (let i = 0; i < 4; i++) g.add(box(0.02, 0.3, 0.03, '#e8e0d0', o.w / 2 + 0.16, 0.95, -0.2 + i * 0.1));
+    ctx.pile?.(tiers);
+  },
+  deadfall(o, g) {
+    // Tag 6: Totholz am Waldrand. Ein grauer, umgefallener Stamm mit abgebrochenem Ast und etwas Moos.
+    const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.22, 1.5, 6), mat('#7a7064'));
+    trunk.rotation.z = Math.PI / 2;
+    trunk.rotation.y = hash(o.x, o.y, 12) * Math.PI;
+    trunk.position.y = 0.2;
+    g.add(trunk);
+    g.add(box(0.08, 0.5, 0.08, '#6a6056', 0.3, 0.45, 0.1).rotateZ(0.6));
+    g.add(box(0.3, 0.06, 0.3, '#4a6a34', -0.3, 0.38, 0));
+    g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.06, 6), mat('#c8a070')).rotateZ(Math.PI / 2).translateY(0.2));
+  },
   millstone(o, g) {
     // Zwei Mühlsteine unter einem kleinen Schutzdach
     g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.2, 10), mat('#8a847a')).translateY(0.1));
@@ -546,6 +583,8 @@ export function buildObjects(world, region, heightAt) {
   const blocked = new Set();
   // Tag 5: Dinge, die sich von selbst drehen (das Mühlrad). Gedreht wird jedes Bild in pulseGlow.
   const spinners = [];
+  // Tag 6: Lagen von Amas Holzstapel (erscheinen mit dem Tageszähler des Leuchtfeuers)
+  const pileTiers = [];
 
   for (const o of world.objects) {
     for (let y = o.y; y < o.y + o.d; y++) for (let x = o.x; x < o.x + o.w; x++) blocked.add(`${x},${y}`);
@@ -560,6 +599,7 @@ export function buildObjects(world, region, heightAt) {
         flameByObject.set(o.id, s);
       },
       spin(obj, axis, speed) { spinners.push({ obj, axis, speed }); },
+      pile(tiers) { pileTiers.push(...tiers); },
     };
     (BUILDERS[o.type] || BUILDERS.house)(o, g, ctx);
     g.position.set(o.x + o.w / 2, footprintBase(o, heightAt), o.y + o.d / 2);
@@ -667,5 +707,11 @@ export function buildObjects(world, region, heightAt) {
     for (const sp of spinners) sp.obj.rotation[sp.axis] = t * sp.speed;
   }
 
-  return { root, pickables, flames, flameByObject, setDepleted, setGlow, pulseGlow };
+  // Tag 6: Der Holzstapel zeigt den Tageszähler (0 bis 1): eine Lage immer, dann mehr, bis er voll ist.
+  function setPile(frac) {
+    const show = Math.max(1, Math.ceil(Math.min(1, Math.max(0, frac)) * pileTiers.length));
+    pileTiers.forEach((t, i) => { t.visible = i < show; });
+  }
+
+  return { root, pickables, flames, flameByObject, setDepleted, setGlow, pulseGlow, setPile };
 }

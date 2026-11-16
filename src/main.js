@@ -344,6 +344,8 @@ function todayState() {
 function placeBeacon() {
   if (!community || typeof community.beacon !== 'number') { ui.setBeacon(null); return; }
   const frac = Math.min(1, community.beacon / BEACON_GOAL);
+  // Tag 6: Amas Holzstapel wächst mit dem Tageszähler
+  objects?.setPile?.(frac);
   const b = mirror.objects.find((o) => o.type === 'beacon');
   let pos = null;
   if (b) {

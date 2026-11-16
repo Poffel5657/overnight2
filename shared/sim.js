@@ -25,6 +25,7 @@ import { INN } from '../content/tavern.js';
 import { LOOKOUT } from '../content/lookout.js';
 import { keeperFell } from './delve.js';
 import { grindAtMill } from './mill.js';
+import { splitDeadfall, stackWoodpile } from './woodpile.js';
 
 export { saveOf, xpForLevel, MAX_LEVEL } from './player.js';
 
@@ -258,6 +259,9 @@ export function objectActions(o) {
     case 'lookout': return [['use', 'Climb up'], ['examine', 'Examine']];
     // Tag 5: der Mühlstein der Old Mill (content/mill.js)
     case 'millstone': return [['use', 'Grind'], ['examine', 'Examine']];
+    // Tag 6: Ama's Woodpile und Totholz am Waldrand (content/woodpile.js)
+    case 'woodpile': return [['use', 'Stack'], ['examine', 'Examine']];
+    case 'deadfall': return [['use', 'Split'], ['examine', 'Examine']];
     case 'node': return [['gather', NODES[o.node].verb], ['examine', 'Examine']];
     default: return [['examine', 'Examine']];
   }
@@ -565,6 +569,10 @@ function doAction(world, p, goal) {
     climbLookout(world, p);
   } else if (goal.action === 'use' && t.type === 'millstone') {
     grindAtMill(world, p);
+  } else if (goal.action === 'use' && t.type === 'woodpile') {
+    stackWoodpile(world, p);
+  } else if (goal.action === 'use' && t.type === 'deadfall') {
+    splitDeadfall(world, p, t);
   } else if (goal.action === 'use' && t.type === 'station') {
     emit(world, { to: p.id, type: 'craft', obj: t.id, station: t.station });
   } else if (goal.action === 'enter' && t.inside) {
@@ -691,7 +699,13 @@ function castAbility(world, p, id) {
     }
     case 'zone':
       for (const m of world.mobs) {
-        if (!m.dead && Math.hypot(m.x - target.x, m.y - target.y) <= a.radius) hitMob(world, p, m, Math.round(abilityDamage(world, p, a) * exploitOf(world, p, a, m)));
+        if (m.dead || Math.hypot(m.x - target.x, m.y - target.y) > a.radius) continue;
+        // Tag 6: zone kann blenden, festhalten und anzünden wie burst (vor dem Treffer, damit exploit danach greift)
+        const ex = exploitOf(world, p, a, m);
+        if (a.dazzle) m.dazzleUntil = world.tick + a.dazzle;
+        if (a.root) m.rootUntil = world.tick + a.root;
+        if (a.burn) m.burn = { by: p.id, dmg: a.burn.dmg + Math.floor(P.classLevel(p) / 4), left: a.burn.ticks };
+        hitMob(world, p, m, Math.round(abilityDamage(world, p, a) * ex));
       }
       break;
     case 'burst':

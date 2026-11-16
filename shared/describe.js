@@ -31,7 +31,12 @@ export function describeAbility(id) {
       ].filter(Boolean).join(' ');
       break;
     case 'zone':
-      effect = `Pick a creature up to ${tiles(a.range)} away: everything within ${tiles(a.radius)} of it takes ${dmg}.`;
+      effect = [
+        `Pick a creature up to ${tiles(a.range)} away: everything within ${tiles(a.radius)} of it takes ${dmg}.`,
+        a.dazzle ? `Everything hit cannot attack for ${secs(a.dazzle)}.` : '',
+        a.root ? `Everything hit is stuck in place for ${secs(a.root)}.` : '',
+        a.burn ? `Everything hit burns for ${a.burn.dmg} (+ a quarter of your level) every 0.6s for ${secs(a.burn.ticks)}.` : '',
+      ].filter(Boolean).join(' ');
       break;
     case 'burst':
       effect = [

@@ -27,11 +27,13 @@ export const FAVOURS = {
   rats_for_hesk: { from: 'hesk', type: 'kill', mob: 'drain_rat', n: 3, text: 'Hesk heard rats in the pipes under his stall again. Three fewer, please, down in the Sumps.', reward: { gold: 40, xp: 560 } },
   undertow_again: { from: 'hesk', type: 'kill', mob: 'the_undertow', n: 1, text: 'The ford has gone quiet again. Something is back in the weir. Hesk says bring a friend, and lamps.', reward: { gold: 60, xp: 1400 } },
   flour_for_hollis: { from: 'hollis', type: 'bring', item: 'mill_flour', n: 2, text: 'Hollis wants two sacks of flour from the Old Mill. Breakfast does not bake itself.', reward: { gold: 14, xp: 50 } },
+  // Tag 6 (Ama's Woodpile): Holz für den Stapel; Totholz spaltet jeder am Waldrand
+  logs_for_ama: { from: 'ama', type: 'bring', item: 'split_log', n: 4, text: 'Ama wants four split logs for the woodpile. Deadfall lies along the woods.', reward: { gold: 12, xp: 45 } },
   shoo_crows: { from: 'fen', type: 'kill', mob: 'crow', n: 3, text: 'The crows are judging the vegetable patch. Shoo them.', reward: { gold: 8, xp: 20 } },
 };
 
 // Was das Leuchtfeuer frisst und wie viel es zählt. Das Tagesziel bestimmt, wie weit der Grey
 // in der nächsten Nacht zurückweicht (der Nightwright liest den Stand).
-export const BEACON_FUEL = { lamp_oil: 5, wax_comb: 2, grey_wisp: 1, singed_tuft: 2 };
+export const BEACON_FUEL = { lamp_oil: 5, wax_comb: 2, grey_wisp: 1, singed_tuft: 2, split_log: 4 };
 export const BEACON_GOAL = 300;
 

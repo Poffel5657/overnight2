@@ -5,6 +5,21 @@
 
 export const SHAPES = {
   // Tag 3: ein kleiner Pokal (Snail Cup)
+  // Tag 6: gespaltene Scheite (Ama's Woodpile)
+  log: [
+    '............',
+    '............',
+    '..kkkkkkkk..',
+    '.kccaaaaabk.',
+    'kdedaaaaabbk',
+    'kddeaaaaabbk',
+    '.kkkkkkkkkk.',
+    '.kccaaaaabk.',
+    'kdedaaaaabbk',
+    'kddeaaaaabbk',
+    '.kkkkkkkkkk.',
+    '............',
+  ],
   cup: [
     '............',
     '.kkkkkkkkkk.',
@@ -571,6 +586,7 @@ export const ITEM_ICONS = {
   glass_grit: ['pile', 'moss'], hollow_glass_lantern: ['lantern', 'moss'],
   millers_ledger: ['notes', 'paper'], tin_face: ['ring', 'tin'],
   barley: ['leaf', 'wax'], mill_flour: ['pile', 'pale'], millbread: ['bread', 'bread'], hollow_barley: ['leaf', 'stone'], wennas_lantern: ['lantern', 'green'],
+  split_log: ['log', 'scrap'], carriers_lamp: ['lantern', 'green'],
   delvers_hood: ['hood', 'skin'], delvers_boots: ['boots', 'skin'], delvers_coat: ['coat', 'skin'], keepers_lantern: ['lantern', 'warm'],
 };
 
@@ -584,4 +600,7 @@ export const ABILITY_ICONS = {
   // Tag 5: Stufe 44
   hallowed_ground: ['star', 'warm'], vesper_bell: ['ring', 'pale'], lanternfall: ['star', 'light'], gloaming: ['slash', 'purple'],
   lamp_and_anvil: ['shield', 'black'], second_dawn: ['sun', 'warm'], solar_lance: ['beam', 'pale'], last_shadow: ['ghost', 'purple'],
+  // Tag 6: Spezialisierungen auf 50
+  oath_of_embers: ['star', 'amber'], cinder_bastion: ['shield', 'stone'], hearthfire: ['flame', 'warm'], ash_bloom: ['flame', 'black'],
+  zenith: ['sun', 'pale'], prism_storm: ['star', 'glim'], moonless_cut: ['slash', 'black'], tangle_wire: ['trap', 'steel'],
 };
