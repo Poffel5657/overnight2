@@ -916,7 +916,7 @@ const wenna = {
       { text: 'Who are you?', to: 'w_shy', if: { night: true, quest: { the_last_sack: 'none' } } },
       { text: 'Bread, from this mill\'s own flour.', to: 'w_bread', if: { night: true, quest: { the_last_sack: 1 }, has: { millbread: 2 } }, do: [{ take: { millbread: 2 } }, { advance: 'the_last_sack' }, { give: { wennas_lantern: 1 } }] },
       { text: 'Your lantern, lit. And an answer from the chapel.', to: 'w_done', if: { night: true, quest: { the_last_sack: 4 }, has: { wennas_lantern: 1 } }, do: [{ take: { wennas_lantern: 1 } }, { advance: 'the_last_sack' }] },
-      { text: 'Where will you go?', to: 'w_after', if: { night: true, quest: { the_last_sack: 'done' } } },
+      { text: 'Where will you go?', to: 'w_after', if: { night: true, quest: { the_last_sack: 'done', oil_for_the_road: 'none' } } },
       // Tag 6 (Bogen): Oil for the Road
       { text: 'You want to go home.', to: 'or_offer', if: { night: true, quest: { the_last_sack: 'done', oil_for_the_road: 'none' } }, do: [{ start: 'oil_for_the_road' }] },
       { text: 'Three flasks of oil, for the road.', to: 'or_oil', if: { night: true, quest: { oil_for_the_road: 1 }, has: { lamp_oil: 3 } }, do: [{ take: { lamp_oil: 3 } }, { advance: 'oil_for_the_road' }] },
