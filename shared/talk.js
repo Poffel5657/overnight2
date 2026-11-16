@@ -39,6 +39,8 @@ export function conditionHolds(p, cond = {}, world = null) {
   if (cond.hasClass && !p.cls) return false;
   // Tag 6: cls = die aktive Klasse (Hauptwaffe in der Hand) ist genau diese (für Spezialisierungen beim Lehrer)
   if (cond.cls && p.cls !== cond.cls) return false;
+  // spec = man hat diesen Weg gewählt (in irgendeiner Klasse)
+  if (cond.spec && !Object.values(p.specs ?? {}).includes(cond.spec)) return false;
   if (cond.classLevel && P.bestClassLevel(p) < cond.classLevel) return false;
   if (cond.below && P.bestClassLevel(p) >= cond.below) return false;
   if (cond.unlocked && !p.classes[cond.unlocked]) return false;

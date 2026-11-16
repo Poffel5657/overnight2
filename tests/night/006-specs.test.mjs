@@ -187,3 +187,23 @@ test('Alle Wege haben auf 54 eine zweite Fähigkeit, die man vorher nicht hat', 
     }
   }
 });
+
+test('Tallow segnet Lightsworn, Rook prüft Ironwall', () => {
+  const w = S.createWorld(REGION, 680);
+  const a = veteran(w, 'a', { cls: 'warden', level: 50 });
+  talk(w, 'a', 'tallow');
+  assert.ok(!options(w, 'a').some((t) => t.includes('swore to the light')), 'ohne Weg nicht');
+  talk(w, 'a', 'ama');
+  choose(w, 'a', 'path of my own');
+  choose(w, 'a', 'Lightsworn:');
+  talk(w, 'a', 'tallow');
+  choose(w, 'a', 'swore to the light');
+  assert.equal(a.dialog.page, 'ls_tallow');
+  const b = veteran(w, 'b', { cls: 'warden', level: 50 });
+  talk(w, 'b', 'ama');
+  choose(w, 'b', 'path of my own');
+  choose(w, 'b', 'Ironwall:');
+  talk(w, 'b', 'rook');
+  choose(w, 'b', 'Ironwall now');
+  assert.equal(b.dialog.page, 'iw_rook');
+});
