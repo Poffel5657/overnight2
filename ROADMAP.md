@@ -26,7 +26,7 @@ Welche Andockpunkte in den nächsten Nächten wachsen, damit große Wünsche üb
 
 | Klasse | Fähigkeiten bis Stufe | Spezialisierungen (ab 50) |
 |---|---|---|
-| Warden | 50 (Stand Fast 12, Beacon Slam 16, Bulwark 20, Last Light 24, Lantern Hook 28, Shield Wall 32, Anvil Blow 36, Hold the Line 40, Hallowed Ground 44, Lamp and Anvil 48) | bei Ama: Lightsworn (Oath of Embers 50), Ironwall (Cinder Bastion 50) |
+| Warden | 50 (Stand Fast 12, Beacon Slam 16, Bulwark 20, Last Light 24, Lantern Hook 28, Shield Wall 32, Anvil Blow 36, Hold the Line 40, Hallowed Ground 44, Lamp and Anvil 48) | bei Ama: Lightsworn (Oath of Embers 50, Lantern Oath 54), Ironwall (Cinder Bastion 50, Anvil Stance 54) |
 | Mender | 50 (Cinder Flick 11, Hearth Song 13, Rekindle 16, Smoulder 20, Kindred Glow 24, Ember Mend 28, Sanctuary 32, Cinder Bloom 36, Banked Hearth 40, Vesper Bell 44, Second Dawn 48) | bei Tallow: Hearthkeeper (Hearthfire 50), Ashbinder (Ash Bloom 50) |
 | Flarecaster | 50 (Glare 10, Cinder Brand 13, Starfall 16, Sunlance 20, Prism Ward 24, Noonbrand 28, Corona 32, Flashpoint 36, Daybreak 40, Lanternfall 44, Solar Lance 48) | bei Wren: Sunwright (Zenith 50), Prismist (Prism Storm 50) |
 | Drifter | 50 (Cheap Shot 10, Night Edge 13, Caltrops 16, Smoke Bomb 20, Gutter Strike 24, Lampblack Cut 28, Vanishing Cut 32, Hamstring 36, Nightfall 40, Gloaming 44, Last Shadow 48) | beim Stranger: Nightblade (Moonless Cut 50), Snarewright (Tangle Wire 50) |
@@ -35,4 +35,4 @@ Alle vier Klassen haben seit Tag 4 Fähigkeiten bis Stufe 40; die Fähigkeiten a
 
 Seit Tag 5 haben alle vier Klassen Fähigkeiten bis 48 (44 im Dauerauftrag, 48 im Nachschlag); Hallowed Ground und Vesper Bell nutzen `mend` (burst heilt die Gruppe). Nächster Schritt: die Spezialisierungen ab 50 (je Klasse zwei Wege mit je einer Fähigkeit), Klasse für Klasse, beginnend mit dem Warden. Wesen bis 46 (The Undertow), Ausrüstung bis 40 (Sumpwalker, Verdigris).
 
-Seit Tag 6 hat jede Klasse zwei Wege ab Stufe 50 mit je einer Fähigkeit (gewählt beim Lehrer, Bedingung `cls`). `zone` kann jetzt blenden, festhalten und anzünden. Nächster Schritt: pro Nacht eine Klasse, beide Wege auf 54, dann 58. Wesen bis 49 (The Old Sluicegate im Spillway), Ausrüstung bis 50 (Spillway Mail). Offen: Inhalt ab 50.
+Seit Tag 6 hat jede Klasse zwei Wege ab Stufe 50 mit je einer Fähigkeit (gewählt beim Lehrer, Bedingung `cls`). `zone` kann jetzt blenden, festhalten und anzünden. Der Warden hat beide Wege schon bis 54. Nächster Schritt: Mender, Flarecaster, Drifter je beide Wege auf 54, dann alle auf 58. Wesen bis 49 (The Old Sluicegate im Spillway), Ausrüstung bis 50 (Spillway Mail). Offen: Inhalt ab 50.

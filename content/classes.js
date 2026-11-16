@@ -22,8 +22,8 @@ export const CLASSES = {
     abilities: [['bash', 1], ['brace', 2], ['taunt', 4], ['lantern_ward', 6], ['shield_slam', 8], ['stand_fast', 12], ['beacon_slam', 16], ['bulwark', 20], ['last_light', 24], ['lantern_hook', 28], ['shield_wall', 32], ['anvil_blow', 36], ['hold_the_line', 40], ['hallowed_ground', 44], ['lamp_and_anvil', 48]],
     specs: {
       // Tag 6: gewählt bei Ama ab Stufe 50. Lightsworn aus Gebet 9 (ein Lichtweg für Wardens).
-      lightsworn: { name: 'Lightsworn', text: 'Shield, lamp and a vow. When you strike, the light heals the people behind you.', abilities: [['oath_of_embers', 50]] },
-      ironwall: { name: 'Ironwall', text: 'Cinder iron and stubbornness. Nothing gets past you, and nothing gets in.', abilities: [['cinder_bastion', 50]] },
+      lightsworn: { name: 'Lightsworn', text: 'Shield, lamp and a vow. When you strike, the light heals the people behind you.', abilities: [['oath_of_embers', 50], ['lantern_oath', 54]] },
+      ironwall: { name: 'Ironwall', text: 'Cinder iron and stubbornness. Nothing gets past you, and nothing gets in.', abilities: [['cinder_bastion', 50], ['anvil_stance', 54]] },
     },
   },
   mender: {
