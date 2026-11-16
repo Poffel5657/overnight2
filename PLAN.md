@@ -27,7 +27,7 @@ Tag 6 (Nacht zum 2026-11-17). **Die Inbox-Datei `v2/inbox/2026-11-16.json` fehlt
 
 **Dauerauftrag Klassen:** Warden-Spezialisierungen ab 50, gewählt bei Ama: **Lightsworn** (Licht, Gelübde, heilt beim Schlag) und **Ironwall** (Cinder Iron, steht und hält). Je eine Fähigkeit auf 50.
 
-**Nachschlag (gebaut):** Mender-Wege bei Tallow, Flarecaster-Wege bei Wren, Drifter-Wege beim Stranger (je eine Fähigkeit auf 50); neue Wirkung: `zone` kann blenden, brennen und festhalten. The Spillway unter den Sumps (Stufe 46 bis 50, Weir Eel, The Old Sluicegate, „Below the Weir“, Spillway Mail). „Fen's Map“. Gefallen logs_for_ama, Rufe, Ausguck-Text.
+**Nachschlag (gebaut):** Mender-Wege bei Tallow, Flarecaster-Wege bei Wren, Drifter-Wege beim Stranger (je eine Fähigkeit auf 50); neue Wirkung: `zone` kann blenden, brennen und festhalten. The Spillway unter den Sumps (Stufe 46 bis 50, Weir Eel, The Old Sluicegate, „Below the Weir“, Spillway Mail). „Fen's Map“. Alle acht Wege auch auf 54. Lampwright 16 Carrier's Lamp. „Ama's Tally“ (Spielstand `stacked`, Woodward's Hood). Gefallen logs_for_ama, eels_for_hesk, sluicegate_again. Hollis' sechstes Gerücht, Mothwick zu Wenna, Rufe, Ausguck-Text.
 
 ## Ausbau läuft
 
