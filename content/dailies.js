@@ -27,6 +27,9 @@ export const FAVOURS = {
   rats_for_hesk: { from: 'hesk', type: 'kill', mob: 'drain_rat', n: 3, text: 'Hesk heard rats in the pipes under his stall again. Three fewer, please, down in the Sumps.', reward: { gold: 40, xp: 560 } },
   undertow_again: { from: 'hesk', type: 'kill', mob: 'the_undertow', n: 1, text: 'The ford has gone quiet again. Something is back in the weir. Hesk says bring a friend, and lamps.', reward: { gold: 60, xp: 1400 } },
   flour_for_hollis: { from: 'hollis', type: 'bring', item: 'mill_flour', n: 2, text: 'Hollis wants two sacks of flour from the Old Mill. Breakfast does not bake itself.', reward: { gold: 14, xp: 50 } },
+  // Tag 6, Nachschlag: the Spillway (Gruppen willkommen)
+  eels_for_hesk: { from: 'hesk', type: 'kill', mob: 'weir_eel', n: 3, text: 'The fishermen at the ford want fewer eels in the Spillway. Hesk is passing it on. Three, please.', reward: { gold: 48, xp: 900 } },
+  sluicegate_again: { from: 'hesk', type: 'kill', mob: 'old_sluicegate', n: 1, text: 'The Old Sluicegate is walking again. Hesk says take a friend, and do not let it close on you.', reward: { gold: 70, xp: 1800 } },
   // Tag 6 (Ama's Woodpile): Holz für den Stapel; Totholz spaltet jeder am Waldrand
   logs_for_ama: { from: 'ama', type: 'bring', item: 'split_log', n: 4, text: 'Ama wants four split logs for the woodpile. Deadfall lies along the woods.', reward: { gold: 12, xp: 45 } },
   shoo_crows: { from: 'fen', type: 'kill', mob: 'crow', n: 3, text: 'The crows are judging the vegetable patch. Shoo them.', reward: { gold: 8, xp: 20 } },
