@@ -586,7 +586,7 @@ export const ITEM_ICONS = {
   glass_grit: ['pile', 'moss'], hollow_glass_lantern: ['lantern', 'moss'],
   millers_ledger: ['notes', 'paper'], tin_face: ['ring', 'tin'],
   barley: ['leaf', 'wax'], mill_flour: ['pile', 'pale'], millbread: ['bread', 'bread'], hollow_barley: ['leaf', 'stone'], wennas_lantern: ['lantern', 'green'],
-  split_log: ['log', 'scrap'], carriers_lamp: ['lantern', 'green'],
+  split_log: ['log', 'scrap'], carriers_lamp: ['lantern', 'green'], spillway_mail: ['coat', 'glim'], spillway_slate: ['notes', 'stone'],
   delvers_hood: ['hood', 'skin'], delvers_boots: ['boots', 'skin'], delvers_coat: ['coat', 'skin'], keepers_lantern: ['lantern', 'warm'],
 };
 

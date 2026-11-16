@@ -13,7 +13,8 @@ export const SUMPS_START = { x: 7, y: 4 };
 export const REGION = {
   id: 'sumps',
   name: 'THE SUMPS',
-  zoneAt: () => 'THE SUMPS',
+  // Tag 6: unter der Zisterne liegt der Überlauf (the Spillway)
+  zoneAt: (x, y) => (y >= 24 && x < 30 ? 'THE SPILLWAY' : 'THE SUMPS'),
   place: 'UNDER CINDERFORD',
   indoor: true,
   tiles: TILES,
@@ -43,6 +44,11 @@ export const REGION = {
     { type: 'node', node: 'sluice_mark', x: 16, y: 14 },
     { type: 'node', node: 'lampcap_cluster', x: 16, y: 23 },
     { type: 'node', node: 'lampcap_cluster', x: 31, y: 26 },
+    // Tag 6, Nachschlag: the Spillway (Stufe 46 bis 50) unter der Zisterne, Durchgang bei x 20/21, y 24
+    { type: 'brazier', x: 7, y: 25, light: 3.5, name: 'a lamp niche in the Spillway' },
+    { type: 'brazier', x: 26, y: 25, light: 3.5, name: 'a lamp niche in the Spillway' },
+    { type: 'shrine', look: 'niche', x: 15, y: 25, name: 'the overflow-keepers\' slate', gives: 'spillway_slate', quest: 'below_the_weir', step: 1, text: 'A small slate hung on a nail over the overflow, where the water used to drop away into the dark.', found: 'You lift the slate off its nail. Chalk, in the same hand as the slate by the ladder: "Overflow runs north. Keep it running. They need it more than we do."', empty: 'An empty nail over the overflow. The water below runs away into the dark, north, by the sound of it.' },
+    { type: 'chest', chest: 'sumps', x: 4, y: 28, name: 'an overflow-keeper\'s box' },
   ],
   npcs: [],
   mobs: [
@@ -61,5 +67,10 @@ export const REGION = {
     { type: 'silt_crawler', x: 38, y: 10 },
     // The Undertow am Wehr
     { type: 'the_undertow', x: 36, y: 22 },
+    // Tag 6, Nachschlag: Weir Eels im Spillway, am Westende das Old Sluicegate (ans Ende der Liste, damit alte Seeds stimmen)
+    { type: 'weir_eel', x: 12, y: 26 },
+    { type: 'weir_eel', x: 19, y: 28 },
+    { type: 'weir_eel', x: 25, y: 26 },
+    { type: 'old_sluicegate', x: 5, y: 27 },
   ],
 };

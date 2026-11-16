@@ -188,6 +188,29 @@ export const MOBS = {
     boss: { deathText: 'The Undertow lets go. Somewhere far below, the weir grinds open, and the water runs clear for the first time in years.' },
     examine: 'A knot of water that should not hold a shape, wrapped round a rusted sluice wheel. It pulls at your boots from three steps away.',
   },
+  // ---------- Tag 6, Nachschlag: the Spillway unter der Zisterne der Sumps (Stufe 46 bis 50) ----------
+  weir_eel: {
+    // Rolle normal, Stufe 47. Lange, schnelle Aale aus dem Überlauf; meiden die Lampen-Nischen (grey).
+    name: 'Weir Eel', sprite: 'weir_eel', level: 47, ai: 'grey',
+    hp: 620, hit: [21, 25], attackEvery: 4, aggro: 5, leash: 8, respawn: 120, xp: 340, drainOil: 2,
+    drops: [['verdigris', 0.5, 1, 2], ['greyglass', 0.3, 1, 1], ['lily_bulb', 0.3, 1, 1]], gold: [20, 34],
+    special: { every: 3, delay: 6, pattern: 'line', hit: [44, 52], text: 'The eel coils back into the water. It is about to come out of it very fast, in a straight line.' },
+    examine: 'An eel as long as a cart, black as the water, with a ridge of green brass along its back. It came up the overflow, and likes it here.',
+  },
+  old_sluicegate: {
+    // Rolle Boss (allein mit Einsatz, zu zweit gut), Stufe 49. Das eiserne Schütz am Ende des Überlaufs, das die
+    // Quarrymen gegen den Grey bauten. Irgendwann fing es an, sich zu bewegen. Ohne Phase 2, heilt sich, wenn alle gehen.
+    name: 'The Old Sluicegate', sprite: 'old_sluicegate', level: 49, ai: 'beast', moveEvery: 3,
+    hp: 3200, hit: [27, 31], attackEvery: 5, aggro: 5, leash: 8, respawn: 600, xp: 2000,
+    drops: [['cinder_iron', 1, 1, 3], ['verdigris', 1, 2, 4], ['spillway_mail', 0.2, 1, 1]], gold: [80, 140],
+    specials: [
+      { every: 1, delay: 6, pattern: 'bigplus', hit: [66, 78], text: 'The Sluicegate lifts. Four channels of water rush out from under it.' },
+      { every: 1, delay: 7, pattern: 'ring', hit: [70, 82], text: 'The Sluicegate slams down. The floor all around it shudders.' },
+    ],
+    specialEvery: 3,
+    boss: { deathText: 'The Old Sluicegate grinds to a stop, half open. For a moment you hear water running far away, north, and then only the drip.' },
+    examine: 'An iron sluice gate, taller than a door, standing on its own on three bent legs. Rust, verdigris, and a quarrymen\'s lamp carved into the crossbar.',
+  },
   // ---------- The Unending Maze (seit 2026-11-13, Gebet 4) ----------
   // Vorlagen: Die echten Werte rechnet content/regions/maze.js nach dem Stockwerk aus (maze: Faktoren auf die
   // Grundwerte der Stufe). Die Zahlen hier gelten für das erste Stockwerk (Stufe 5).
