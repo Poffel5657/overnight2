@@ -120,3 +120,21 @@ test("Fen's Map: Brindle zeichnet die Steine, Haskel die Wölfe, Fen die Gans, W
   choose(w, 'a', 'Wenna has your map');
   assert.equal(p.dialog.page, 'fm_done');
 });
+
+test('Hollis hat ein sechstes Gerücht, Mothwick weiß von Wennas Weg', async () => {
+  const { regionFor } = await import('../../content/regions/index.js');
+  const w = S.createWorld(REGION, 613);
+  w.daylight = 0.1;
+  const p = veteran(w, 'a', { level: 8, quests: { kindling: { done: true }, the_last_sack: { done: true }, oil_for_the_road: { step: 1, n: 0 } } });
+  talk(w, 'a', 'mothwick');
+  choose(w, 'a', 'walking home');
+  assert.equal(p.dialog.page, 'mw_road');
+  const tavern = w.objects.find((o) => o.type === 'tavern');
+  actOn(w, 'a', tavern, 'enter');
+  const d = S.createWorld(regionFor('kindle_inside'), 614);
+  const q = S.addPlayer(d, 'a', 'a', S.removePlayer(w, 'a'));
+  talk(d, 'a', 'hollis');
+  choose(d, 'a', 'Heard anything');
+  for (const next of ['Anything else?', 'And?', 'Anything newer?', 'And?', 'Anything newer?']) choose(d, 'a', next);
+  assert.equal(q.dialog.page, 'rumour6');
+});
