@@ -51,6 +51,8 @@ export function conditionHolds(p, cond = {}, world = null) {
   if (cond.profLevel && Object.entries(cond.profLevel).some(([k, n]) => P.profLevel(p, k) < n)) return false;
   if (cond.profBelow && Object.entries(cond.profBelow).some(([k, n]) => !p.profs[k] || P.profLevel(p, k) >= n)) return false;
   if (cond.gold && (p.gold ?? 0) < cond.gold) return false;
+  // Tag 6: stacked = so viele Scheite insgesamt auf Amas Stapel gelegt
+  if (cond.stacked && (p.stacked ?? 0) < cond.stacked) return false;
   // Tageszeit: night = nach Einbruch der Dunkelheit (wie bei Quest-Schritten mit night)
   if (world && cond.night && world.daylight >= 0.5) return false;
   if (world && cond.day && world.daylight < 0.5) return false;

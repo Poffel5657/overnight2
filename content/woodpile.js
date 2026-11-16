@@ -6,6 +6,8 @@
 //   log: der Gegenstand.  logs: Scheite pro Totholz und Tag.  xp / xpPerLevel: Erfahrung beim ersten Stapeln am Tag.
 // Quest-Aktionen 'split' und 'stack'. Ein Vorrat über mehrere Tage bräuchte einen dauerhaften Weltzähler (nur mit Chris).
 export const WOODPILE = {
+  // Amas Zähltafel: ab so vielen Scheiten insgesamt (Spielstand stacked) gibt es „Ama's Tally“
+  tally: 40,
   log: 'split_log',
   logs: 2,
   split: 'You set your boot on the deadfall and break it into lengths. Dry, old, and it will burn like it has been waiting to.',

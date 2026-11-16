@@ -150,3 +150,43 @@ test('Carrier\'s Lamp nachbauen: Wren erklärt sie, Lampwright 16 macht sie aus 
   assert.equal(P.countItem(p, 'carriers_lamp'), 2, 'eine zweite Lampe');
   assert.equal(P.countItem(p, 'split_log'), WOODPILE.logs - 1, 'ein Scheit verbraucht');
 });
+
+test('Ama\'s Tally: Scheite zählen über Tage im Spielstand, bei vierzig gibt es die Woodward\'s Hood; alte Stände starten bei 0', () => {
+  // Alter Stand ohne Feld
+  const old = S.createWorld(REGION, 605);
+  const o = S.addPlayer(old, 'o', 'o', { v: 2, x: 50, y: 53, hp: 30, oil: 100, cls: 'warden', classes: { warden: { level: 3, xp: P.xpForLevel(3) } }, bag: [], equip: {}, quests: { kindling: { done: true } } });
+  assert.equal(o.stacked, 0);
+  assert.equal(P.saveOf(o).stacked, 0);
+
+  let date = new Date('2026-11-17T12:00:00Z');
+  const iso = () => date.toISOString().slice(0, 10);
+  let w = S.createWorld(REGION, 606);
+  w.date = iso();
+  w.daylight = 1;
+  let p = veteran(w, 'a', { level: 8, quests: { kindling: { done: true }, the_woodpile: { done: true } } });
+  talk(w, 'a', 'ama');
+  choose(w, 'a', 'tally board');
+  assert.equal(p.dialog.page, 'at_offer');
+  const pile = w.objects.find((x) => x.type === 'woodpile');
+  // Tag für Tag Totholz spalten und stapeln, zwischendurch ausloggen und wiederkommen
+  for (let day = 0; p.stacked < WOODPILE.tally && day < 20; day++) {
+    for (const df of w.objects.filter((x) => x.type === 'deadfall')) { actOn(w, 'a', df, 'use'); run(w, 2); }
+    actOn(w, 'a', pile, 'use');
+    run(w, 2);
+    const save = JSON.parse(JSON.stringify(S.removePlayer(w, 'a')));
+    date.setUTCDate(date.getUTCDate() + 1);
+    w = S.createWorld(REGION, 607 + day);
+    w.date = iso();
+    w.daylight = 1;
+    p = S.addPlayer(w, 'a', 'a', save);
+    if (p.stacked < WOODPILE.tally) {
+      talk(w, 'a', 'ama');
+      assert.ok(!options(w, 'a').some((t) => t.includes('Forty lines')), 'erst bei vierzig');
+    }
+  }
+  assert.ok(p.stacked >= WOODPILE.tally, `vierzig gestapelt (${p.stacked})`);
+  talk(w, 'a', 'ama');
+  choose(w, 'a', 'Forty lines');
+  assert.ok(p.quests.amas_tally.done);
+  assert.equal(P.countItem(p, 'woodward_hood'), 1);
+});

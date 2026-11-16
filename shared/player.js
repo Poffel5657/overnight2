@@ -334,6 +334,8 @@ export function loadInto(p, raw) {
   p.rested = clampInt(save.rested, 0, INN.rested, 0);
   // Unending Maze: tiefstes Stockwerk, zu dem man hinunter darf (alte Stände: 1)
   p.mazeDeep = clampInt(save.mazeDeep, 1, 99, 1);
+  // Tag 6: Scheite, die man insgesamt auf Amas Stapel gelegt hat (alte Stände: 0)
+  p.stacked = clampInt(save.stacked, 0, 1e9, 0);
   // Anteile im Counting House (Tag 3): nur bekannte Geschäfte, höchstens SHARE_MAX
   p.shares = {};
   for (const [id, n] of Object.entries(save.shares || {})) {
@@ -352,7 +354,7 @@ export function saveOf(p) {
     cls: p.cls, classes: p.classes, specs: p.specs ?? {}, bag: p.bag.filter(Boolean), equip: p.equip,
     profs: p.profs, quests: p.quests, bars: p.bars, barSeen: p.barSeen ?? {}, daily: p.daily ?? null,
     stash: p.stash ?? [], rested: p.rested ?? 0, mazeDeep: p.mazeDeep ?? 1,
-    shares: p.shares ?? {}, dividendDay: p.dividendDay ?? null,
+    shares: p.shares ?? {}, dividendDay: p.dividendDay ?? null, stacked: p.stacked ?? 0,
   };
 }
 
@@ -362,6 +364,6 @@ export function stateOf(p) {
     cls: p.cls, classes: p.classes, specs: p.specs ?? {}, bag: p.bag, equip: p.equip, gold: p.gold,
     profs: p.profs, quests: p.quests, bar: barOf(p), defence: defenceOf(p), power: weaponPower(p),
     daily: p.daily ?? null, stash: p.stash ?? [], rested: p.rested ?? 0, mazeDeep: p.mazeDeep ?? 1,
-    shares: p.shares ?? {},
+    shares: p.shares ?? {}, stacked: p.stacked ?? 0,
   };
 }

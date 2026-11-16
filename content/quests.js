@@ -520,6 +520,15 @@ export const QUESTS = {
     ],
     reward: { xp: 110, gold: 15, items: { lamp_oil: 2, bread: 2 } },
   },
+  // Tag 6, Nachschlag: Amas Zähltafel. Wer insgesamt WOODPILE.tally Scheite gestapelt hat, bekommt ihren Dank.
+  amas_tally: {
+    name: 'Ama\'s Tally', giver: 'ama',
+    text: 'Ama chalks a line on her tally board for every log anybody stacks. Forty lines under one name, and she has something for you.',
+    steps: [
+      { type: 'talk', npc: 'ama', text: 'Stack forty split logs on Ama\'s woodpile, over as many days as you like, then show her the tally board.' },
+    ],
+    reward: { xp: 300, gold: 20, items: { woodward_hood: 1 } },
+  },
   // Tag 6, vom Nightwright (Bogen „The Second Light“): Wenna will nach Norden. Öl für die Reise, ein Scheit für Kindles
   // Feuer in ihrem Namen, vom Ausguck die Steine prüfen, Brindle fragen. Danach ruft Ama „The Beacon Starves“ aus.
   oil_for_the_road: {
