@@ -7,6 +7,7 @@
 //       unlocked / locked: '<klasse>'
 //       prof / noProf: '<beruf>'   profSlot: true (noch ein Beruf frei)   has: { item: n }
 //       gold: n (mindestens so viel Gold)   night / day: true (Tageszeit; der Browser prüft das nicht)
+//       cls: '<klasse>' (aktive Klasse, Tag 6)   stacked: n (Scheite insgesamt auf Amas Stapel, Tag 6)
 //   do: Wirkungen der Reihe nach: start, advance (Quest), chooseClass, give, take, learn, unlearn,
 //       refill, shop ('<händler>'), bet (['<schnecke>', gold], Schneckenrennen in shared/races.js),
 //       invest / grantShare ('<geschäft>'), dividend, ledger (Counting House, shared/ventures.js)
@@ -17,6 +18,7 @@ import { CLASSES, UNLOCK_LEVEL } from './classes.js';
 import { RACE } from './races.js';
 import { INN } from './tavern.js';
 import { VENTURES, SHARE_MAX } from './ventures.js';
+import { WOODPILE } from './woodpile.js';
 
 const BYE = { text: 'Bye.' };
 
@@ -103,6 +105,8 @@ const ama = (() => {
         { text: 'What is that woodpile by the Beacon?', to: 'wp_offer', if: { quest: { kindling: 'done', the_woodpile: 'none' } }, do: [{ start: 'the_woodpile' }, { give: { split_log: 1 } }] },
         { text: 'Logs on the pile.', to: 'wp_done', if: { quest: { the_woodpile: 2 } }, do: [{ advance: 'the_woodpile' }] },
         { text: 'How high is the pile?', to: 'wp_after', if: { quest: { the_woodpile: 'done' } } },
+        { text: 'What is the tally board for?', to: 'at_offer', if: { quest: { the_woodpile: 'done', amas_tally: 'none' } }, do: [{ start: 'amas_tally' }] },
+        { text: 'Forty lines on the board, under my name.', to: 'at_done', if: { quest: { amas_tally: 0 }, stacked: WOODPILE.tally }, do: [{ advance: 'amas_tally' }] },
         { text: 'Wenna is walking home, north.', to: 'or_ama', if: { quest: { oil_for_the_road: 'active' } } },
         { text: 'The Beacon is starving, is it not?', to: 'ama_starves', if: { quest: { oil_for_the_road: 'done' } } },
         ...t.options, ...sp.options,
@@ -149,6 +153,8 @@ const ama = (() => {
     ls_ama_after: { text: 'Ama stops counting logs. "Hungry." She says it the way she says "rain". "Then the glow up north is a fire running out of wood, and it is pulling at every light in the Grey to stay alive, ours too." She picks the log back up. "Tell everybody to bring wood. Not today. Every day."', options: [BYE] },
     wp_offer: { text: '"Mine. Well, everybody\'s." Ama pats the stack beside the Beacon, bark side up. "The Beacon eats more every night, and I am not standing here feeding it one log at a time while you all walk past with your hands in your pockets. There is deadfall all along the edge of the woods: west of the fields, and up along Hushwood by Haskel\'s camp. Anybody can break it. Split some, stack it here, and I will chalk it on the board." She hands you a log. "That is what dry looks like. Bring me more of it."', options: [{ text: 'I will bring wood.' }] },
     wp_done: { text: 'Ama looks at the pile, then at the tally board, and draws a line with the chalk. "Yours." She does not smile, exactly, but she stops frowning at the fire for a moment. "Every evening. Whatever you can carry. A pile that everybody fills does not run out."', options: [{ text: 'Every evening.' }] },
+    at_offer: { text: '"Lines. One for every log, under the name of whoever stacked it." Ama taps the board. Some names have two lines. Haskel has a great many, in his own handwriting. "Forty under one name, and I give you a hood. Felt, warm, with birch on the band. I have given out four, ever." She looks at you sideways. "Over a week, over a month, I do not care. Forty."', options: [{ text: 'Forty logs.' }] },
+    at_done: { text: 'Ama counts the lines under your name. Twice, because she is Ama. Then she reaches under the pile and pulls out a felt hood with a sprig of birch stitched to the band. "Five, ever." She does not smile, but she does not look at the fire for a moment either. "Wear it when you bring the next forty."', options: [{ text: 'Thank you, Ama.' }] },
     wp_after: { text: '"Higher than yesterday. Not as high as I want." She knocks on the pile with her knuckles. "When it reaches my shoulder, the Beacon has enough for the night. When it reaches my head, the Grey steps back. When it reaches the top of the board, I will think about smiling."', options: [BYE] },
     or_ama: { text: 'Ama keeps her eyes on the fire for a long time. "Good. Somebody should go home." She pulls a log off the pile and weighs it in her hand. "If she wants to put wood on our pile before she goes, let her. People who are given everything do not walk as far as people who paid their way."', options: [BYE] },
     ama_starves: { text: 'Ama does not answer at once. She chalks the tally board, rubs it out, chalks it again. "Yes. It ate the whole pile last night and asked for more. No wind. No rain." She points north with the chalk. "That light up there is a fire running out, and a fire running out pulls at every other fire it can feel. Ours is the nearest." She turns to the square and raises her voice, which she never does. "THE BEACON IS STARVING. Everybody brings wood. Every evening. Deadfall, oil, anything that burns. I am not asking." Then, quieter, to you: "Now we find out what kind of village this is."', options: [{ text: 'I will bring wood.' }] },

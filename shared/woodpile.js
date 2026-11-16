@@ -29,6 +29,7 @@ export function stackWoodpile(world, p) {
   const k = P.countItem(p, log);
   if (k < 1) return tell(world, p.id, WOODPILE.nothing, 'sys');
   P.takeItem(p, log, k);
+  p.stacked = (p.stacked ?? 0) + k;
   const add = BEACON_FUEL[log] * k;
   const before = world.community.beacon;
   world.community.beacon += add;
