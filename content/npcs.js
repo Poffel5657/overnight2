@@ -319,6 +319,7 @@ const wren = (() => {
         { text: 'Wenna says this grit makes lanterns.', to: 'grit', if: { has: { glass_grit: 1 } } },
         { text: 'What do you make of this glass?', to: 'nf_glass', if: { quest: { not_from_here: 1 }, has: { cold_glass: 1 } }, do: [{ advance: 'not_from_here' }] },
         { text: 'Can you read this tally stick?', to: 'cd_tally', if: { quest: { carriers_dark: 3 }, has: { tally_stick: 1 } }, do: [{ advance: 'carriers_dark' }] },
+        { text: 'Wenna gave me a carrier\'s lamp.', to: 'cl_wren', if: { has: { carriers_lamp: 1 } } },
         ...t.options, ...sp.options, ...l.options, BYE,
       ],
     },
@@ -329,6 +330,7 @@ const wren = (() => {
     en_wisps: { text: 'A spyglass? Fine. Glass I have. To polish it I need grey wisps, three of them. They hate the light so much that they rub every speck of it smooth.', options: [{ text: 'Three wisps.' }] },
     nf_glass: { text: 'Green, poured thick, full of tiny bubbles. Nobody in Kindle pours glass like this, and I would know. Whoever made it had sand, a hot fire and no patience. Show the Stranger. He looks at lanterns like he misses one.', options: [{ text: 'I will.' }] },
     cd_tally: { text: 'Wren runs a thumb down the notches. "Forty to a row. Forty, forty, forty, for years of rows. A carrier\'s tally: one notch for every load that arrived." Wren turns it over. "And then the rows get short. Twenty. Twelve. The last one has eight." The stick comes back to you. "Somebody used to carry forty of something, every time. Now they carry what they can find."', options: [{ text: 'Forty. Like the crates in the ledger.' }] },
+    cl_wren: { text: 'Wren turns the little green lamp over and over, then holds it to her ear as if it might tell her something. "Grit from the mill, poured thick. A wick of plain wax. And the grip is just a split log, shaved down and wrapped in bark." She sounds offended at how simple it is. "No wonder it lasts a whole road. Nothing in it to break." She is already reaching for a pencil. "Any lampwright past sixteen can make these now. Bring grit, a log off Ama\'s pile, and some wax. Do not tell Ama about the log."', options: [BYE] },
     ...l.pages, ...t.pages, ...sp.pages,
   };
 })();

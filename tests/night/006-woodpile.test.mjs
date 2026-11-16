@@ -128,3 +128,25 @@ test('Gefallen „logs_for_ama“: an einem Tag, an dem er dran ist, Scheite am 
   run(w, 1);
   assert.equal(p.gold, gold + f.reward.gold, `Gefallen am ${date} erledigt`);
 });
+
+test('Carrier\'s Lamp nachbauen: Wren erklärt sie, Lampwright 16 macht sie aus Grit, einem Scheit und Wachs', async () => {
+  const { RECIPES } = await import('../../content/recipes.js');
+  const { applyIntent } = await import('../../shared/protocol.js');
+  const w = S.createWorld(REGION, 604);
+  w.date = '2026-11-17';
+  w.daylight = 1;
+  const r = RECIPES.l_carriers_lamp;
+  const p = veteran(w, 'a', { level: 16, profs: { lampwright: { level: r.level, xp: P.xpForLevel(r.level) } }, bag: [{ id: 'carriers_lamp', n: 1 }, { id: 'glass_grit', n: 1 }, { id: 'wax_comb', n: 1 }] });
+  talk(w, 'a', 'wren');
+  choose(w, 'a', 'carrier\'s lamp');
+  assert.equal(p.dialog.page, 'cl_wren');
+  // Das Scheit kommt vom Totholz
+  const df = w.objects.find((o) => o.type === 'deadfall' && o.y > 25);
+  actOn(w, 'a', df, 'use');
+  run(w, 2);
+  const bench = w.objects.find((o) => o.station === 'lampbench');
+  actOn(w, 'a', bench, 'use');
+  applyIntent(w, 'a', { t: 'craft', obj: bench.id, recipe: 'l_carriers_lamp', n: 1 });
+  assert.equal(P.countItem(p, 'carriers_lamp'), 2, 'eine zweite Lampe');
+  assert.equal(P.countItem(p, 'split_log'), WOODPILE.logs - 1, 'ein Scheit verbraucht');
+});

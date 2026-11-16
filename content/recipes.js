@@ -75,6 +75,8 @@ export const RECIPES = {
   l_foremans_lamp: { prof: 'lampwright', level: 19, inputs: { brass_bits: 3, glimmer: 2, beetle_shell: 1 }, out: ['foremans_lamp', 1], xp: 85 },
   l_flare_candle: { prof: 'lampwright', level: 20, inputs: { wax_comb: 2, glimmer: 1 }, out: ['flare_candle', 2], xp: 90 },
   // Tag 5, Nachschlag: Glas aus der Old Mill, gegossen wie im Norden (Wenna)
+  // Tag 6, Nachschlag: Wennas Trägerlampe, nachgebaut von Wren. Grit aus der Mühle, ein Scheit für den Griff, Wachs für den Docht.
+  l_carriers_lamp: { prof: 'lampwright', level: 16, inputs: { glass_grit: 1, split_log: 1, wax_comb: 1 }, out: ['carriers_lamp', 1], xp: 76 },
   l_hollow_glass_lantern: { prof: 'lampwright', level: 22, inputs: { glass_grit: 2, brass_bits: 2, survey_notes: 1 }, out: ['hollow_glass_lantern', 1], xp: 105 },
   l_greyglass_lantern: { prof: 'lampwright', level: 24, inputs: { greyglass: 2, glimmer: 2, survey_notes: 3 }, out: ['greyglass_lantern', 1], xp: 120 },
   l_greyglass_lens: { prof: 'lampwright', level: 26, inputs: { greyglass: 3, glimmer: 2 }, out: ['greyglass_lens', 1], xp: 140 },
