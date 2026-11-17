@@ -39,6 +39,7 @@ test('Der Overflow Run: Stufe 50 bis 54, fair angekündigt, eigener Name, unter 
   const r = regionFor('sumps');
   for (const m of r.mobs.filter((x) => ['culvert_leech', 'the_pumpwarden'].includes(x.type))) assert.equal(r.zoneAt(m.x, m.y), 'THE OVERFLOW RUN');
   assert.ok(ITEMS.culvert_coat.defence > ITEMS.spillway_mail.defence && ITEMS.culvert_hood.defence > ITEMS.sumpwalker_hood.defence);
+  assert.ok(ITEMS.pump_lamp.light > ITEMS.weir_lamp.light && MOBS.the_pumpwarden.drops.some(([id]) => id === 'pump_lamp'), 'Pump Lamp: besser als die Weir Lamp, vom Pumpwarden');
   assert.ok(RECIPES.t_culvert_hood.inputs.run_iron && RECIPES.t_culvert_coat.inputs.run_iron, 'Run Iron hat einen Zweck');
 });
 

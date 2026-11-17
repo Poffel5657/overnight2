@@ -225,7 +225,7 @@ export const MOBS = {
     // drückte. Bronze, eine Lampe in der Brust, sie geht. Ohne Phase 2, heilt sich, wenn alle gehen.
     name: 'The Pumpwarden', sprite: 'the_pumpwarden', level: 54, ai: 'beast', moveEvery: 3,
     hp: 2900, hit: [26, 30], attackEvery: 5, aggro: 5, leash: 8, respawn: 600, xp: 2900,
-    drops: [['run_iron', 1, 2, 3], ['verdigris', 1, 2, 3], ['greyglass', 0.6, 1, 2]], gold: [100, 170],
+    drops: [['run_iron', 1, 2, 3], ['verdigris', 1, 2, 3], ['greyglass', 0.6, 1, 2], ['pump_lamp', 0.25, 1, 1]], gold: [100, 170],
     specials: [
       { every: 1, delay: 6, pattern: 'bigplus', hit: [70, 82], text: 'The Pumpwarden draws a long breath through every pipe. Four jets are coming.' },
       { every: 1, delay: 7, pattern: 'ring', hit: [74, 86], text: 'The Pumpwarden stamps. The floor all around it is about to heave.' },
