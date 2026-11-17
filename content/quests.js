@@ -556,6 +556,64 @@ export const QUESTS = {
     ],
     reward: { xp: 7000, gold: 160, items: { spillway_mail: 1, sluice_draught: 2 } },
   },
+  // Tag 7 (Abstimmung „bread-north“): Kindle schickt Brot und Öl nach Norden. Brindle zeigt die Kiste am ersten Stein.
+  bread_north: {
+    name: 'Bread to the First Stone', giver: 'brindle',
+    text: 'Kindle has decided to send bread and oil north, for the carriers who still walk. Brindle has put a box under the first stone at the end of the north road. Somebody has to fill it first.',
+    steps: [
+      { type: 'have', item: 'millbread', n: 2, text: 'Bring two loaves of millbread (grind barley at the Old Mill, Hollis bakes the flour).' },
+      { type: 'have', item: 'lamp_oil', n: 1, text: 'And a flask of lamp oil, for a carrier\'s lamp.' },
+      { type: 'action', action: 'cache', text: 'Leave the bread and oil in the box under the first stone, next to the North Watch.' },
+      { type: 'talk', npc: 'ama', text: 'Tell Ama that Kindle\'s bread is going north. She will have something to say about it.' },
+      { type: 'talk', npc: 'wenna', text: 'Tell Wenna at the mill, after dark, that there is bread at the first stone.' },
+    ],
+    reward: { xp: 320, gold: 20, items: { hollow_ration: 1, lamp_oil: 1 } },
+  },
+  // Tag 7 (für niedrige Stufen): Fen will eine Zeichnung in die Kiste legen.
+  fens_letter: {
+    name: 'A Drawing for the Box', giver: 'fen',
+    text: 'Fen has drawn a picture for the carriers, so they know who the bread is from.',
+    steps: [
+      { type: 'have', item: 'fens_drawing', n: 1, text: 'Take Fen\'s drawing.' },
+      { type: 'action', action: 'cache', text: 'Put Fen\'s drawing in the box under the first stone, at the end of the north road (next to the North Watch).' },
+      { type: 'talk', npc: 'fen', text: 'Tell Fen the drawing is in the box.' },
+    ],
+    reward: { xp: 90, gold: 8, items: { bread: 2 } },
+  },
+  // Tag 7: wer insgesamt CACHE.week Punkte am ersten Stein hinterlegt hat, bekommt Wennas Dank.
+  week_of_bread: {
+    name: 'A Week of Bread', giver: 'wenna',
+    text: 'Wenna is staying until there is enough at the first stone to be worth carrying. A carrier\'s load is about a week of bread for one house.',
+    steps: [
+      { type: 'talk', npc: 'wenna', text: 'Keep leaving bread and oil at the first stone (a loaf of millbread or a flask of oil counts double), then tell Wenna at the mill after dark.' },
+    ],
+    reward: { xp: 600, gold: 30, items: { sackcloth_mantle: 1 } },
+  },
+  // Tag 7, Nachschlag: the Overflow Run unter dem Spillway (Stufe 50 bis 54). Wohin lief das Wasser „nach Norden“?
+  overflow_runs_north: {
+    name: 'Overflow Runs North', giver: 'hesk',
+    text: 'Gran\'s slate said the overflow ran north. Hesk has found the passage under the Spillway where it went, and the old pump that pushed it.',
+    steps: [
+      { type: 'kill', mob: 'culvert_leech', n: 5, text: 'Go down from the west end of the Spillway into the Overflow Run and clear five Culvert Leeches.' },
+      { type: 'kill', mob: 'the_pumpwarden', n: 1, text: 'The old pump in the chamber at the end is walking. Stop the Pumpwarden.' },
+      { type: 'have', item: 'gate_rubbing', n: 1, text: 'Behind the pump there is a gate. Take a rubbing of whatever is written on it.' },
+      { type: 'talk', npc: 'hesk', text: 'Bring the rubbing to Hesk in Cinderford.' },
+    ],
+    reward: { xp: 9500, gold: 200, items: { culvert_boots: 1, sluice_draught: 2 } },
+  },
+  // Tag 7, vom Nightwright (Bogen „The Second Light“): Der Stranger zeigt seine erloschene Laterne. Glimmer aus Copperdeep,
+  // Wren setzt das Glas neu, Ama zündet sie am Leuchtfeuer an, und der Stranger wirft einen Schatten.
+  lamp_gone_out: {
+    name: 'A Lamp Gone Out', giver: 'stranger',
+    text: 'The Stranger keeps something under his coat that he does not let anybody see by daylight: a green lamp, cold and cracked.',
+    steps: [
+      { type: 'have', item: 'glimmer', n: 3, text: 'Bring three chips of glimmer for the Stranger\'s lamp (Copperdeep: beetles, the Old Foreman, or a salvager\'s vein).' },
+      { type: 'talk', npc: 'wren', text: 'Take the cracked lamp and the glimmer to Wren at the lamp bench.' },
+      { type: 'talk', npc: 'ama', text: 'Ask Ama to light the mended lamp from the Beacon, after dark.' },
+      { type: 'talk', npc: 'stranger', text: 'Bring the lit lamp back to the Stranger, after dark.' },
+    ],
+    reward: { xp: 1400, gold: 45, items: { flare_candle: 2 } },
+  },
   // Tag 6, Nachschlag (Bogen, für niedrige Stufen): Fen will Wenna eine Karte mitgeben.
   fens_map: {
     name: 'Fen\'s Map', giver: 'fen',

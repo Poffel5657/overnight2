@@ -648,6 +648,47 @@ export const SPRITES = {
       'wkkwwwwkkwwwwkkw',
     ],
   },
+  culvert_leech: {
+    // Tag 7: ein fetter grüner Egel mit einem Maul wie eine Lampenkappe, voll Lampenöl (glänzt).
+    px: 1 / 12,
+    palette: { k: '#0a0e0a', g: '#2e5a3a', G: '#4a8a5a', y: '!#e8d070', m: '#1a1a12', w: '#2a4a5a' },
+    rows: [
+      '............',
+      '....kkkk....',
+      '...kmmmmk...',
+      '..kmkyykmk..',
+      '..kGkkkkGk..',
+      '.kGGGGGGGGk.',
+      '.kGgGGGgGGk.',
+      'kGGGyGGGGyGk',
+      'kGgGGGGgGGGk',
+      'kGGGGgGGGGgk',
+      '.kGGGGGGGGk.',
+      'wwkkkkkkkkww',
+    ],
+  },
+  the_pumpwarden: {
+    // Tag 7: eine Pumpe aus grüner Bronze auf vier kurzen Beinen, Rohre als Schultern, eine Lampe hinter einem Gitter in der Brust.
+    px: 1 / 10,
+    palette: { k: '#0c0e0a', b: '#3a6a4a', B: '#5a9a6a', r: '#6a3a22', l: '!#ffcf70', w: '#2a4a5a' },
+    rows: [
+      '.kk........kk...',
+      '.kBk......kBk...',
+      '.kBkkkkkkkkBk...',
+      '.kBBBBBBBBBBk...',
+      'kBBbbbbbbbbBBk..',
+      'kBbkkkkkkkkbBk..',
+      'kBbklklklkkbBk..',
+      'kBbkkllllkkbBk..',
+      'kBbklklklkkbBk..',
+      'kBbkkkkkkkkbBk..',
+      'kBBbbbbbbbbBBk..',
+      '.kBBBBBBBBBBk...',
+      '..krk.krk.krk.rk',
+      '..krk.krk.krk.rk',
+      'wwkkwwkkwwkkwwkk',
+    ],
+  },
   the_undertow: {
     // Ein Knoten aus schwarzem Wasser um ein rostiges Schieberad.
     px: 1 / 10,

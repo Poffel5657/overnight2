@@ -4,7 +4,7 @@ import { ITEMS } from '../content/items.js';
 import { tell, float } from './events.js';
 import * as P from './player.js';
 import { questEvent, grantXp } from './talk.js';
-import { dailyOf } from './community.js';
+import { oncePerDay } from './community.js';
 
 export function grindAtMill(world, p) {
   const g = MILL.grinds.find((r) => P.hasAll(p, r.inputs));
@@ -16,11 +16,7 @@ export function grindAtMill(world, p) {
   tell(world, p.id, g.text, 'good');
   float(world, p.id, `+${n} ${ITEMS[out].name}`, 'info', p.id);
   questEvent(world, p, 'action', { action: 'grind' });
-  const d = dailyOf(world, p);
-  d.chests = d.chests || [];
-  const key = `mill:${world.date}`;
-  if (d.chests.includes(key)) return;
-  d.chests.push(key);
+  if (!oncePerDay(world, p, `mill:${world.date}`)) return;
   tell(world, p.id, MILL.first, 'sys');
   grantXp(world, p, MILL.xp + MILL.xpPerLevel * P.classLevel(p));
 }

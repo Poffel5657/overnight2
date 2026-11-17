@@ -326,7 +326,7 @@ export function loadInto(p, raw) {
       done: Array.isArray(d.done) ? d.done.filter((x) => typeof x === 'string' && x.length < 32).slice(0, 10) : [],
       voted: typeof d.voted === 'string' && /^[a-z0-9-]{1,32}$/.test(d.voted) ? d.voted : null,
       prayed: !!d.prayed,
-      chests: Array.isArray(d.chests) ? d.chests.filter((x) => typeof x === 'string' && x.length < 48).slice(0, 50) : [],
+      chests: Array.isArray(d.chests) ? d.chests.filter((x) => typeof x === 'string' && x.length < 48).slice(0, 200) : [],
     };
   }
   // Taverne: eigene Truhe und ausgeruht (Siege mit mehr Erfahrung). Alte Stände: leer bzw. 0.
@@ -336,6 +336,8 @@ export function loadInto(p, raw) {
   p.mazeDeep = clampInt(save.mazeDeep, 1, 99, 1);
   // Tag 6: Scheite, die man insgesamt auf Amas Stapel gelegt hat (alte Stände: 0)
   p.stacked = clampInt(save.stacked, 0, 1e9, 0);
+  // Tag 7: was man insgesamt am ersten Stein für die Träger hinterlegt hat (Punkte, content/cache.js)
+  p.sentNorth = clampInt(save.sentNorth, 0, 1e9, 0);
   // Anteile im Counting House (Tag 3): nur bekannte Geschäfte, höchstens SHARE_MAX
   p.shares = {};
   for (const [id, n] of Object.entries(save.shares || {})) {
@@ -354,7 +356,7 @@ export function saveOf(p) {
     cls: p.cls, classes: p.classes, specs: p.specs ?? {}, bag: p.bag.filter(Boolean), equip: p.equip,
     profs: p.profs, quests: p.quests, bars: p.bars, barSeen: p.barSeen ?? {}, daily: p.daily ?? null,
     stash: p.stash ?? [], rested: p.rested ?? 0, mazeDeep: p.mazeDeep ?? 1,
-    shares: p.shares ?? {}, dividendDay: p.dividendDay ?? null, stacked: p.stacked ?? 0,
+    shares: p.shares ?? {}, dividendDay: p.dividendDay ?? null, stacked: p.stacked ?? 0, sentNorth: p.sentNorth ?? 0,
   };
 }
 
@@ -364,6 +366,6 @@ export function stateOf(p) {
     cls: p.cls, classes: p.classes, specs: p.specs ?? {}, bag: p.bag, equip: p.equip, gold: p.gold,
     profs: p.profs, quests: p.quests, bar: barOf(p), defence: defenceOf(p), power: weaponPower(p),
     daily: p.daily ?? null, stash: p.stash ?? [], rested: p.rested ?? 0, mazeDeep: p.mazeDeep ?? 1,
-    shares: p.shares ?? {}, stacked: p.stacked ?? 0,
+    shares: p.shares ?? {}, stacked: p.stacked ?? 0, sentNorth: p.sentNorth ?? 0,
   };
 }

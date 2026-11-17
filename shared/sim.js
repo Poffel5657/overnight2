@@ -16,7 +16,7 @@ import * as P from './player.js';
 import { openTalk, closeTalk, questEvent, grantXp, checkHave, conditionHolds, TALK_RANGE } from './talk.js';
 import { CHESTS } from '../content/chests.js';
 import { startGather, tickGather, tickNodes, consume, inVillage } from './trade.js';
-import { onKill, dailyOf } from './community.js';
+import { onKill, dailyOf, oncePerDay } from './community.js';
 import { berlinDate } from './daylight.js';
 import { tickTrade, cancelTrade } from './barter.js';
 import { partyHere, tickParty } from './party.js';
@@ -26,6 +26,7 @@ import { LOOKOUT } from '../content/lookout.js';
 import { keeperFell } from './delve.js';
 import { grindAtMill } from './mill.js';
 import { splitDeadfall, stackWoodpile } from './woodpile.js';
+import { leaveAtCache } from './cache.js';
 
 export { saveOf, xpForLevel, MAX_LEVEL } from './player.js';
 
@@ -262,6 +263,8 @@ export function objectActions(o) {
     // Tag 6: Ama's Woodpile und Totholz am Waldrand (content/woodpile.js)
     case 'woodpile': return [['use', 'Stack'], ['examine', 'Examine']];
     case 'deadfall': return [['use', 'Split'], ['examine', 'Examine']];
+    // Tag 7 (Abstimmung „bread-north“): die Vorratskiste am ersten Stein für die Träger (content/cache.js)
+    case 'cache': return [['use', 'Leave supplies'], ['examine', 'Examine']];
     case 'node': return [['gather', NODES[o.node].verb], ['examine', 'Examine']];
     default: return [['examine', 'Examine']];
   }
@@ -573,6 +576,8 @@ function doAction(world, p, goal) {
     stackWoodpile(world, p);
   } else if (goal.action === 'use' && t.type === 'deadfall') {
     splitDeadfall(world, p, t);
+  } else if (goal.action === 'use' && t.type === 'cache') {
+    leaveAtCache(world, p);
   } else if (goal.action === 'use' && t.type === 'station') {
     emit(world, { to: p.id, type: 'craft', obj: t.id, station: t.station });
   } else if (goal.action === 'enter' && t.inside) {
@@ -586,11 +591,8 @@ function doAction(world, p, goal) {
   } else if (goal.action === 'open' && t.type === 'chest') {
     openChest(world, p, t);
   } else if (goal.action === 'search' && t.type === 'find') {
-    const d = dailyOf(world, p);
-    d.chests = d.chests || [];
     tell(world, p.id, t.text, 'sys');
-    if (!d.chests.includes(`find:${world.date}`)) {
-      d.chests.push(`find:${world.date}`);
+    if (oncePerDay(world, p, `find:${world.date}`)) {
       tell(world, p.id, 'You will remember this. Pell would want to hear about it.', 'good');
       grantXp(world, p, 80 + 10 * P.classLevel(p));
     }
@@ -625,11 +627,7 @@ function climbLookout(world, p) {
   if (world.daylight >= 0.5) return tell(world, p.id, LOOKOUT.day, 'sys');
   tell(world, p.id, LOOKOUT.night, 'info');
   questEvent(world, p, 'action', { action: 'watch' });
-  const d = dailyOf(world, p);
-  d.chests = d.chests || [];
-  const key = `watch:${world.date}`;
-  if (d.chests.includes(key)) return;
-  d.chests.push(key);
+  if (!oncePerDay(world, p, `watch:${world.date}`)) return;
   tell(world, p.id, LOOKOUT.first, 'good');
   grantXp(world, p, LOOKOUT.xp + LOOKOUT.xpPerLevel * P.classLevel(p));
 }
@@ -669,6 +667,12 @@ function alliesNear(world, p, radius) {
 
 const NEEDS_TARGET = new Set(['melee', 'ranged', 'snare', 'zone']);
 
+// Heilt den Werfer und alle Verbündeten im Umkreis um amount (+ Heilung der Waffe), für burst und melee/ranged mit mend.
+function mendAround(world, p, radius, amount) {
+  const bonus = P.equipped(p, 'main')?.heal ?? 0;
+  for (const q of alliesNear(world, p, radius)) healPlayer(world, q, amount + bonus);
+}
+
 function castAbility(world, p, id) {
   const a = ABILITIES[id];
   const target = p.target ? world.mobs.find((m) => m.id === p.target && !m.dead) : null;
@@ -695,6 +699,8 @@ function castAbility(world, p, id) {
       // Bosse lassen sich nicht ziehen, werden aber gebunden.
       if (a.pull) pullMob(world, p, target);
       hitMob(world, p, target, Math.round(abilityDamage(world, p, a) * ex));
+      // mend (Tag 7, Lightsworn): Auch ein einzelner Schlag kann den Werfer und Verbündete im Umkreis mendRadius heilen.
+      if (a.mend) mendAround(world, p, a.mendRadius ?? 3, a.mend);
       break;
     }
     case 'zone':
@@ -730,10 +736,7 @@ function castAbility(world, p, id) {
       }
       // mend (Tag 5): Der Schlag heilt zugleich den Werfer und alle Verbündeten im selben Umkreis
       // (Hallowed Ground, Vesper Bell). Der Stab des Werfers zählt mit wie bei aura.
-      if (a.mend) {
-        const bonus = P.equipped(p, 'main')?.heal ?? 0;
-        for (const q of alliesNear(world, p, a.radius)) healPlayer(world, q, a.mend + bonus);
-      }
+      if (a.mend) mendAround(world, p, a.radius, a.mend);
       break;
     case 'self':
       if (a.heal) healPlayer(world, p, a.heal);
@@ -918,11 +921,7 @@ function sleepAtInn(world, p) {
 
 // Truhen: einmal am Tag pro Spieler.
 function openChest(world, p, t) {
-  const d = dailyOf(world, p);
-  d.chests = d.chests || [];
-  const key = `${world.region.id}:${t.id}`;
-  if (d.chests.includes(key)) return tell(world, p.id, 'You already emptied this one today.', 'sys');
-  d.chests.push(key);
+  if (!oncePerDay(world, p, `${world.region.id}:${t.id}`)) return tell(world, p.id, 'You already emptied this one today.', 'sys');
   const c = CHESTS[t.chest];
   const g = roll(world, c.gold[0], c.gold[1]);
   p.gold += g;

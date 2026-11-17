@@ -247,7 +247,7 @@ export function createWindows(handlers) {
   // Ein Tipp auf die Karte schickt die Figur dorthin.
   const MAP_PX = 300;
   let mapBase = null;
-  const OBJ_COLOR = { beacon: '#ffb347', campfire: '#ff8a3a', signal: '#ff8a3a', brazier: '#ff8a3a', door: '#9fe0ff', station: '#c8a040', board: '#e8dcc0', altar: '#e8dcc0', stall: '#c86a8a', shrine: '#b0d0a0', chest: '#c8a040', lookout: '#ffcf70', woodpile: '#c8a070', deadfall: '#9a9080' };
+  const OBJ_COLOR = { beacon: '#ffb347', campfire: '#ff8a3a', signal: '#ff8a3a', brazier: '#ff8a3a', door: '#9fe0ff', station: '#c8a040', board: '#e8dcc0', altar: '#e8dcc0', stall: '#c86a8a', shrine: '#b0d0a0', chest: '#c8a040', lookout: '#ffcf70', woodpile: '#c8a070', deadfall: '#9a9080', cache: '#d8b070' };
   function mapBaseFor(region) {
     const key = `${region.id}:${region.date ?? ''}`;
     if (mapBase?.key === key) return mapBase;

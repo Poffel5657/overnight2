@@ -43,6 +43,11 @@ export const RECIPES = {
   // Tag 5 (Sumps): Sumpwalker-Ausrüstung aus Verdigris und Cinder Iron, an der normalen Werkbank (eine Stufe über den Meisterstücken)
   t_sw_boots: { prof: 'tinkering', level: 38, inputs: { verdigris: 3, cinder_iron: 2 }, out: ['sumpwalker_boots', 1], xp: 300 },
   t_sw_hood: { prof: 'tinkering', level: 39, inputs: { verdigris: 3, cinder_iron: 2, glimmer: 1 }, out: ['sumpwalker_hood', 1], xp: 310 },
+  // Tag 7, Nachschlag: Run Iron aus dem Overflow Run
+  t_culvert_hood: { prof: 'tinkering', level: 42, inputs: { run_iron: 3, verdigris: 2, cinder_iron: 1 }, out: ['culvert_hood', 1], xp: 360 },
+  t_culvert_coat: { prof: 'tinkering', level: 44, inputs: { run_iron: 4, verdigris: 3, greyglass: 1 }, out: ['culvert_coat', 1], xp: 390 },
+  t_run_shield: { prof: 'tinkering', level: 46, inputs: { run_iron: 4, cinder_iron: 2, greyglass: 1 }, out: ['run_iron_shield', 1], xp: 420 },
+  t_run_shivs: { prof: 'tinkering', level: 47, inputs: { run_iron: 4, greyglass: 2 }, out: ['run_iron_shivs', 1], xp: 430 },
   t_sw_coat: { prof: 'tinkering', level: 40, inputs: { verdigris: 5, cinder_iron: 3, greyglass: 1 }, out: ['sumpwalker_coat', 1], xp: 340 },
   t_greyglass_coat: { prof: 'tinkering', level: 28, inputs: { greyglass: 4, beetle_shell: 2 }, out: ['greyglass_coat', 1], xp: 160 },
 
@@ -87,6 +92,9 @@ export const RECIPES = {
   l_cinder_lens: { prof: 'lampwright', level: 35, inputs: { cinder_iron: 3, greyglass: 3 }, out: ['cinder_lens', 1], xp: 255 },
   // Tag 5 (Sumps, Nachschlag): Verdigris hält die Feuchte aus dem Eisen. Stab und Linse eine Stufe über Cinder Iron.
   l_verdigris_staff: { prof: 'lampwright', level: 38, inputs: { verdigris: 3, cinder_iron: 2, emberroot: 2 }, out: ['verdigris_staff', 1], xp: 290 },
+  // Tag 7, Nachschlag: Run Iron aus dem Overflow Run
+  l_run_staff: { prof: 'lampwright', level: 44, inputs: { run_iron: 3, verdigris: 2, emberroot: 2 }, out: ['run_iron_staff', 1], xp: 400 },
+  l_run_lens: { prof: 'lampwright', level: 45, inputs: { run_iron: 3, greyglass: 3 }, out: ['run_iron_lens', 1], xp: 410 },
   l_verdigris_lens: { prof: 'lampwright', level: 39, inputs: { verdigris: 3, cinder_iron: 2, greyglass: 2 }, out: ['verdigris_lens', 1], xp: 300 },
   l_greyglass_staff: { prof: 'lampwright', level: 26, inputs: { greyglass: 2, glimmer: 2, lily_bulb: 2 }, out: ['greyglass_staff', 1], xp: 140 },
 };

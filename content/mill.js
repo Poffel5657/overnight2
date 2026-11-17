@@ -11,7 +11,7 @@ export const MILL = {
     { inputs: { green_shard: 3 }, out: ['glass_grit', 1], text: 'The green shards crunch between the stones and come out as a fine, glittering grit. The stones seem to know the job.' },
   ],
   nothing: 'The stones turn and turn with nothing between them. They want barley (two handfuls make a sack of flour; crows steal it from the fields, Marrow sells it), or three shards of green glass.',
-  first: 'You knock the flour from your hands. Somebody built this mill a long time ago, and it is glad to be working again.',
+  first: 'You brush the dust from your hands. Somebody built this mill a long time ago, and it is glad to be working again.',
   xp: 20,
   xpPerLevel: 4,
 };

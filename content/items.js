@@ -168,6 +168,20 @@ export const ITEMS = {
   millers_ledger: { name: "The Miller's Ledger", stack: true, value: 0, glyph: '=', text: 'A flour-dusted account book. Sacks of flour for Kindle, and every month, sacks of glass grit "up the north road, for the Hollow". The last page is a list of names, crossed out one by one.' },
   tin_face: { name: 'Tin Face', stack: true, value: 0, glyph: 'o', text: 'A tin plate hammered into a face with a very rude expression. Rook says it is a portrait of a crow\'s worst nightmare. It looks a bit like Rook.' },
   hollow_barley: { name: 'Grey Barley', stack: true, value: 0, glyph: '"', text: 'Small grey grains with a smell of peat smoke. They did not grow anywhere near Kindle.' },
+  // Tag 7: die erloschene Laterne des Strangers (Quest „A Lamp Gone Out“) und Wennas Dank für eine Woche Brot
+  // Tag 7, Nachschlag: the Overflow Run (Stufe 50 bis 54)
+  run_iron: { name: 'Run Iron', stack: true, value: 30, glyph: '*', text: 'Bronze-green iron from the old pump workings under Cinderford. It never quite dries, and it never rusts.' },
+  gate_rubbing: { name: 'Gate Rubbing', stack: true, value: 0, glyph: '=', text: 'Chalk on paper, taken from the iron gate at the end of the Overflow Run: NORTH, TO THE HOLLOW. KEEP IT RUNNING.' },
+  run_iron_shield: { name: 'Run Iron Shield', slot: 'main', cls: 'warden', delay: 9, power: 14, defence: 12, value: 640, glyph: ']', text: 'Pump iron on a cinder iron frame. Water runs off it, and so do most other things.' },
+  run_iron_shivs: { name: 'Run Iron Shivs', slot: 'main', cls: 'drifter', delay: 7, power: 18, value: 640, glyph: 'x', text: 'Two green-black blades that are always slightly wet. Nobody has ever seen them rust.' },
+  run_iron_staff: { name: 'Run Iron Staff', slot: 'main', cls: 'mender', delay: 10, power: 9, heal: 19, value: 640, glyph: '|', text: 'The ember sits in a pump-valve of run iron and breathes in and out with you.' },
+  run_iron_lens: { name: 'Run Iron Lens', slot: 'main', cls: 'flarecaster', delay: 10, power: 19, value: 640, glyph: 'o', text: 'Greyglass in a run-iron ring that never fogs. The light comes out of it cold and very straight.' },
+  culvert_hood: { name: 'Culvert Hood', slot: 'head', defence: 9, light: 0.5, value: 480, glyph: '^', text: 'A run-iron cap with a lamp-hook and a drip lip, so the water goes round your face instead of into it.' },
+  culvert_coat: { name: 'Culvert Coat', slot: 'body', defence: 16, value: 760, glyph: 'M', text: 'Run-iron scales on oiled canvas. It never rusts, and it never quite dries. You get used to the second part.' },
+  culvert_boots: { name: 'Culvert Boots', slot: 'feet', defence: 9, value: 520, glyph: 'u', text: 'Pump-keepers\' boots with run-iron toecaps. Hesk had a pair put by for whoever reached the north gate.' },
+  fens_drawing: { name: 'Fen\'s Drawing', stack: true, value: 0, glyph: '=', text: 'Chapel paper, crayon: a very big Beacon, a very small Kindle, and a dotted line going north with loaves on it. A goose supervises.' },
+  strangers_lamp: { name: 'The Stranger\'s Lamp', stack: true, value: 0, glyph: 'i', text: 'A carrier\'s lamp of thick green glass, cracked across one pane and cold for a long time. The wick is a stub. It weighs more than it looks.' },
+  sackcloth_mantle: { name: 'Sackcloth Mantle', slot: 'body', defence: 6, light: 0.5, value: 120, glyph: 'M', text: 'Wenna stitched it from Kindle\'s empty flour sacks, with birch bark at the shoulders. It smells of the mill, and a little of peat smoke.' },
   wennas_lantern: { name: 'Wenna\'s Lantern', stack: true, value: 0, glyph: 'i', text: 'A carrier\'s lantern of thick green glass, empty and cold. The handle is wrapped in birch bark.' },
 };
 

@@ -586,6 +586,9 @@ export const ITEM_ICONS = {
   glass_grit: ['pile', 'moss'], hollow_glass_lantern: ['lantern', 'moss'],
   millers_ledger: ['notes', 'paper'], tin_face: ['ring', 'tin'],
   barley: ['leaf', 'wax'], mill_flour: ['pile', 'pale'], millbread: ['bread', 'bread'], hollow_barley: ['leaf', 'stone'], wennas_lantern: ['lantern', 'green'],
+  // Tag 7
+  run_iron_shield: ['shield', 'moss'], run_iron_shivs: ['shivs', 'moss'], run_iron_staff: ['staff', 'moss'], run_iron_lens: ['lens', 'moss'],
+  strangers_lamp: ['lantern', 'green'], fens_drawing: ['notes', 'paper'], run_iron: ['pile', 'moss'], gate_rubbing: ['notes', 'paper'], culvert_hood: ['hood', 'moss'], culvert_coat: ['coat', 'moss'], culvert_boots: ['boots', 'moss'], sackcloth_mantle: ['coat', 'scrap'],
   split_log: ['log', 'scrap'], carriers_lamp: ['lantern', 'green'], spillway_mail: ['coat', 'glim'], woodward_hood: ['hood', 'scrap'], spillway_slate: ['notes', 'stone'],
   delvers_hood: ['hood', 'skin'], delvers_boots: ['boots', 'skin'], delvers_coat: ['coat', 'skin'], keepers_lantern: ['lantern', 'warm'],
 };
@@ -604,5 +607,10 @@ export const ABILITY_ICONS = {
   oath_of_embers: ['star', 'amber'], cinder_bastion: ['shield', 'stone'], hearthfire: ['flame', 'warm'], ash_bloom: ['flame', 'black'],
   zenith: ['sun', 'pale'], prism_storm: ['star', 'glim'], moonless_cut: ['slash', 'black'], tangle_wire: ['trap', 'steel'],
   lantern_oath: ['waves', 'amber'], anvil_stance: ['shield', 'black'],
+  // Tag 7: Stufe 58
+  high_noon: ['sun', 'light'], spectrum: ['star', 'glim'], eclipse_cut: ['slash', 'black'], wire_lash: ['trap', 'steel'],
+  kindred_hearth: ['flame', 'warm'], ashfall: ['flame', 'black'], solstice: ['beam', 'light'], kaleidoscope: ['star', 'glim'], new_moon: ['slash', 'purple'], snare_web: ['trap', 'dark'],
+  sunward_oath: ['sun', 'warm'], cinder_chain: ['ring', 'black'],
+  dawn_vow: ['sun', 'amber'], anvil_fall: ['shield', 'stone'], ember_vigil: ['waves', 'warm'], pyre_ring: ['ring', 'ember'],
   hearthstone: ['ring', 'warm'], cinder_lash: ['bolt', 'red'], meridian: ['beam', 'light'], refraction: ['star', 'pale'], umbral_cut: ['slash', 'purple'], wire_ring: ['trap', 'dark'],
 };

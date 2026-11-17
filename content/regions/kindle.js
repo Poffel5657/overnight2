@@ -162,6 +162,8 @@ export const REGION = {
     // Tag 6 (Abstimmung „beacon-stockpile“): Ama's Woodpile neben dem Leuchtfeuer, gleich bei Ama und ihrer Zähltafel.
     // Der Stapel wächst im Bild mit dem Tageszähler des Leuchtfeuers. Totholz am Waldrand spaltet jeder (content/woodpile.js).
     {type: 'woodpile', x: 51, y: 47, w: 2, d: 1, name: 'Ama\'s woodpile', text: 'Logs stacked bark-up beside the Beacon, and a tally board with chalk lines. The higher the pile, the better the Beacon eats tonight.'},
+    // Tag 7 (Abstimmung „bread-north“): die Vorratskiste am ersten Steinmann, gleich neben dem Ende der Nordstraße
+    {type: 'cache', x: 49, y: 5, name: 'the box under the first stone', text: 'The first of the stones that point, at the very end of the north road. Under it, an oak box with a loaf painted on the lid. Anything left here goes north with the next carrier.'},
     {type: 'deadfall', x: 35, y: 33, name: 'deadfall', text: 'A fallen birch at the edge of the woods, grey and dry. It would break into good lengths.'},
     {type: 'deadfall', x: 34, y: 27, name: 'deadfall', text: 'An old pine lying where the wind left it. Dry enough to split.'},
     {type: 'deadfall', x: 36, y: 13, name: 'deadfall', text: 'A dead oak bough, half buried in moss. The top side is dry.'},

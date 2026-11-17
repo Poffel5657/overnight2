@@ -20,7 +20,7 @@ export function describeAbility(id) {
   let effect;
   switch (a.kind) {
     case 'melee':
-      effect = `Strike a creature next to you for ${dmg}.${a.dazzle ? ` It cannot attack for ${secs(a.dazzle)}.` : ''}${a.root ? ` It is stuck in place for ${secs(a.root)}.` : ''}${a.dark ? ` In the dark (at night, away from fixed lights) it hits ${Math.round((a.dark - 1) * 100)}% harder.` : ''}`;
+      effect = `Strike a creature next to you for ${dmg}.${a.dazzle ? ` It cannot attack for ${secs(a.dazzle)}.` : ''}${a.root ? ` It is stuck in place for ${secs(a.root)}.` : ''}${a.dark ? ` In the dark (at night, away from fixed lights) it hits ${Math.round((a.dark - 1) * 100)}% harder.` : ''}${a.mend ? ` At the same time you and allies within ${tiles(a.mendRadius ?? 3)} heal ${a.mend} (+ your weapon's healing).` : ''}`;
       break;
     case 'ranged':
       effect = [
@@ -28,6 +28,7 @@ export function describeAbility(id) {
         a.pull ? 'It is dragged to your side and attacks only you for a while (the biggest creatures will not budge, but still turn on you).' : '',
         a.dazzle ? `It cannot attack for ${secs(a.dazzle)}.` : '',
         a.burn ? `It burns for ${a.burn.dmg} (+ a quarter of your level) every 0.6s for ${secs(a.burn.ticks)}.` : '',
+        a.mend ? `At the same time you and allies within ${tiles(a.mendRadius ?? 3)} heal ${a.mend} (+ your weapon's healing).` : '',
       ].filter(Boolean).join(' ');
       break;
     case 'zone':

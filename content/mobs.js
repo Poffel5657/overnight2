@@ -211,6 +211,29 @@ export const MOBS = {
     boss: { deathText: 'The Old Sluicegate grinds to a stop, half open. For a moment you hear water running far away, north, and then only the drip.' },
     examine: 'An iron sluice gate, taller than a door, standing on its own on three bent legs. Rust, verdigris, and a quarrymen\'s lamp carved into the crossbar.',
   },
+  // ---------- Tag 7, Nachschlag: the Overflow Run unter dem Spillway (Stufe 50 bis 54) ----------
+  culvert_leech: {
+    // Rolle normal, Stufe 52. Fette grüne Egel im Überlaufkanal, trinken Lampenöl; meiden die Lampen-Nischen (grey).
+    name: 'Culvert Leech', sprite: 'culvert_leech', level: 52, ai: 'grey',
+    hp: 720, hit: [22, 26], attackEvery: 4, aggro: 5, leash: 8, respawn: 120, xp: 470, drainOil: 3,
+    drops: [['run_iron', 0.4, 1, 1], ['verdigris', 0.5, 1, 2], ['greyglass', 0.2, 1, 1]], gold: [24, 40],
+    special: { every: 3, delay: 5, pattern: 'plus', hit: [44, 52], text: 'The leech swells up and goes very still. Something is about to burst.' },
+    examine: 'A leech the size of a dog, green as old brass, with a mouth like a lamp-cap. It smells of lamp oil, because it is full of it.',
+  },
+  the_pumpwarden: {
+    // Rolle Boss (allein mit Einsatz, zu zweit gut), Stufe 54. Die alte Pumpe der Quarrymen, die das Wasser nach Norden
+    // drückte. Bronze, eine Lampe in der Brust, sie geht. Ohne Phase 2, heilt sich, wenn alle gehen.
+    name: 'The Pumpwarden', sprite: 'the_pumpwarden', level: 54, ai: 'beast', moveEvery: 3,
+    hp: 3200, hit: [27, 31], attackEvery: 5, aggro: 5, leash: 8, respawn: 600, xp: 2900,
+    drops: [['run_iron', 1, 2, 3], ['verdigris', 1, 2, 3], ['greyglass', 0.6, 1, 2]], gold: [100, 170],
+    specials: [
+      { every: 1, delay: 6, pattern: 'bigplus', hit: [70, 82], text: 'The Pumpwarden draws a long breath through every pipe. Four jets are coming.' },
+      { every: 1, delay: 7, pattern: 'ring', hit: [74, 86], text: 'The Pumpwarden stamps. The floor all around it is about to heave.' },
+    ],
+    specialEvery: 3,
+    boss: { deathText: 'The Pumpwarden sighs through every pipe at once and sits down. The lamp in its chest stays lit. It is still pointing north.' },
+    examine: 'A pump engine of green bronze, taller than two people, walking on its own on four short iron legs. In its chest, behind a grille, a quarrymen\'s lamp still burns.',
+  },
   // ---------- The Unending Maze (seit 2026-11-13, Gebet 4) ----------
   // Vorlagen: Die echten Werte rechnet content/regions/maze.js nach dem Stockwerk aus (maze: Faktoren auf die
   // Grundwerte der Stufe). Die Zahlen hier gelten für das erste Stockwerk (Stufe 5).

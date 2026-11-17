@@ -14,7 +14,8 @@ export const REGION = {
   id: 'sumps',
   name: 'THE SUMPS',
   // Tag 6: unter der Zisterne liegt der Überlauf (the Spillway)
-  zoneAt: (x, y) => (y >= 24 && x < 30 ? 'THE SPILLWAY' : 'THE SUMPS'),
+  // Tag 7: darunter der Overflow Run (Kanal und Pumpenkammer)
+  zoneAt: (x, y) => (y >= 29 ? 'THE OVERFLOW RUN' : y >= 24 && x < 30 ? 'THE SPILLWAY' : 'THE SUMPS'),
   place: 'UNDER CINDERFORD',
   indoor: true,
   tiles: TILES,
@@ -49,6 +50,11 @@ export const REGION = {
     { type: 'brazier', x: 26, y: 25, light: 3.5, name: 'a lamp niche in the Spillway' },
     { type: 'shrine', look: 'niche', x: 15, y: 25, name: 'the overflow-keepers\' slate', gives: 'spillway_slate', quest: 'below_the_weir', step: 1, text: 'A small slate hung on a nail over the overflow, where the water used to drop away into the dark.', found: 'You lift the slate off its nail. Chalk, in the same hand as the slate by the ladder: "Overflow runs north. Keep it running. They need it more than we do."', empty: 'An empty nail over the overflow. The water below runs away into the dark, north, by the sound of it.' },
     { type: 'chest', chest: 'sumps', x: 4, y: 28, name: 'an overflow-keeper\'s box' },
+    // Tag 7, Nachschlag: the Overflow Run (Stufe 50 bis 54). Zwei Lampen-Nischen, die Kiste der Pumpenwärter und das Tor nach Norden.
+    { type: 'brazier', x: 5, y: 30, light: 3.5, name: 'a lamp niche in the Overflow Run' },
+    { type: 'brazier', x: 38, y: 33, light: 3.5, name: 'a lamp niche in the Overflow Run' },
+    { type: 'chest', chest: 'sumps', x: 38, y: 39, name: 'the pump-keepers\' locker' },
+    { type: 'shrine', look: 'niche', x: 38, y: 36, name: 'the north gate', gives: 'gate_rubbing', quest: 'overflow_runs_north', step: 2, text: 'An iron gate in the far wall of the pump chamber, where the culvert turns north and goes on into the dark. Rusted shut. Above it, a carved lamp, and letters cut deep: NORTH, TO THE HOLLOW. KEEP IT RUNNING.', found: 'You press a sheet of Hesk\'s chalk paper to the letters and rub. The words come up white: NORTH, TO THE HOLLOW. KEEP IT RUNNING.', empty: 'NORTH, TO THE HOLLOW. KEEP IT RUNNING. Behind the bars, very far off, water is still moving.' },
   ],
   npcs: [],
   mobs: [
@@ -72,5 +78,12 @@ export const REGION = {
     { type: 'weir_eel', x: 19, y: 28 },
     { type: 'weir_eel', x: 25, y: 26 },
     { type: 'old_sluicegate', x: 5, y: 27 },
+    // Tag 7, Nachschlag: Culvert Leeches im Overflow Run, in der Pumpenkammer the Pumpwarden
+    { type: 'culvert_leech', x: 14, y: 30 },
+    { type: 'culvert_leech', x: 26, y: 31 },
+    { type: 'culvert_leech', x: 12, y: 34 },
+    { type: 'culvert_leech', x: 22, y: 33 },
+    { type: 'culvert_leech', x: 31, y: 34 },
+    { type: 'the_pumpwarden', x: 31, y: 38 },
   ],
 };

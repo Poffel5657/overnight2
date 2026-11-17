@@ -42,7 +42,7 @@ export const BARKS = {
   // Tag 6: Ama am Holzstapel (ruft bei Abend, wer vorbeigeht, soll Holz bringen)
   ama: {
     range: 7, every: 45,
-    lines: ['*chalks a line on the tally board*', 'Bark up. Always bark up.', 'Deadfall along the woods. Any boot can break it.', 'It ate the whole pile last night.', '*weighs a log in her hand, frowns at the fire*'],
+    lines: ['Bread north, wood here. That is the deal.', '*chalks a line on the tally board*', 'Bark up. Always bark up.', 'Deadfall along the woods. Any boot can break it.', 'It ate the whole pile last night.', '*weighs a log in her hand, frowns at the fire*'],
   },
   band_corra: {
     range: 9, every: 20,
@@ -51,7 +51,7 @@ export const BARKS = {
   // Tag 5 (Bogen): Wenna in der Old Mill (tagsüber schläft sie, die Rufe kommen trotzdem leise)
   wenna: {
     range: 6, every: 40,
-    lines: ['*grinds, slowly*', 'Less to carry. Less to carry.', '*holds her cold lantern close*', 'Your bread tastes of sun.', '*laces her boots, unlaces them, laces them again*', 'Four nights if the stones are where I left them.'],
+    lines: ['*counts loaves on her fingers*', 'One carrier with nothing is a waste of a carrier.', '*grinds, slowly*', 'Less to carry. Less to carry.', '*holds her cold lantern close*', 'Your bread tastes of sun.', '*laces her boots, unlaces them, laces them again*', 'Four nights if the stones are where I left them.'],
     dayLines: ['*snores, very quietly, under the sacks*', '*mumbles in her sleep: forty... twenty... twelve...*'],
   },
   band_oswin: {
@@ -65,6 +65,7 @@ export const BARKS = {
   brindle: {
     range: 8, every: 50,
     lines: [
+      'Another loaf in the box. Writing it down.',
       'Wind from the north again. Smells of smoke.',
       '*scribbles in a little book*',
       'Another wolf, running south. That makes nine today.',
@@ -77,7 +78,7 @@ export const BARKS = {
   },
   hesk: {
     range: 8, every: 40,
-    lines: ['Oil! Chalk! Cake! Rope!', 'Gear for turnstones, gold for everything else.', '*counts rope under his breath*', 'Hear that? Water. Under the floor. Where it should not be.', 'Lamps for the Sumps! More lamps than that!'],
+    lines: ['North. To the Hollow. Gran never said a word.', 'Oil! Chalk! Cake! Rope!', 'Gear for turnstones, gold for everything else.', '*counts rope under his breath*', 'Hear that? Water. Under the floor. Where it should not be.', 'Lamps for the Sumps! More lamps than that!'],
   },
   coyne: {
     range: 6, every: 50,

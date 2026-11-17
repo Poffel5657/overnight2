@@ -500,6 +500,18 @@ const BUILDERS = {
     g.add(box(0.3, 0.06, 0.3, '#4a6a34', -0.3, 0.38, 0));
     g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.06, 6), mat('#c8a070')).rotateZ(Math.PI / 2).translateY(0.2));
   },
+  cache(o, g) {
+    // Tag 7: die Vorratskiste am ersten Stein. Ein Steinmann aus vier Steinen, davor eine Eichenkiste,
+    // der Deckel mit einem flachen Stein beschwert, ein gemalter Laib und ein Pfeil nach Norden.
+    for (const [w, h, y] of [[0.7, 0.3, 0.15], [0.55, 0.26, 0.43], [0.42, 0.24, 0.68], [0.28, 0.22, 0.9]]) {
+      g.add(box(w, h, w, '#8a8a82', 0, y, -0.2).rotateY(hash(o.x, y * 10, 13) * 0.8));
+    }
+    g.add(box(0.7, 0.42, 0.45, '#6a4a2a', 0, 0.21, 0.22));
+    g.add(box(0.74, 0.06, 0.49, '#5a3e22', 0, 0.45, 0.22));
+    g.add(box(0.36, 0.08, 0.26, '#9a9a90', 0.08, 0.52, 0.22));
+    g.add(box(0.2, 0.1, 0.02, '#d8b070', -0.15, 0.24, 0.455));
+    g.add(box(0.04, 0.16, 0.02, '#e8e0d0', 0.18, 0.24, 0.455));
+  },
   millstone(o, g) {
     // Zwei Mühlsteine unter einem kleinen Schutzdach
     g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.2, 10), mat('#8a847a')).translateY(0.1));
