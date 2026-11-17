@@ -186,3 +186,11 @@ test('Old Ivy zeichnet den Overflow Run, und die Linie geht weiter', () => {
   choose(w, 'a', 'gate that points north');
   assert.equal(p.dialog.page, 'iv_run');
 });
+
+test('Tallow und die Pump Lamp', () => {
+  const w = S.createWorld(regionFor('kindle'), 739);
+  const p = veteran(w, 'a', { level: 54, bag: [{ id: 'pump_lamp', n: 1 }] });
+  talk(w, 'a', 'tallow');
+  choose(w, 'a', 'lamp under the hill');
+  assert.equal(p.dialog.page, 'pl_tallow');
+});
