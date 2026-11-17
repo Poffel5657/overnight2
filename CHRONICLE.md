@@ -258,7 +258,7 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 
 **Inbox:** Auch diesmal lag keine neue Datei vor (`v2/inbox/` endet bei `2026-11-15.json`; `2026-11-16.json` und `2026-11-17.json` fehlen). Keine neuen Gebete, kein Ergebnis für Zettel 6. Letzter bekannter Stand: 9 Charaktere, 3 aktiv (Export 2026-11-15).
 
-**Teil 1, Gebete:** entfällt (keine neuen Gebete). Dafür ist der Nachschlag größer: zwei weitere Klassen auf 58 und ein neues Gebiet für 50 bis 54 (weiter aus Gebet 9, Kanäle unter der großen Stadt).
+**Teil 1, Gebete:** entfällt (keine neuen Gebete). Dafür ist der Nachschlag größer: alle Wege auf 58 und 62 und ein neues Gebiet für 50 bis 54 (weiter aus Gebet 9, Kanäle unter der großen Stadt).
 
 **Teil 2, Abstimmung: Brot nach Norden (bread-north).** Zettel 6 ohne gelesene Stimmen (bread-north, bar-north-road, cup-ladder, chapel-riddle-room). Der Nightwright wählte bread-north: Es ist die erste Bogen-Wahl, und sie gibt allen Stufen etwas zu tun.
 - *Gewünscht:* Kindle teilt mit den Trägern aus dem Norden, statt sich abzuschotten.
