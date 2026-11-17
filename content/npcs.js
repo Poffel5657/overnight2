@@ -823,6 +823,7 @@ const sorrel = {
     text: 'Sorrel taps a long brass key against her palm. "Delvemaster. I count who goes down and who comes back up. The second number is the important one."',
     options: [
       { text: 'Corra sent me, from Kindle.', to: 'orw_done', if: { quest: { old_road_west: 0 } }, do: [{ advance: 'old_road_west' }] },
+      { text: 'Do you count the Overflow Run too?', to: 'sr_run', if: { quest: { overflow_runs_north: 'active' } } },
       { text: 'What is down there?', to: 'maze' },
       { text: 'Send me down.', to: 'down' },
       { text: 'Any work for me?', to: 'ft_offer', if: { quest: { first_turn: 'none' }, classLevel: 5 }, do: [{ start: 'first_turn' }] },
@@ -848,6 +849,7 @@ const sorrel = {
   ds_offer: { text: '"Every fifth turn the Keeper is a great one: bigger, angrier and stranger. Get down to the fifth turn and bring its great Keeper down. Take friends. I mean it."', options: [{ text: 'The fifth turn.' }] },
   ds_early: { text: '"You did the first turn. Good. The fifth one would eat you. Come back with a few more levels. (Level 12)"', options: [BYE] },
   ds_done: { text: 'Sorrel writes your name on the Turn Board, low down, in small letters. "A great Keeper. Not bad, Kindle." She hands you a pouch. "From now on I can send you straight down to the sixth turn. Go and see how far it goes."', options: [{ text: 'Thanks, Sorrel.' }] },
+  sr_run: { text: 'Sorrel turns the brass key over. "Hesk counts the Sumps. I count the Maze. Nobody ever counted the Run, because nobody ever went down it." She makes a new column in her book, very neatly, and writes your name at the top. "Now somebody has. Come back up, so I can write the second number."', options: [BYE] },
 };
 
 // Tag 4 (Gebet 7): Flint, der Bergmann in Cinderford. Verkauft Schrott, Messing und Glimmer; Teilhaber zahlen weniger
