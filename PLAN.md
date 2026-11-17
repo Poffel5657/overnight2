@@ -75,6 +75,7 @@ Tag 7 (Nacht zum 2026-11-18), **Aufräumnacht**. Inbox-Datei fehlte wieder: kein
 ## Bekannte Probleme
 
 - Tag 7: **Die Inbox-Dateien `2026-11-16.json` und `2026-11-17.json` fehlen** (zwei Nächte ohne Gebete und Stimmen). Bitte `inbox-export.yml` prüfen.
+- Tag 7: Ein Abgabe-Gefallen „Brot für die Kiste“ (Brindle, zwei Millbread) ließ den Kern-Test „Gefallen erledigen“ mit jeder ausprobierten ID scheitern (er zieht dann einen Gefallen, den ein Neuling nicht schafft) und wurde weggelassen. Der Vorschlag an Chris von oben (Test sucht einen leichten Kampf-Gefallen gezielt) würde das lösen.
 - Tag 7 (Review): Die Wegfindung (`pathFor` in `shared/sim.js`) läuft für jeden Spieler mit Ziel in jedem Takt. Zwischenspeichern brach den Kern-Test „Sammeln, Herstellen, …“ und wurde zurückgenommen; braucht einen sorgfältigeren Versuch.
 - Tag 7 (Review): Offline setzt `src/net.js` den Leuchtfeuer-Zähler um Mitternacht nicht zurück (nur Anzeige, Stapel bleibt hoch). `src/net.js` ist geschützt; Vorschlag an Chris: in `tick` bei Datumswechsel `w.community.beacon = 0`.
 
