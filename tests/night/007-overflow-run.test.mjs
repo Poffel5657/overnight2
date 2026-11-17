@@ -177,3 +177,11 @@ test('Brack hört vom Tor zum Hollow', () => {
   choose(w, 'a', 'to the Hollow');
   assert.equal(p.dialog.page, 'ow_brack');
 });
+
+test('Old Ivy zeichnet den Overflow Run, und die Linie geht weiter', () => {
+  const w = S.createWorld(regionFor('cinderford'), 738);
+  const p = veteran(w, 'a', { level: 52, quests: { kindling: { done: true }, the_drains: { done: true }, overflow_runs_north: { done: true } } });
+  talk(w, 'a', 'ivy');
+  choose(w, 'a', 'gate that points north');
+  assert.equal(p.dialog.page, 'iv_run');
+});

@@ -958,6 +958,7 @@ const ivy = {
       { text: 'Anything to send back to Mabb?', to: 'ir_offer', if: { quest: { unsent_letter: 'done', ivys_reply: 'none' } }, do: [{ start: 'ivys_reply' }, { give: { ivys_map: 1 } }] },
       { text: 'Why map it, if it changes?', to: 'why' },
       { text: 'The Sumps under the town do not move.', to: 'iv_sumps', if: { quest: { the_drains: 'done' } } },
+      { text: 'Below the Spillway there is a culvert, and a gate that points north.', to: 'iv_run', if: { quest: { overflow_runs_north: 'done' } } },
       BYE,
     ],
   },
@@ -968,6 +969,7 @@ const ivy = {
   cs_offer: { text: '"I need chalk. Not any chalk: turn chalk, the stuff the things down there carry around. It holds a mark in the Maze until morning, which is longer than mine does. Five sticks. The Turnlings drop it, and the Crawlers, and the Lamps."', options: [{ text: 'Five sticks of turn chalk.' }] },
   cs_early: { text: '"Help? You would get lost on the stairs. Come back with a bit more experience. (Level 6)"', options: [BYE] },
   cs_done: { text: 'She snaps a stick and draws a long line on today\'s map. It does not fade. "Ha! There. Here: my old lamp. It was made for corners. It does not light far, but it lights round them."', options: [{ text: 'Thank you, Ivy.' }] },
+  iv_run: { text: 'Old Ivy draws while you talk, very fast: a long channel, a square room, and at the far wall a gate. Then, without stopping, she keeps the line going off the edge of the paper and onto the table. "North," she says. "I have drawn everything under this hill for fifty years, and every passage ends." She taps the table where the line runs out. "This one does not."', options: [BYE] },
 };
 
 // Tag 5 (Bogen „The Second Light“): Wenna, eine Trägerin aus dem Norden, hat sich im Grey verirrt und schläft
