@@ -10,6 +10,8 @@ export const CACHE = {
   answerFrom: 10,
   answerChance: 0.35,
   answer: { item: 'hollow_ration', n: 1, text: 'Under the lid, in the corner where nothing of yours was, somebody has left a small loaf wrapped in birch bark. It smells of peat smoke.' },
+  // Höchstens so viele Stück pro Sorte und Besuch (damit niemand aus Versehen seinen ganzen Ölvorrat hineinlegt)
+  maxEach: 5,
   // Wennas Dank (Quest „A Week of Bread“): ab so vielen Punkten insgesamt
   week: 30,
   xp: 20,

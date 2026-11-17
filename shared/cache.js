@@ -11,7 +11,7 @@ export function leaveAtCache(world, p) {
   const left = [];
   let points = 0;
   for (const [id, worth] of Object.entries(CACHE.accepts)) {
-    const k = P.countItem(p, id);
+    const k = Math.min(P.countItem(p, id), CACHE.maxEach);
     if (k < 1) continue;
     P.takeItem(p, id, k);
     points += worth * k;

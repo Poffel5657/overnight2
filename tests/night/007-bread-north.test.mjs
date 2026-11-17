@@ -126,8 +126,9 @@ test('Bread to the First Stone: Gerste mahlen, Hollis backt, Öl, die Kiste, Ama
   applyIntent(w, 'a', { t: 'buy', shop: 'marrow', item: 'lamp_oil', n: oil });
   run(w, 1);
   assert.ok(P.countItem(p, 'lamp_oil') >= oil);
-  walkTo(w, 'a', box, 'use');
+  for (let k = 0; k < 6 && p.sentNorth < CACHE.week; k++) walkTo(w, 'a', box, 'use');
   assert.ok(p.sentNorth >= CACHE.week);
+
   w.daylight = 0.1;
   talk(w, 'a', 'wenna');
   choose(w, 'a', 'heavy now');
@@ -151,6 +152,13 @@ test('Wenna bleibt: nach „Oil for the Road“ erklärt sie, warum; Stranger un
   talk(w, 'a', 'mothwick');
   choose(w, 'a', 'bread north');
   assert.equal(p.dialog.page, 'mw_bread');
+});
+
+test('Die Kiste nimmt höchstens CACHE.maxEach Stück pro Sorte und Besuch', () => {
+  const w = S.createWorld(REGION, 710);
+  const p = veteran(w, 'a', { level: 8, bag: [{ id: 'lamp_oil', n: CACHE.maxEach + 4 }] });
+  walkTo(w, 'a', w.objects.find((o) => o.type === 'cache'), 'use');
+  assert.equal(P.countItem(p, 'lamp_oil'), 4, 'der Rest bleibt im Beutel');
 });
 
 test('Alter Spielstand ohne sentNorth lädt mit 0 und speichert es', () => {
