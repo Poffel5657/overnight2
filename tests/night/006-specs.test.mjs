@@ -198,7 +198,7 @@ test('Tallow segnet Lightsworn, Rook prüft Ironwall', () => {
   choose(w, 'a', 'Lightsworn:');
   talk(w, 'a', 'tallow');
   choose(w, 'a', 'swore to the light');
-  assert.equal(a.dialog.page, 'ls_tallow');
+  assert.equal(a.dialog.page, 'lsw_tallow');
   const b = veteran(w, 'b', { cls: 'warden', level: 50 });
   talk(w, 'b', 'ama');
   choose(w, 'b', 'path of my own');

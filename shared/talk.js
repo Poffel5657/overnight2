@@ -55,6 +55,8 @@ export function conditionHolds(p, cond = {}, world = null) {
   if (cond.gold && (p.gold ?? 0) < cond.gold) return false;
   // Tag 6: stacked = so viele Scheite insgesamt auf Amas Stapel gelegt
   if (cond.stacked && (p.stacked ?? 0) < cond.stacked) return false;
+  // Tag 7: sentNorth = so viel insgesamt am ersten Stein für die Träger hinterlegt (content/cache.js)
+  if (cond.sentNorth && (p.sentNorth ?? 0) < cond.sentNorth) return false;
   // Tageszeit: night = nach Einbruch der Dunkelheit (wie bei Quest-Schritten mit night)
   if (world && cond.night && world.daylight >= 0.5) return false;
   if (world && cond.day && world.daylight < 0.5) return false;

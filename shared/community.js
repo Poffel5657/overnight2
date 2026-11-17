@@ -7,7 +7,8 @@ import { FAVOURS, FAVOURS_PER_DAY, BEACON_FUEL, BEACON_GOAL } from '../content/d
 import { BALLOT } from '../content/ballot.js';
 import { ITEMS } from '../content/items.js';
 import { tell, emit } from './events.js';
-import { grantXp } from './talk.js';
+import { grantXp, questEvent } from './talk.js';
+import { WOODPILE } from '../content/woodpile.js';
 import * as P from './player.js';
 
 export const PRAYER_MAX = 300;
@@ -37,9 +38,28 @@ export function favoursFor(date) {
 // Tagesstand des Spielers; ein neuer Tag fängt frisch an.
 export function dailyOf(world, p) {
   if (!p.daily || p.daily.date !== world.date) {
-    p.daily = { date: world.date, kills: {}, done: [], voted: null, prayed: false };
+    p.daily = { date: world.date, kills: {}, done: [], voted: null, prayed: false, chests: [] };
   }
+  p.daily.chests = p.daily.chests || [];
   return p.daily;
+}
+
+// Einmal am Tag pro Spieler (Truhen, Mühle, Ausguck, Stapel, Totholz, Kiste …). true = heute zum ersten Mal.
+// Die Schlüssel leben in dailyOf().chests und verfallen mit dem Tag (Aufräumnacht Tag 7: vorher sechsmal kopiert).
+export function oncePerDay(world, p, key) {
+  const d = dailyOf(world, p);
+  if (d.chests.includes(key)) return false;
+  d.chests.push(key);
+  return true;
+}
+
+// Brennstoff für den Tageszähler des Leuchtfeuers (Füttern und Amas Stapel), mit Meldung, wenn das Ziel erreicht ist.
+export function addBeaconFuel(world, add, goalText) {
+  const before = world.community.beacon;
+  world.community.beacon += add;
+  world.outbox.push({ kind: 'beacon', date: world.date, add });
+  emit(world, { type: 'community', community: world.community });
+  if (before < BEACON_GOAL && world.community.beacon >= BEACON_GOAL) emit(world, { type: 'log', text: goalText, cls: 'good' });
 }
 
 function near(world, p, type) {
@@ -83,13 +103,12 @@ export function feedBeacon(world, p, item, n) {
   const k = Math.min(n, P.countItem(p, item));
   if (k < 1) return;
   P.takeItem(p, item, k);
-  const before = world.community.beacon;
-  world.community.beacon += pts * k;
-  world.outbox.push({ kind: 'beacon', date: world.date, add: pts * k });
   tell(world, p.id, `You feed the Beacon. It roars a little. (+${pts * k})`, 'good');
-  emit(world, { type: 'community', community: world.community });
-  if (before < BEACON_GOAL && world.community.beacon >= BEACON_GOAL) {
-    emit(world, { type: 'log', text: 'The Beacon blazes. Tonight the Grey will have to step back further.', cls: 'good' });
+  addBeaconFuel(world, pts * k, 'The Beacon blazes. Tonight the Grey will have to step back further.');
+  // Tag 7 (Review): Scheite direkt ins Feuer zählen wie Stapeln (Amas Zähltafel, Quest-Aktion 'stack')
+  if (item === WOODPILE.log) {
+    p.stacked = (p.stacked ?? 0) + k;
+    questEvent(world, p, 'action', { action: 'stack' });
   }
 }
 

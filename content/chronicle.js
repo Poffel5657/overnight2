@@ -43,4 +43,10 @@ export const CHRONICLE = [
     title: 'The woodpile, and the road north',
     text: 'The altar chose Ama\'s woodpile, so it stands by the Beacon and grows as everyone fills it, with deadfall along the woods for any boot to break. Wenna wants oil for the road home, Ama says out loud that the Beacon is starving, every calling found two paths at level 50, and below the Sumps the Spillway has opened, with eels and an iron gate that walks.',
   },
+  {
+    day: 7,
+    date: '2026-11-18',
+    title: 'Bread to the first stone',
+    text: 'The altar chose to send bread north, so a box waits under the first stone at the end of the north road, and Wenna stays until it is worth carrying. The Stranger let somebody relight his green lamp and now throws a thin shadow, every path learned something at fifty-eight and sixty-two, and under the Spillway the Overflow Run leads to an old pump and a gate that points north.',
+  },
 ];

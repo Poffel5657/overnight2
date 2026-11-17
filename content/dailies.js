@@ -30,6 +30,9 @@ export const FAVOURS = {
   // Tag 6, Nachschlag: the Spillway (Gruppen willkommen)
   eels_for_hesk: { from: 'hesk', type: 'kill', mob: 'weir_eel', n: 3, text: 'The fishermen at the ford want fewer eels in the Spillway. Hesk is passing it on. Three, please.', reward: { gold: 48, xp: 900 } },
   sluicegate_again: { from: 'hesk', type: 'kill', mob: 'old_sluicegate', n: 1, text: 'The Old Sluicegate is walking again. Hesk says take a friend, and do not let it close on you.', reward: { gold: 70, xp: 1800 } },
+  // Tag 7, Nachschlag: the Overflow Run (Stufe 50 bis 54)
+  thin_leeches: { from: 'hesk', type: 'kill', mob: 'culvert_leech', n: 3, text: 'The Culvert Leeches are drinking the lamp niches dry again. Hesk wants three fewer.', reward: { gold: 60, xp: 1200 } },
+  pumpwarden_again: { from: 'hesk', type: 'kill', mob: 'the_pumpwarden', n: 1, text: 'The old pump has started walking again. Hesk says take a friend, and stay out of the jets.', reward: { gold: 90, xp: 2600 } },
   // Tag 6 (Ama's Woodpile): Holz für den Stapel; Totholz spaltet jeder am Waldrand
   logs_for_ama: { from: 'ama', type: 'bring', item: 'split_log', n: 4, text: 'Ama wants four split logs for the woodpile. Deadfall lies along the woods.', reward: { gold: 12, xp: 45 } },
   shoo_crows: { from: 'fen', type: 'kill', mob: 'crow', n: 3, text: 'The crows are judging the vegetable patch. Shoo them.', reward: { gold: 8, xp: 20 } },

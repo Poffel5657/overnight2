@@ -253,3 +253,45 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 - Quest-Erfahrung: Below the Weir 7.000 (knapp zwei Stufen auf 48), Oil for the Road 520, Fen's Map 180, The Woodpile 110.
 
 **Abstimmung neu:** Zettel 6 mit zwei Bogen-Optionen (Brot und Öl nach Norden schicken, oder die Nordstraße nachts sperren) und zwei aus „Ideen für später“ (Rangliste der Cup-Sieger, ein Rätselraum für Gruppen in der Drowned Chapel aus Gebet 8). cooking und north-road-fires waren drei Nächte auf dem Zettel und gehen herunter; beacon-stockpile und lightsworn sind gebaut.
+
+## Tag 7 (Nacht zum 2026-11-18): Brot an den ersten Stein (Aufräumnacht)
+
+**Inbox:** Auch diesmal lag keine neue Datei vor (`v2/inbox/` endet bei `2026-11-15.json`; `2026-11-16.json` und `2026-11-17.json` fehlen). Keine neuen Gebete, kein Ergebnis für Zettel 6. Letzter bekannter Stand: 9 Charaktere, 3 aktiv (Export 2026-11-15).
+
+**Teil 1, Gebete:** entfällt (keine neuen Gebete). Dafür ist der Nachschlag größer: zwei weitere Klassen auf 58 und ein neues Gebiet für 50 bis 54 (weiter aus Gebet 9, Kanäle unter der großen Stadt).
+
+**Teil 2, Abstimmung: Brot nach Norden (bread-north).** Zettel 6 ohne gelesene Stimmen (bread-north, bar-north-road, cup-ladder, chapel-riddle-room). Der Nightwright wählte bread-north: Es ist die erste Bogen-Wahl, und sie gibt allen Stufen etwas zu tun.
+- *Gewünscht:* Kindle teilt mit den Trägern aus dem Norden, statt sich abzuschotten.
+- *Geliefert:* Unter dem ersten Steinmann am Ende der Nordstraße (neben dem Ausguck) steht **eine Kiste für die Träger** (neues Objekt `cache`, „Leave supplies“). Sie nimmt Brot, Millbread, Torfbrot und Lampenöl (Millbread und Öl zählen doppelt), aber kein Holz (Ama: „Wood stays here“). Das erste Hinterlegen am Tag gibt Erfahrung, Brindle schreibt es auf, und alle im Gebiet lesen, dass jemand Brot für die Träger hinterlassen hat. Quest **„Bread to the First Stone“** (Brindle, ab Kindling): Gerste mahlen, Hollis backt Millbread, Öl, Kiste, Ama brummt, Wenna. Danach **„A Week of Bread“** (Wenna): wer insgesamt 30 Punkte in die Kiste gelegt hat, bekommt den **Sackcloth Mantle** (Abwehr 6, Licht 0,5). Neues Spielstand-Feld `sentNorth` (alte Stände: 0), Bedingung `sentNorth`. Wenna bleibt deshalb noch in Kindle: „One carrier with nothing is a waste of a carrier.“ Stranger, Mothwick, Ama und Brindle reden darüber; Brindle findet einen Flusskiesel auf dem Deckel.
+- *Fehlt noch:* Ein gemeinsamer Zähler, wie voll die Kiste für alle ist (bräuchte einen dauerhaften Weltzähler, nur mit Chris). Jetzt zählt jeder für sich.
+
+**Teil 3, Nightwright: „A Lamp Gone Out“ (Bogen, Akt 2).** Der Stranger zeigt nachts (ab Stufe 15) seine erloschene grüne Laterne. Drei Glimmer aus Copperdeep, Wren setzt das gesprungene Glas neu, Ama zündet sie nachts am Leuchtfeuer an („Hollow glass“) und zurück beim Stranger wirft er zum ersten Mal einen Schatten. Er gibt zu, aus dem Norden zu kommen und geschickt worden zu sein, um zu sehen, was Kindle für ein Dorf ist. Fen hat den Schatten in den Kreidekreis gezeichnet (er zeigt ein bisschen nach Norden), Brindle und Tallow reagieren.
+
+**Klassen (Dauerauftrag): Warden auf 58.** Lightsworn **Dawn Vow** (neue Wirkung: ein Nahschlag mit `mend` heilt Werfer und Verbündete im Umkreis `mendRadius`), Ironwall **Anvil Fall** (hält fest, härter gegen Festsitzende).
+
+**Nachschlag:**
+- **Alle anderen Wege auch auf 58:** Mender **Ember Vigil** (Hearthkeeper, lange Wärme für die Gruppe) und **Pyre Ring** (Ashbinder, Glutring), Flarecaster **High Noon** (Sunwright) und **Spectrum** (Prismist, blendet und zündet an), Drifter **Eclipse Cut** (Nightblade) und **Wire Lash** (Snarewright, holt heran und hält fest).
+- **The Overflow Run** (Stufe 50 bis 54) unter dem Spillway: ein Kanal mit **Culvert Leeches** (52, normal, trinken Öl) und die Pumpenkammer mit **the Pumpwarden** (54, Boss allein mit Einsatz), zwei Lampen-Nischen, eine Kiste. Quest **„Overflow Runs North“** (Hesk, ab 50): fünf Leeches, the Pumpwarden, die Inschrift am Tor dahinter („NORTH, TO THE HOLLOW. KEEP IT RUNNING.“), zurück zu Hesk. Lohn **Culvert Boots** (Abwehr 9). Neues Material **Run Iron** für Tinkering 42 (**Culvert Hood**, Abwehr 9) und 44 (**Culvert Coat**, Abwehr 16).
+- **Alle Wege auch auf 62:** Warden **Sunward Oath** (Lightsworn: Fläche, blendet, brennt, bindet, Gruppe heilt) und **Cinder Chain** (Ironwall: holt heran, hält fest), Mender **Kindred Hearth** und **Ashfall**, Flarecaster **Solstice** und **Kaleidoscope**, Drifter **New Moon** und **Snare Web**.
+- Zwei Gefallen bei Hesk: drei Culvert Leeches (60 Gold, 1.200 EP) und the Pumpwarden noch einmal (90 Gold, 2.600 EP, „take a friend“). IDs so gewählt, dass der Kern-Test „Gefallen erledigen“ grün bleibt.
+- **Waffen aus Run Iron** für 50+: Run Iron Shield und Shivs (Tinkering 46/47), Run Iron Staff und Lens (Lampwright 44/45), jeweils stärker als die bisher besten.
+- **„A Drawing for the Box“** (Fen, für niedrige Stufen): Fens Zeichnung für die Träger (großes Leuchtfeuer, kleines Kindle, eine Gans) kommt in die Kiste.
+- **Antwort aus dem Norden:** Wer schon mindestens 10 Punkte in die Kiste gelegt hat, findet beim ersten Hinterlegen am Tag manchmal (35 %) ein Torfbrot in Birkenrinde im Kasten.
+- Hollis hat ein siebtes Gerücht (die Kiste auf dem Hügel; seine Großmutter kannte so eine Kiste).
+- Neue Rufe (Wenna, Ama, Brindle, Hesk), Pells neuer Ausruf, neuer Ausguck-Text (der Deckel der Kiste wurde bewegt).
+
+**Aufräumnacht (Tage 4 bis 7, die Geschichte im Repo reicht nur bis Tag 4 zurück):**
+- Behoben: Tallows Seite `ls_tallow` war doppelt belegt; wer Wennas Gebet zu Tallow brachte, bekam den Lightsworn-Segen zu lesen. Der Segen heißt jetzt `lsw_tallow`.
+- Behoben: Scheite direkt ins Leuchtfeuer (Leuchtfeuer-Fenster) zählten nicht für Amas Tafel und nicht als „Stapeln“ für Quests.
+- Behoben: Wer heute schon alles Totholz gespalten hatte und danach „The Woodpile“ annahm, kam bis Mitternacht nicht weiter.
+- Behoben (vorbeugend): Der Totholz-Schlüssel enthält jetzt das Gebiet; die Tagesliste im Spielstand hält 200 statt 50 Einträge.
+- Aufgeräumt: `oncePerDay` und `addBeaconFuel` in `shared/community.js` ersetzen sechs Kopien desselben Musters (Truhe, Mühle, Ausguck, Fundstück, Stapel, Kiste) und das doppelte Leuchtfeuer-Zählen; `mendAround` in `shared/sim.js` für burst und Nahschläge. Die Mühle sagt beim ersten Mahlen nicht mehr „flour“, wenn man Glas mahlt.
+- Tests: Der alte Nachttest `004-rook-masterwork` prüft Pells Ausruf nicht mehr wörtlich (der ändert sich jede Nacht).
+- Nicht gemacht: Die Wegfindung läuft für Spieler mit Ziel in jedem Takt; ein Versuch, den Weg zwischenzuspeichern, brach einen Kern-Test und wurde zurückgenommen (steht unter „Bekannte Probleme“). Offline setzt `src/net.js` den Leuchtfeuer-Zähler um Mitternacht nicht zurück (nur Anzeige; `src/net.js` ist geschützt, Vorschlag an Chris).
+
+**Balance-Notizen:**
+- Culvert Leech (52, 720 HP, 22–26, Kreuz 44–52 nach 5 Takten, 470 EP). Erster Entwurf (780 HP, 24–28) kostete einen Warden 52 fast zwei Tränke pro Leech.
+- The Pumpwarden (54, 3.200 HP, 27–31, großes Kreuz 70–82 nach 6 Takten, Ring 74–86 nach 7, 2.900 EP): Lightsworn-Warden 52 mit Meisterschild, Spillway Mail und Sumpwalker allein in etwa 70 s mit 5 Tränken, tiefster Stand 126 von 244. Erster Entwurf (3.900 HP, 30–34) war allein nicht zu schaffen. `boss-probe`: 2× Stufe 26 verlieren nach 14 s, Tank und Heiler auf 38 siegen nach 76 s, 4× 38 nach 27 s.
+- Quest-Erfahrung: Overflow Runs North 9.500 (gut zwei Stufen auf 52), A Lamp Gone Out 1.400, A Week of Bread 600, Bread to the First Stone 320.
+
+**Abstimmung neu:** Zettel 7: cup-ladder und chapel-riddle-room (zweite Nacht), dazu wieder north-road-fires (passt jetzt zu den Trägern und dem Weg nach Norden) und hollis-kitchen (Kochen bei Hollis, neu gefasst). bread-north ist gebaut, bar-north-road ist mit der Wahl erledigt.
