@@ -194,3 +194,11 @@ test('Tallow und die Pump Lamp', () => {
   choose(w, 'a', 'lamp under the hill');
   assert.equal(p.dialog.page, 'pl_tallow');
 });
+
+test('Sorrel fängt eine Spalte für den Overflow Run an', () => {
+  const w = S.createWorld(regionFor('cinderford'), 740);
+  const p = veteran(w, 'a', { level: 52, quests: { kindling: { done: true }, overflow_runs_north: { step: 0, n: 0 } } });
+  talk(w, 'a', 'sorrel');
+  choose(w, 'a', 'Overflow Run too');
+  assert.equal(p.dialog.page, 'sr_run');
+});
