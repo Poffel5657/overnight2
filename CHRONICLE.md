@@ -278,6 +278,7 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 - **„A Drawing for the Box“** (Fen, für niedrige Stufen): Fens Zeichnung für die Träger (großes Leuchtfeuer, kleines Kindle, eine Gans) kommt in die Kiste.
 - **Antwort aus dem Norden:** Wer schon mindestens 10 Punkte in die Kiste gelegt hat, findet beim ersten Hinterlegen am Tag manchmal (35 %) ein Torfbrot in Birkenrinde im Kasten.
 - **„The Stone on the Lid“** (Brindle, nach „Bread to the First Stone“): Nachts liegt ein Flusskiesel neben der Kiste; Wren liest ihn (Schiefer aus schnellem Bergwasser, grüne Sprenkel wie im grünen Glas), Brindle schreibt ihn als Dank auf. Brack hört vom Tor zum Hollow („Forgetting is not that tidy“).
+- Im Overflow Run hängt die Tafel der Pumpenwärter: vierzig Fässer am Tag nach Norden, dann zwanzig, zwölf, acht; zuletzt „They have stopped asking. Keep it running anyway.“
 - Hollis hat ein siebtes Gerücht (die Kiste auf dem Hügel; seine Großmutter kannte so eine Kiste).
 - Neue Rufe (Wenna, Ama, Brindle, Hesk), Pells neuer Ausruf, neuer Ausguck-Text (der Deckel der Kiste wurde bewegt).
 
@@ -292,7 +293,7 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 
 **Balance-Notizen:**
 - Culvert Leech (52, 720 HP, 22–26, Kreuz 44–52 nach 5 Takten, 470 EP). Erster Entwurf (780 HP, 24–28) kostete einen Warden 52 fast zwei Tränke pro Leech.
-- The Pumpwarden (54, 3.200 HP, 27–31, großes Kreuz 70–82 nach 6 Takten, Ring 74–86 nach 7, 2.900 EP): Lightsworn-Warden 52 mit Meisterschild, Spillway Mail und Sumpwalker allein in etwa 70 s mit 5 Tränken, tiefster Stand 126 von 244. Erster Entwurf (3.900 HP, 30–34) war allein nicht zu schaffen. `boss-probe`: 2× Stufe 26 verlieren nach 14 s, Tank und Heiler auf 38 siegen nach 76 s, 4× 38 nach 27 s.
+- The Pumpwarden (54, 2.900 HP, 26–30, großes Kreuz 70–82 nach 6 Takten, Ring 74–86 nach 7, 2.900 EP): Lightsworn-Warden 52 mit Meisterschild, Spillway Mail und Sumpwalker allein mit etwa 5 Tränken, tiefster Stand 126 von 244. Erste Entwürfe (3.900 HP/30–34, dann 3.200/27–31) waren allein nicht verlässlich zu schaffen (über sechs Seeds geprüft: der Warden starb oder hatte keine Tränke mehr). Ohne Lebensregeneration kostet der Weg durch die Leeches spürbar Tränke oder Essen. `boss-probe`: 2× Stufe 26 verlieren nach 14 s, Tank und Heiler auf 38 siegen nach 68 s, 4× 38 nach 25 s.
 - Quest-Erfahrung: Overflow Runs North 9.500 (gut zwei Stufen auf 52), A Lamp Gone Out 1.400, A Week of Bread 600, Bread to the First Stone 320.
 
 **Abstimmung neu:** Zettel 7: cup-ladder und chapel-riddle-room (zweite Nacht), dazu wieder north-road-fires (passt jetzt zu den Trägern und dem Weg nach Norden) und hollis-kitchen (Kochen bei Hollis, neu gefasst). bread-north ist gebaut, bar-north-road ist mit der Wahl erledigt.

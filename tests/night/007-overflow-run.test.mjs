@@ -52,7 +52,7 @@ test('Overflow Runs North: Hesk, fünf Leeches, das Tor, the Pumpwarden, zurück
   assert.equal(p.dialog.page, 'ow_early', 'unter 50 zu früh');
   S.removePlayer(c, 'a');
 
-  p = veteran(c, 'a', { level: 52, equip: GEAR, quests: done, bag: [{ id: 'sluice_draught', n: 16 }] });
+  p = veteran(c, 'a', { level: 52, equip: GEAR, quests: done, bag: [{ id: 'sluice_draught', n: 20 }] });
   p.specs = { warden: 'lightsworn' };
   talk(c, 'a', 'hesk');
   choose(c, 'a', 'overflow go');
@@ -90,6 +90,7 @@ test('Overflow Runs North: Hesk, fünf Leeches, das Tor, the Pumpwarden, zurück
   const used = draughts - P.countItem(p, 'sluice_draught');
   assert.ok(used >= 1 || lowest < p.maxHp * 0.7, `es kostet etwas (Tränke ${used})`);
   assert.ok(P.countItem(p, 'run_iron') >= 2, 'Run Iron vom Pumpwarden');
+  assert.equal(p.travel, undefined, 'überlebt');
   const gateText = w.objects.find((o) => o.type === 'shrine' && o.quest === 'overflow_runs_north');
   for (let k = 0; k < 6 && P.countItem(p, 'gate_rubbing') < 1; k++) {
     const foe = w.mobs.find((m) => !m.dead && m.angryAt === 'a');
@@ -97,7 +98,7 @@ test('Overflow Runs North: Hesk, fünf Leeches, das Tor, the Pumpwarden, zurück
     actOn(w, 'a', gateText, 'search');
     run(w, 2);
   }
-  assert.equal(P.countItem(p, 'gate_rubbing'), 1, 'Abrieb vom Tor');
+  assert.equal(P.countItem(p, 'gate_rubbing'), 1, `Abrieb vom Tor (Beutel ${p.bag.filter(Boolean).length}/${p.bag.length}, bei ${p.x},${p.y}, hp ${p.hp}, region ${w.region.id}, travel ${JSON.stringify(p.travel)}, Schritt ${p.quests.overflow_runs_north.step}, players ${w.players.size})`);
   assert.equal(w.region.zoneAt(gateText.x, gateText.y), 'THE OVERFLOW RUN');
 
   assert.equal(p.quests.overflow_runs_north.step, 3);
