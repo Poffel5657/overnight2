@@ -202,3 +202,25 @@ test('Hollis hat ein siebtes Gerücht: die Kiste auf dem Hügel', () => {
     assert.equal(q.dialog.page, 'rumour7');
   });
 });
+
+test('The Stone on the Lid: nachts der Kiesel an der Kiste, Wren liest ihn, Brindle schreibt es auf', () => {
+  const w = S.createWorld(REGION, 709);
+  w.daylight = 1;
+  const p = veteran(w, 'a', { level: 12, quests: { kindling: { done: true }, bread_north: { done: true } } });
+  talk(w, 'a', 'brindle');
+  choose(w, 'a', 'stone on the lid');
+  assert.equal(p.quests.stone_on_the_lid.step, 0);
+  const stone = w.objects.find((o) => o.type === 'shrine' && o.quest === 'stone_on_the_lid');
+  walkTo(w, 'a', stone, 'search');
+  assert.equal(P.countItem(p, 'river_stone'), 0, 'bei Tag nicht');
+  w.daylight = 0.1;
+  walkTo(w, 'a', stone, 'search');
+  assert.equal(P.countItem(p, 'river_stone'), 1);
+  assert.equal(p.quests.stone_on_the_lid.step, 1);
+  talk(w, 'a', 'wren');
+  choose(w, 'a', 'stone like this');
+  assert.equal(p.dialog.page, 'sl_wren');
+  talk(w, 'a', 'brindle');
+  choose(w, 'a', 'Wren read the stone');
+  assert.ok(p.quests.stone_on_the_lid.done);
+});

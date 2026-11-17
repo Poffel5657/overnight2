@@ -179,6 +179,7 @@ export const ITEMS = {
   culvert_hood: { name: 'Culvert Hood', slot: 'head', defence: 9, light: 0.5, value: 480, glyph: '^', text: 'A run-iron cap with a lamp-hook and a drip lip, so the water goes round your face instead of into it.' },
   culvert_coat: { name: 'Culvert Coat', slot: 'body', defence: 16, value: 760, glyph: 'M', text: 'Run-iron scales on oiled canvas. It never rusts, and it never quite dries. You get used to the second part.' },
   culvert_boots: { name: 'Culvert Boots', slot: 'feet', defence: 9, value: 520, glyph: 'u', text: 'Pump-keepers\' boots with run-iron toecaps. Hesk had a pair put by for whoever reached the north gate.' },
+  river_stone: { name: 'River Stone', stack: true, value: 0, glyph: 'o', text: 'Flat, grey and smooth as soap, still cold. Rivers made it. There is no river anywhere near the north road.' },
   fens_drawing: { name: 'Fen\'s Drawing', stack: true, value: 0, glyph: '=', text: 'Chapel paper, crayon: a very big Beacon, a very small Kindle, and a dotted line going north with loaves on it. A goose supervises.' },
   strangers_lamp: { name: 'The Stranger\'s Lamp', stack: true, value: 0, glyph: 'i', text: 'A carrier\'s lamp of thick green glass, cracked across one pane and cold for a long time. The wick is a stub. It weighs more than it looks.' },
   sackcloth_mantle: { name: 'Sackcloth Mantle', slot: 'body', defence: 6, light: 0.5, value: 120, glyph: 'M', text: 'Wenna stitched it from Kindle\'s empty flour sacks, with birch bark at the shoulders. It smells of the mill, and a little of peat smoke.' },

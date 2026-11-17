@@ -569,6 +569,17 @@ export const QUESTS = {
     ],
     reward: { xp: 320, gold: 20, items: { hollow_ration: 1, lamp_oil: 1 } },
   },
+  // Tag 7: Wer leert die Kiste? Nachts liegt ein Flusskiesel daneben. Wren und Brindle.
+  stone_on_the_lid: {
+    name: 'The Stone on the Lid', giver: 'brindle',
+    text: 'Somebody leaves a flat river stone by the bread box at night. There is no river anywhere near the north road.',
+    steps: [
+      { type: 'have', item: 'river_stone', n: 1, text: 'After dark, look for the strange stone beside the bread box under the first stone.' },
+      { type: 'talk', npc: 'wren', text: 'Ask Wren, who knows stone and glass, where a stone like that comes from.' },
+      { type: 'talk', npc: 'brindle', text: 'Tell Brindle what Wren said.' },
+    ],
+    reward: { xp: 260, gold: 18, items: { lamp_oil: 2 } },
+  },
   // Tag 7 (für niedrige Stufen): Fen will eine Zeichnung in die Kiste legen.
   fens_letter: {
     name: 'A Drawing for the Box', giver: 'fen',
