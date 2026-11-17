@@ -55,6 +55,7 @@ export const REGION = {
     { type: 'brazier', x: 38, y: 33, light: 3.5, name: 'a lamp niche in the Overflow Run' },
     { type: 'chest', chest: 'sumps', x: 38, y: 39, name: 'the pump-keepers\' locker' },
     { type: 'shrine', look: 'niche', x: 38, y: 36, name: 'the north gate', gives: 'gate_rubbing', quest: 'overflow_runs_north', step: 2, text: 'An iron gate in the far wall of the pump chamber, where the culvert turns north and goes on into the dark. Rusted shut. Above it, a carved lamp, and letters cut deep: NORTH, TO THE HOLLOW. KEEP IT RUNNING.', found: 'You press a sheet of Hesk\'s chalk paper to the letters and rub. The words come up white: NORTH, TO THE HOLLOW. KEEP IT RUNNING.', empty: 'NORTH, TO THE HOLLOW. KEEP IT RUNNING. Behind the bars, very far off, water is still moving.' },
+    { type: 'table', x: 25, y: 36, name: 'the pump-keepers\' slate', text: 'A slate on an iron bracket by the pump. Chalk columns: barrels pushed north, one line a day. Forty, forty, forty, for years. Then twenty. Then twelve. Then eight. The last line is not a number: "They have stopped asking. Keep it running anyway."' },
   ],
   npcs: [],
   mobs: [
