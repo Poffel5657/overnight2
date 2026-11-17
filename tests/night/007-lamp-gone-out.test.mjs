@@ -69,7 +69,7 @@ test('A Lamp Gone Out: nachts beim Stranger, Glimmer aus Copperdeep, Wren, Ama a
   assert.ok(p.classes.warden.xp > xp);
   assert.ok(QUESTS.lamp_gone_out.reward.xp > 0);
 
-  for (const [npc, frag, page] of [['stranger', 'Where is home', 'lg_after'], ['fen', 'Stranger tonight', 'lg_fen'], ['brindle', 'shadow now', 'lg_brindle'], ['tallow', 'shadow now', 'lg_tallow']]) {
+  for (const [npc, frag, page] of [['stranger', 'Where is home', 'lg_after'], ['fen', 'Stranger tonight', 'lg_fen'], ['brindle', 'shadow now', 'lg_brindle'], ['tallow', 'shadow now', 'lg_tallow'], ['ama', 'Hollow glass', 'lg_ama_after']]) {
     talk(w, 'a', npc);
     choose(w, 'a', frag);
     assert.equal(p.dialog.page, page, npc);
