@@ -588,7 +588,7 @@ export const ITEM_ICONS = {
   barley: ['leaf', 'wax'], mill_flour: ['pile', 'pale'], millbread: ['bread', 'bread'], hollow_barley: ['leaf', 'stone'], wennas_lantern: ['lantern', 'green'],
   // Tag 7
   run_iron_shield: ['shield', 'moss'], run_iron_shivs: ['shivs', 'moss'], run_iron_staff: ['staff', 'moss'], run_iron_lens: ['lens', 'moss'],
-  strangers_lamp: ['lantern', 'green'], fens_drawing: ['notes', 'paper'], river_stone: ['gem', 'stone'], run_iron: ['pile', 'moss'], gate_rubbing: ['notes', 'paper'], culvert_hood: ['hood', 'moss'], culvert_coat: ['coat', 'moss'], culvert_boots: ['boots', 'moss'], sackcloth_mantle: ['coat', 'scrap'],
+  strangers_lamp: ['lantern', 'green'], fens_drawing: ['notes', 'paper'], river_stone: ['gem', 'stone'], run_iron: ['pile', 'moss'], pump_lamp: ['lantern', 'warm'], gate_rubbing: ['notes', 'paper'], culvert_hood: ['hood', 'moss'], culvert_coat: ['coat', 'moss'], culvert_boots: ['boots', 'moss'], sackcloth_mantle: ['coat', 'scrap'],
   split_log: ['log', 'scrap'], carriers_lamp: ['lantern', 'green'], spillway_mail: ['coat', 'glim'], woodward_hood: ['hood', 'scrap'], spillway_slate: ['notes', 'stone'],
   delvers_hood: ['hood', 'skin'], delvers_boots: ['boots', 'skin'], delvers_coat: ['coat', 'skin'], keepers_lantern: ['lantern', 'warm'],
 };

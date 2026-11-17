@@ -176,6 +176,7 @@ export const ITEMS = {
   run_iron_shivs: { name: 'Run Iron Shivs', slot: 'main', cls: 'drifter', delay: 7, power: 18, value: 640, glyph: 'x', text: 'Two green-black blades that are always slightly wet. Nobody has ever seen them rust.' },
   run_iron_staff: { name: 'Run Iron Staff', slot: 'main', cls: 'mender', delay: 10, power: 9, heal: 19, value: 640, glyph: '|', text: 'The ember sits in a pump-valve of run iron and breathes in and out with you.' },
   run_iron_lens: { name: 'Run Iron Lens', slot: 'main', cls: 'flarecaster', delay: 10, power: 19, value: 640, glyph: 'o', text: 'Greyglass in a run-iron ring that never fogs. The light comes out of it cold and very straight.' },
+  pump_lamp: { name: 'Pump Lamp', slot: 'lantern', light: 4.6, burn: 0.4, value: 720, glyph: 'i', text: 'The quarrymen\'s lamp from the Pumpwarden\'s chest, still lit when you prised it out. It burns low and very steady, and the flame leans north.' },
   culvert_hood: { name: 'Culvert Hood', slot: 'head', defence: 9, light: 0.5, value: 480, glyph: '^', text: 'A run-iron cap with a lamp-hook and a drip lip, so the water goes round your face instead of into it.' },
   culvert_coat: { name: 'Culvert Coat', slot: 'body', defence: 16, value: 760, glyph: 'M', text: 'Run-iron scales on oiled canvas. It never rusts, and it never quite dries. You get used to the second part.' },
   culvert_boots: { name: 'Culvert Boots', slot: 'feet', defence: 9, value: 520, glyph: 'u', text: 'Pump-keepers\' boots with run-iron toecaps. Hesk had a pair put by for whoever reached the north gate.' },
