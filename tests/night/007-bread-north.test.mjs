@@ -232,3 +232,11 @@ test('The Stone on the Lid: nachts der Kiesel an der Kiste, Wren liest ihn, Brin
   choose(w, 'a', 'Wren read the stone');
   assert.ok(p.quests.stone_on_the_lid.done);
 });
+
+test('Haskel hat gehört, wer die Kiste leert', () => {
+  const w = S.createWorld(REGION, 711);
+  const p = veteran(w, 'a', { level: 12, quests: { kindling: { done: true }, bread_north: { done: true } } });
+  talk(w, 'a', 'haskel');
+  choose(w, 'a', 'empties the bread box');
+  assert.equal(p.dialog.page, 'h_box');
+});

@@ -430,6 +430,7 @@ const haskel = {
   start: {
     text: 'Haskel. I cut wood. Or I would, if the wood stopped biting.',
     options: [
+      { text: 'Have you seen who empties the bread box?', to: 'h_box', if: { quest: { bread_north: 'done' } } },
       { text: 'What is biting?', to: 'h_offer', if: { quest: { wolves_woodline: 'none' }, classLevel: 8 }, do: [{ start: 'wolves_woodline' }] },
       { text: 'What is biting?', to: 'h_early', if: { quest: { wolves_woodline: 'none' }, below: 8 } },
       { text: 'The woodline is quiet.', to: 'h_done', if: { quest: { wolves_woodline: 1 } }, do: [{ advance: 'wolves_woodline' }] },
@@ -457,6 +458,7 @@ const haskel = {
   wp_haskel: { text: 'Haskel points with his axe, which is how he points at everything. "Deadfall. Not the standing trees, they bite back. There is a dry pine by the camp, a bough up the west path, a couple along the edge east of the road, and two at the bottom of the woods west of the fields, close to the village. Break them with your boot, it is old wood." He spits on his hands. "Take what is dry. The wet stays till tomorrow. And tell Ama I want my name on her board too."', options: [BYE] },
   fm_haskel: { text: 'Haskel takes the page and draws three rough circles with a burnt stick, then a fourth, then crosses out the fourth. "They moved out of that one when the carriers came through. Smelled the peat." He hands it back. "Tell the kid wolves do not sleep in a line. Fen will draw them in a line."', options: [{ text: 'I will tell Fen.' }] },
   h_quiet: { text: 'Hushwood eats sound. Shout in here and nobody hears it, not even you. Handy for wolves. Less handy for me.', options: [BYE] },
+  h_box: { text: 'Haskel leans on his axe. "Seen? No. Heard." He nods north. "Two nights back, after the moon went down. Boots on the old road, going north, slow, like somebody carrying more than they came with. Did not sound like wolves. Wolves do not stop to say thank you to a stone." He shrugs. "I kept the road clear to the cairns this spring. Seems it is getting used."', options: [BYE] },
 };
 
 const brack = {
