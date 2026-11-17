@@ -10,6 +10,8 @@ export const BARKS = {
     range: 14, every: 25, news: true, shout: true,
     lines: [
       'HEAR YE! Feed the Beacon before midnight!',
+      'Bread for the north! The box is under the first stone! Brindle is counting!',
+      'The Stranger has a SHADOW! Fen has drawn it! It points NORTH!',
       'The Old Mill turns again! Barley in, flour out! No miller required!',
       'Rats under Cinderford! Hesk pays for fewer!',
       'Flour on the doorsteps again! Marrow demands to know who! Marrow is not grateful!',
@@ -94,7 +96,7 @@ export const BARKS = {
   },
   fen: {
     range: 7, every: 60,
-    lines: ['*draws round a goose\'s shadow*', 'Stand still! You moved!', 'Everybody has a shadow. Everybody.', '*adds another goose to a map*', 'North is where the goose points.'],
+    lines: ['He HAS one now. A green one.', '*draws a very big goose for the bread box*', '*draws round a goose\'s shadow*', 'Stand still! You moved!', 'Everybody has a shadow. Everybody.', '*adds another goose to a map*', 'North is where the goose points.'],
   },
   sorrel: {
     range: 8, every: 45,

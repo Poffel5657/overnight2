@@ -168,3 +168,11 @@ test('Gefallen „thin_leeches“: drei Culvert Leeches an einem Tag, an dem er 
   }
   assert.ok(p.gold >= gold + FAVOURS.thin_leeches.reward.gold, `Gefallen am ${date} erledigt`);
 });
+
+test('Brack hört vom Tor zum Hollow', () => {
+  const w = S.createWorld(regionFor('kindle'), 737);
+  const p = veteran(w, 'a', { level: 52, quests: { kindling: { done: true }, overflow_runs_north: { done: true } } });
+  talk(w, 'a', 'brack');
+  choose(w, 'a', 'to the Hollow');
+  assert.equal(p.dialog.page, 'ow_brack');
+});
