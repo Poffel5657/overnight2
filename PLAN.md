@@ -14,9 +14,9 @@ Tag 8 (Nacht zum 2026-11-19). **Inbox fehlte zum dritten Mal** (keine Datei nach
 
 **Teil 2, aus der Abstimmung: Signalfeuer an der Nordstraße (north-road-fires) → neues Gebiet „The Stone Road“**
 1. *Was der Spieler will:* Dass der Weg nach Norden, über den alle reden, endlich begehbar wird, und dass sein Licht etwas für andere bewirkt (die Träger finden den Weg).
-2. *Woran er es merkt:* Hinter der Kiste am ersten Stein führt ein Pfad in die Steinstraße (eigenes Gebiet, Stufe 26–34). Sechs Steinmänner mit Signalfeuern (je 15 Öl, brennen für alle, bis die Welt sich nachts erneuert); Quest „Stone by Stone“ bei Brindle: Öl mitnehmen, den dritten, fünften und siebten Stein anzünden, zurück zu Brindle (Lohn: Cairnwalker Cloak). Meldung für alle, wenn alle sechs brennen. Neue Wesen (Cairn Creeper 27, Ash Moth 30, die Öl trinken), Torf zum Stechen (Foraging), Totholz. Pell ruft es aus, Haskel und Brindle reden darüber.
+2. *Woran er es merkt:* Hinter der Kiste am ersten Stein führt ein Pfad in die Steinstraße (eigenes Gebiet, Stufe 26–34). Sechs Steinmänner mit Signalfeuern (je 15 Öl, brennen für alle, bis die Welt sich nachts erneuert); Quest „Stone by Stone“ bei Brindle (ab 26): Öl mitnehmen, den dritten, fünften und siebten Stein anzünden, zurück zu Brindle (Lohn: Cairnwalker Cloak). Meldung für alle, wenn alle sechs brennen. Neue Wesen (Cairn Creeper 27, Ash Moth 30, die Öl trinken), Torf zum Stechen (Foraging), Totholz. Pell ruft es aus, Haskel und Brindle reden darüber.
 3. *Woran es anschließt:* Licht/Öl (Signalfeuer, Ölvorrat), Berufe (Foraging: Torf, Alchemie: Torföl, Lampwright: Road Lamp aus Mottenstaub), Leuchtfeuer (Torf ist Brennstoff), Bogen (Träger, Kiste), Quests.
-4. *Weg dorthin:* Brindle am Ausguck (ab Stufe 24), Tür „the stones that point north“ neben der Kiste am Ende der Nordstraße.
+4. *Weg dorthin:* Brindle am Ausguck (ab Stufe 26), Tür „the stones that point north“ neben der Kiste am Ende der Nordstraße.
 
 **Teil 3, vom Nightwright: „Not Thieves“ (Bogen, Akt 2: Hollow Wardens)**
 1. *Was der Spieler will:* Erfahren, was am Ende der Straße ist und wer die Leute aus dem Norden sind; eine Gruppe, für die man Freunde braucht.
@@ -26,14 +26,14 @@ Tag 8 (Nacht zum 2026-11-19). **Inbox fehlte zum dritten Mal** (keine Datei nach
 
 **Dauerauftrag Klassen:** Warden auf 66 (Lightsworn: Beacon Vow, neue Wirkung `fuel` = Öl für die Gruppe; Ironwall: Cinder Keep).
 
-**Nachschlag:** alle anderen Wege auf 66; Rezepte (Torföl, Road Lamp), Fundstelle Torf; „Beads for Home“ beim Stranger; Rufe, Pell, Ausguck.
+**Nachschlag:** alle anderen Wege auf 66; Rezepte (Torföl, Road Lamp), Fundstelle Torf; „Beads for Home“ beim Stranger; „Seven Fires for Fen“ (niedrige Stufen); Alchemie 40–48; zwei Gefallen; „The Heron at the Ford“ (Boss 36, Heron Hood); Tallow, Mothwick, Wren; Rufe, Pell, Ausguck, Drift-Funde.
 
 ## Ausbau läuft
 
 - **The Unending Maze** (seit 2026-11-13, von Chris gebaut aus Gebet 4): Stockwerke 1 bis 99 unter Cinderford, jeden Tag neu gewürfelt, Stufe = 3 + 2 × Stockwerk. Ausbau möglich: Rangliste auf dem Turn Board (braucht Chris: D1-Abfrage), weitere Keeper-Körper und -Eigenschaften (`BODIES`, `AFFIXES` in `content/regions/maze.js`), Rezepte aus Turnstones, mehr Gegenstände ab Stockwerk 25, Quests für tiefere Stockwerke (`keeper_10`, `keeper_20` gibt es schon).
 - **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag): Stand in `ROADMAP.md`: alle acht Wege haben Fähigkeiten auf 50, 54 und 58 (Tag 7). Nächste Nächte: Warden 62, dann die anderen. Seit Tag 7 können Nahschläge `mend` (Gruppe heilt). Seit Tag 6 kann `zone` dazzle, root und burn. Seit Tag 5 kann `burst` auch `mend` (Gruppe heilt). Seit Tag 4 gibt es `exploit` (Schaden gegen brennende/geblendete/festsitzende Ziele): gut für weitere Stufen, auch kleinere exploit-Fähigkeiten für 12–30 wären schön (Gebet 8).
 - **Der Bogen „The Second Light“**: Tag 7: Zettel 6 → bread-north (Kiste am ersten Stein), Wenna bleibt, bis die Kiste eine Last ist; der Stranger hat einen Schatten und gibt zu, aus dem Norden zu kommen. Tag 8: Zettel 7 → north-road-fires (die Steinstraße mit Feuern), Hollow Wardens am Rastplatz der Träger („Not Thieves“, „Beads for Home“). Nächste: Wennas Aufbruch, Vorstufe der großen Wahl.
-- **The Stone Road** (seit Tag 8, Stufe 26–34): sechs Feuer, Rastplatz der Träger, drei Hollow Wardens (Gruppe). Ausbau: Zettel 8 `carriers-rest` (Unterstand wieder aufbauen, gemeinsam), ein Boss an der Furt oder am achten Stein, Gefallen „Feuer anzünden“ (Achtung, Kern-Test „Gefallen erledigen“, siehe unten), was hinter dem achten Stein liegt (Bogen, nicht vor Akt 3).
+- **The Stone Road** (seit Tag 8, Stufe 26–34): sechs Feuer, Rastplatz der Träger, drei Hollow Wardens (Gruppe). Seit dem Nachschlag: the Grey Heron an der Furt (Boss 36), Gefallen für Torf und Motten. Ausbau: Zettel 8 `carriers-rest` (Unterstand wieder aufbauen, gemeinsam), ein benannter Warden am Rastplatz, was hinter dem achten Stein liegt (Bogen, nicht vor Akt 3).
 - **Ama's Woodpile** (seit Tag 6): Stapel wächst mit dem Tageszähler. Ausbau: ein Vorrat über mehrere Tage (Weltzähler im Worker, nur mit Chris), Belohnung für die Gemeinschaft, wenn der Stapel voll ist, mehr Totholz in Copperdeep/Sinkmarsh.
 - **The Spillway** (seit Tag 6, 46–50) und **The Overflow Run** (seit Tag 7, 50–54): Ausbau: ein Gruppen-Wesen, das Tor nach Norden (Bogen), Rezepte bis Tinkering 50.
 - **Die Kiste am ersten Stein** (seit Tag 7): zählt pro Spieler (`sentNorth`). Ausbau: gemeinsamer Stand (Weltzähler, nur mit Chris), Antwort aus dem Norden (ein Geschenk in der Kiste?).
