@@ -1,4 +1,4 @@
-// Nacht 8 (Abstimmung „north-road-fires“): The Stone Road. Brindle gibt „Stone by Stone“ (ab 24): Öl mitnehmen,
+// Nacht 8 (Abstimmung „north-road-fires“): The Stone Road. Brindle gibt „Stone by Stone“ (ab 26): Öl mitnehmen,
 // durch den Durchgang hinter dem ersten Stein in die Steinstraße, den dritten, fünften und siebten Stein anzünden,
 // zurück zu Brindle. Dazu: die Wesen der Straße (Cairn Creeper 27, Ash Moth 30), Torf stechen, Peat Oil, Road Lamp.
 import test from 'node:test';
@@ -53,7 +53,7 @@ test('Stone by Stone: Brindle, Öl, der Durchgang, drei Steine, zurück zu Brind
   let k = S.createWorld(regionFor('kindle'), 811);
   k.date = '2026-11-19';
   k.daylight = 0;
-  // Zu früh: unter 24 nur ein Hinweis, unter 20 bleibt der Durchgang zu
+  // Zu früh: unter 26 nur ein Hinweis, unter 20 bleibt der Durchgang zu
   let p = veteran(k, 'a', { level: 19 });
   const gate = k.objects.find((o) => o.type === 'door' && o.to === 'stone_road');
   actOn(k, 'a', gate, 'enter');
