@@ -65,5 +65,7 @@ export const REGION = {
     { type: 'hollow_warden', x: 17, y: 5 },
     { type: 'hollow_warden', x: 14, y: 3 },
     { type: 'hollow_warden', x: 8, y: 9 },
+    // Nachschlag Tag 8: the Grey Heron am Bachufer unterhalb der Furt, weit weg von der Straße (ans Ende der Liste)
+    { type: 'the_grey_heron', x: 6, y: 17 },
   ],
 };

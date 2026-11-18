@@ -268,6 +268,20 @@ export const MOBS = {
     fallText: 'The Hollow Warden goes down on one knee, then gets up and backs away into the Grey, hands empty.',
     examine: 'Tall, in a peat-brown coat with birch bark at the shoulders, a hooked pole in one hand and a green lamp in the other. Not a creature. A person, very cold, and very tired.',
   },
+  the_grey_heron: {
+    // Tag 8, Nachschlag: Rolle Boss (allein mit Einsatz, zu zweit gut), Stufe 36. Ein Reiher aus Nebel am Bach unterhalb
+    // der Furt, so groß wie ein Mensch. Er fischt Lampen aus dem Wasser: Was die Träger verloren, hat er gefressen.
+    name: 'The Grey Heron', sprite: 'the_grey_heron', level: 36, ai: 'beast', moveEvery: 2, drainOil: 6,
+    hp: 1600, hit: [17, 21], attackEvery: 4, aggro: 4, leash: 7, respawn: 600, xp: 1600,
+    drops: [['heron_plume', 1, 1, 2], ['green_shard', 0.8, 1, 3], ['hollow_bead', 0.3, 1, 1]], gold: [50, 90],
+    specials: [
+      { every: 1, delay: 5, pattern: 'line', hit: [40, 48], text: 'The heron draws its neck back like a bow. It is going to stab straight ahead.' },
+      { every: 1, delay: 6, pattern: 'bigplus', hit: [36, 44], text: 'The heron spreads its wings. Cold spray is about to come down all round you.' },
+    ],
+    specialEvery: 3,
+    boss: { deathText: 'The Grey Heron folds its wings and goes up into the fog without a sound. Something green glints on the bank where it stood.' },
+    examine: 'A heron as tall as a person, made of fog and patience, standing in the cold water below the ford. It is fishing. It is not fishing for fish.',
+  },
   // ---------- The Unending Maze (seit 2026-11-13, Gebet 4) ----------
   // Vorlagen: Die echten Werte rechnet content/regions/maze.js nach dem Stockwerk aus (maze: Faktoren auf die
   // Grundwerte der Stufe). Die Zahlen hier gelten für das erste Stockwerk (Stufe 5).

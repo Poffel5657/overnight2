@@ -19,6 +19,8 @@ export const RECIPES = {
   t_brass_shield: { prof: 'tinkering', level: 9, inputs: { brass_bits: 4, scrap: 2 }, out: ['brass_shield', 1], xp: 36 },
   t_brass_coat: { prof: 'tinkering', level: 11, inputs: { brass_bits: 5, crow_feather: 2 }, out: ['brass_coat', 1], xp: 44 },
 
+  // Tag 8, Nachschlag: Reiherfedern von der Furt an der Steinstraße (Tinkering 37)
+  t_heron_hood: { prof: 'tinkering', level: 37, inputs: { heron_plume: 2, wolf_pelt: 1, cinder_iron: 1 }, out: ['heron_hood', 1], xp: 260 },
   t_glim_hood: { prof: 'tinkering', level: 13, inputs: { brass_bits: 2, glimmer: 1 }, out: ['glim_hood', 1], xp: 56 },
   t_glim_boots: { prof: 'tinkering', level: 14, inputs: { brass_bits: 2, glimmer: 1 }, out: ['glim_boots', 1], xp: 60 },
   t_glim_shivs: { prof: 'tinkering', level: 15, inputs: { brass_bits: 3, glimmer: 2 }, out: ['glim_shivs', 1], xp: 70 },

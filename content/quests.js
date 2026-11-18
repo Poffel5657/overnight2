@@ -661,6 +661,17 @@ export const QUESTS = {
     ],
     reward: { xp: 1600, gold: 40, items: { hollow_string: 1 } },
   },
+  // Tag 8, Nachschlag: Haskel und der Reiher an der Furt (ab 33)
+  heron_at_the_ford: {
+    name: 'The Heron at the Ford', giver: 'haskel',
+    text: 'Haskel says the carriers used to lose lamps at the ford on the Stone Road, and something big has been fishing them out of the water.',
+    steps: [
+      { type: 'kill', mob: 'the_grey_heron', n: 1, text: 'Find what is fishing below the ford on the Stone Road (on the west bank of the stream) and send it off. Bring salves.' },
+      { type: 'have', item: 'heron_plume', n: 1, text: 'Bring one of its plumes.' },
+      { type: 'talk', npc: 'haskel', text: 'Show the plumes to Haskel.' },
+    ],
+    reward: { xp: 4200, gold: 80, items: { hearth_salve: 3 } },
+  },
   // Tag 8, Nachschlag (für niedrige Stufen): Fen darf nicht über die Kiste hinaus und will die Feuer trotzdem zählen.
   fens_fires: {
     name: 'Seven Fires for Fen', giver: 'fen',
