@@ -9,4 +9,6 @@ export const CHESTS = {
   maze_deep: { gold: [80, 150], items: [['turnstone', 0.7, 1, 3], ['greyglass', 0.6, 1, 2], ['wisp_core', 0.4, 1, 2], ['dusk_draught', 0.5, 1, 2], ['cinder_cake', 0.6, 2, 3]] },
   // Tag 5: der Spind eines Schleusenwärters in den Sumps unter Cinderford
   sumps: { gold: [40, 80], items: [['verdigris', 0.7, 1, 2], ['greyglass', 0.4, 1, 1], ['seam_tonic', 0.4, 1, 1], ['cinder_cake', 0.5, 1, 2], ['lamp_oil', 0.5, 1, 2]] },
+  // Tag 8: die Kiste eines Trägers am Rastplatz oben an der Steinstraße
+  carriers_box: { gold: [25, 50], items: [['hollow_ration', 0.6, 1, 2], ['peat_brick', 0.6, 1, 3], ['peat_oil', 0.4, 1, 1], ['green_shard', 0.5, 1, 2], ['hearth_salve', 0.3, 1, 1]] },
 };

@@ -321,6 +321,7 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 - **„The Heron at the Ford“** (Haskel, ab 33, nach „Stone by Stone“): Am Westufer unterhalb der Furt fischt **the Grey Heron** (neuer Boss allein mit Einsatz, Stufe 36) die Lampen, die Träger früher im Bach verloren. Eine Feder zu Haskel (er steckt sie sich hinters Ohr); Lohn 4.200 EP, Salben. Die **Heron Plume** wird bei Tinkering 37 zur **Heron Hood** (Abwehr 6, Licht 1).
 - Zwei Gefallen am Brett: drei Torfziegel für Ama (22 Gold, 300 EP) und drei Ash Moths für Brindle (32 Gold, 520 EP). IDs so gewählt, dass der Kern-Test „Gefallen erledigen“ grün bleibt.
 - Zwei neue Fundstücke im Drift (ein Pflock mit eingebranntem Namen, eine Feuerschale voller Torfasche).
+- Die Kiste am Rastplatz hat eine eigene Beutetabelle (`carriers_box`: Torfbrot, Torf, Peat Oil, grünes Glas, Salbe).
 - Lampwright 37: **Hollow Lens** (Flarecaster, Kraft 15) aus drei Hollow Beads, Glass Grit und Cinder Iron; so haben die Perlen der Wardens auch nach „Beads for Home“ einen Zweck.
 - Cartography 34: **Carrier's Notch**, Kerben der Träger im Fels an der Steinstraße (Survey Notes, selten eine Hollow Bead).
 - Hollis hat ein achtes Gerücht (wer von der Steinstraße herunterkommt, will etwas Heißes und einen Platz am Feuer; Ama sagt kein Wort dazu, „that is how you know she is thinking“).
