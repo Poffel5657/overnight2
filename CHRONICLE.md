@@ -318,6 +318,7 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 - **„Beads for Home“** (Stranger, nach „Not Thieves“): drei **Hollow Beads** von den Wardens; jede Perle steht für ein Haus, in dem das Feuer noch brennt. Er knüpft sie zu einem Stirnband, **Hollow String** (Kopf, Abwehr 5, Licht 1): „If they see it, they will know somebody at Kindle counted them.“
 - **„Seven Fires for Fen“** (Fen, für niedrige Stufen): Fen darf nicht über die Kiste hinaus; nachts auf den Ausguck, Brindle fragen, Fen erzählen. Fen zeichnet die Leiter aus Feuern auf das Pflaster, mit Gans.
 - **Alchemie 40 bis 48:** **Moth Draught** (40, langes Leuchten und 50 Öl), **Culvert Draught** (44, heilt 220), **Peat Tonic** (48, heilt 280). Damit hat Alchemie wieder Rezepte bis 48 (vorher 36).
+- Zwei Gefallen am Brett: drei Torfziegel für Ama (22 Gold, 300 EP) und drei Ash Moths für Brindle (32 Gold, 520 EP). IDs so gewählt, dass der Kern-Test „Gefallen erledigen“ grün bleibt.
 - Zwei neue Fundstücke im Drift (ein Pflock mit eingebranntem Namen, eine Feuerschale voller Torfasche).
 - Neue Rufe (Pell, Ama, Brindle, Pip), Pells neuer Ausruf (der von gestern ist über „What was the news yesterday?“ noch zu hören), neuer Ausguck-Text.
 - Alte Nachttests prüften die letzte Fähigkeit jedes Wegs (62) und den Ausguck-Text wörtlich; sie suchen jetzt die Stufe bzw. prüfen nur, dass es Text gibt.
