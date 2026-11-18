@@ -101,6 +101,8 @@ const BODIES = [
   ['turnling', 'Turnling'], ['wallcrawler', 'Crawler'], ['lostlamp', 'Lamp'], ['wolf', 'Hound'],
   ['stone_beetle', 'Shell'], ['pit_worm', 'Worm'], ['choir_wraith', 'Singer'], ['drowned_pilgrim', 'Pilgrim'],
   ['mire_lurker', 'Lurker'], ['bog_toad', 'Toad'], ['moss_spirit', 'Mossling'], ['old_foreman', 'Digger'],
+  // Tag 8: Körper von der Steinstraße
+  ['ash_moth', 'Moth'], ['cairn_creeper', 'Cairn'], ['the_grey_heron', 'Heron'],
 ];
 const EPITHETS = ['Hungry', 'Weeping', 'Crooked', 'Pale', 'Many-Handed', 'Hollow', 'Rusted', 'Whispering',
   'Patient', 'Lantern-Eating', 'Backward', 'Sleepless', 'Folded', 'Thin', 'Grinning', 'Borrowed'];
