@@ -49,4 +49,10 @@ export const CHRONICLE = [
     title: 'Bread to the first stone',
     text: 'The altar chose to send bread north, so a box waits under the first stone at the end of the north road, and Wenna stays until it is worth carrying. The Stranger let somebody relight his green lamp and now throws a thin shadow, every path learned something at fifty-eight and sixty-two, and under the Spillway the Overflow Run leads to an old pump and a gate that points north.',
   },
+  {
+    day: 8,
+    date: '2026-11-19',
+    title: 'Seven stones, seven fires',
+    text: 'The altar chose fires for the north road, so past the bread box the Stone Road now climbs through the Grey with a fire bowl on every cairn, and Brindle wants them lit. Ama is twenty logs short and the boot prints go north, to a clearing where tall people in peat-brown coats guard her wood, and every path learned something at sixty-six.',
+  },
 ];
