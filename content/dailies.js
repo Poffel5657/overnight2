@@ -35,6 +35,9 @@ export const FAVOURS = {
   pumpwarden_again: { from: 'hesk', type: 'kill', mob: 'the_pumpwarden', n: 1, text: 'The old pump has started walking again. Hesk says take a friend, and stay out of the jets.', reward: { gold: 90, xp: 2600 } },
   // Tag 6 (Ama's Woodpile): Holz für den Stapel; Totholz spaltet jeder am Waldrand
   logs_for_ama: { from: 'ama', type: 'bring', item: 'split_log', n: 4, text: 'Ama wants four split logs for the woodpile. Deadfall lies along the woods.', reward: { gold: 12, xp: 45 } },
+  // Tag 8: die Steinstraße (Torf für das Leuchtfeuer, Motten an den Feuern)
+  peat_for_ama: { from: 'ama', type: 'bring', item: 'peat_brick', n: 3, text: 'Ama wants three bricks of peat from the Stone Road. "If they burn it up north, we can burn it here."', reward: { gold: 22, xp: 300 } },
+  moths_for_brindle: { from: 'brindle', type: 'kill', mob: 'ash_moth', n: 3, text: 'Ash moths are drinking the fire bowls on the Stone Road dry. Brindle wants three fewer.', reward: { gold: 32, xp: 520 } },
   shoo_crows: { from: 'fen', type: 'kill', mob: 'crow', n: 3, text: 'The crows are judging the vegetable patch. Shoo them.', reward: { gold: 8, xp: 20 } },
 };
 

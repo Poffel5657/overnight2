@@ -210,3 +210,29 @@ test('Nachschlag: Alchemie 40 bis 48 aus Mottenstaub und Torf, jedes Rezept bess
   assert.ok(heal('culvert_draught') > heal('sluice_draught') && heal('peat_tonic') > heal('culvert_draught'), 'heilt mehr als die Stufe davor');
   assert.ok(ITEMS.moth_draught.use.glow > ITEMS.wisp_draught.use.glow, 'leuchtet länger als der Wisplight Draught');
 });
+
+test('Gefallen „moths_for_brindle“: drei Ash Moths an einem Tag, an dem er dran ist; „peat_for_ama“ steht auch am Brett', async () => {
+  const { favoursFor } = await import('../../shared/community.js');
+  const { FAVOURS } = await import('../../content/dailies.js');
+  const dayWith = (id) => {
+    for (let d = new Date('2026-11-19T12:00:00Z'); ; d.setUTCDate(d.getUTCDate() + 1)) {
+      const iso = d.toISOString().slice(0, 10);
+      if (favoursFor(iso).includes(id)) return iso;
+    }
+  };
+  assert.ok(dayWith('peat_for_ama'), 'Torf-Gefallen kommt dran');
+  const w = S.createWorld(regionFor('stone_road'), 819);
+  w.date = dayWith('moths_for_brindle');
+  w.daylight = 0;
+  const p = veteran(w, 'a', { level: 31, equip: GEAR, bag: [{ id: 'hearth_salve', n: 8 }] });
+  for (const m of w.mobs) if (m.type !== 'ash_moth') { m.dead = true; m.deadUntil = 1e9; }
+  const gold = p.gold;
+  for (let k = 0; k < FAVOURS.moths_for_brindle.n; k++) {
+    const m = w.mobs.filter((x) => x.type === 'ash_moth' && !x.dead)[0];
+    p.x = m.x; p.y = m.y + 1;
+    if (!S.walkable(w, p.x, p.y)) p.y = m.y - 1;
+    fight(w, 'a', m);
+    assert.ok(m.dead, `Motte ${k + 1}`);
+  }
+  assert.ok(p.gold >= gold + FAVOURS.moths_for_brindle.reward.gold, `Gefallen am ${w.date} erledigt`);
+});
