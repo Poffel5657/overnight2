@@ -185,6 +185,16 @@ export const ITEMS = {
   strangers_lamp: { name: 'The Stranger\'s Lamp', stack: true, value: 0, glyph: 'i', text: 'A carrier\'s lamp of thick green glass, cracked across one pane and cold for a long time. The wick is a stub. It weighs more than it looks.' },
   sackcloth_mantle: { name: 'Sackcloth Mantle', slot: 'body', defence: 6, light: 0.5, value: 120, glyph: 'M', text: 'Wenna stitched it from Kindle\'s empty flour sacks, with birch bark at the shoulders. It smells of the mill, and a little of peat smoke.' },
   wennas_lantern: { name: 'Wenna\'s Lantern', stack: true, value: 0, glyph: 'i', text: 'A carrier\'s lantern of thick green glass, empty and cold. The handle is wrapped in birch bark.' },
+
+  // ---------- Tag 8: The Stone Road (Abstimmung „north-road-fires“) und die Hollow Wardens (Bogen) ----------
+  peat_brick: { name: 'Peat Brick', stack: true, value: 8, glyph: '#', text: 'A brick of cut peat from the bogs along the Stone Road. It burns slow and smoky. Somebody up north burns nothing else.' },
+  moth_dust: { name: 'Moth Dust', stack: true, value: 9, glyph: '%', text: 'Grey dust off an ash moth\'s wings. It glows faintly when it is near a flame, as if it remembers being drawn to one.' },
+  hollow_bead: { name: 'Hollow Bead', stack: true, value: 6, glyph: 'o', text: 'A small bead of thick green glass on a loop of birch twine. Every Hollow Warden carries a string of them.' },
+  chalked_log: { name: 'Chalked Log', stack: true, value: 0, glyph: '=', text: 'A split log, bark up, with a chalk line on the end. Ama\'s chalk. Ama\'s line.' },
+  cairnwalker_cloak: { name: 'Cairnwalker Cloak', slot: 'body', defence: 9, light: 1, value: 360, glyph: 'M', text: 'Brindle\'s spare cloak, oiled grey wool with a pocket for a flask of oil and a hook for a lamp. The hem is still muddy from the first stone.' },
+  road_lamp: { name: 'Road Lamp', slot: 'lantern', light: 4, burn: 0.4, value: 420, glyph: 'i', text: 'Green grit glass dusted inside with moth dust, in a cinder-iron cage. It glows a little even before you light it, and moths follow it home.' },
+  peat_oil: { name: 'Peat Oil', stack: true, use: { oil: 60 }, value: 22, glyph: '!', text: 'Dark oil rendered from peat over a slow fire. It smells of somebody else\'s hearth. A good long pour for a lantern on a long road.' },
+  hollow_string: { name: 'Hollow String', slot: 'head', defence: 5, light: 1, value: 240, glyph: '^', text: 'The Stranger tied three green beads onto a band of birch twine. "One for each house that still has its fire," he said. Wear it on your brow; it catches the lamplight.' },
 };
 
 // Ausrüstungsplätze in der Reihenfolge, in der das Fenster sie zeigt.

@@ -11,6 +11,7 @@
 // melee/ranged können dazzle (Takte) und burn { dmg, ticks } (brennt nach, alle 2 Takte, + Stufe/4).
 // dark: Schadensfaktor, wenn der Werfer im Dunkeln steht (Nacht und kein festes Licht). burst kann root (Takte) und burn.
 // ranged kann pull (zieht das Ziel neben den Werfer und bindet es, Bosse bleiben stehen).
+// aura kann fuel (Tag 8): Verbündete im Umkreis (nicht man selbst) bekommen so viel Öl in die Laterne.
 // fade kann radius + dazzle (blendet alles um einen herum, bevor man verschwindet).
 // desc: ein Satz Stimmung; die Zahlen erzeugt shared/describe.js aus den Daten.
 // power: Waffe zählt mit (Schaden + Waffenkraft). dazzle: Ziel kann kurz nicht angreifen.
@@ -165,4 +166,15 @@ export const ABILITIES = {
   eclipse_cut: { name: 'Eclipse Cut', desc: "Step between the target and every light it has. In the dark this is the deepest cut you know. Against the blind, deeper still.", glyph: 'C', kind: 'melee', hit: [32, 38], dark: 1.5, exploit: { dazzle: 1.4 }, cd: 24, power: true },
   wire_lash: { name: 'Wire Lash', desc: "Cast a wire like a fishing line, hook it, and haul. Whatever comes in stays where you put it.", glyph: '&', kind: 'ranged', range: 4, hit: [16, 20], pull: true, root: 8, cd: 30, power: true, text: 'The wire sings out, bites, and comes back heavy.' },
   twin_cut: { name: 'Twin Cut', desc: "Both blades at once. Your hardest hit.", glyph: 'X', kind: 'melee', hit: [8, 11], exploit: { root: 1.3 }, cd: 12, power: true },
+  // Tag 8: alle acht Wege auf 66. Warden (Dauerauftrag): Lightsworn teilt das Öl der eigenen Laterne (neu: aura mit fuel),
+  // Ironwall baut eine Burg aus Cinder Iron um die Leute dahinter.
+  beacon_vow: { name: 'Beacon Vow', desc: "Hold the lantern up the way Ama holds the Beacon. Everyone near you is warmer, and their lanterns drink from yours.", glyph: 'A', kind: 'aura', radius: 4, heal: 36, fuel: 20, oil: 20, cd: 60, text: 'You lift the lantern. Every lamp near you leans toward it.' },
+  cinder_keep: { name: 'Cinder Keep', desc: "Stand like a keep of cinder iron. Everything near you comes to you and cannot leave, and the people behind you are safe for a long breath.", glyph: '#', kind: 'taunt', radius: 5, root: 10, brace: 24, oil: 14, cd: 55, text: 'You plant the shield. For a moment you are a wall with a door in it, and the door is shut.' },
+  // Nachschlag Tag 8: Mender, Flarecaster und Drifter auf 66
+  hearth_ward: { name: 'Hearth Ward', desc: "Throw the ember down hard, the way you bank a fire for the night. Everything close is blinded, and everyone close is warm.", glyph: '+', kind: 'burst', radius: 3, hit: [16, 20], dazzle: 5, mend: 40, oil: 16, cd: 40, power: true, text: 'The ember lands, and the warmth comes off it in a wave.' },
+  cinder_storm: { name: 'Cinder Storm', desc: "Fling the ash high and let it come down burning, over a wide patch of ground. What was already burning burns worse.", glyph: '*', kind: 'zone', range: 6, radius: 3, hit: [24, 30], burn: { dmg: 10, ticks: 12 }, exploit: { burn: 1.3 }, oil: 18, cd: 40, power: true, text: 'The air fills with burning ash.' },
+  sunstrike: { name: 'Sunstrike', desc: "The whole lens, the whole lantern, one target. Anything already burning or blinded does not get up quickly.", glyph: '|', kind: 'ranged', range: 8, hit: [46, 54], exploit: { burn: 1.3, dazzle: 1.3 }, oil: 16, cd: 32, power: true, text: 'A line of noon, straight as a stone road.' },
+  prism_cage: { name: 'Prism Cage', desc: "Set the light spinning in a ring of colours. Everything inside it is dazzled and too dizzy to walk out.", glyph: '%', kind: 'zone', range: 6, radius: 2.5, hit: [16, 20], dazzle: 8, root: 8, oil: 16, cd: 46, power: true, text: 'The colours close round them like a cage.' },
+  starless_cut: { name: 'Starless Cut', desc: "A cut from a night with no stars at all. In the dark it is the worst thing you know. Against the blind, worse still.", glyph: 'C', kind: 'melee', hit: [40, 48], dark: 1.6, exploit: { dazzle: 1.4 }, cd: 26, power: true },
+  tripwire_ring: { name: 'Tripwire Ring', desc: "A ring of wire at ankle height, all round you. Whoever is close stays close, and whatever was stuck already is stuck worse.", glyph: 'O', kind: 'burst', radius: 2.5, hit: [16, 20], root: 14, exploit: { root: 1.3 }, cd: 42, power: true, text: 'Wire snaps up out of the grass in a ring.' },
 };

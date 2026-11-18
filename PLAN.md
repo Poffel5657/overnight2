@@ -8,25 +8,25 @@ Der Nightwright pflegt diese Datei jede Nacht (Regeln in `CLAUDE.md`).
 
 ## Heute in Arbeit
 
-Tag 7 (Nacht zum 2026-11-18), **Aufräumnacht**. Inbox-Datei fehlte wieder: keine neuen Gebete, Zettel 6 ohne Stimmen, der Nightwright wählt `bread-north` (erste Bogen-Wahl).
+Tag 8 (Nacht zum 2026-11-19). **Inbox fehlte zum dritten Mal** (keine Datei nach `2026-11-15.json`): keine neuen Gebete, Zettel 7 ohne Stimmen. Der Nightwright wählt `north-road-fires` (Bogen-Haken, Weltproblem 2 „The Northern Road“).
 
-**Teil 1, aus den Gebeten:** entfällt (keine neuen Gebete). Der Nachschlag wird größer (Klassen auf 58, Overflow Run aus Gebet 9).
+**Teil 1, aus den Gebeten:** entfällt (keine neuen Gebete). Teil 3 und der Nachschlag werden größer (neues Gebiet, alle Wege auf 66).
 
-**Teil 2, aus der Abstimmung: Brot an den ersten Stein (bread-north)**
-1. *Was der Spieler will:* Dass Kindle teilt, und dass das eigene Brot sichtbar irgendwo ankommt.
-2. *Woran er es merkt:* Eine Kiste unter dem ersten Steinmann am Ende der Nordstraße (Brindle zeigt sie). Er mahlt Gerste, lässt Hollis backen, kauft Öl, legt es hinein (Erfahrung einmal am Tag, Brindle schreibt es auf, Meldung für alle), Ama brummt, Wenna bleibt, bis es eine Last ist; „A Week of Bread“ gibt einen Mantel. Pell ruft es aus, der Ausguck zeigt den bewegten Deckel.
-3. *Woran es anschließt:* Mühle und Hollis (Millbread), Händler (Öl), Ausguck, Quests, Bogen (Träger, Wenna), Leuchtfeuer (Holz bleibt bei Ama).
-4. *Weg dorthin:* Brindle am Ausguck ab Kindling; Pell; Wenna erklärt, warum sie bleibt.
+**Teil 2, aus der Abstimmung: Signalfeuer an der Nordstraße (north-road-fires) → neues Gebiet „The Stone Road“**
+1. *Was der Spieler will:* Dass der Weg nach Norden, über den alle reden, endlich begehbar wird, und dass sein Licht etwas für andere bewirkt (die Träger finden den Weg).
+2. *Woran er es merkt:* Hinter der Kiste am ersten Stein führt ein Pfad in die Steinstraße (eigenes Gebiet, Stufe 26–34). Sechs Steinmänner mit Signalfeuern (je 15 Öl, brennen für alle, bis die Welt sich nachts erneuert); Quest „Stone by Stone“ bei Brindle: Öl mitnehmen, den dritten, fünften und siebten Stein anzünden, zurück zu Brindle (Lohn: Cairnwalker Cloak). Meldung für alle, wenn alle sechs brennen. Neue Wesen (Cairn Creeper 27, Ash Moth 30, die Öl trinken), Torf zum Stechen (Foraging), Totholz. Pell ruft es aus, Haskel und Brindle reden darüber.
+3. *Woran es anschließt:* Licht/Öl (Signalfeuer, Ölvorrat), Berufe (Foraging: Torf, Alchemie: Torföl, Lampwright: Road Lamp aus Mottenstaub), Leuchtfeuer (Torf ist Brennstoff), Bogen (Träger, Kiste), Quests.
+4. *Weg dorthin:* Brindle am Ausguck (ab Stufe 24), Tür „the stones that point north“ neben der Kiste am Ende der Nordstraße.
 
-**Teil 3, vom Nightwright: „A Lamp Gone Out“ (Bogen, Akt 2)**
-1. *Was der Spieler will:* Endlich etwas über den Stranger erfahren.
-2. *Woran er es merkt:* Nachts fragt man ihn, was er unter dem Mantel trägt; Glimmer aus Copperdeep, Wren, Ama zündet die Laterne am Leuchtfeuer an, er wirft einen Schatten und sagt, woher er kommt. Fen, Brindle, Tallow reagieren.
-3. *Woran es anschließt:* Copperdeep (Kampf oder Salvage), Lampwright Wren, Leuchtfeuer und Nacht, „Catch a Shadow“, Bogen.
-4. *Weg dorthin:* Der Stranger ab Stufe 15 nachts (darunter ein Hinweis), Pell erwähnt die grüne Laterne.
+**Teil 3, vom Nightwright: „Not Thieves“ (Bogen, Akt 2: Hollow Wardens)**
+1. *Was der Spieler will:* Erfahren, was am Ende der Straße ist und wer die Leute aus dem Norden sind; eine Gruppe, für die man Freunde braucht.
+2. *Woran er es merkt:* Ama fehlen Scheite (Rinde nach oben). Am Ende der Steinstraße liegt ein verlassener Rastplatz der Träger mit einer Feuerstelle, einer Namenstafel und Kindles Holz; drei Hollow Wardens (Gruppen-Wesen, Stufe 34) bewachen ihn. Wer einen besiegt und das gezeichnete Scheit findet, hört vom Stranger: „not thieves, they are cold“, und Ama zieht ihren Schluss. Holzperlen der Wardens („Hollow beads“) bringt man dem Stranger.
+3. *Woran es anschließt:* Gruppen (Wesen für vier), Amas Holzstapel, Stranger (Bogen), Klassen (Tank/Heiler zahlen sich aus).
+4. *Weg dorthin:* Ama ab Stufe 28 („Somebody took from the pile“), nach oder neben „Stone by Stone“; die Straße führt hin.
 
-**Dauerauftrag Klassen:** Warden auf 58 (Dawn Vow mit neuer Wirkung `mend` für Nahschläge, Anvil Fall).
+**Dauerauftrag Klassen:** Warden auf 66 (Lightsworn: Beacon Vow, neue Wirkung `fuel` = Öl für die Gruppe; Ironwall: Cinder Keep).
 
-**Nachschlag:** alle anderen Wege auf 58; The Overflow Run (50–54) mit Quest, Boss, Run Iron und zwei Tinkering-Rezepten; Rufe, Ausguck, Pell. Danach Aufräumen (Review-Funde, siehe `CHRONICLE.md`).
+**Nachschlag:** alle anderen Wege auf 66; Rezepte (Torföl, Road Lamp), Fundstelle Torf; „Beads for Home“ beim Stranger; Rufe, Pell, Ausguck.
 
 ## Ausbau läuft
 

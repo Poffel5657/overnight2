@@ -27,6 +27,7 @@ import { keeperFell } from './delve.js';
 import { grindAtMill } from './mill.js';
 import { splitDeadfall, stackWoodpile } from './woodpile.js';
 import { leaveAtCache } from './cache.js';
+import { stoneFire } from './road.js';
 
 export { saveOf, xpForLevel, MAX_LEVEL } from './player.js';
 
@@ -554,10 +555,13 @@ function doAction(world, p, goal) {
     emit(world, { type: 'lit', id: t.id, lit: true });
     emit(world, { type: 'log', text: t.type === 'signal' ? `${p.name} lit a signal fire. The Grey takes a step back.` : `${p.name} relights a brazier.`, cls: 'good' });
     if (t.type === 'signal') questEvent(world, p, 'action', { action: 'light' });
+    // Tag 8: Steinmänner der Steinstraße (content/road.js)
+    if (t.stone) stoneFire(world, p, t, true);
   } else if (goal.action === 'light' && t.type === 'signal' && t.lit) {
     // Schon an: zählt trotzdem für Quests, damit niemand auf ein dunkles Feuer warten muss.
     tell(world, p.id, 'This one is already burning. You warm your hands and feel useful.', 'sys');
     questEvent(world, p, 'action', { action: 'light' });
+    if (t.stone) stoneFire(world, p, t, false);
   } else if (goal.action === 'open' && t.type === 'stash') {
     emit(world, { to: p.id, type: 'window', win: 'stash' });
   } else if (goal.action === 'rest' && t.type === 'inn_bed') {
@@ -747,6 +751,8 @@ function castAbility(world, p, id) {
       for (const q of alliesNear(world, p, a.radius)) {
         if (a.heal) healPlayer(world, q, a.heal + bonus);
         if (a.brace) q.braceUntil = Math.max(q.braceUntil, world.tick + a.brace);
+        // fuel (Tag 8, Beacon Vow): die Laternen der anderen bekommen Öl aus der eigenen
+        if (a.fuel && q !== p) { q.oil = Math.min(100, q.oil + a.fuel); q.warnedOil = 0; }
       }
       break;
     }
@@ -897,7 +903,7 @@ function hitMob(world, p, m, dmg) {
   }
   for (const q of credit) {
     if (cheb(q.x, q.y, m.x, m.y) > SHARE_RANGE) continue;
-    tell(world, q.id, m.type === 'greyling' ? 'The Greyling comes apart into fog.' : `${theName(m.name)} falls.`, 'good');
+    tell(world, q.id, m.type === 'greyling' ? 'The Greyling comes apart into fog.' : m.def.fallText || `${theName(m.name)} falls.`, 'good');
     grantXp(world, q, m.def.xp, { kill: true });
     questEvent(world, q, 'kill', { mob: m.type });
     onKill(world, q, m.type);

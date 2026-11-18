@@ -40,6 +40,6 @@ export const FAVOURS = {
 
 // Was das Leuchtfeuer frisst und wie viel es zählt. Das Tagesziel bestimmt, wie weit der Grey
 // in der nächsten Nacht zurückweicht (der Nightwright liest den Stand).
-export const BEACON_FUEL = { lamp_oil: 5, wax_comb: 2, grey_wisp: 1, singed_tuft: 2, split_log: 4 };
+export const BEACON_FUEL = { lamp_oil: 5, wax_comb: 2, grey_wisp: 1, singed_tuft: 2, split_log: 4, peat_brick: 3 };
 export const BEACON_GOAL = 300;
 

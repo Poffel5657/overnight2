@@ -39,12 +39,15 @@ export const BARKS = {
       'Ama\'s WOODPILE stands by the Beacon! Everybody fills it! Deadfall along the woods!',
       'The Beacon is HUNGRY! Ama says bring wood every evening! Ama is not asking!',
       'Wardens swear to the light, or to iron! Ask Ama at fifty!',
+      'The STONE ROAD is open! Seven stones, seven fires! Bring OIL!',
+      'Ama is twenty logs short! The boot prints go NORTH!',
+      'Moths on the Stone Road as big as crows! They drink LAMPS!',
     ],
   },
   // Tag 6: Ama am Holzstapel (ruft bei Abend, wer vorbeigeht, soll Holz bringen)
   ama: {
     range: 7, every: 45,
-    lines: ['Bread north, wood here. That is the deal.', '*chalks a line on the tally board*', 'Bark up. Always bark up.', 'Deadfall along the woods. Any boot can break it.', 'It ate the whole pile last night.', '*weighs a log in her hand, frowns at the fire*'],
+    lines: ['Bread north, wood here. That is the deal.', '*chalks a line on the tally board*', 'Bark up. Always bark up.', 'Deadfall along the woods. Any boot can break it.', 'It ate the whole pile last night.', '*weighs a log in her hand, frowns at the fire*', '*counts the pile, and counts it again*', 'Twenty short. Bark up. Somebody knew how.'],
   },
   band_corra: {
     range: 9, every: 20,
@@ -62,7 +65,7 @@ export const BARKS = {
   },
   band_pip: {
     range: 9, every: 31,
-    lines: ['*a thin, happy tune on the pipe*', '*toot*', 'There is a light in the north... la la...', '...and Brindle is watching it... la la...', '...and lamps walk by in the dark... la la...', '...and the mill grinds all night... la la...', '...two lamps now, only two... la...', '...and the pile by the fire grows... la la...'],
+    lines: ['*a thin, happy tune on the pipe*', '*toot*', 'There is a light in the north... la la...', '...and Brindle is watching it... la la...', '...and lamps walk by in the dark... la la...', '...and the mill grinds all night... la la...', '...two lamps now, only two... la...', '...and the pile by the fire grows... la la...', '...seven fires up the old stone road... la la...'],
   },
   brindle: {
     range: 8, every: 50,
@@ -76,6 +79,9 @@ export const BARKS = {
       'Three lamps last night. And the glow is wider again.',
       'No lamps at all last night. Not one.',
       'One, two, three cairns. Then nothing.',
+      'Fires on the stones! I count four. No, five.',
+      'Something tall at the top of the road, with a green lamp.',
+      'Take oil up the Stone Road. Lots of oil.',
     ],
   },
   hesk: {

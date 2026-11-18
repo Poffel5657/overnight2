@@ -86,8 +86,8 @@ test('Carriers in the Dark: Brindle, Gestell, Gnawer, Brot, Wren, Stranger, Brin
   applyIntent(w, 'a', { t: 'use', slot });
   run(w, 6);
   assert.ok(p.hp > 10, 'das Brot heilt');
-  // Vom Ausguck sieht man die Träger
-  assert.ok(LOOKOUT.night.includes('tiny lights move'));
+  // Vom Ausguck sieht man nachts etwas (der Text wächst mit dem Bogen, deshalb nicht wörtlich prüfen; Tag 8)
+  assert.ok(LOOKOUT.night.length > 80);
 });
 
 test('Gefallen am Nordrand: drei Gnawer für Brindle', async () => {
