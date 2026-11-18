@@ -4,7 +4,7 @@ Der Nightwright pflegt diese Datei jede Nacht (Regeln in `CLAUDE.md`).
 
 ## Inbox gelesen bis
 
-`v2/inbox/2026-11-15.json` (Tag 5). **Tag 6 und Tag 7 fanden keine neuere Datei** (`2026-11-16.json` und `2026-11-17.json` fehlten um 23 Uhr). Die nächste Nacht liest alle Dateien nach `2026-11-15.json`, auch nachträglich angekommene (dort stehen Stimmen für Zettel 5/6, die schon entschieden sind, und Gebete, die noch offen sind).
+`v2/inbox/2026-11-15.json` (Tag 5). **Tag 6, 7 und 8 fanden keine neuere Datei** (`2026-11-16.json` bis `2026-11-18.json` fehlten um 23 Uhr; Ursache unter „Bekannte Probleme“). Die nächste Nacht liest alle Dateien nach `2026-11-15.json`, auch nachträglich angekommene (Gebete darin sind noch offen; Stimmen für Zettel 5 bis 7 sind schon entschieden).
 
 ## Heute in Arbeit
 
@@ -32,7 +32,8 @@ Tag 8 (Nacht zum 2026-11-19). **Inbox fehlte zum dritten Mal** (keine Datei nach
 
 - **The Unending Maze** (seit 2026-11-13, von Chris gebaut aus Gebet 4): Stockwerke 1 bis 99 unter Cinderford, jeden Tag neu gewürfelt, Stufe = 3 + 2 × Stockwerk. Ausbau möglich: Rangliste auf dem Turn Board (braucht Chris: D1-Abfrage), weitere Keeper-Körper und -Eigenschaften (`BODIES`, `AFFIXES` in `content/regions/maze.js`), Rezepte aus Turnstones, mehr Gegenstände ab Stockwerk 25, Quests für tiefere Stockwerke (`keeper_10`, `keeper_20` gibt es schon).
 - **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag): Stand in `ROADMAP.md`: alle acht Wege haben Fähigkeiten auf 50, 54 und 58 (Tag 7). Nächste Nächte: Warden 62, dann die anderen. Seit Tag 7 können Nahschläge `mend` (Gruppe heilt). Seit Tag 6 kann `zone` dazzle, root und burn. Seit Tag 5 kann `burst` auch `mend` (Gruppe heilt). Seit Tag 4 gibt es `exploit` (Schaden gegen brennende/geblendete/festsitzende Ziele): gut für weitere Stufen, auch kleinere exploit-Fähigkeiten für 12–30 wären schön (Gebet 8).
-- **Der Bogen „The Second Light“**: Tag 7: Zettel 6 → bread-north (Kiste am ersten Stein), Wenna bleibt, bis die Kiste eine Last ist; der Stranger hat einen Schatten und gibt zu, aus dem Norden zu kommen. Nächste: Hollow Wardens, Weltproblem 2.
+- **Der Bogen „The Second Light“**: Tag 7: Zettel 6 → bread-north (Kiste am ersten Stein), Wenna bleibt, bis die Kiste eine Last ist; der Stranger hat einen Schatten und gibt zu, aus dem Norden zu kommen. Tag 8: Zettel 7 → north-road-fires (die Steinstraße mit Feuern), Hollow Wardens am Rastplatz der Träger („Not Thieves“, „Beads for Home“). Nächste: Wennas Aufbruch, Vorstufe der großen Wahl.
+- **The Stone Road** (seit Tag 8, Stufe 26–34): sechs Feuer, Rastplatz der Träger, drei Hollow Wardens (Gruppe). Ausbau: Zettel 8 `carriers-rest` (Unterstand wieder aufbauen, gemeinsam), ein Boss an der Furt oder am achten Stein, Gefallen „Feuer anzünden“ (Achtung, Kern-Test „Gefallen erledigen“, siehe unten), was hinter dem achten Stein liegt (Bogen, nicht vor Akt 3).
 - **Ama's Woodpile** (seit Tag 6): Stapel wächst mit dem Tageszähler. Ausbau: ein Vorrat über mehrere Tage (Weltzähler im Worker, nur mit Chris), Belohnung für die Gemeinschaft, wenn der Stapel voll ist, mehr Totholz in Copperdeep/Sinkmarsh.
 - **The Spillway** (seit Tag 6, 46–50) und **The Overflow Run** (seit Tag 7, 50–54): Ausbau: ein Gruppen-Wesen, das Tor nach Norden (Bogen), Rezepte bis Tinkering 50.
 - **Die Kiste am ersten Stein** (seit Tag 7): zählt pro Spieler (`sentNorth`). Ausbau: gemeinsamer Stand (Weltzähler, nur mit Chris), Antwort aus dem Norden (ein Geschenk in der Kiste?).
@@ -45,15 +46,15 @@ Tag 8 (Nacht zum 2026-11-19). **Inbox fehlte zum dritten Mal** (keine Datei nach
 ## Nächste Nächte
 
 - Inbox: prüfen, ob `2026-11-16.json`/`2026-11-17.json` nachträglich kamen (Gebete nachholen). Fehlt wieder eine Datei, steht es unter „Bekannte Probleme“ für Chris.
-- Klassen: alle acht Wege haben 62 (Tag 7). Nächste: Warden 66, dann Mender, Flarecaster, Drifter 66. Inhalt für 55 bis 66 muss mitwachsen.
+- Klassen: alle acht Wege haben 66 (Tag 8). Nächste: Warden 70, dann die anderen. Inhalt für 55 bis 66 muss mitwachsen (dringend: ein Gebiet für 55–60).
 - Inhalt für 54+: der Overflow Run reicht bis 54; dahinter das Tor nach Norden (bleibt zu, bis der Bogen es öffnet).
-- Bogen: Zettel 7 auswerten (north-road-fires wäre Weltproblem 2). Hollow Wardens am Nordrand vorbereiten (Gruppen-Wesen, Stufe ~30).
+- Bogen: Zettel 8 auswerten (carriers-rest ist ein kleiner Bogen-Haken). Wennas Aufbruch (spätestens Tag 10), danach die Vorstufe der großen Wahl auf den Zettel.
 - Mehr Gefallen, die Gruppen belohnen.
 
 ## Ideen für später
 
 - Cooking bei Hollis (Zettel 3–5, seit Zettel 7 als hollis-kitchen wieder drauf).
-- Signalfeuer entlang der Nordstraße (Zettel 3–5, seit Zettel 7 wieder drauf).
+- Unterstand der Träger wieder aufbauen (seit Zettel 8 als carriers-rest).
 
 - Angeln im Bach (drei Nächte auf dem Zettel ohne Stimme, vorerst herunter).
 - Ein Imker zieht nach Kindle (drei Nächte auf Zettel 1–3, ohne Stimme, vorerst herunter).
@@ -74,7 +75,7 @@ Tag 8 (Nacht zum 2026-11-19). **Inbox fehlte zum dritten Mal** (keine Datei nach
 
 ## Bekannte Probleme
 
-- Tag 7: **Die Inbox-Dateien `2026-11-16.json` und `2026-11-17.json` fehlen** (zwei Nächte ohne Gebete und Stimmen). Bitte `inbox-export.yml` prüfen.
+- Tag 7/8: **Die Inbox-Dateien `2026-11-16.json` bis `2026-11-18.json` fehlen** (drei Nächte ohne Gebete und Stimmen). Ursache (Tag 8 nachgesehen): GitHub startet `inbox-export.yml` nur noch einmal am Tag, und zwar nach Mitternacht (Läufe 2026-11-16 01:05, 2026-11-17 00:17, 2026-11-18 00:32 Berlin). Das Skript arbeitet nur zwischen 17 und 22:59 Uhr und beendet sich sonst grün mit „nichts zu tun“. Vorschlag an Chris: den Export zusätzlich vom Nachtlauf-Start aus anstoßen (workflow_dispatch mit force) oder das Fenster bis 2 Uhr öffnen und die Datei dann für den Vortag schreiben; `.github/` ist geschützt.
 - Tag 7: Ein Abgabe-Gefallen „Brot für die Kiste“ (Brindle, zwei Millbread) ließ den Kern-Test „Gefallen erledigen“ mit jeder ausprobierten ID scheitern (er zieht dann einen Gefallen, den ein Neuling nicht schafft) und wurde weggelassen. Der Vorschlag an Chris von oben (Test sucht einen leichten Kampf-Gefallen gezielt) würde das lösen.
 - Tag 7 (Review): Die Wegfindung (`pathFor` in `shared/sim.js`) läuft für jeden Spieler mit Ziel in jedem Takt. Zwischenspeichern brach den Kern-Test „Sammeln, Herstellen, …“ und wurde zurückgenommen; braucht einen sorgfältigeren Versuch.
 - Tag 7 (Review): Offline setzt `src/net.js` den Leuchtfeuer-Zähler um Mitternacht nicht zurück (nur Anzeige, Stapel bleibt hoch). `src/net.js` ist geschützt; Vorschlag an Chris: in `tick` bei Datumswechsel `w.community.beacon = 0`.
