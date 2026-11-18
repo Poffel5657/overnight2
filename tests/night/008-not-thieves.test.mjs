@@ -218,3 +218,17 @@ test('Hollis hat ein achtes Gerücht (die Steinstraße)', () => {
   for (const t of ['Anything else', 'And?', 'Anything newer', 'And?', 'Anything newer', 'Anything newer', 'Anything newer']) choose(w, 'a', t);
   assert.equal(p.dialog.page, 'rumour8');
 });
+
+test('Die Kiste eines Trägers am Rastplatz: einmal am Tag, mit Dingen aus dem Norden', () => {
+  const w = S.createWorld(regionFor('stone_road'), 829);
+  w.date = '2026-11-19';
+  for (const m of w.mobs) { m.dead = true; m.deadUntil = 1e9; }
+  const p = veteran(w, 'a', { level: 34 });
+  const box = w.objects.find((o) => o.type === 'chest' && o.chest === 'carriers_box');
+  const gold = p.gold;
+  actOn(w, 'a', box, 'open');
+  assert.ok(p.gold > gold, 'Gold');
+  const g2 = p.gold;
+  actOn(w, 'a', box, 'open');
+  assert.equal(p.gold, g2, 'nur einmal am Tag');
+});

@@ -46,7 +46,7 @@ export const REGION = {
     { type: 'house', x: 9, y: 3, w: 3, d: 2, roof: '#4a3a2a', name: 'the carriers\' lean-to', text: 'A lean-to of poles and birch bark against the wind from the north. Inside: dry bracken, a folded blanket, and nobody.' },
     { type: 'peg_board', x: 17, y: 3, name: 'the peg board', text: 'A board on two posts with rows of wooden pegs, a name burnt into each. Most pegs are empty. On the ones that are not hang little strings of green beads. Somebody has carved at the top: TAKE YOUR PEG WHEN YOU GO NORTH. LEAVE IT WHEN YOU GO SOUTH.' },
     { type: 'shrine', look: 'log_stack', x: 18, y: 7, name: 'a stack of logs', gives: 'chalked_log', quest: 'not_thieves', step: 1, text: 'A stack of split logs at the edge of the clearing, bark up, the way Ama stacks them. Too neat for the Grey.', found: 'You pull a log off the stack and turn it over. On the end, in white chalk, a single tally line. Ama\'s chalk. Ama\'s line.', empty: 'Kindle wood, bark up, stacked by somebody who knew how. Most of it has Ama\'s chalk on the end.' },
-    { type: 'chest', chest: 'drift', x: 26, y: 7, name: 'a carrier\'s box' },
+    { type: 'chest', chest: 'carriers_box', x: 26, y: 7, name: 'a carrier\'s box' },
     { type: 'fallen_stone', x: 17, y: 2, name: 'the eighth stone', text: 'The eighth stone has fallen over, and the road goes on past it into the Grey, thicker here than anywhere you have been. Somebody has set the top stone back on the pile so that it still points north.' },
   ],
   npcs: [],
