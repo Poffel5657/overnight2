@@ -315,7 +315,7 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 
 **Nachschlag:**
 - **Alle anderen Wege auch auf 66:** Mender **Hearth Ward** (Hearthkeeper: blendet und wärmt) und **Cinder Storm** (Ashbinder), Flarecaster **Sunstrike** (Sunwright) und **Prism Cage** (Prismist: blendet und hält fest), Drifter **Starless Cut** (Nightblade) und **Tripwire Ring** (Snarewright).
-- **Warden schon auf 70:** Lightsworn **Morning Vow** (Nahschlag, blendet, wärmt die Leute dahinter), Ironwall **Iron Hour** (große Selbstheilung, lange halber Schaden). Der Dauerauftrag geht der Reihe nach weiter: als Nächstes Mender 70.
+- **Warden schon auf 70:** Lightsworn **Morning Vow** (Nahschlag, blendet, wärmt die Leute dahinter), Ironwall **Iron Hour** (große Selbstheilung, lange halber Schaden). Danach auch der **Mender auf 70:** Hearthkeeper **Hearth and Home** (lange Wärme im Umkreis 6), Ashbinder **Pyre Lash** (brennende Peitsche, härter gegen Brennendes). Als Nächstes: Flarecaster und Drifter 70.
 - **„Beads for Home“** (Stranger, nach „Not Thieves“): drei **Hollow Beads** von den Wardens; jede Perle steht für ein Haus, in dem das Feuer noch brennt. Er knüpft sie zu einem Stirnband, **Hollow String** (Kopf, Abwehr 5, Licht 1): „If they see it, they will know somebody at Kindle counted them.“
 - **„Seven Fires for Fen“** (Fen, für niedrige Stufen): Fen darf nicht über die Kiste hinaus; nachts auf den Ausguck, Brindle fragen, Fen erzählen. Fen zeichnet die Leiter aus Feuern auf das Pflaster, mit Gans.
 - **Alchemie 40 bis 48:** **Moth Draught** (40, langes Leuchten und 50 Öl), **Culvert Draught** (44, heilt 220), **Peat Tonic** (48, heilt 280). Damit hat Alchemie wieder Rezepte bis 48 (vorher 36).

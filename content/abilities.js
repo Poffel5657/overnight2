@@ -180,4 +180,7 @@ export const ABILITIES = {
   // Nachschlag Tag 8: der Warden schon auf 70 (Dauerauftrag läuft der Reihe nach weiter: als Nächstes Mender 70)
   morning_vow: { name: 'Morning Vow', desc: "The first line of the vow and the last, in one blow. What you hit cannot see for a moment, and the people behind you are warmer for it.", glyph: '^', kind: 'melee', hit: [40, 48], dazzle: 4, mend: 30, mendRadius: 4, oil: 10, cd: 20, power: true, text: 'The shield rings like a bell at dawn.' },
   iron_hour: { name: 'Iron Hour', desc: "Stand like the coldest hour of the night, the one before dawn. Nothing you take matters much for a long breath.", glyph: 'T', kind: 'self', heal: 80, brace: 30, oil: 12, cd: 70, text: 'You set your feet. The hour before dawn is the longest, and you are longer.' },
+  // Nachschlag Tag 8: der Mender auch schon auf 70
+  hearth_and_home: { name: 'Hearth and Home', desc: "Make the ember into the fire everybody walks home to. Everyone near you stays warm for a long, long time.", glyph: '~', kind: 'hot', radius: 6, heal: 16, ticks: 20, oil: 20, cd: 65, text: 'For a while, wherever you stand is home.' },
+  pyre_lash: { name: 'Pyre Lash', desc: "A whip of burning ash from the end of the staff. It keeps burning, and what was already burning burns much worse.", glyph: '/', kind: 'ranged', range: 7, hit: [34, 40], burn: { dmg: 11, ticks: 12 }, exploit: { burn: 1.4 }, oil: 14, cd: 26, power: true, text: 'The ash cracks like a whip, and catches.' },
 };
