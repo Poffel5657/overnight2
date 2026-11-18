@@ -175,3 +175,21 @@ test('Torf stechen (Foraging 33), Peat Oil (Alchemie 31), Road Lamp (Lampwright 
   assert.ok(MOBS.ash_moth.drops.some(([id]) => id === 'moth_dust'), 'Mottenstaub von Ash Moths');
   assert.ok(QUESTS.stone_by_stone.reward.items.cairnwalker_cloak);
 });
+
+test('Seven Fires for Fen (Nachschlag, niedrige Stufe): nachts auf den Ausguck, Brindle fragen, Fen erzählen', () => {
+  const w = S.createWorld(regionFor('kindle'), 817);
+  w.date = '2026-11-19';
+  w.daylight = 0;
+  const p = veteran(w, 'a', { level: 6 });
+  talk(w, 'a', 'fen');
+  choose(w, 'a', 'fires on the stones');
+  assert.equal(p.quests.fens_fires.step, 0);
+  actOn(w, 'a', w.objects.find((o) => o.type === 'lookout'), 'use');
+  assert.equal(p.quests.fens_fires.step, 1, 'nachts auf dem Ausguck');
+  talk(w, 'a', 'brindle');
+  choose(w, 'a', 'how many fires');
+  talk(w, 'a', 'fen');
+  choose(w, 'a', 'counted the fires');
+  assert.ok(p.quests.fens_fires.done);
+  assert.equal(P.countItem(p, 'bread'), 2);
+});

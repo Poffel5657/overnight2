@@ -661,6 +661,17 @@ export const QUESTS = {
     ],
     reward: { xp: 1600, gold: 40, items: { hollow_string: 1 } },
   },
+  // Tag 8, Nachschlag (für niedrige Stufen): Fen darf nicht über die Kiste hinaus und will die Feuer trotzdem zählen.
+  fens_fires: {
+    name: 'Seven Fires for Fen', giver: 'fen',
+    text: 'Fen is not allowed past the bread box, and wants to know how many fires are burning on the stones up north.',
+    steps: [
+      { type: 'action', action: 'watch', text: 'After dark, climb the North Watch at the top of the north road and count the fires on the stones.' },
+      { type: 'talk', npc: 'brindle', text: 'Ask Brindle if you counted right.' },
+      { type: 'talk', npc: 'fen', text: 'Tell Fen how many.' },
+    ],
+    reward: { xp: 160, gold: 10, items: { bread: 2, lamp_oil: 2 } },
+  },
   // Tag 6, Nachschlag (Bogen, für niedrige Stufen): Fen will Wenna eine Karte mitgeben.
   fens_map: {
     name: 'Fen\'s Map', giver: 'fen',
