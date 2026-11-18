@@ -194,6 +194,9 @@ export const ITEMS = {
   cairnwalker_cloak: { name: 'Cairnwalker Cloak', slot: 'body', defence: 9, light: 1, value: 360, glyph: 'M', text: 'Brindle\'s spare cloak, oiled grey wool with a pocket for a flask of oil and a hook for a lamp. The hem is still muddy from the first stone.' },
   road_lamp: { name: 'Road Lamp', slot: 'lantern', light: 4, burn: 0.4, value: 420, glyph: 'i', text: 'Green grit glass dusted inside with moth dust, in a cinder-iron cage. It glows a little even before you light it, and moths follow it home.' },
   peat_oil: { name: 'Peat Oil', stack: true, use: { oil: 60 }, value: 22, glyph: '!', text: 'Dark oil rendered from peat over a slow fire. It smells of somebody else\'s hearth. A good long pour for a lantern on a long road.' },
+  moth_draught: { name: 'Moth Draught', stack: true, use: { glow: 400, oil: 50 }, value: 36, glyph: '!', text: 'Moth dust stirred into nightcap tea. You glow for a long time, and every moth for a mile knows where you are.' },
+  culvert_draught: { name: 'Culvert Draught', stack: true, use: { heal: 220, oil: 30 }, value: 60, glyph: '!', text: 'Verdigris, lily and a crumb of peat, boiled down black. Tastes of the Sumps and a stranger\'s hearth. Works.' },
+  peat_tonic: { name: 'Peat Tonic', stack: true, use: { heal: 280, oil: 40 }, value: 80, glyph: '!', text: 'Greyglass ground into peat broth. It warms from the inside out, the way a peat fire does: slowly, and for a long time.' },
   hollow_string: { name: 'Hollow String', slot: 'head', defence: 5, light: 1, value: 240, glyph: '^', text: 'The Stranger tied three green beads onto a band of birch twine. "One for each house that still has its fire," he said. Wear it on your brow; it catches the lamplight.' },
 };
 

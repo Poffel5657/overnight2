@@ -66,6 +66,10 @@ export const RECIPES = {
   a_sluice_draught: { prof: 'alchemy', level: 36, inputs: { verdigris: 1, lily_bulb: 2, nightcap: 1 }, out: ['sluice_draught', 2], xp: 150 },
   // Tag 8: Torf von der Steinstraße wird zu langem Lampenöl (Alchemie 31)
   a_peat_oil: { prof: 'alchemy', level: 31, inputs: { peat_brick: 2, lily_bulb: 1 }, out: ['peat_oil', 2], xp: 124 },
+  // Tag 8, Nachschlag: Alchemie 40 bis 48 (Mottenstaub und Torf von der Steinstraße, Verdigris und Greyglass von weiter unten)
+  a_moth_draught: { prof: 'alchemy', level: 40, inputs: { moth_dust: 2, nightcap: 1 }, out: ['moth_draught', 2], xp: 170 },
+  a_culvert_draught: { prof: 'alchemy', level: 44, inputs: { verdigris: 1, lily_bulb: 2, peat_brick: 1 }, out: ['culvert_draught', 2], xp: 190 },
+  a_peat_tonic: { prof: 'alchemy', level: 48, inputs: { greyglass: 1, peat_brick: 2, lily_bulb: 2 }, out: ['peat_tonic', 2], xp: 215 },
   a_lily_oil: { prof: 'alchemy', level: 21, inputs: { lily_bulb: 2 }, out: ['lily_oil', 2], xp: 86 },
 
   // Lampwright (Linsenbank in der Werkstatt)
