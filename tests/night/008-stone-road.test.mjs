@@ -159,7 +159,7 @@ test('Torf stechen (Foraging 33), Peat Oil (Alchemie 31), Road Lamp (Lampwright 
   assert.ok(P.countItem(p, 'peat_brick') >= 2, `Torf gestochen (${P.countItem(p, 'peat_brick')})`);
   assert.ok(BEACON_FUEL.peat_brick > 0, 'Torf brennt im Leuchtfeuer');
 
-  for (const [rid, station] of [['a_peat_oil', 'still'], ['l_road_lamp', 'lampbench']]) {
+  for (const [rid, station] of [['a_peat_oil', 'still'], ['l_road_lamp', 'lampbench'], ['l_hollow_lens', 'lampbench']]) {
     const r = RECIPES[rid];
     const k = S.createWorld(regionFor('kindle'), 816);
     const bag = Object.entries(r.inputs).map(([id, n]) => ({ id, n }));
@@ -171,6 +171,7 @@ test('Torf stechen (Foraging 33), Peat Oil (Alchemie 31), Road Lamp (Lampwright 
     assert.equal(P.countItem(q, r.out[0]), r.out[1], `${r.out[0]} hergestellt`);
   }
   assert.ok(ITEMS.peat_oil.use.oil > ITEMS.lamp_oil.use.oil, 'Peat Oil hält länger');
+  assert.ok(ITEMS.hollow_lens.power > ITEMS.cinder_lens.power && ITEMS.hollow_lens.power < ITEMS.verdigris_lens.power, 'Hollow Lens passt zwischen Cinder Iron und Verdigris');
   assert.ok(ITEMS.road_lamp.light > ITEMS.cinder_lantern.light && ITEMS.road_lamp.light < ITEMS.weir_lamp.light, 'Road Lamp passt zwischen Cinder Iron und Weir Lamp');
   assert.ok(MOBS.ash_moth.drops.some(([id]) => id === 'moth_dust'), 'Mottenstaub von Ash Moths');
   assert.ok(QUESTS.stone_by_stone.reward.items.cairnwalker_cloak);

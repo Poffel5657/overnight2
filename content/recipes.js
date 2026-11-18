@@ -101,6 +101,8 @@ export const RECIPES = {
   // Tag 5 (Sumps, Nachschlag): Verdigris hält die Feuchte aus dem Eisen. Stab und Linse eine Stufe über Cinder Iron.
   // Tag 8: Mottenstaub von der Steinstraße in grünem Glas (Lampwright 36)
   l_road_lamp: { prof: 'lampwright', level: 36, inputs: { moth_dust: 3, glass_grit: 2, cinder_iron: 1 }, out: ['road_lamp', 1], xp: 270 },
+  // Tag 8, Nachschlag: Perlen der Hollow Wardens, zu einer Linse geschmolzen (Lampwright 37, zwischen Cinder Iron und Verdigris)
+  l_hollow_lens: { prof: 'lampwright', level: 37, inputs: { hollow_bead: 3, glass_grit: 2, cinder_iron: 1 }, out: ['hollow_lens', 1], xp: 280 },
   l_verdigris_staff: { prof: 'lampwright', level: 38, inputs: { verdigris: 3, cinder_iron: 2, emberroot: 2 }, out: ['verdigris_staff', 1], xp: 290 },
   // Tag 7, Nachschlag: Run Iron aus dem Overflow Run
   l_run_staff: { prof: 'lampwright', level: 44, inputs: { run_iron: 3, verdigris: 2, emberroot: 2 }, out: ['run_iron_staff', 1], xp: 400 },

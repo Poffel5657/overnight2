@@ -593,7 +593,7 @@ export const ITEM_ICONS = {
   delvers_hood: ['hood', 'skin'], delvers_boots: ['boots', 'skin'], delvers_coat: ['coat', 'skin'], keepers_lantern: ['lantern', 'warm'],
   // Tag 8: The Stone Road
   peat_brick: ['pile', 'dark'], moth_dust: ['pile', 'pale'], hollow_bead: ['gem', 'green'], chalked_log: ['log', 'pale'], cairnwalker_cloak: ['coat', 'stone'], road_lamp: ['lantern', 'green'], peat_oil: ['potion', 'dark'], hollow_string: ['hood', 'green'],
-  heron_plume: ['feather', 'pale'], heron_hood: ['hood', 'pale'], moth_draught: ['potion', 'pale'], culvert_draught: ['potion', 'moss'], peat_tonic: ['potion', 'warm'],
+  hollow_lens: ['lens', 'green'], heron_plume: ['feather', 'pale'], heron_hood: ['hood', 'pale'], moth_draught: ['potion', 'pale'], culvert_draught: ['potion', 'moss'], peat_tonic: ['potion', 'warm'],
 };
 
 // Fähigkeit -> [Form, Palette]
