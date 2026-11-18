@@ -199,6 +199,17 @@ const BUILDERS = {
       g.add(box(0.3, 0.2, 0.25, '#7a5a3a', 0.45, 0.1, 0.3));
       return;
     }
+    if (o.look === 'log_stack') {
+      // Tag 8: Kindles Scheite am Rastplatz der Träger, Rinde nach oben, mit Amas Kreidestrichen
+      for (let r = 0; r < 3; r++) for (let i = 0; i < 4 - r; i++) {
+        const l = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.9, 6), mat(i % 2 ? '#6a4a2a' : '#7a5632'));
+        l.rotation.z = Math.PI / 2;
+        l.position.set(0, 0.11 + r * 0.2, (i - (3 - r) / 2) * 0.22);
+        g.add(l);
+      }
+      g.add(box(0.04, 0.02, 0.2, '#e8e4d8', 0.25, 0.55, 0));
+      return;
+    }
     if (o.look === 'floorboard') {
       // Tag 3: ein lockeres Dielenbrett, darunter ein gefalteter Zettel
       g.add(box(0.9, 0.05, 0.25, '#6e5034', 0.05, 0.05, 0).rotateZ(0.12));
@@ -284,6 +295,10 @@ const BUILDERS = {
       for (const x of [-0.25, 0.25]) g.add(box(0.07, 2.2, 0.07, '#5a4a3a', x, 1.1, -0.4));
       for (let i = 0; i < 6; i++) g.add(box(0.5, 0.05, 0.05, '#6a5a48', 0, 0.25 + i * 0.36, -0.4));
       g.add(box(0.7, 0.05, 0.5, glowMat, 0, 2.2, -0.3));
+    } else if (o.look === 'cairns') {
+      // Tag 8: zwei kleine Steinmänner links und rechts der alten Straße, nach Norden
+      for (const x of [-0.42, 0.42]) for (let i = 0; i < 3; i++) g.add(box(0.32 - i * 0.07, 0.22, 0.3 - i * 0.06, i % 2 ? '#7a7268' : '#8a8278', x, 0.11 + i * 0.22, 0));
+      g.add(box(0.5, 0.03, 0.9, '#8f6d42', 0, 0.02, 0));
     } else if (o.look === 'stairs') {
       for (let i = 0; i < 4; i++) g.add(box(0.9, 0.12, 0.25, '#6a6660', 0, 0.06 + i * 0.12, 0.35 - i * 0.22));
       g.add(box(1.1, 1.6, 0.15, '#4a4844', 0, 0.8, -0.45));
@@ -452,6 +467,18 @@ const BUILDERS = {
     // Das Rad dreht sich von selbst (der Bach treibt es)
     ctx.spin?.(wheel, 'x', 0.6);
   },
+  // Tag 8: die Namenstafel am Rastplatz der Träger (Pflöcke, viele leer) und der umgestürzte achte Stein
+  peg_board(o, g) {
+    for (const x of [-0.4, 0.4]) g.add(box(0.1, 1.4, 0.1, '#4a3420', x, 0.7, 0));
+    g.add(box(1.0, 0.7, 0.06, '#6a5034', 0, 1.0, 0));
+    for (let r = 0; r < 3; r++) for (let i = 0; i < 5; i++) {
+      if (hash(o.x + i, o.y + r) < 0.55) g.add(box(0.05, 0.05, 0.12, '#c8b48a', -0.36 + i * 0.18, 0.8 + r * 0.2, 0.06));
+    }
+  },
+  fallen_stone(o, g) {
+    for (let i = 0; i < 4; i++) g.add(box(0.5 - i * 0.06, 0.26, 0.45, i % 2 ? '#7a7268' : '#8a8278', -0.5 + i * 0.36, 0.13, (hash(o.x, i) - 0.5) * 0.3));
+    g.add(box(0.12, 0.12, 0.3, '#6a6460', 0.9, 0.06, -0.1));
+  },
   scarecrow(o, g) {
     // Tag 5: Fens Vogelscheuche. Pfahl, Querholz, Pells alter Mantel, Federkragen, Blechgesicht.
     g.add(box(0.1, 1.6, 0.1, '#5a4028', 0, 0.8, 0));
@@ -576,6 +603,14 @@ const BUILDERS = {
     ctx.flame(g, 1.1, 0.05);
   },
   signal(o, g, ctx) {
+    if (o.look === 'cairn') {
+      // Tag 8: ein Steinmann an der Steinstraße, oben eine Feuerschale. Die Spitze zeigt nach Norden.
+      for (let i = 0; i < 4; i++) g.add(box(0.7 - i * 0.13, 0.32, 0.6 - i * 0.1, i % 2 ? '#7a7268' : '#8a8278', 0, 0.16 + i * 0.32, -i * 0.04));
+      g.add(box(0.14, 0.3, 0.14, '#6a6460', 0, 1.42, -0.2).rotateX(-0.5));
+      g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.16, 0.18, 6), mat('#3a3434')).translateY(1.35));
+      ctx.flame(g, 1.4, 1.45, !o.lit);
+      return;
+    }
     g.add(new THREE.Mesh(new THREE.ConeGeometry(0.42, 1.0, 6), mat('#6a4a2a')).translateY(0.5));
     for (let i = 0; i < 6; i++) {
       const a = (i / 6) * Math.PI * 2;

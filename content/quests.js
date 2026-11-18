@@ -625,6 +625,42 @@ export const QUESTS = {
     ],
     reward: { xp: 1400, gold: 45, items: { flare_candle: 2 } },
   },
+  // Tag 8 (Abstimmung „north-road-fires“): Brindle schickt einen die Steinstraße hinauf, Feuer auf den Steinmännern.
+  // Die Signalfeuer der Steinstraße melden die Quest-Aktion stone_<n> (auch, wenn sie schon jemand angezündet hat).
+  stone_by_stone: {
+    name: 'Stone by Stone', giver: 'brindle',
+    text: 'Brindle can see the first stone from the Watch and loses the rest in the dark. If there were fires on them, the carriers could find the road, and so could she.',
+    steps: [
+      { type: 'have', item: 'lamp_oil', n: 3, text: 'Take three flasks of lamp oil. Every fire takes fifteen from your lantern, and there is no Beacon up the Stone Road.' },
+      { type: 'action', action: 'stone_3', text: 'Go past the first stone into the Stone Road and light a fire on the third stone.' },
+      { type: 'action', action: 'stone_5', text: 'Further north, light the fifth stone.' },
+      { type: 'action', action: 'stone_7', text: 'Just over the ford, light the seventh stone. Do not go further up yet: there is something at the top.' },
+      { type: 'talk', npc: 'brindle', text: 'Go back down to Brindle at the North Watch and tell her how far the stones go.' },
+    ],
+    reward: { xp: 2400, gold: 60, items: { cairnwalker_cloak: 1, lamp_oil: 2 } },
+  },
+  // Tag 8, vom Nightwright (Bogen „The Second Light“, Akt 2): Am Rastplatz der Träger liegt Kindles Holz, bewacht.
+  not_thieves: {
+    name: 'Not Thieves', giver: 'ama',
+    text: 'Logs have gone from Ama\'s woodpile in the night. Bark up, neatly, the way she stacks them. Whoever took them knew how.',
+    steps: [
+      { type: 'kill', mob: 'hollow_warden', n: 1, text: 'Follow the Stone Road to the clearing at the top. Whoever is camped there will not want to talk. Bring friends: one is a lot.' },
+      { type: 'have', item: 'chalked_log', n: 1, text: 'Search the stack of logs at the carriers\' rest for one with Ama\'s chalk on it.' },
+      { type: 'talk', npc: 'stranger', text: 'Show the chalked log to the Stranger in Kindle. He knows who wears peat-brown coats.' },
+      { type: 'talk', npc: 'ama', text: 'Tell Ama where her wood went, and who took it.' },
+    ],
+    reward: { xp: 3600, gold: 90, items: { peat_oil: 2, hollow_ration: 2 } },
+  },
+  // Tag 8, Nachschlag (Bogen): Der Stranger zählt die Perlen der Hollow Wardens.
+  beads_for_home: {
+    name: 'Beads for Home', giver: 'stranger',
+    text: 'Every Hollow Warden carries a string of green beads. The Stranger wants to see them, and will not say why.',
+    steps: [
+      { type: 'have', item: 'hollow_bead', n: 3, text: 'Bring the Stranger three Hollow Beads (the Hollow Wardens at the top of the Stone Road carry them).' },
+      { type: 'talk', npc: 'stranger', text: 'Give the beads to the Stranger.' },
+    ],
+    reward: { xp: 1600, gold: 40, items: { hollow_string: 1 } },
+  },
   // Tag 6, Nachschlag (Bogen, für niedrige Stufen): Fen will Wenna eine Karte mitgeben.
   fens_map: {
     name: 'Fen\'s Map', giver: 'fen',

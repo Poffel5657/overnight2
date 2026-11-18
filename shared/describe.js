@@ -57,6 +57,7 @@ export function describeAbility(id) {
       effect = [
         a.heal ? `Heal yourself and allies within ${tiles(a.radius)} for ${a.heal} (+ your staff's healing).` : '',
         a.brace ? `You and allies within ${tiles(a.radius)} take half damage for ${secs(a.brace)}.` : '',
+        a.fuel ? `Allies within ${tiles(a.radius)} get ${a.fuel} oil in their lanterns.` : '',
       ].filter(Boolean).join(' ');
       break;
     case 'hot':

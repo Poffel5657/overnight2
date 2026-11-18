@@ -130,8 +130,9 @@ test('Spectrum blendet und zündet an, Wire Lash holt heran und hält fest', () 
 });
 
 test('Warden auf 62: Sunward Oath (Fläche, heilt) und Cinder Chain (holt heran)', () => {
-  assert.deepEqual(CLASSES.warden.specs.lightsworn.abilities.at(-1), ['sunward_oath', 62]);
-  assert.deepEqual(CLASSES.warden.specs.ironwall.abilities.at(-1), ['cinder_chain', 62]);
+  // Seit Tag 8 geht es weiter (66), deshalb die Stufe suchen statt das letzte Element
+  assert.deepEqual(CLASSES.warden.specs.lightsworn.abilities.find(([, l]) => l === 62), ['sunward_oath', 62]);
+  assert.deepEqual(CLASSES.warden.specs.ironwall.abilities.find(([, l]) => l === 62), ['cinder_chain', 62]);
   {
     const w = S.createWorld(regionFor('sumps'), 728);
     const p = veteran(w, 'a', { cls: 'warden', level: 62 });
@@ -164,8 +165,8 @@ test('Warden auf 62: Sunward Oath (Fläche, heilt) und Cinder Chain (holt heran)
 test('Auf 62 hat jeder Weg etwas Neues, und es erklärt sich', () => {
   for (const def of Object.values(CLASSES)) {
     for (const sp of Object.values(def.specs)) {
-      const [ab, lvl] = sp.abilities.at(-1);
-      assert.equal(lvl, 62, `${sp.name} bis 62`);
+      const [ab, lvl] = sp.abilities.find(([, l]) => l === 62) || [];
+      assert.equal(lvl, 62, `${sp.name} hat etwas auf 62`);
       assert.ok(describeAbility(ab).effect.length > 30, ab);
     }
   }

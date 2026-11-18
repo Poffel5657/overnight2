@@ -591,6 +591,8 @@ export const ITEM_ICONS = {
   strangers_lamp: ['lantern', 'green'], fens_drawing: ['notes', 'paper'], river_stone: ['gem', 'stone'], run_iron: ['pile', 'moss'], pump_lamp: ['lantern', 'warm'], gate_rubbing: ['notes', 'paper'], culvert_hood: ['hood', 'moss'], culvert_coat: ['coat', 'moss'], culvert_boots: ['boots', 'moss'], sackcloth_mantle: ['coat', 'scrap'],
   split_log: ['log', 'scrap'], carriers_lamp: ['lantern', 'green'], spillway_mail: ['coat', 'glim'], woodward_hood: ['hood', 'scrap'], spillway_slate: ['notes', 'stone'],
   delvers_hood: ['hood', 'skin'], delvers_boots: ['boots', 'skin'], delvers_coat: ['coat', 'skin'], keepers_lantern: ['lantern', 'warm'],
+  // Tag 8: The Stone Road
+  peat_brick: ['pile', 'dark'], moth_dust: ['pile', 'pale'], hollow_bead: ['gem', 'green'], chalked_log: ['log', 'pale'], cairnwalker_cloak: ['coat', 'stone'], road_lamp: ['lantern', 'green'], peat_oil: ['potion', 'dark'], hollow_string: ['hood', 'green'],
 };
 
 // Fähigkeit -> [Form, Palette]
@@ -611,6 +613,8 @@ export const ABILITY_ICONS = {
   high_noon: ['sun', 'light'], spectrum: ['star', 'glim'], eclipse_cut: ['slash', 'black'], wire_lash: ['trap', 'steel'],
   kindred_hearth: ['flame', 'warm'], ashfall: ['flame', 'black'], solstice: ['beam', 'light'], kaleidoscope: ['star', 'glim'], new_moon: ['slash', 'purple'], snare_web: ['trap', 'dark'],
   sunward_oath: ['sun', 'warm'], cinder_chain: ['ring', 'black'],
+  // Tag 8: alle Wege auf 66
+  beacon_vow: ['lantern', 'warm'], cinder_keep: ['shield', 'black'], hearth_ward: ['star', 'ember'], cinder_storm: ['flame', 'red'], sunstrike: ['beam', 'warm'], prism_cage: ['star', 'purple'], starless_cut: ['slash', 'dark'], tripwire_ring: ['trap', 'steel'],
   dawn_vow: ['sun', 'amber'], anvil_fall: ['shield', 'stone'], ember_vigil: ['waves', 'warm'], pyre_ring: ['ring', 'ember'],
   hearthstone: ['ring', 'warm'], cinder_lash: ['bolt', 'red'], meridian: ['beam', 'light'], refraction: ['star', 'pale'], umbral_cut: ['slash', 'purple'], wire_ring: ['trap', 'dark'],
 };

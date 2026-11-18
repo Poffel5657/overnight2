@@ -64,6 +64,8 @@ export const RECIPES = {
   a_seam_tonic: { prof: 'alchemy', level: 32, inputs: { lily_bulb: 2, nightcap: 2, glimmer: 1 }, out: ['seam_tonic', 2], xp: 130 },
   // Tag 5, Nachschlag: Alchemie 36. Der Trank der Schleusenwärter: Verdigris bindet das Öl, die Lilie heilt.
   a_sluice_draught: { prof: 'alchemy', level: 36, inputs: { verdigris: 1, lily_bulb: 2, nightcap: 1 }, out: ['sluice_draught', 2], xp: 150 },
+  // Tag 8: Torf von der Steinstraße wird zu langem Lampenöl (Alchemie 31)
+  a_peat_oil: { prof: 'alchemy', level: 31, inputs: { peat_brick: 2, lily_bulb: 1 }, out: ['peat_oil', 2], xp: 124 },
   a_lily_oil: { prof: 'alchemy', level: 21, inputs: { lily_bulb: 2 }, out: ['lily_oil', 2], xp: 86 },
 
   // Lampwright (Linsenbank in der Werkstatt)
@@ -91,6 +93,8 @@ export const RECIPES = {
   l_cinder_staff: { prof: 'lampwright', level: 34, inputs: { cinder_iron: 3, greyglass: 2, emberroot: 2 }, out: ['cinder_staff', 1], xp: 250 },
   l_cinder_lens: { prof: 'lampwright', level: 35, inputs: { cinder_iron: 3, greyglass: 3 }, out: ['cinder_lens', 1], xp: 255 },
   // Tag 5 (Sumps, Nachschlag): Verdigris hält die Feuchte aus dem Eisen. Stab und Linse eine Stufe über Cinder Iron.
+  // Tag 8: Mottenstaub von der Steinstraße in grünem Glas (Lampwright 36)
+  l_road_lamp: { prof: 'lampwright', level: 36, inputs: { moth_dust: 3, glass_grit: 2, cinder_iron: 1 }, out: ['road_lamp', 1], xp: 270 },
   l_verdigris_staff: { prof: 'lampwright', level: 38, inputs: { verdigris: 3, cinder_iron: 2, emberroot: 2 }, out: ['verdigris_staff', 1], xp: 290 },
   // Tag 7, Nachschlag: Run Iron aus dem Overflow Run
   l_run_staff: { prof: 'lampwright', level: 44, inputs: { run_iron: 3, verdigris: 2, emberroot: 2 }, out: ['run_iron_staff', 1], xp: 400 },

@@ -12,6 +12,7 @@
 //   boss: { phase2At (Anteil HP), phase2Text, snuff (löscht alle Lichter im Gebiet), shroud (Schadensfaktor
 //         im Dunkeln in Phase 2), deathText }. Bosse heilen und zünden die Lichter wieder an, wenn alle fliehen.
 //   drops: [Gegenstand, Chance, min, max].  gold: [min, max].
+//   fallText (Tag 8): eigene Zeile statt „X falls.“ für alle, die mitgekämpft haben (z. B. Leute, die nur zurückweichen).
 
 export const MOBS = {
   crow: {
@@ -233,6 +234,39 @@ export const MOBS = {
     specialEvery: 3,
     boss: { deathText: 'The Pumpwarden sighs through every pipe at once and sits down. The lamp in its chest stays lit. It is still pointing north.' },
     examine: 'A pump engine of green bronze, taller than two people, walking on its own on four short iron legs. In its chest, behind a grille, a quarrymen\'s lamp still burns.',
+  },
+  // ---------- The Stone Road (Tag 8, Abstimmung „north-road-fires“): die alte Nordstraße hinter dem ersten Stein ----------
+  cairn_creeper: {
+    // Rolle normal, Stufe 27. Ein Haufen Steine und Nebel, der sich als Steinmann ausgibt und sich bewegt, wenn keiner hinsieht.
+    // Meidet helles Licht (grey): Wer die Signalfeuer anzündet, hat die Straße an den Steinen für sich.
+    name: 'Cairn Creeper', sprite: 'cairn_creeper', level: 27, ai: 'grey', moveEvery: 2,
+    hp: 150, hit: [10, 13], attackEvery: 4, aggro: 4, leash: 7, respawn: 90, xp: 90,
+    drops: [['scrap', 0.4, 1, 2], ['green_shard', 0.3, 1, 1], ['peat_brick', 0.25, 1, 1]], gold: [7, 15],
+    special: { every: 3, delay: 6, pattern: 'plus', hit: [30, 38], text: 'The cairn leans over you. The top stones are about to come down.' },
+    examine: 'A heap of stones that looks exactly like a cairn until it moves. The real cairns point north. This one points at you.',
+  },
+  ash_moth: {
+    // Rolle normal, Stufe 30. Graue Motten so groß wie Krähen, die jedem Licht nach Norden folgen und Lampenöl trinken.
+    name: 'Ash Moth', sprite: 'ash_moth', level: 30, ai: 'grey', drainOil: 8,
+    hp: 120, hit: [10, 13], attackEvery: 3, aggro: 6, leash: 10, respawn: 80, xp: 105,
+    drops: [['moth_dust', 0.6, 1, 2], ['grey_wisp', 0.4, 1, 1]], gold: [6, 14],
+    special: { every: 3, delay: 5, pattern: 'ring', hit: [28, 34], text: 'The moth beats its wings hard. A cloud of grey dust spreads around it.' },
+    examine: 'A grey moth as big as a crow. It flies toward every light it can see, and right now that is yours.',
+  },
+  hollow_warden: {
+    // Rolle Gruppe, Stufe 34: allein kaum, zu viert gut. Wächter aus dem Hollow in torfbraunen Mänteln, mit Hakenstange und
+    // grüner Laterne. Sie bewachen den Rastplatz der Träger und das Holz, das sie von Amas Stapel geholt haben.
+    // Sie sterben nicht: Sie gehen in die Knie und weichen in den Grey zurück (fallText).
+    name: 'Hollow Warden', sprite: 'hollow_warden', level: 34, ai: 'beast', moveEvery: 2,
+    hp: 3400, hit: [27, 32], attackEvery: 4, aggro: 3, leash: 6, respawn: 300, xp: 700,
+    drops: [['hollow_bead', 0.8, 1, 1], ['peat_brick', 0.6, 1, 2], ['hollow_ration', 0.3, 1, 1]], gold: [30, 55],
+    specials: [
+      { every: 1, delay: 5, pattern: 'line', hit: [55, 66], text: 'The Hollow Warden levels the hooked pole. It is going to sweep straight through.' },
+      { every: 1, delay: 6, pattern: 'ring', hit: [48, 58], text: 'The Hollow Warden swings the green lamp round in a wide circle.' },
+    ],
+    specialEvery: 3,
+    fallText: 'The Hollow Warden goes down on one knee, then gets up and backs away into the Grey, hands empty.',
+    examine: 'Tall, in a peat-brown coat with birch bark at the shoulders, a hooked pole in one hand and a green lamp in the other. Not a creature. A person, very cold, and very tired.',
   },
   // ---------- The Unending Maze (seit 2026-11-13, Gebet 4) ----------
   // Vorlagen: Die echten Werte rechnet content/regions/maze.js nach dem Stockwerk aus (maze: Faktoren auf die
