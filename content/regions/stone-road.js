@@ -36,6 +36,9 @@ export const REGION = {
     { type: 'node', node: 'peat_cut', x: 7, y: 19 },
     { type: 'node', node: 'peat_cut', x: 26, y: 36 },
     { type: 'node', node: 'peat_cut', x: 9, y: 46 },
+    // Nachschlag: Kerben der Träger im Fels (Cartography 34)
+    { type: 'node', node: 'carrier_notch', x: 23, y: 44 },
+    { type: 'node', node: 'carrier_notch', x: 15, y: 24 },
     { type: 'deadfall', x: 14, y: 47, name: 'deadfall', text: 'A birch the Grey pushed over, grey as the fog. Dry right through.' },
     { type: 'deadfall', x: 25, y: 31, name: 'deadfall', text: 'A pine across the ditch beside the road. Somebody has already taken the top half, neatly.' },
     // Der Rastplatz der Träger oben auf der Lichtung

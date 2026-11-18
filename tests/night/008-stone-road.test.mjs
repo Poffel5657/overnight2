@@ -318,3 +318,13 @@ test('Im Unending Maze tragen manche Keeper jetzt Körper von der Steinstraße (
   }
   assert.equal(seen.size, 3, `alle drei kommen vor (${[...seen].join(', ')})`);
 });
+
+test('Kerben der Träger lesen (Cartography 34)', () => {
+  const w = S.createWorld(regionFor('stone_road'), 835);
+  for (const o of w.mobs) { o.dead = true; o.deadUntil = 1e9; }
+  const p = veteran(w, 'a', { level: 34, profs: { cartography: { level: NODES.carrier_notch.level, xp: P.xpForLevel(NODES.carrier_notch.level) } } });
+  const notch = w.objects.find((o) => o.type === 'node' && o.node === 'carrier_notch');
+  actOn(w, 'a', notch, 'gather');
+  run(w, 60);
+  assert.ok(P.countItem(p, 'survey_notes') >= 2, `Notizen (${P.countItem(p, 'survey_notes')})`);
+});

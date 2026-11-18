@@ -21,6 +21,8 @@ export const NODES = {
   sluice_mark: { name: 'Sluice-Keeper\'s Mark', prof: 'cartography', level: 36, item: 'survey_notes', extra: ['verdigris', 0.25], yields: 4, xp: 70, respawn: 150, look: 'waymark', verb: 'Survey' },
   // Tag 8: Torfstiche an der Steinstraße (Foraging 33). Torf ist Brennstoff für das Leuchtfeuer und wird zu Peat Oil.
   peat_cut: { name: 'Peat Cut', prof: 'foraging', level: 33, item: 'peat_brick', extra: ['moss_tuft', 0.3], yields: 4, xp: 64, respawn: 140, look: 'moss', verb: 'Cut peat' },
+  // Tag 8, Nachschlag: Wegzeichen der Träger an der Steinstraße (Cartography 34): Kerben im Fels, die zählen, wie weit es noch ist
+  carrier_notch: { name: 'Carrier\'s Notch', prof: 'cartography', level: 34, item: 'survey_notes', extra: ['hollow_bead', 0.15], yields: 4, xp: 66, respawn: 140, look: 'waymark', verb: 'Read' },
   lampcap_cluster: { name: 'Lampcap Cluster', prof: 'foraging', level: 36, item: 'nightcap', extra: ['lily_bulb', 0.35], yields: 4, xp: 70, respawn: 150, look: 'shrooms', verb: 'Forage' },
   old_shaft: { name: 'Old Shaft', prof: 'salvage', level: 26, item: 'glimmer', extra: ['greyglass', 0.2], yields: 3, xp: 52, respawn: 130, look: 'vein', verb: 'Salvage' },
   brass_wreck: { name: 'Brass Wreck', prof: 'salvage', level: 8, item: 'brass_bits', extra: ['glimmer', 0.12], yields: 3, xp: 18, respawn: 90, look: 'wreck', verb: 'Salvage' },
