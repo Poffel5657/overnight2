@@ -193,3 +193,20 @@ test('Seven Fires for Fen (Nachschlag, niedrige Stufe): nachts auf den Ausguck, 
   assert.ok(p.quests.fens_fires.done);
   assert.equal(P.countItem(p, 'bread'), 2);
 });
+
+test('Nachschlag: Alchemie 40 bis 48 aus Mottenstaub und Torf, jedes Rezept besser als das davor', () => {
+  const heal = (id) => ITEMS[id].use.heal ?? 0;
+  for (const rid of ['a_moth_draught', 'a_culvert_draught', 'a_peat_tonic']) {
+    const r = RECIPES[rid];
+    const k = S.createWorld(regionFor('kindle'), 818);
+    const bag = Object.entries(r.inputs).map(([id, n]) => ({ id, n }));
+    const q = veteran(k, 'a', { level: 50, profs: { alchemy: { level: r.level, xp: P.xpForLevel(r.level) } }, bag });
+    const still = k.objects.find((o) => o.type === 'station' && o.station === 'still');
+    actOn(k, 'a', still, 'use');
+    applyIntent(k, 'a', { t: 'craft', obj: still.id, recipe: rid, n: 1 });
+    run(k, 30);
+    assert.equal(P.countItem(q, r.out[0]), r.out[1], `${r.out[0]} gebraut`);
+  }
+  assert.ok(heal('culvert_draught') > heal('sluice_draught') && heal('peat_tonic') > heal('culvert_draught'), 'heilt mehr als die Stufe davor');
+  assert.ok(ITEMS.moth_draught.use.glow > ITEMS.wisp_draught.use.glow, 'leuchtet länger als der Wisplight Draught');
+});
