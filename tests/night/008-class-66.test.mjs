@@ -137,3 +137,27 @@ test('Nachschlag: der Warden schon auf 70 (Morning Vow heilt die Leute dahinter,
     assert.ok(p.hp >= 50 + ABILITIES.iron_hour.heal && p.braceUntil > w.tick, 'heilt und hält aus');
   }
 });
+
+test('Nachschlag: der Mender auch auf 70 (Hearth and Home wärmt lange, Pyre Lash brennt)', () => {
+  assert.deepEqual(CLASSES.mender.specs.hearthkeeper.abilities.find(([a]) => a === 'hearth_and_home'), ['hearth_and_home', 70]);
+  assert.deepEqual(CLASSES.mender.specs.ashbinder.abilities.find(([a]) => a === 'pyre_lash'), ['pyre_lash', 70]);
+  {
+    const { w, p } = setup(808, 'mender', 'hearthkeeper');
+    p.classes.mender = { level: 70, xp: P.xpForLevel(70) };
+    const f = veteran(w, 'f', { cls: 'warden', level: 60 });
+    f.x = p.x; f.y = p.y; f.hp = 40;
+    applyIntent(w, 'a', { t: 'ability', id: 'hearth_and_home' });
+    run(w, ABILITIES.hearth_and_home.ticks);
+    assert.ok(f.hp >= 40 + ABILITIES.hearth_and_home.heal * 5, `wärmt lange (${f.hp})`);
+  }
+  {
+    const { w, p, m } = setup(809, 'mender', 'ashbinder');
+    p.classes.mender = { level: 70, xp: P.xpForLevel(70) };
+    beside(w, p, m, 3);
+    applyIntent(w, 'a', { t: 'target', id: m.id });
+    const hp = m.hp;
+    applyIntent(w, 'a', { t: 'ability', id: 'pyre_lash' });
+    run(w, 1);
+    assert.ok((m.hp < hp && m.burn?.left > 0) || m.dead, 'trifft und brennt');
+  }
+});

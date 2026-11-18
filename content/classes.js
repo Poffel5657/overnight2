@@ -33,8 +33,8 @@ export const CLASSES = {
     abilities: [['ember_touch', 1], ['staff_rap', 1], ['warmth', 3], ['glow', 6], ['kindle_burst', 9], ['cinder_flick', 11], ['hearth_song', 13], ['rekindle', 16], ['smoulder', 20], ['kindred_glow', 24], ['ember_mend', 28], ['sanctuary', 32], ['cinder_bloom', 36], ['banked_hearth', 40], ['vesper_bell', 44], ['second_dawn', 48]],
     specs: {
       // Tag 6: gewählt bei Tallow ab Stufe 50.
-      hearthkeeper: { name: 'Hearthkeeper', text: 'You keep the hearth. Nobody near you is allowed to fall over.', abilities: [['hearthfire', 50], ['hearthstone', 54], ['ember_vigil', 58], ['kindred_hearth', 62], ['hearth_ward', 66]] },
-      ashbinder: { name: 'Ashbinder', text: 'Embers are for warmth. Ashes are for everything else.', abilities: [['ash_bloom', 50], ['cinder_lash', 54], ['pyre_ring', 58], ['ashfall', 62], ['cinder_storm', 66]] },
+      hearthkeeper: { name: 'Hearthkeeper', text: 'You keep the hearth. Nobody near you is allowed to fall over.', abilities: [['hearthfire', 50], ['hearthstone', 54], ['ember_vigil', 58], ['kindred_hearth', 62], ['hearth_ward', 66], ['hearth_and_home', 70]] },
+      ashbinder: { name: 'Ashbinder', text: 'Embers are for warmth. Ashes are for everything else.', abilities: [['ash_bloom', 50], ['cinder_lash', 54], ['pyre_ring', 58], ['ashfall', 62], ['cinder_storm', 66], ['pyre_lash', 70]] },
     },
   },
   flarecaster: {
