@@ -66,6 +66,9 @@ html, body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--ui-font);
+  /* Tag 8: Die Pixelschrift setzt „fi“ als Ligatur, die wie „A“ aussieht („Ares“ statt „fires“). Ligaturen aus. */
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "clig" 0;
   line-height: 1.25;
   -webkit-user-select: none;
   user-select: none;
@@ -887,3 +890,4 @@ body.bar-dragging .tip { display: none !important; }
 .amount-ask label { color: var(--bright); font-size: 0.85rem; }
 .amount-ask .row-buttons { align-items: center; gap: 0.35rem; }
 .amount-ask input { width: 5rem; font: inherit; color: var(--text); background: var(--well); border: 1px solid var(--brass-dim); border-radius: 3px; padding: 0.15rem 0.3rem; }
+button, input, textarea, select { font-variant-ligatures: none; font-feature-settings: "liga" 0, "clig" 0; }

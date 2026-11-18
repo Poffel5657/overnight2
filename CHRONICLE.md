@@ -329,6 +329,7 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 - Unending Maze: Keeper können jetzt auch als Moth, Cairn oder Heron erscheinen (drei neue Körper in `BODIES`).
 - Die Welt redet darüber: Tallow hält das nächtliche Gehen der Wardens für das beste Gebet, von dem er je gehört hat; Mothwick nennt die Ash Moths „sehr entfernte Cousinen“ und schickt einen mit dem Staub zu Wren; Wren erklärt die Road Lamp (Wegweiser zum Rezept).
 - Neue Rufe (Pell, Ama, Brindle, Pip), Pells neuer Ausruf (der von gestern ist über „What was the news yesterday?“ noch zu hören), neuer Ausguck-Text.
+- **Fehler behoben (Bild):** Die Pixelschrift setzte „fi“ als Ligatur, die wie ein „A“ aussah („Ares“ statt „fires“, „Arst stone“ in der Chronik von Tag 7). Ligaturen sind in `style.css` jetzt aus.
 - Alte Nachttests prüften die letzte Fähigkeit jedes Wegs (62) und den Ausguck-Text wörtlich; sie suchen jetzt die Stufe bzw. prüfen nur, dass es Text gibt.
 
 **Balance-Notizen:**
