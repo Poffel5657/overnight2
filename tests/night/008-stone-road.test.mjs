@@ -306,3 +306,15 @@ test('An einem brennenden Steinmann bietet das Menü „Warm your hands“ an (z
   kindleFire.lit = true;
   assert.equal(S.objectActions(kindleFire)[0][0], 'examine', 'andere Signalfeuer wie bisher');
 });
+
+test('Im Unending Maze tragen manche Keeper jetzt Körper von der Steinstraße (Moth, Cairn, Heron)', async () => {
+  const { keeperFor } = await import('../../content/regions/maze.js');
+  const seen = new Set();
+  let s = 1;
+  const rand = () => { s = (s * 16807) % 2147483647; return s / 2147483647; };
+  for (let i = 0; i < 400; i++) {
+    const k = keeperFor(30 + (i % 20), rand);
+    if (['ash_moth', 'cairn_creeper', 'the_grey_heron'].includes(k.sprite)) seen.add(k.sprite);
+  }
+  assert.equal(seen.size, 3, `alle drei kommen vor (${[...seen].join(', ')})`);
+});
