@@ -111,3 +111,29 @@ test('Die anderen Wege auf 66 tun, was sie sagen', () => {
     assert.ok(check(w, m), `${ab} wirkt`);
   }
 });
+
+test('Nachschlag: der Warden schon auf 70 (Morning Vow heilt die Leute dahinter, Iron Hour hält aus)', () => {
+  assert.deepEqual(CLASSES.warden.specs.lightsworn.abilities.find(([a]) => a === 'morning_vow'), ['morning_vow', 70]);
+  assert.deepEqual(CLASSES.warden.specs.ironwall.abilities.find(([a]) => a === 'iron_hour'), ['iron_hour', 70]);
+  {
+    const { w, p, m } = setup(806, 'warden', 'lightsworn');
+    p.classes.warden = { level: 70, xp: P.xpForLevel(70) };
+    assert.ok(P.knownAbilities(p).includes('morning_vow'));
+    beside(w, p, m);
+    const f = veteran(w, 'f', { cls: 'mender', level: 60 });
+    f.x = p.x; f.y = p.y; f.hp = 40;
+    applyIntent(w, 'a', { t: 'target', id: m.id });
+    applyIntent(w, 'a', { t: 'ability', id: 'morning_vow' });
+    run(w, 1);
+    assert.ok(w.tick < m.dazzleUntil || m.dead, 'blendet');
+    assert.ok(f.hp >= 40 + ABILITIES.morning_vow.mend, 'wärmt');
+  }
+  {
+    const { w, p } = setup(807, 'warden', 'ironwall');
+    p.classes.warden = { level: 70, xp: P.xpForLevel(70) };
+    p.hp = 50;
+    applyIntent(w, 'a', { t: 'ability', id: 'iron_hour' });
+    run(w, 1);
+    assert.ok(p.hp >= 50 + ABILITIES.iron_hour.heal && p.braceUntil > w.tick, 'heilt und hält aus');
+  }
+});
