@@ -199,6 +199,7 @@ export const ITEMS = {
   peat_tonic: { name: 'Peat Tonic', stack: true, use: { heal: 280, oil: 40 }, value: 80, glyph: '!', text: 'Greyglass ground into peat broth. It warms from the inside out, the way a peat fire does: slowly, and for a long time.' },
   heron_plume: { name: 'Heron Plume', stack: true, value: 20, glyph: '/', text: 'A long grey feather that is mostly fog. It stays dry in the rain and cold in the hand.' },
   heron_hood: { name: 'Heron Hood', slot: 'head', defence: 6, light: 1, value: 320, glyph: '^', text: 'A hood lined with heron plumes, fog-grey and very light. Rain runs off it, and so do most other things.' },
+  hollow_lens: { name: 'Hollow Lens', slot: 'main', cls: 'flarecaster', delay: 10, power: 15, value: 500, glyph: 'o', text: 'Three green beads melted down and ground into one lens. The light it throws is green and very patient, like somebody walking a road every night.' },
   hollow_string: { name: 'Hollow String', slot: 'head', defence: 5, light: 1, value: 240, glyph: '^', text: 'The Stranger tied three green beads onto a band of birch twine. "One for each house that still has its fire," he said. Wear it on your brow; it catches the lamplight.' },
 };
 
