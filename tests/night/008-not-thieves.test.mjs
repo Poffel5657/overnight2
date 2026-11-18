@@ -204,3 +204,17 @@ test('Die Welt redet darüber: Tallow über die Wardens, Mothwick über die Mott
   choose(w, 'a', 'moth dust glows');
   assert.equal(p.dialog.page, 'md_wren');
 });
+
+test('Hollis hat ein achtes Gerücht (die Steinstraße)', () => {
+  // Durch die Tür der Taverne hinein
+  const k = S.createWorld(regionFor('kindle'), 827);
+  veteran(k, 'a', { level: 10 });
+  actOn(k, 'a', k.objects.find((o) => o.type === 'tavern'), 'enter');
+  const save = S.removePlayer(k, 'a');
+  const w = S.createWorld(regionFor('kindle_inside'), 828);
+  const p = S.addPlayer(w, 'a', 'a', save);
+  talk(w, 'a', 'hollis');
+  choose(w, 'a', 'Heard anything');
+  for (const t of ['Anything else', 'And?', 'Anything newer', 'And?', 'Anything newer', 'Anything newer', 'Anything newer']) choose(w, 'a', t);
+  assert.equal(p.dialog.page, 'rumour8');
+});
