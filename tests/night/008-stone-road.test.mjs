@@ -329,3 +329,15 @@ test('Kerben der Träger lesen (Cartography 34)', () => {
   run(w, 60);
   assert.ok(P.countItem(p, 'survey_notes') >= 2, `Notizen (${P.countItem(p, 'survey_notes')})`);
 });
+
+test('Ein alter Spielstand (ohne Felder der letzten Nächte) kommt in der Steinstraße an und spielt dort', () => {
+  const w = S.createWorld(regionFor('stone_road'), 836);
+  const old = { v: 2, x: 22, y: 56, hp: 50, oil: 80, gold: 3, cls: 'warden', classes: { warden: { level: 28, xp: P.xpForLevel(28) } }, bag: [], equip: { main: 'glim_shield' }, quests: { kindling: { done: true } }, bars: {} };
+  const p = S.addPlayer(w, 'a', 'a', old);
+  assert.equal(p.sentNorth ?? 0, 0);
+  const stone = w.objects.find((o) => o.stone === 2);
+  actOn(w, 'a', stone, 'light');
+  assert.ok(stone.lit, 'zündet an');
+  const save = S.removePlayer(w, 'a');
+  assert.equal(save.region, 'stone_road');
+});
