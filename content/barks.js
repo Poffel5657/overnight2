@@ -56,7 +56,7 @@ export const BARKS = {
   // Tag 5 (Bogen): Wenna in der Old Mill (tagsüber schläft sie, die Rufe kommen trotzdem leise)
   wenna: {
     range: 6, every: 40,
-    lines: ['*counts loaves on her fingers*', 'One carrier with nothing is a waste of a carrier.', '*grinds, slowly*', 'Less to carry. Less to carry.', '*holds her cold lantern close*', 'Your bread tastes of sun.', '*laces her boots, unlaces them, laces them again*', 'Four nights if the stones are where I left them.'],
+    lines: ['*counts loaves on her fingers*', 'One carrier with nothing is a waste of a carrier.', '*grinds, slowly*', 'Less to carry. Less to carry.', '*holds her cold lantern close*', 'Your bread tastes of sun.', '*laces her boots, unlaces them, laces them again*', 'Four nights if the stones are where I left them.', '*looks north, counting under her breath: five, six, seven*'],
     dayLines: ['*snores, very quietly, under the sacks*', '*mumbles in her sleep: forty... twenty... twelve...*'],
   },
   band_oswin: {
@@ -102,7 +102,7 @@ export const BARKS = {
   },
   fen: {
     range: 7, every: 60,
-    lines: ['He HAS one now. A green one.', '*draws a very big goose for the bread box*', '*draws round a goose\'s shadow*', 'Stand still! You moved!', 'Everybody has a shadow. Everybody.', '*adds another goose to a map*', 'North is where the goose points.'],
+    lines: ['He HAS one now. A green one.', '*draws a very big goose for the bread box*', '*draws round a goose\'s shadow*', 'Stand still! You moved!', 'Everybody has a shadow. Everybody.', '*adds another goose to a map*', 'North is where the goose points.', 'SEVEN fires! I am going to light them ALL. When I am big.'],
   },
   sorrel: {
     range: 8, every: 45,
