@@ -199,6 +199,7 @@ const tallow = (() => {
     start: {
       text: 'Brother Tallow, of the Chapel. The Nightwright listens here. Mostly, anyway.',
       options: [
+        { text: 'The people up north walk the road with a lamp every night.', to: 'nt_tallow', if: { quest: { not_thieves: 'done' } } },
         { text: 'You look worried.', to: 'op_offer', if: { quest: { older_prayer: 'none' }, classLevel: 22 }, do: [{ start: 'older_prayer' }] },
         { text: 'I found a tablet in the ruins.', to: 'op_done', if: { quest: { older_prayer: 1 }, has: { prayer_tablet: 1 } }, do: [{ take: { prayer_tablet: 1 } }, { advance: 'older_prayer' }] },
         { text: 'Did the tablet say anything else?', to: 'dc_offer', if: { quest: { older_prayer: 'done', drowned_choir: 'none' }, classLevel: 28 }, do: [{ start: 'drowned_choir' }] },
@@ -215,7 +216,7 @@ const tallow = (() => {
         { text: 'The Stranger throws a shadow now.', to: 'lg_tallow', if: { quest: { lamp_gone_out: 'done' } } },
         { text: 'Is this the lamp under the hill?', to: 'pl_tallow', if: { has: { pump_lamp: 1 } } },
         { text: 'I swore to the light. Ama says I am Lightsworn.', to: 'lsw_tallow', if: { spec: 'lightsworn' } },
-        ...t.options, ...sp.options, ...f.options, ...a.options, { text: 'I want to pray.', to: 'pray' }, { text: 'Does it ever answer?', to: 'answer' },
+    ...t.options, ...sp.options, ...f.options, ...a.options, { text: 'I want to pray.', to: 'pray' }, { text: 'Does it ever answer?', to: 'answer' },
         { text: 'How did the drowned choir end a hymn?', to: 'sb_tallow', if: { quest: { old_strongbox: 1 } } },
         BYE,
       ],
@@ -239,6 +240,7 @@ const tallow = (() => {
     pl_tallow: { text: 'Tallow holds the Pump Lamp in both hands and watches the flame lean, always the same way, however he turns it. "The quarrymen said someone held a lamp under the hill to keep the Grey out of Cinderford." He gives it back very gently. "This one was held by a pump. Pushing water north for years after everyone stopped asking." He smiles, a little sadly. "That is not nothing. That might be what holding a lamp means."', options: [BYE] },
     lg_tallow: { text: 'Tallow sets down his candle very carefully. "A shadow. In our light." He is quiet for a while. "I asked once whether the Nightwright has a shadow. Perhaps the question was the wrong way round. Perhaps it is about whose light you stand in." He picks the candle up again. "Do not tell Ama I said that. She will want it in writing."', options: [BYE] },
     lsw_tallow: { text: 'Tallow puts both hands on your shield, which nobody has ever done, and closes his eyes. "To the light." He opens them again. "I do not know if the Nightwright hears vows. The Quarrymen thought their lamp did. The choir thought theirs did." He lets go. "But I hear them. Come here when it gets heavy. That is what a chapel is for."', options: [BYE] },
+    nt_tallow: { text: 'Tallow puts down his candle and does not pick it up again. "Every night. To the last stone and back, with a lamp, so the ones walking home can see where home is." He looks at the altar, where the birch-bark prayer still lies under its white stone. "The quarrymen lit a niche for the lamp under the hill. The choir sang for the one who holds the lamp. And up north they just... walk out with one. Every night." He is quiet a long time. "I think that might be the best prayer I have ever heard of. And nobody up there would call it one."', options: [BYE] },
     ...f.pages, ...a.pages, ...t.pages, ...sp.pages,
   };
 })();
@@ -358,6 +360,7 @@ const wren = (() => {
     start: {
       text: 'Wren. I grind lenses. Mind the glass dust, it gets everywhere, including into opinions.',
       options: [
+        { text: 'This moth dust glows near a flame.', to: 'md_wren', if: { has: { moth_dust: 1 } } },
         { text: 'Brindle needs a spyglass lens.', to: 'en_lens', if: { quest: { eyes_north: 4 }, has: { grey_wisp: 3 } }, do: [{ take: { grey_wisp: 3 } }, { give: { spyglass_lens: 1 } }, { advance: 'eyes_north' }] },
         { text: 'Brindle needs a spyglass lens.', to: 'en_wisps', if: { quest: { eyes_north: 4 } } },
         { text: 'Can you work this green glass?', to: 'green', if: { has: { green_shard: 1 } } },
@@ -381,6 +384,7 @@ const wren = (() => {
     lg_wren: { text: 'Wren whistles at the crack. "Somebody dropped this on a rock and then carried it a long way anyway." She lifts out the cracked pane, cuts a new one from one of the green shards Fen keeps bringing her, and beds the glimmer behind the wick like teeth in a jaw. "Same hand as Wenna\'s lamp, same hand as the cold lantern on the north edge. Different owner, I think. This one has been sad for a long time." She hands it back. "Glass is fine now. The fire is somebody else\'s department."', options: [BYE] },
     sl_wren: { text: 'Wren turns the stone in her fingers and holds it to the window. "River stone. Grey slate, rolled flat by fast water coming downhill for a very long time." She licks a thumb and rubs it. "See that green fleck? Same sand as the green glass. Whoever left this lives up in the hills where they pour that glass, by a stream that runs fast." She hands it back. "Long way to walk to say thank you."', options: [BYE] },
     cl_wren: { text: 'Wren turns the little green lamp over and over, then holds it to her ear as if it might tell her something. "Grit from the mill, poured thick. A wick of plain wax. And the grip is just a split log, shaved down and wrapped in bark." She sounds offended at how simple it is. "No wonder it lasts a whole road. Nothing in it to break." She is already reaching for a pencil. "Any lampwright past sixteen can make these now. Bring grit, a log off Ama\'s pile, and some wax. Do not tell Ama about the log."', options: [BYE] },
+    md_wren: { text: 'Wren tips a pinch of the dust onto the lamp bench and holds a match near it. It glows before the match touches it, faint and grey-gold. "Oh, that is horrible. I love it." She sweeps it into a twist of paper. "Dust the inside of a green grit glass with that, cage it in cinder iron, and it will glow before you even light it. Moths will follow you home." She writes it on the bench in chalk: three of dust, two of grit, one bar of iron. "Road Lamp. Lampwrights, thirty-six and up. Do not tell Mothwick I said horrible."', options: [BYE] },
     ...l.pages, ...t.pages, ...sp.pages,
   };
 })();
@@ -744,6 +748,8 @@ const mothwick = {
       { text: 'Show me your wares.', if: { night: true }, do: [{ shop: 'mothwick' }] },
       { text: 'Show me your wares.', to: 'closed', if: { day: true } },
       { text: 'Kindle is sending bread north.', to: 'mw_bread', if: { night: true, quest: { bread_north: 'active' } } },
+      { text: 'There are moths as big as crows on the Stone Road.', to: 'mw_moths', if: { night: true, quest: { stone_by_stone: 'active' } } },
+      { text: 'There are moths as big as crows on the Stone Road.', to: 'mw_moths', if: { night: true, quest: { stone_by_stone: 'done' } } },
       { text: 'Do you need anything?', to: 'w_offer', if: { night: true, quest: { wisps_for_wicks: 'none' } }, do: [{ start: 'wisps_for_wicks' }] },
       { text: 'Three wisps, as asked.', to: 'w_done', if: { night: true, quest: { wisps_for_wicks: 1 }, has: { grey_wisp: 3 } }, do: [{ take: { grey_wisp: 3 } }, { advance: 'wisps_for_wicks' }] },
       { text: 'Anything new tonight?', to: 'tonight', if: { night: true } },
@@ -770,6 +776,7 @@ const mothwick = {
   ml_offer: { text: 'Worried? Me? Business is fine. It is the will-o\'-wisps in the marsh. They used to nibble a lantern now and then. Now they gulp. Something has made them hungry. Put out five, after dark when they are greedy, and bring me what is left of them. I want to look inside.', options: [{ text: 'Five wisps, three cores.' }] },
   ml_done: { text: 'She holds a core up to her own lantern and the flame leans toward it. "Full of light, and all of it pointing the same way. North." She pockets two and gives you oil and candles. "Something up there is drawing every light in the Grey toward it, dear. Even the hungry ones."', options: [{ text: 'North again.' }] },
   tonight: { text: 'Always, dear. Every night two new things come down the road from the north with me, and every morning they are gone again. Have a look before the sun does.', options: [{ text: 'Show me.', do: [{ shop: 'mothwick' }] }, BYE] },
+  mw_moths: { text: 'Mothwick laughs, which she does not do often. "Cousins. Very distant. We do not speak." She lifts a little lantern and watches the ordinary moths come to it. "Moths follow light. Mine follow it to market. Those follow it north, every light they can find, and drink it on the way." She lowers the lantern. "If you scrape the dust off their wings, Wren can do something clever with it. I would charge you for that advice, but it is night, and I am in a good mood."', options: [BYE] },
   closed: { text: 'Not in daylight, dear. My goods do not like being looked at by the sun. Come back after dark, when the lamps are lit.', options: [BYE] },
   w_offer: { text: 'My moonwicks need a little Grey spun into them, or they burn like any old string. Three grey wisps. The Greylings carry them; ask them nicely, with a stick.', options: [{ text: 'Three wisps.' }] },
   w_done: { text: 'Lovely. Still wriggling. Here, two wicks of your own and a candle to go with them. A lampwright could do a lot with those.', options: [{ text: 'Thank you.' }] },
