@@ -252,7 +252,9 @@ export function objectActions(o) {
     case 'shrine': return [['search', 'Search'], ['examine', 'Examine']];
     case 'find': return [['search', 'Look closer'], ['examine', 'Examine']];
     case 'altar': return [['pray', 'Pray at'], ['examine', 'Examine']];
-    case 'signal':
+    // Tag 8: an einem brennenden Steinmann der Steinstraße kann man sich wärmen (zählt für Quests wie Anzünden)
+    case 'signal': if (o.lit && o.stone) return [['light', 'Warm your hands'], ['examine', 'Examine']];
+    // falls through
     case 'brazier': return o.lit ? [['examine', 'Examine']] : [['light', 'Light'], ['examine', 'Examine']];
     case 'campfire': return [['rest', 'Rest'], ['examine', 'Examine']];
     case 'stash': return [['open', 'Open'], ['examine', 'Examine']];

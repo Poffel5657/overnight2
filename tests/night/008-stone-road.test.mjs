@@ -295,3 +295,14 @@ test('The Heron at the Ford (Nachschlag): Haskel, der Reiher allein mit Einsatz 
   assert.ok(q.quests.heron_at_the_ford.done);
   assert.ok(ITEMS.heron_hood.defence >= ITEMS.masterwork_hood.defence && RECIPES.t_heron_hood.inputs.heron_plume, 'die Feder hat einen Zweck');
 });
+
+test('An einem brennenden Steinmann bietet das Menü „Warm your hands“ an (zählt für Quests), sonst „Light“', () => {
+  const w = S.createWorld(regionFor('stone_road'), 833);
+  const stone = w.objects.find((o) => o.stone === 3);
+  assert.equal(S.objectActions(stone)[0][0], 'light');
+  stone.lit = true;
+  assert.deepEqual(S.objectActions(stone)[0], ['light', 'Warm your hands']);
+  const kindleFire = S.createWorld(regionFor('kindle'), 834).objects.find((o) => o.type === 'signal');
+  kindleFire.lit = true;
+  assert.equal(S.objectActions(kindleFire)[0][0], 'examine', 'andere Signalfeuer wie bisher');
+});
