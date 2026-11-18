@@ -236,3 +236,62 @@ test('Gefallen „moths_for_brindle“: drei Ash Moths an einem Tag, an dem er d
   }
   assert.ok(p.gold >= gold + FAVOURS.moths_for_brindle.reward.gold, `Gefallen am ${w.date} erledigt`);
 });
+
+test('The Heron at the Ford (Nachschlag): Haskel, der Reiher allein mit Einsatz auf 36, eine Feder, Heron Hood', () => {
+  const GEAR36 = { main: 'masterwork_shield', head: 'masterwork_hood', body: 'masterwork_coat', feet: 'masterwork_boots', lantern: 'cinder_lantern' };
+  const k = S.createWorld(regionFor('kindle'), 830);
+  k.date = '2026-11-19';
+  const done = { kindling: { done: true }, stone_by_stone: { done: true } };
+  let p = veteran(k, 'a', { level: 36, equip: GEAR36, quests: done, bag: [{ id: 'hearth_salve', n: 8 }] });
+  talk(k, 'a', 'haskel');
+  choose(k, 'a', 'else up the Stone Road');
+  assert.equal(p.quests.heron_at_the_ford.step, 0);
+  actOn(k, 'a', k.objects.find((o) => o.type === 'door' && o.to === 'stone_road'), 'enter');
+  assert.equal(p.travel?.region, 'stone_road');
+  const w = S.createWorld(regionFor('stone_road'), 831);
+  w.date = '2026-11-19';
+  w.daylight = 0;
+  p = S.addPlayer(w, 'a', 'a', S.removePlayer(k, 'a'));
+  for (const m of w.mobs) if (m.type !== 'the_grey_heron') { m.dead = true; m.deadUntil = 1e9; }
+  const heron = w.mobs.find((m) => m.type === 'the_grey_heron');
+  assert.equal(w.region.zoneAt(heron.x, heron.y), 'THE COLD FORD');
+  const road = (y) => [...w.region.tiles[y]].indexOf('=');
+  assert.ok(Math.abs(heron.x - road(heron.y)) > MOBS.the_grey_heron.aggro + MOBS.the_grey_heron.leash, 'weit genug weg von der Straße');
+  applyIntent(w, 'a', { t: 'walk', x: heron.x + 6, y: heron.y });
+  run(w, 200);
+  assert.equal(p.travel, undefined, `unterwegs (${p.x},${p.y})`);
+  const salves = P.countItem(p, 'hearth_salve');
+  let lowest = p.hp;
+  let minHeron = heron.hp;
+  for (let k2 = 0; k2 < 2 && !heron.dead; k2++) {
+    applyIntent(w, 'a', { t: 'act', kind: 'mob', id: heron.id, action: 'attack' });
+    for (let i = 0; i < 2500 && !heron.dead && p.hp > 0 && !p.travel; i++) {
+      const tele = w.telegraphs.find((x) => x.tiles.some((c) => c.x === p.x && c.y === p.y));
+      if (tele) {
+        const free = [[1, 0], [-1, 0], [0, 1], [0, -1], [2, 0], [-2, 0], [0, 2], [0, -2]].map(([a, b]) => ({ x: p.x + a, y: p.y + b }))
+          .find((c) => S.walkable(w, c.x, c.y) && !tele.tiles.some((q) => q.x === c.x && q.y === c.y));
+        if (free) applyIntent(w, 'a', { t: 'walk', x: free.x, y: free.y });
+      } else if (p.hp < p.maxHp * 0.5) {
+        const s = p.bag.findIndex((x) => x?.id === 'hearth_salve');
+        if (s >= 0) applyIntent(w, 'a', { t: 'use', slot: s });
+      } else {
+        if (!p.engaged) applyIntent(w, 'a', { t: 'act', kind: 'mob', id: heron.id, action: 'attack' });
+        applyIntent(w, 'a', { t: 'ability', id: WARDEN[i % WARDEN.length] });
+      }
+      run(w, 1);
+      lowest = Math.min(lowest, p.hp);
+      minHeron = Math.min(minHeron, heron.hp);
+    }
+  }
+  assert.ok(heron.dead, `der Reiher fliegt auf (min ${minHeron}, Salben ${salves - P.countItem(p, 'hearth_salve')}, Takte ${w.tick}, ${heron.hp}/${heron.maxHp} bei ${heron.x},${heron.y} home ${heron.home.x},${heron.home.y}, Spieler ${p.hp}/${p.maxHp} bei ${p.x},${p.y}, travel ${JSON.stringify(p.travel)})`);
+  assert.equal(p.travel, undefined, 'überlebt');
+  const used = salves - P.countItem(p, 'hearth_salve');
+  assert.ok(used >= 1 || lowest < p.maxHp * 0.6, `kostet etwas (Salben ${used}, tiefster Stand ${lowest}/${p.maxHp})`);
+  assert.equal(p.quests.heron_at_the_ford.step, 2, 'Feder im Beutel');
+  const back = S.createWorld(regionFor('kindle'), 832);
+  const q = S.addPlayer(back, 'a', 'a', S.removePlayer(w, 'a'));
+  talk(back, 'a', 'haskel');
+  choose(back, 'a', 'heron plume');
+  assert.ok(q.quests.heron_at_the_ford.done);
+  assert.ok(ITEMS.heron_hood.defence >= ITEMS.masterwork_hood.defence && RECIPES.t_heron_hood.inputs.heron_plume, 'die Feder hat einen Zweck');
+});

@@ -1404,6 +1404,30 @@ export const SPRITES = {
       '.ww......ww.',
     ],
   },
+  the_grey_heron: {
+    // Ein Reiher aus Nebel, so groß wie ein Mensch, ein Bein im Wasser, grüner Glanz im Schnabel (eine verschluckte Lampe).
+    px: 1 / 11,
+    palette: { g: '#9aa0a8', G: '#6a7078', k: '#2a2c30', y: '!#e8f070', b: '#c8b070', w: '#2f5a5a', e: '!#c8e8ff' },
+    rows: [
+      '...gg.......',
+      '..gegkbbb...',
+      '..gggk..y...',
+      '...gg.......',
+      '...gG.......',
+      '...gG.......',
+      '..gggg......',
+      '.gGGGgg.....',
+      'gGGgGGgg....',
+      'gGGGGGGgg...',
+      '.gGGGGGGgg..',
+      '..gGGGGG.gg.',
+      '...kk.......',
+      '...k........',
+      '...k........',
+      '..wkww......',
+      '.wwwwww.....',
+    ],
+  },
   hollow_warden: {
     // Groß, im torfbraunen Mantel mit Birkenrinde an den Schultern, Hakenstange links, grüne Laterne rechts.
     px: 1 / 15,
