@@ -22,6 +22,9 @@ export const DRIFT_FINDS = [
   { name: 'a sunken bell', text: 'A church bell half in the ground. When the wind blows, it almost rings.' },
   { name: 'a child\'s map', text: 'A child\'s map of Kindle, very wrong and very confident. It looks like Fen\'s handwriting.' },
   { name: 'a second beacon', text: 'The cold ashes of a beacon, much like Kindle\'s. Somebody kept a fire here, once.' },
+  // Tag 8 (Bogen): Dinge von der Steinstraße, die der Grey hierher geweht hat
+  { name: 'a wooden peg', text: 'A wooden peg with a name burnt into it, the letters worn too smooth to read. A loop of birch twine is still tied round it, with nothing on it.' },
+  { name: 'a fire bowl', text: 'An iron fire bowl, the kind that sits on top of a cairn, full of cold peat ash. It is facing north, even lying on its side.' },
 ];
 
 function rng(seed) {
