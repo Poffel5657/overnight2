@@ -53,6 +53,6 @@ export const CHRONICLE = [
     day: 8,
     date: '2026-11-19',
     title: 'Seven stones, seven fires',
-    text: 'The altar chose fires for the north road, so past the bread box the Stone Road now climbs through the Grey with a fire bowl on every cairn, and Brindle wants them lit. Ama is twenty logs short and the boot prints go north, to a clearing where tall people in peat-brown coats guard her wood, and every path learned something at sixty-six.',
+    text: 'The altar chose fires for the north road, so past the bread box the Stone Road now climbs through the Grey with a fire bowl on every cairn, and Brindle wants them lit. Ama is twenty logs short and the boot prints go north, to a clearing where tall people in peat-brown coats guard her wood, and every path learned something at sixty-six and seventy.',
   },
 ];

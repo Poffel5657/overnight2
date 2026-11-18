@@ -1086,7 +1086,7 @@ export const TALK = {
   snail_bramble: snail('bramble'), snail_pebble: snail('pebble'), snail_tom: snail('tom'),
   snail_duchess: snail('duchess'), snail_thistle: snail('thistle'),
   pell: {
-    start: { text: 'HEAR YE! The stones that point have FIRES on them! Past the bread box the old road goes on, and the Nightwright has opened it: the STONE ROAD, seven cairns and seven fire bowls all the way to a clearing at the top! Brindle wants every one of them lit, and she wants it NOW! Ama is twenty logs SHORT and the boot prints go north! Wardens, your vows grew at sixty-six, and so did every other path! Bring oil! Bring friends! Mind the moths!', options: [
+    start: { text: 'HEAR YE! The stones that point have FIRES on them! Past the bread box the old road goes on, and the Nightwright has opened it: the STONE ROAD, seven cairns and seven fire bowls all the way to a clearing at the top! Brindle wants every one of them lit, and she wants it NOW! Ama is twenty logs SHORT and the boot prints go north! Wardens, your vows grew at sixty-six AND seventy, and so did every other path! Bring oil! Bring friends! Mind the moths!', options: [
       { text: 'What was the news yesterday?', to: 'yesterday' },
       { text: 'Whose hand is this?', to: 'po_pell', if: { quest: { prayer_not_ours: 1 }, has: { prayer_slip: 1 } }, do: [{ advance: 'prayer_not_ours' }] },
       { text: 'Anything I can help with?', to: 'ul_offer', if: { quest: { kindling: 'done', unsent_letter: 'none' } }, do: [{ start: 'unsent_letter' }] },
