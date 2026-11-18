@@ -188,3 +188,19 @@ test('Not Thieves: Ama, der Rastplatz, ein Hollow Warden, das Scheit, der Strang
   assert.equal(P.countItem(r, 'hollow_string'), 1);
   assert.ok(ITEMS.hollow_string.slot === 'head');
 });
+
+test('Die Welt redet darüber: Tallow über die Wardens, Mothwick über die Motten, Wren über Mottenstaub', () => {
+  const w = S.createWorld(regionFor('kindle'), 826);
+  w.date = '2026-11-19';
+  w.daylight = 0;
+  const p = veteran(w, 'a', { level: 36, quests: { kindling: { done: true }, not_thieves: { done: true }, stone_by_stone: { done: true } }, bag: [{ id: 'moth_dust', n: 1 }] });
+  talk(w, 'a', 'tallow');
+  choose(w, 'a', 'walk the road with a lamp');
+  assert.equal(p.dialog.page, 'nt_tallow');
+  talk(w, 'a', 'mothwick');
+  choose(w, 'a', 'moths as big as crows');
+  assert.equal(p.dialog.page, 'mw_moths');
+  talk(w, 'a', 'wren');
+  choose(w, 'a', 'moth dust glows');
+  assert.equal(p.dialog.page, 'md_wren');
+});
