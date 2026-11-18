@@ -46,7 +46,7 @@ Tag 8 (Nacht zum 2026-11-19). **Inbox fehlte zum dritten Mal** (keine Datei nach
 ## Nächste Nächte
 
 - Inbox: prüfen, ob `2026-11-16.json`/`2026-11-17.json` nachträglich kamen (Gebete nachholen). Fehlt wieder eine Datei, steht es unter „Bekannte Probleme“ für Chris.
-- Klassen: alle acht Wege haben 66, Warden und Mender schon 70 (Tag 8). Nächste: Flarecaster 70, dann Drifter 70, dann Warden 74. Inhalt für 55 bis 66 muss mitwachsen (dringend: ein Gebiet für 55–60).
+- Klassen: alle acht Wege haben 70 (Tag 8). Nächste: Warden 74, dann die anderen. Inhalt für 55 bis 70 muss dringend mitwachsen (ein Gebiet für 55–60). Inhalt für 55 bis 66 muss mitwachsen (dringend: ein Gebiet für 55–60).
 - Inhalt für 54+: der Overflow Run reicht bis 54; dahinter das Tor nach Norden (bleibt zu, bis der Bogen es öffnet).
 - Bogen: Zettel 8 auswerten (carriers-rest ist ein kleiner Bogen-Haken). Wennas Aufbruch (spätestens Tag 10), danach die Vorstufe der großen Wahl auf den Zettel.
 - Mehr Gefallen, die Gruppen belohnen.
