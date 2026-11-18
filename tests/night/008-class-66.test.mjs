@@ -161,3 +161,28 @@ test('Nachschlag: der Mender auch auf 70 (Hearth and Home wärmt lange, Pyre Las
     assert.ok((m.hp < hp && m.burn?.left > 0) || m.dead, 'trifft und brennt');
   }
 });
+
+test('Nachschlag: Flarecaster und Drifter auch auf 70, damit hat jeder Weg etwas auf 70', () => {
+  for (const def of Object.values(CLASSES)) for (const sp of Object.values(def.specs)) {
+    const at70 = sp.abilities.find(([, l]) => l === 70);
+    assert.ok(at70, `${sp.name} hat etwas auf 70`);
+    assert.ok(describeAbility(at70[0]).effect.length > 30, at70[0]);
+  }
+  for (const [cls, spec, ab, check] of [
+    ['flarecaster', 'sunwright', 'noonfall', (w, m) => m.burn?.left > 0 || m.dead],
+    ['flarecaster', 'prismist', 'prism_burst', (w, m) => w.tick < m.dazzleUntil || m.dead],
+    ['drifter', 'nightblade', 'midnight_cut', () => true],
+    ['drifter', 'snarewright', 'wire_crown', (w, m) => w.tick < m.rootUntil || m.dead],
+  ]) {
+    const { w, p, m } = setup(810, cls, spec);
+    p.classes[cls] = { level: 70, xp: P.xpForLevel(70) };
+    assert.ok(P.knownAbilities(p).includes(ab), `${ab} gelernt`);
+    beside(w, p, m, ['melee', 'burst'].includes(ABILITIES[ab].kind) ? 1 : 3);
+    applyIntent(w, 'a', { t: 'target', id: m.id });
+    const hp = m.hp;
+    applyIntent(w, 'a', { t: 'ability', id: ab });
+    run(w, 1);
+    assert.ok(m.hp < hp || m.dead, `${ab} trifft`);
+    assert.ok(check(w, m), `${ab} wirkt`);
+  }
+});

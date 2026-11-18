@@ -615,7 +615,7 @@ export const ABILITY_ICONS = {
   kindred_hearth: ['flame', 'warm'], ashfall: ['flame', 'black'], solstice: ['beam', 'light'], kaleidoscope: ['star', 'glim'], new_moon: ['slash', 'purple'], snare_web: ['trap', 'dark'],
   sunward_oath: ['sun', 'warm'], cinder_chain: ['ring', 'black'],
   // Tag 8: alle Wege auf 66
-  hearth_and_home: ['waves', 'warm'], pyre_lash: ['bolt', 'red'], morning_vow: ['shield', 'light'], iron_hour: ['shield', 'stone'], beacon_vow: ['lantern', 'warm'], cinder_keep: ['shield', 'black'], hearth_ward: ['star', 'ember'], cinder_storm: ['flame', 'red'], sunstrike: ['beam', 'warm'], prism_cage: ['star', 'purple'], starless_cut: ['slash', 'dark'], tripwire_ring: ['trap', 'steel'],
+  noonfall: ['beam', 'light'], prism_burst: ['star', 'glim'], midnight_cut: ['slash', 'purple'], wire_crown: ['trap', 'black'], hearth_and_home: ['waves', 'warm'], pyre_lash: ['bolt', 'red'], morning_vow: ['shield', 'light'], iron_hour: ['shield', 'stone'], beacon_vow: ['lantern', 'warm'], cinder_keep: ['shield', 'black'], hearth_ward: ['star', 'ember'], cinder_storm: ['flame', 'red'], sunstrike: ['beam', 'warm'], prism_cage: ['star', 'purple'], starless_cut: ['slash', 'dark'], tripwire_ring: ['trap', 'steel'],
   dawn_vow: ['sun', 'amber'], anvil_fall: ['shield', 'stone'], ember_vigil: ['waves', 'warm'], pyre_ring: ['ring', 'ember'],
   hearthstone: ['ring', 'warm'], cinder_lash: ['bolt', 'red'], meridian: ['beam', 'light'], refraction: ['star', 'pale'], umbral_cut: ['slash', 'purple'], wire_ring: ['trap', 'dark'],
 };
