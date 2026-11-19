@@ -103,6 +103,8 @@ const BODIES = [
   ['mire_lurker', 'Lurker'], ['bog_toad', 'Toad'], ['moss_spirit', 'Mossling'], ['old_foreman', 'Digger'],
   // Tag 8: Körper von der Steinstraße
   ['ash_moth', 'Moth'], ['cairn_creeper', 'Cairn'], ['the_grey_heron', 'Heron'],
+  // Tag 9: aus den Glimmer Galleries
+  ['lode_crawler', 'Louse'], ['lampless_miner', 'Miner'],
 ];
 const EPITHETS = ['Hungry', 'Weeping', 'Crooked', 'Pale', 'Many-Handed', 'Hollow', 'Rusted', 'Whispering',
   'Patient', 'Lantern-Eating', 'Backward', 'Sleepless', 'Folded', 'Thin', 'Grinning', 'Borrowed'];
