@@ -59,6 +59,6 @@ export const CHRONICLE = [
     day: 9,
     date: '2026-11-20',
     title: 'A roof at the rest',
-    text: 'The altar chose the carriers\' lean-to, so anyone can mend it at the top of the Stone Road, and while its lamp burns nobody fights at the rest; an old Warden called Sedge sits there and has noticed a peg that is still hanging. Under the Drowned Chapel a stone face asks a riddle, under Copperdeep the glimmer galleries open for level 55, and every path learned something at seventy-four.',
+    text: 'The altar chose the carriers\' lean-to, so anyone can mend it at the top of the Stone Road, and while its lamp burns nobody fights at the rest; an old Warden called Sedge sits there and has noticed a peg that is still hanging. Under the Drowned Chapel a stone face asks a riddle, under Copperdeep the glimmer galleries open for level 55, and every path learned something at seventy-four and seventy-eight.',
   },
 ];
