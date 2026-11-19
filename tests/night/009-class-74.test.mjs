@@ -176,3 +176,19 @@ test('Mender schon auf 78: Open Hearth heilt alle in der Nähe sofort, Cinder Wa
     assert.ok(m.burn && m.burn.left > 0, 'brennt');
   }
 });
+
+test('Flarecaster und Drifter schon auf 78: High Window, Stained Glass, No Moon, Carrier\'s Knot', () => {
+  const NEW78 = { sunwright: 'high_window', prismist: 'stained_glass', nightblade: 'no_moon', snarewright: 'carriers_knot' };
+  for (const [cls, spec] of [['flarecaster', 'sunwright'], ['flarecaster', 'prismist'], ['drifter', 'nightblade'], ['drifter', 'snarewright']]) {
+    const id = NEW78[spec];
+    assert.deepEqual(CLASSES[cls].specs[spec].abilities.find(([a]) => a === id), [id, 78]);
+    assert.ok(describeAbility(id).effect.length > 30);
+    const { w, p, m } = setup(914, cls, spec);
+    p.classes[cls].level = 78;
+    w.daylight = 0;
+    beside(w, p, m, cls === 'drifter' && spec === 'nightblade' ? 1 : 3);
+    const hp0 = m.hp;
+    cast(w, 'a', id, m);
+    assert.ok(m.hp < hp0, `${id} trifft`);
+  }
+});

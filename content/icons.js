@@ -615,6 +615,7 @@ export const ABILITY_ICONS = {
   kindred_hearth: ['flame', 'warm'], ashfall: ['flame', 'black'], solstice: ['beam', 'light'], kaleidoscope: ['star', 'glim'], new_moon: ['slash', 'purple'], snare_web: ['trap', 'dark'],
   sunward_oath: ['sun', 'warm'], cinder_chain: ['ring', 'black'],
   // Tag 8: alle Wege auf 66
+  high_window: ['beam', 'light'], stained_glass: ['star', 'warm'], no_moon: ['slash', 'purple'], carriers_knot: ['trap', 'pale'],
   open_hearth: ['waves', 'warm'], cinder_wake: ['bolt', 'red'],
   lamp_on_the_hook: ['lantern', 'light'], last_stone: ['shield', 'stone'],
   open_door: ['shield', 'warm'], shut_gate: ['shield', 'black'], warm_threshold: ['waves', 'light'], banked_pyre: ['flame', 'red'], long_noon: ['beam', 'warm'], split_dawn: ['star', 'light'], moonset_cut: ['slash', 'black'], peg_line: ['trap', 'scrap'],
