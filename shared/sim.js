@@ -29,6 +29,7 @@ import { splitDeadfall, stackWoodpile } from './woodpile.js';
 import { leaveAtCache } from './cache.js';
 import { stoneFire } from './road.js';
 import { mendLeanto, restAtHearth, truceHolds } from './leanto.js';
+import { LEANTO } from '../content/leanto.js';
 
 export { saveOf, xpForLevel, MAX_LEVEL } from './player.js';
 
@@ -306,6 +307,7 @@ export function interact(world, pid, ref, action) {
     if (ref.kind === 'mob') text = target.def.examine;
     else if (ref.kind === 'npc') text = `${target.name}.`;
     else if (target.type === 'signal' && target.lit) text = EXAMINE.signalLit;
+    else if (target.type === 'leanto' && target.lit) text = LEANTO.standing;
     else if (target.type === 'node') text = target.left > 0 ? `${NODES[target.node].name}. ${EXAMINE.node}` : EXAMINE.depleted;
     else if (target.type === 'station') text = EXAMINE[target.station];
     else if (target.type === 'find') text = `${target.name[0].toUpperCase()}${target.name.slice(1)}. Something about it is worth a closer look.`;

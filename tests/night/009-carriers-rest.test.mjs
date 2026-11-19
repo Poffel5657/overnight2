@@ -100,6 +100,12 @@ test('A Roof at the Rest: Brindle, Totholz, die Straße hinauf, flicken mit eine
   const seen = runUntil(w, () => !f.goal, 400);
   assert.ok(w.leanto.n >= LEANTO.goal, `jetzt steht er (${w.leanto.n})`);
   assert.equal(lt.lit, true, 'die Lampe brennt');
+  {
+    applyIntent(w, 'f', { t: 'act', kind: 'object', id: lt.id, action: 'examine' });
+    const ev = runUntil(w, () => !f.goal, 400);
+    run(w, 1, (e) => ev.push(...e));
+    assert.ok(ev.some((e) => e.text === LEANTO.standing), 'Untersuchen zeigt, dass er steht');
+  }
   assert.ok(seen.some((e) => e.type === 'lit' && e.id === lt.id), 'alle sehen die Lampe');
   // Waffenruhe: Wer jetzt neben einem Warden steht, wird nicht angegriffen
   const m = w.mobs.find((x) => x.type === 'hollow_warden' && !x.dead);
