@@ -362,6 +362,7 @@ Abstimmung: Zettel 0 (Mühle, Angeln, Nachtmarkt), noch keine Auswertung.
 - **Rezept-Strang Lode Glimmer:** Tinkering 49 **Lode Coat** (Körper, Abwehr 18, Licht 0,5), Tinkering 50 **Lode Shivs** (Drifter, Kraft 21), Lampwright 50 **Lode Lens** (Flarecaster, Kraft 22), dazu die Lode Lantern (Lampwright 48). Brack verweist auf Rook und Wren. (Berufe enden bei Stufe 50; ein erster Entwurf mit Stufe 51/52 war nicht erreichbar und fiel im Test auf.)
 - **„A Peg for Fen“** (Fen, für niedrige Stufen): Fen will einen Pflock wie die Träger. Totholz spalten, Rook brennt FEN hinein (und, nach Streit, eine sehr kleine Gans), Brindle steckt ihn in den ersten Steinmann über der Brot-Kiste („Fen cannot go up the road. Fen can be on it.“), zurück zu Fen.
 - Zwei Gefallen am Brett für die Galleries: drei Lode Glimmer für Brack (70 Gold, 1.500 EP) und vier Lode Crawler (75 Gold, 1.700 EP). Der Kern-Test „Gefallen erledigen“ bleibt grün.
+- Zwei neue Fundstücke im Drift (ein Kistenband mit Pfeil nach Norden, ein Quadrat Birkenrinde mit warmer Asche) und zwei neue Keeper-Körper im Unending Maze (Louse, Miner).
 - Hollis hat ein neuntes Gerücht (Marrow gibt eine Runde aus, oben gibt es ein Dach und einen alten Mann, der „hm“ sagt, und Wenna faltet Säcke).
 - Pell ruft die Nacht aus (die von gestern ist unter „What was the news yesterday?“ noch zu hören), neuer Ausguck-Text, Rufe für Sedge, Brindle, Ama, Pip.
 

@@ -25,6 +25,9 @@ export const DRIFT_FINDS = [
   // Tag 8 (Bogen): Dinge von der Steinstraße, die der Grey hierher geweht hat
   { name: 'a wooden peg', text: 'A wooden peg with a name burnt into it, the letters worn too smooth to read. A loop of birch twine is still tied round it, with nothing on it.' },
   { name: 'a fire bowl', text: 'An iron fire bowl, the kind that sits on top of a cairn, full of cold peat ash. It is facing north, even lying on its side.' },
+  // Tag 9
+  { name: 'a crate band', text: 'An iron band off a glimmer crate, stamped with a small lamp and an arrow. Blue-white dust still sits in the rivets. The arrow points north, even though the Grey has turned it round twice while you watched.' },
+  { name: 'a square of bark', text: 'A square of birch bark folded very small, the way you would wrap something precious. Inside there is only a pinch of grey ash, still faintly warm.' },
 ];
 
 function rng(seed) {
