@@ -26,7 +26,7 @@ Tag 9 (Nacht zum 2026-11-20). **Inbox fehlte zum vierten Mal** (keine Datei nach
 
 **Dauerauftrag Klassen:** Warden auf 74 (Lightsworn und Ironwall).
 
-**Nachschlag:** Mender, Flarecaster, Drifter auf 74; Rätselraum in der Drowned Chapel (aus Gebet 8, „The Choir Door“); The Glimmer Galleries unter Copperdeep (Stufe 55–60, „Forty Crates“, Deep Lode, Lode Lantern); Rufe, Pell, Ausguck, Gespräche (Ama und der Stranger zu Sedge).
+**Nachschlag:** Mender, Flarecaster, Drifter auf 74; Rätselraum in der Drowned Chapel (aus Gebet 8, „The Choir Door“); The Glimmer Galleries unter Copperdeep (Stufe 55–60, „Forty Crates“, „Back Monday“, Deep Lode, Lode-Rezepte, zwei Gefallen); Warden schon auf 78; „A Peg for Fen“ (niedrige Stufen); Drift-Fundstücke, Keeper-Körper; Rufe, Pell, Ausguck, Hollis, Gespräche (Ama, Haskel und der Stranger zu Sedge).
 
 ## Ausbau läuft
 
