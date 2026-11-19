@@ -259,6 +259,7 @@ const rook = (() => {
   const s = teaches('salvage', 'Heaps, wrecks, anything the Grey spat out. Pull the good bits, leave the bad bits, and do not cut yourself. Much.');
   const k = teaches('tinkering', 'The workbench by my shop. Scrap in, something useful out. If it falls apart, that is a lesson.');
   return {
+    pf_rook: { text: 'Rook turns the log over twice, takes a hot iron out of the forge and burns three letters into it without looking: FEN. Then he stops. "The child will want a goose." He sighs like a bellows and burns a very small goose under the name. "Do not tell anyone I can do geese. They will all want geese."', options: [BYE] },
     iw_rook: { text: 'Rook looks at your shield, then at you, then back at the shield, as if deciding which of you is the better piece of work. "Ironwall." He knocks on the rim with one knuckle and listens. "Cinder iron does not bend. It does not break either, until it does, all at once. Remember that." He goes back to his bench. "Bring it to me when it rings wrong. Not before."', options: [BYE] },
     start: {
       text: 'Old Rook. I fix things. Bring me scrap from the Grey, and I make it into something that is not scrap.',
@@ -266,6 +267,8 @@ const rook = (() => {
         { text: 'Ama says I am Ironwall now.', to: 'iw_rook', if: { spec: 'ironwall' } },
         { text: 'You look busy.', to: 'r_offer', if: { quest: { kindling: 'done', rooks_bad_week: 'none' } }, do: [{ start: 'rooks_bad_week' }] },
         { text: 'Here is your scrap.', to: 'r_done', if: { quest: { rooks_bad_week: 1 }, has: { scrap: 6 } }, do: [{ take: { scrap: 6 } }, { advance: 'rooks_bad_week' }] },
+        // Nachschlag Tag 9: Fens Pflock
+        { text: 'Fen wants a name burnt into this log.', to: 'pf_rook', if: { quest: { a_peg_for_fen: 1 }, has: { split_log: 1 } }, do: [{ take: { split_log: 1 } }, { give: { fens_peg: 1 } }, { advance: 'a_peg_for_fen' }] },
         { text: 'Flint needs a cart wheel.', to: 'tw_rook', if: { quest: { three_wheels: 1 }, has: { scrap: 5 } }, do: [{ take: { scrap: 5 } }, { give: { cart_wheel: 1 } }, { advance: 'three_wheels' }] },
         { text: 'Teach me masterwork.', to: 'mw_offer', if: { quest: { rook_masterwork: 'none' }, profLevel: { tinkering: 30 } }, do: [{ start: 'rook_masterwork' }] },
         { text: 'Teach me masterwork.', to: 'mw_early', if: { quest: { rook_masterwork: 'none' }, profBelow: { tinkering: 30 } } },
@@ -305,6 +308,9 @@ const fen = (() => {
         // Tag 8, Nachschlag (für niedrige Stufen): Fen will die Feuer auf den Steinen zählen
         { text: 'People are lighting fires on the stones up north.', to: 'ff_offer', if: { quest: { kindling: 'done', fens_fires: 'none' } }, do: [{ start: 'fens_fires' }] },
         { text: 'Brindle counted the fires for you.', to: 'ff_done', if: { quest: { fens_fires: 2 } }, do: [{ advance: 'fens_fires' }] },
+        // Nachschlag Tag 9: ein Pflock für Fen
+        { text: 'You look like you are planning something.', to: 'pf_offer', if: { quest: { kindling: 'done', a_peg_for_fen: 'none' } }, do: [{ start: 'a_peg_for_fen' }] },
+        { text: 'Your peg is at the first stone.', to: 'pf_done', if: { quest: { a_peg_for_fen: 3 } }, do: [{ advance: 'a_peg_for_fen' }] },
         { text: 'You keep staring north.', to: 'nf_offer', if: { quest: { not_from_here: 'none' }, classLevel: 10 }, do: [{ start: 'not_from_here' }] },
         { text: 'You keep staring north.', to: 'nf_early', if: { quest: { not_from_here: 'none' }, below: 10 } },
         { text: 'About the light in the north...', to: 'nf_done', if: { quest: { not_from_here: 3 } }, do: [{ advance: 'not_from_here' }] },
@@ -336,6 +342,8 @@ const fen = (() => {
     cs_offer: { text: '"SHADOWS. At night the Beacon makes everybody\'s shadow really long, so I draw round them in chalk. I have a cat, a goose and Pell. Pell moved." Fen holds up an empty hand. "I ran out of chalk. Brother Tallow has chalk for the hymn numbers. Get me some, then draw yours. And then, then, get the Stranger to stand in the ring. I want his. He always walks away when I ask."', options: [{ text: 'Chalk, then shadows.' }] },
     cs_done: { text: 'Fen stares at you. Then at the ring. Then at the Beacon. "Everybody has a shadow. The goose has a shadow." Fen is quiet for a whole three seconds, which is a record. "I am not scared. I am writing it down. In pencil, in case it comes back." Fen hands over a bread roll that has been in a pocket a long time, and the glow draught Tallow gave for emergencies. "This is an emergency."', options: [{ text: 'Do not follow him, Fen.' }] },
     cs_after: { text: '"Every night. The cat, the goose, Pell, you. And one empty space." Fen has drawn a little circle round the empty space. "I asked Ama. Ama said some people do not have much light to spare. That is not an answer. That is an Ama answer."', options: [BYE] },
+    pf_offer: { text: 'Fen is drawing pegs in the dirt with a stick. "Up at the top there is a board with a peg for every carrier, with their NAME on it. When they go home they take it." Fen stabs the dirt. "I want one. So when I go north, I can take mine." A pause. "When I am allowed. Which is not yet. Brindle says. Get me a log and Rook will do the name, Rook has the hot thing."', options: [{ text: 'A log, then Rook.' }] },
+    pf_done: { text: 'Fen goes completely still, which has never happened before. "At the FIRST stone? On the box?" You nod. "Then I am on the road. Officially." Fen marches twice round the Beacon, very fast, and comes back out of breath. "When I go north I will take it. Not yet. But it is there." Fen gives you two loaves that were definitely meant for the goose.', options: [BYE] },
     fen_wenna: { text: '"A REAL one? From the light?" Fen is already halfway to the mill road before you catch the collar. "Does she have a shadow? Can I carry something for her? I am very strong. I carried the goose once." Fen thinks. "The goose did not like it."', options: [BYE] },
     or_fen: { text: 'Fen sits down very hard on the ground. "Without me?" A long, wounded silence, about four seconds. "Then I am drawing her a map. A good one. With the stones on it, and the tower, and where the wolves sleep, and a goose so she knows it is from me." Fen is already looking for chalk.', options: [BYE] },
     fm_offer: { text: 'Fen holds up a sheet of chapel paper with a goose on it. Only a goose. "This is the start. I need the stones that point. Brindle draws them every night, she will not let me up the ladder. And I need where the wolves sleep, so Wenna can not go there. Haskel knows. Haskel knows everything about wolves and nothing about geese."', options: [{ text: 'Stones from Brindle, wolves from Haskel.' }] },
@@ -584,6 +592,7 @@ const brindle = {
       { text: 'The village voted to mend the lean-to at the top.', to: 'rr_offer', if: { quest: { stone_by_stone: 'done', a_roof_at_the_rest: 'none' }, classLevel: 28 }, do: [{ start: 'a_roof_at_the_rest' }] },
       { text: 'The village voted to mend the lean-to at the top.', to: 'rr_early', if: { quest: { stone_by_stone: 'done', a_roof_at_the_rest: 'none' }, below: 28 } },
       { text: 'I slept under the lean-to.', to: 'rr_done', if: { quest: { a_roof_at_the_rest: 3 } }, do: [{ advance: 'a_roof_at_the_rest' }] },
+      { text: 'Fen made a peg, like the carriers.', to: 'pf_brindle', if: { quest: { a_peg_for_fen: 2 }, has: { fens_peg: 1 } }, do: [{ take: { fens_peg: 1 } }, { advance: 'a_peg_for_fen' }] },
       { text: 'Fen wants to know how many fires there are.', to: 'ff_brindle', if: { quest: { fens_fires: 1 } }, do: [{ advance: 'fens_fires' }] },
       { text: 'What do you see up there?', to: 'see' },
       { text: 'Can I read your book?', to: 'book', if: { quest: { eyes_north: 'done' } } },
@@ -595,6 +604,7 @@ const brindle = {
   cd_early: { text: '"Lights on the edge of the trees, walking. I want somebody to go and look, but the things that came after them would eat you. Come back with a few more levels. (Level 16)"', options: [BYE] },
   cd_done: { text: 'She writes it all down: the frame, the tally, the bread, what Wren said, what the Stranger said, and underlines "the old way south" three times. "So the glow up north has people under it. Hungry people, walking." She closes the book. "Here: the wraps one of them dropped, and Haskel\'s salve. I will keep counting. Tell Ama. No, I will tell Ama. She listens to me when I shout."', options: [{ text: 'Thanks, Brindle.' }] },
   cd_after: { text: '"Twice more. Always at night, always heading east along the trees, always fewer lamps than the time before. Last night, three." She does not look up from her book.', options: [BYE] },
+  pf_brindle: { text: 'Brindle turns the peg in her fingers and very nearly smiles at the goose. "Fen cannot go up the road. Fen can be on it." She climbs down, wedges the peg into the first cairn above the bread box, name to the north, and climbs back up. "There. Every carrier who takes bread will see it." She writes it in the book: one peg, Kindle, Fen. "Tell the child it is official."', options: [BYE] },
   rr_offer: { text: 'Brindle licks her pencil. "The vote was for a roof at the top. Ama says Kindle does not build things for people who steal its wood. Then she gave me an axe." She points at the woods. "Deadfall. Logs for the poles, peat for the hearth, a flask of oil for the lamp hook. One pair of hands will not do it, so bring friends or go twice." She taps the book. "And sleep there one night. I want to write down that it is dry."', options: [{ text: 'Logs, peat, oil. Then sleep.' }] },
   rr_early: { text: '"A roof at the top of the Stone Road, past the ford, where the Wardens stand." She looks you up and down. "No. Come back when you can walk past a Warden without being folded in half. (Level 28)"', options: [BYE] },
   rr_done: { text: 'Brindle writes for a long time. "Dry. Peat fire. A lamp on the hook." She stops. "And the Wardens did not fight?" You tell her. She underlines it so hard the pencil goes through. "That is the first night in this book anybody from up there and anybody from down here sat at the same fire." She digs in her bag. "Peat oil, from Wren. And Haskel\'s salve, before you ask."', options: [{ text: 'Thanks, Brindle.' }] },
