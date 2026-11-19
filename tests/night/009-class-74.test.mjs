@@ -134,3 +134,24 @@ test('Long Noon, Split Dawn, Moonset Cut und Peg Line wirken wie beschrieben', (
     assert.ok(m.rootUntil > w.tick, 'sitzt fest');
   }
 });
+
+test('Warden schon auf 78: Lamp on the Hook bindet alles und schützt die Leute dahinter, Last Stone heilt und hält', () => {
+  assert.deepEqual(CLASSES.warden.specs.lightsworn.abilities.find(([a]) => a === 'lamp_on_the_hook'), ['lamp_on_the_hook', 78]);
+  assert.deepEqual(CLASSES.warden.specs.ironwall.abilities.find(([a]) => a === 'last_stone'), ['last_stone', 78]);
+  {
+    const { w, p, m } = setup(910, 'warden', 'lightsworn');
+    p.classes.warden.level = 78;
+    beside(w, p, m, 2);
+    applyIntent(w, 'a', { t: 'ability', id: 'lamp_on_the_hook' });
+    run(w, 1);
+    assert.equal(m.angryAt, 'a', 'bindet');
+  }
+  {
+    const { w, p } = setup(911, 'warden', 'ironwall');
+    p.classes.warden.level = 78;
+    p.hp = 50;
+    applyIntent(w, 'a', { t: 'ability', id: 'last_stone' });
+    run(w, 1);
+    assert.ok(p.hp >= 50 + ABILITIES.last_stone.heal - 1, `heilt (${p.hp})`);
+  }
+});
