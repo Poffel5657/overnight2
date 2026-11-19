@@ -9,10 +9,11 @@ import { REGION as cinderford } from './cinderford.js';
 import { mazeFor, floorOf, MAZE_FLOORS } from './maze.js';
 import { REGION as sumps } from './sumps.js';
 import { REGION as stoneRoad } from './stone-road.js';
+import { REGION as galleries } from './galleries.js';
 
-export const STATIC_REGIONS = { kindle, kindle_inside: kindleInside, drowned_chapel: drownedChapel, cinderford, sumps, stone_road: stoneRoad };
+export const STATIC_REGIONS = { kindle, kindle_inside: kindleInside, drowned_chapel: drownedChapel, cinderford, sumps, stone_road: stoneRoad, galleries };
 // Feste Gebiete. Dazu kommen die Stockwerke des Labyrinths maze_1 bis maze_99 (isRegionId).
-export const REGION_IDS = ['kindle', 'kindle_inside', 'drowned_chapel', 'drift', 'cinderford', 'sumps', 'stone_road'];
+export const REGION_IDS = ['kindle', 'kindle_inside', 'drowned_chapel', 'drift', 'cinderford', 'sumps', 'stone_road', 'galleries'];
 
 export function isRegionId(id) {
   if (REGION_IDS.includes(id)) return true;

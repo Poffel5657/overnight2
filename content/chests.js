@@ -12,5 +12,7 @@ export const CHESTS = {
   // Tag 8: die Kiste eines Trägers am Rastplatz oben an der Steinstraße
   // Nachschlag Tag 9: die Truhe des Chors hinter der Tür unter der Chortreppe
   choir_vault: { gold: [40, 75], items: [['greyglass', 0.7, 1, 2], ['sodden_hymnal', 0.5, 1, 1], ['grey_wisp', 0.5, 1, 2], ['hearth_salve', 0.4, 1, 1], ['dusk_draught', 0.4, 1, 1]] },
+  // Nachschlag Tag 9: die Glimmer Galleries
+  galleries: { gold: [60, 110], items: [['lode_glimmer', 0.7, 1, 2], ['run_iron', 0.4, 1, 1], ['cinder_iron', 0.5, 1, 2], ['culvert_draught', 0.4, 1, 1]] },
   carriers_box: { gold: [25, 50], items: [['hollow_ration', 0.6, 1, 2], ['peat_brick', 0.6, 1, 3], ['peat_oil', 0.4, 1, 1], ['green_shard', 0.5, 1, 2], ['hearth_salve', 0.3, 1, 1]] },
 };

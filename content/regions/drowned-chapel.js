@@ -36,6 +36,7 @@ export const REGION = {
     { type: 'plaque', x: 22, y: 30, name: 'the cantor\'s rule', text: 'Scratched into the wall by the stairs, small, the way a teacher writes for children: THE BELL SINGS LOW. THE FISH SWIMS BETWEEN. THE LAMP IS HELD ABOVE. NEVER OUT OF ORDER.' },
     // Die Sakristei hinter der Tür
     { type: 'door', to: 'drowned_chapel', tx: 8, ty: 27, x: 6, y: 36, name: 'the low door back to the aisle', look: 'door' },
+    { type: 'brazier', x: 10, y: 34, light: 3.5, name: 'a choir candle-stand' },
     { type: 'chest', chest: 'choir_vault', x: 3, y: 31, name: 'the choir\'s strongbox' },
     { type: 'shrine', look: 'niche', x: 9, y: 31, name: 'a niche with a tuning fork', gives: 'fortieth_voice', quest: 'the_choir_door', step: 1, text: 'A niche in the wall, lined with lead. Something small lies on a folded cloth.', found: 'You lift the cloth. Under it, a tuning fork of dark brass. When you touch it, it hums, very softly, the note the whole chapel was built around.', empty: 'An empty niche lined with lead, and a folded cloth. Forty hooks on the wall above it, for forty robes. One hook has a name scratched over it, and the name has been scratched out.' },
   ],

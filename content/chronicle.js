@@ -55,4 +55,10 @@ export const CHRONICLE = [
     title: 'Seven stones, seven fires',
     text: 'The altar chose fires for the north road, so past the bread box the Stone Road now climbs through the Grey with a fire bowl on every cairn, and Brindle wants them lit. Ama is twenty logs short and the boot prints go north, to a clearing where tall people in peat-brown coats guard her wood, and every path learned something at sixty-six and seventy.',
   },
+  {
+    day: 9,
+    date: '2026-11-20',
+    title: 'A roof at the rest',
+    text: 'The altar chose the carriers\' lean-to, so anyone can mend it at the top of the Stone Road, and while its lamp burns nobody fights at the rest; an old Warden called Sedge sits there and has noticed a peg that is still hanging. Under the Drowned Chapel a stone face asks a riddle, under Copperdeep the glimmer galleries open for level 55, and every path learned something at seventy-four.',
+  },
 ];

@@ -17,6 +17,8 @@ export const NODES = {
   // Tag 4, Nachschlag: Cartography 30. Die Vermessungspflöcke von Bracks Großvater am alten Flöz; manchmal steckt Eisen daran.
   seam_stake: { name: 'Old Survey Stake', prof: 'cartography', level: 30, item: 'survey_notes', extra: ['cinder_iron', 0.15], yields: 4, xp: 60, respawn: 140, look: 'waymark', verb: 'Survey' },
   // Tag 5, Nachschlag: in den Sumps unter Cinderford (Stufe 36 bis 38). Verdigris ohne Kampf, wenn man leise ist.
+  // Nachschlag Tag 9: die tiefe Glimmer-Ader in den Glimmer Galleries (Salvage 44)
+  deep_lode: { name: 'Deep Lode', prof: 'salvage', level: 44, item: 'lode_glimmer', extra: ['glimmer', 0.5], yields: 3, xp: 84, respawn: 170, look: 'vein', verb: 'Salvage' },
   verdigris_pipe: { name: 'Verdigris Pipe', prof: 'salvage', level: 38, item: 'verdigris', extra: ['cinder_iron', 0.2], yields: 3, xp: 72, respawn: 160, look: 'vein', verb: 'Salvage' },
   sluice_mark: { name: 'Sluice-Keeper\'s Mark', prof: 'cartography', level: 36, item: 'survey_notes', extra: ['verdigris', 0.25], yields: 4, xp: 70, respawn: 150, look: 'waymark', verb: 'Survey' },
   // Tag 8: Torfstiche an der Steinstraße (Foraging 33). Torf ist Brennstoff für das Leuchtfeuer und wird zu Peat Oil.
