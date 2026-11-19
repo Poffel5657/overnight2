@@ -106,6 +106,8 @@ export const RECIPES = {
   l_verdigris_staff: { prof: 'lampwright', level: 38, inputs: { verdigris: 3, cinder_iron: 2, emberroot: 2 }, out: ['verdigris_staff', 1], xp: 290 },
   // Tag 7, Nachschlag: Run Iron aus dem Overflow Run
   l_run_staff: { prof: 'lampwright', level: 44, inputs: { run_iron: 3, verdigris: 2, emberroot: 2 }, out: ['run_iron_staff', 1], xp: 400 },
+  // Nachschlag Tag 9: Lode Lantern aus den Glimmer Galleries (Lampwright 48)
+  l_lode_lantern: { prof: 'lampwright', level: 48, inputs: { lode_glimmer: 4, run_iron: 2, greyglass: 1 }, out: ['lode_lantern', 1], xp: 460 },
   l_run_lens: { prof: 'lampwright', level: 45, inputs: { run_iron: 3, greyglass: 3 }, out: ['run_iron_lens', 1], xp: 410 },
   l_verdigris_lens: { prof: 'lampwright', level: 39, inputs: { verdigris: 3, cinder_iron: 2, greyglass: 2 }, out: ['verdigris_lens', 1], xp: 300 },
   l_greyglass_staff: { prof: 'lampwright', level: 26, inputs: { greyglass: 2, glimmer: 2, lily_bulb: 2 }, out: ['greyglass_staff', 1], xp: 140 },

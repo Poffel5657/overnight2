@@ -1,6 +1,7 @@
 // Die Oberwelt: Kindle (Dorf am Leuchtfeuer) in der Mitte, Fernmeadow rundherum,
 // Hushwood im Norden (Stufe 10-25), Copperdeep im Osten (15-35), Sinkmarsh mit Ruinen im Süden (25-40).
 // Koordinaten: x = Spalte, y = Reihe im Raster aus kindle-terrain.js.
+import { GALLERIES_START } from './galleries.js';
 import { TILES, HEIGHTS } from './kindle-terrain.js';
 import { INSIDE } from './kindle-inside.js';
 import { CINDER } from './maze.js';
@@ -168,6 +169,8 @@ export const REGION = {
     // Tag 7: der Flusskiesel neben der Kiste, nur nachts (Quest „The Stone on the Lid“)
     {type: 'shrine', look: 'floorboard', x: 49, y: 6, name: 'a flat stone by the bread box', gives: 'river_stone', quest: 'stone_on_the_lid', step: 0, night: true, text: 'A flat grey stone beside the bread box, smooth as soap. There is no river within a day of here.', found: 'You pick it up. It is still wet underneath, and cold, as if it came out of running water an hour ago.', dayText: 'Just stones, by daylight. Brindle says the strange one only turns up after dark.', empty: 'The ground by the box, and the dry print of a stone that is not there any more.'},
     // Tag 8 (Abstimmung „north-road-fires“): hinter dem ersten Stein geht die alte Straße weiter, in die Steinstraße
+    // Tag 9, Nachschlag: ein alter Schacht neben dem Old Shaft führt in die Glimmer Galleries (Stufe 55 bis 60)
+    {type: 'door', to: 'galleries', tx: GALLERIES_START.x, ty: GALLERIES_START.y, x: 97, y: 28, name: 'the old glimmer shaft', look: 'grate', needs: {classLevel: 52}, locked: 'An old shaft with a ladder going down into the dark. The rungs are sound, but the air coming up smells of glimmer and something that is not glad to see you. Not yet. (Level 52)'},
     {type: 'door', to: 'stone_road', tx: ROAD_START.x, ty: ROAD_START.y, x: 53, y: 1, name: 'the stones that point north', look: 'cairns', needs: {classLevel: 20}, locked: 'The road goes on past the first stone, into fog as thick as wool. Brindle shouts down from the Watch: not alone, and not below level twenty.'},
     {type: 'deadfall', x: 35, y: 33, name: 'deadfall', text: 'A fallen birch at the edge of the woods, grey and dry. It would break into good lengths.'},
     {type: 'deadfall', x: 34, y: 27, name: 'deadfall', text: 'An old pine lying where the wind left it. Dry enough to split.'},

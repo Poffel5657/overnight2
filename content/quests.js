@@ -661,6 +661,18 @@ export const QUESTS = {
     ],
     reward: { xp: 1600, gold: 40, items: { hollow_string: 1 } },
   },
+  // Nachschlag Tag 9: Brack und die Glimmer Galleries (Stufe 55 bis 60)
+  forty_crates: {
+    name: 'Forty Crates', giver: 'brack',
+    text: 'Brack has found his grandfather\'s old shaft next to the Old Shaft. The glimmer galleries below are where the forty crates a week came from, and something down there is eating the lode.',
+    steps: [
+      { type: 'kill', mob: 'lode_crawler', n: 5, text: 'Climb down the old glimmer shaft in the east of Copperdeep and clear five Lode Crawlers off the lode.' },
+      { type: 'have', item: 'hollow_tag', n: 1, text: 'Search the niche in the loading bay for anything that says where the crates went.' },
+      { type: 'kill', mob: 'lampless_miner', n: 3, text: 'Something is still working the low gallery and the last face. Put three Lampless Miners to rest.' },
+      { type: 'talk', npc: 'brack', text: 'Climb back up and show Brack the tag.' },
+    ],
+    reward: { xp: 11500, gold: 220, items: { loaders_hood: 1, culvert_draught: 2 } },
+  },
   // Nachschlag Tag 9 (aus Gebet 8, Zettel „chapel-riddle-room“): ein Rätsel in der Drowned Chapel
   the_choir_door: {
     name: 'The Choir Door', giver: 'tallow',

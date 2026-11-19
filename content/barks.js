@@ -47,7 +47,7 @@ export const BARKS = {
   // Tag 6: Ama am Holzstapel (ruft bei Abend, wer vorbeigeht, soll Holz bringen)
   ama: {
     range: 7, every: 45,
-    lines: ['Bread north, wood here. That is the deal.', '*chalks a line on the tally board*', 'Bark up. Always bark up.', 'Deadfall along the woods. Any boot can break it.', 'It ate the whole pile last night.', '*weighs a log in her hand, frowns at the fire*', '*counts the pile, and counts it again*', 'Twenty short. Bark up. Somebody knew how.'],
+    lines: ['Bread north, wood here. That is the deal.', '*chalks a line on the tally board*', 'Bark up. Always bark up.', 'Deadfall along the woods. Any boot can break it.', 'It ate the whole pile last night.', '*weighs a log in her hand, frowns at the fire*', '*counts the pile, and counts it again*', 'Twenty short. Bark up. Somebody knew how.', 'Kindle answers the door. Even when it is a lean-to.'],
   },
   band_corra: {
     range: 9, every: 20,
@@ -70,7 +70,7 @@ export const BARKS = {
   },
   band_pip: {
     range: 9, every: 31,
-    lines: ['*a thin, happy tune on the pipe*', '*toot*', 'There is a light in the north... la la...', '...and Brindle is watching it... la la...', '...and lamps walk by in the dark... la la...', '...and the mill grinds all night... la la...', '...two lamps now, only two... la...', '...and the pile by the fire grows... la la...', '...seven fires up the old stone road... la la...'],
+    lines: ['*a thin, happy tune on the pipe*', '*toot*', 'There is a light in the north... la la...', '...and Brindle is watching it... la la...', '...and lamps walk by in the dark... la la...', '...and the mill grinds all night... la la...', '...two lamps now, only two... la...', '...and the pile by the fire grows... la la...', '...seven fires up the old stone road... la la...', '...a lamp on a hook at the top of the road... la la...'],
   },
   brindle: {
     range: 8, every: 50,
@@ -85,6 +85,7 @@ export const BARKS = {
       'No lamps at all last night. Not one.',
       'One, two, three cairns. Then nothing.',
       'Fires on the stones! I count four. No, five.',
+      'A lamp at the very top tonight. Not moving. Writing it down as a window.',
       'Something tall at the top of the road, with a green lamp.',
       'Take oil up the Stone Road. Lots of oil.',
     ],

@@ -235,6 +235,24 @@ export const MOBS = {
     boss: { deathText: 'The Pumpwarden sighs through every pipe at once and sits down. The lamp in its chest stays lit. It is still pointing north.' },
     examine: 'A pump engine of green bronze, taller than two people, walking on its own on four short iron legs. In its chest, behind a grille, a quarrymen\'s lamp still burns.',
   },
+  // ---------- The Glimmer Galleries (Tag 9, Nachschlag): die alten Glimmer-Stollen unter Copperdeep, Stufe 55 bis 60 ----------
+  lode_crawler: {
+    // Rolle normal, Stufe 55. Lange Steinasseln, die Glimmer aus der Wand fressen; ihr Panzer leuchtet von innen.
+    name: 'Lode Crawler', sprite: 'lode_crawler', level: 55, ai: 'grey',
+    hp: 800, hit: [23, 27], attackEvery: 4, aggro: 5, leash: 8, respawn: 120, xp: 560,
+    drops: [['lode_glimmer', 0.5, 1, 1], ['glimmer', 0.6, 1, 3], ['greyglass', 0.2, 1, 1]], gold: [26, 42],
+    special: { every: 3, delay: 5, pattern: 'line', hit: [46, 54], text: 'The crawler rears up and curls its glowing back. It is going to roll, straight ahead.' },
+    examine: 'A stone woodlouse as long as a cart, its plates glowing from inside where it has eaten the glimmer out of the wall.',
+  },
+  lampless_miner: {
+    // Rolle normal, Stufe 58. Ein Bergmannsmantel und ein Helm voll Glimmerstaub, die noch ihre Schicht gehen.
+    // Ohne Lampe: Sie suchen eine. Trinken Öl aus Laternen (drainOil).
+    name: 'Lampless Miner', sprite: 'lampless_miner', level: 58, ai: 'grey', moveEvery: 2,
+    hp: 880, hit: [27, 31], attackEvery: 4, aggro: 5, leash: 8, respawn: 130, xp: 660, drainOil: 3,
+    drops: [['lode_glimmer', 0.6, 1, 2], ['cinder_iron', 0.4, 1, 1], ['run_iron', 0.2, 1, 1]], gold: [30, 48],
+    special: { every: 3, delay: 6, pattern: 'ring', hit: [52, 60], text: 'The Lampless Miner lifts its pick in both hands and turns, slowly, looking for a light.' },
+    examine: 'A miner\'s coat and helmet with nobody in them, full of glimmer dust that glows where a face should be. It is still working its shift, and it has lost its lamp.',
+  },
   // ---------- The Stone Road (Tag 8, Abstimmung „north-road-fires“): die alte Nordstraße hinter dem ersten Stein ----------
   cairn_creeper: {
     // Rolle normal, Stufe 27. Ein Haufen Steine und Nebel, der sich als Steinmann ausgibt und sich bewegt, wenn keiner hinsieht.

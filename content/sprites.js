@@ -648,6 +648,48 @@ export const SPRITES = {
       'wkkwwwwkkwwwwkkw',
     ],
   },
+  lode_crawler: {
+    // Tag 9: eine lange Steinassel, deren Platten von innen glimmen.
+    px: 1 / 12,
+    palette: { k: '#14120e', s: '#5a5650', S: '#7a7468', y: '!#cfe8ff', e: '!#ffe08a' },
+    rows: [
+      '............',
+      '............',
+      '....kkkk....',
+      '..kkSSSSkk..',
+      '.kSySsSySsk.',
+      'kSsSySsSySsk',
+      'kSyssSyssSek',
+      'kSsSySsSySsk',
+      '.kSsSsSsSsk.',
+      '..k.k.k.k...',
+      '.k.k.k.k.k..',
+      '............',
+    ],
+  },
+  lampless_miner: {
+    // Tag 9: ein Bergmannsmantel und ein Helm, leer, mit glimmendem Staub, wo das Gesicht wäre, eine Hacke in der Hand.
+    px: 1 / 14,
+    palette: { h: '#8a7a3a', H: '#5a4e22', y: '!#cfe8ff', c: '#4a4036', C: '#2e2822', p: '#7a6a5a', i: '#9a9a9a', d: '#1e1a16' },
+    rows: [
+      '...HHHHH.....',
+      '..HhhhhhH....',
+      '.HHHHHHHHH...',
+      '...yyyyy....i',
+      '...yyyyy...ii',
+      '....yyy....p.',
+      '..cccccccc.p.',
+      '.cCccccccCcp.',
+      '.cccCcccccpc.',
+      '.ccccCcccpcc.',
+      '.ycccCccpccc.',
+      '..cccccccc...',
+      '..cccccccc...',
+      '...cc..cc....',
+      '...cc..cc....',
+      '..ddd..ddd...',
+    ],
+  },
   culvert_leech: {
     // Tag 7: ein fetter grüner Egel mit einem Maul wie eine Lampenkappe, voll Lampenöl (glänzt).
     px: 1 / 12,

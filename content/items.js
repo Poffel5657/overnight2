@@ -203,6 +203,11 @@ export const ITEMS = {
   // Nachschlag Tag 9: hinter der Chortür der Drowned Chapel
   fortieth_voice: { name: 'The Fortieth Voice', stack: true, value: 0, glyph: '/', text: 'A tuning fork of dark brass from behind the choir door. It hums one note when you touch it, the one the whole drowned chapel was built around.' },
   cantor_stole: { name: 'Cantor\'s Stole', slot: 'head', defence: 6, light: 1.5, value: 340, glyph: '^', text: 'A long band of black cloth from the choir\'s strongbox, embroidered with forty small bells. It never quite dries. Worn over the head, it keeps the hum in your ears and the Grey out of them.' },
+  // Nachschlag Tag 9: die Glimmer Galleries unter Copperdeep (Stufe 55 bis 60)
+  lode_glimmer: { name: 'Lode Glimmer', stack: true, value: 40, glyph: '*', text: 'Glimmer from the deep lode, in fat blue-white flakes that hold light the way a sponge holds water. This is what went north in the crates.' },
+  hollow_tag: { name: 'Crate Tag', stack: true, value: 0, glyph: '?', text: 'A wooden tag on a string, filled in and never tied on: forty, glimmer, for the Hollow fire, a name nobody in Kindle knows, and a date nobody remembers.' },
+  lode_lantern: { name: 'Lode Lantern', slot: 'lantern', light: 4.8, burn: 0.35, value: 820, glyph: 'i', text: 'A run-iron cage packed with lode glimmer around a small wick. The glimmer drinks the light in and gives it back slowly, so the lantern seems to burn brighter than its flame.' },
+  loaders_hood: { name: 'Loader\'s Hood', slot: 'head', defence: 10, light: 1, value: 620, glyph: '^', text: 'A leather hood with a run-iron rim from the loading bay, the kind the loaders wore so the crates did not take their ears off. Somebody chalked a lamp on the back.' },
   // Tag 9: der Unterstand am Rastplatz und Sedge
   hearth_ash: { name: 'Hearth Ash', stack: true, value: 0, glyph: '*', text: 'A pinch of peat ash from the carriers\' hearth, still warm, folded into a square of birch bark. Sedge said Wenna would know what it means.' },
   wennas_note: { name: 'Wenna\'s Note', stack: true, value: 0, glyph: '?', text: 'A scrap of birch paper in tidy brown ink: "Barley. Fair price. W." The fair price is not written down.' },

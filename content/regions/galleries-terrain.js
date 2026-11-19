@@ -1,0 +1,36 @@
+// The Glimmer Galleries (Tag 9, Nachschlag): die alten Glimmer-Stollen unter Copperdeep, Stufe 55 bis 60.
+// Legende in content/tiles.js: g Kies, s Fels, p Bretter (alte Schienenwege), # Wand.
+export const TILES = [
+  '########################################',
+  '########################################',
+  '##ggggggg##########ssssssssssss#########',
+  '##ggggggg##########ssgggsssssss#########',
+  '##gggggggppppppppppssgggsss#sss#########',
+  '##gggggggppppppppppssssssssssss#########',
+  '##ggggggg##########sssss#ssssss#########',
+  '###################sssssssggggs#########',
+  '###################sssssssggggs#########',
+  '###################sssssssggggs#########',
+  '###################ssssssssssss#########',
+  '########################pp##############',
+  '########################pp##############',
+  '########################pp##############',
+  '##sssssssssss###########pp##############',
+  '##ssssssss#ss###########pp##############',
+  '##ssgggssssss###ggggggggggggggggggg#####',
+  '##ssgggssssss###ggggggggggggggggggg#####',
+  '##ssgggssssss###ggggggggggggggggggg#####',
+  '##ssssssssssspppgggg#gggggggggggggg#####',
+  '##ssssssssssspppgggggggggggg#gggggg#####',
+  '##sssssssssss###ggggggggggggggggggg#####',
+  '##ssss#ssssss###ggggggggggggggggggg#####',
+  '##ssssssgggss#################pp########',
+  '##ssssssgggss#################pp########',
+  '##ssssssgggss#############ssssssssssss##',
+  '##ssssssgggss#############sssssssggggs##',
+  '##sssssssssss#############ssss#ssggggs##',
+  '##########################ssssssssssss##',
+  '########################################',
+];
+
+export const HEIGHTS = TILES.map((r) => [...r].map((c) => (c === '#' ? 'e' : 'b')).join(''));
