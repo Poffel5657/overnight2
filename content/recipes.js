@@ -49,6 +49,10 @@ export const RECIPES = {
   t_culvert_hood: { prof: 'tinkering', level: 42, inputs: { run_iron: 3, verdigris: 2, cinder_iron: 1 }, out: ['culvert_hood', 1], xp: 360 },
   t_culvert_coat: { prof: 'tinkering', level: 44, inputs: { run_iron: 4, verdigris: 3, greyglass: 1 }, out: ['culvert_coat', 1], xp: 390 },
   t_run_shield: { prof: 'tinkering', level: 46, inputs: { run_iron: 4, cinder_iron: 2, greyglass: 1 }, out: ['run_iron_shield', 1], xp: 420 },
+  // Nachschlag Tag 9: Lode Glimmer aus den Glimmer Galleries (Tinkering 49 und 50, Lampwright 50; Berufe enden bei 50)
+  t_lode_coat: { prof: 'tinkering', level: 49, inputs: { lode_glimmer: 3, run_iron: 4, verdigris: 2 }, out: ['lode_coat', 1], xp: 480 },
+  t_lode_shivs: { prof: 'tinkering', level: 50, inputs: { lode_glimmer: 3, run_iron: 3, greyglass: 2 }, out: ['lode_shivs', 1], xp: 500 },
+  l_lode_lens: { prof: 'lampwright', level: 50, inputs: { lode_glimmer: 4, run_iron: 2, greyglass: 2 }, out: ['lode_lens', 1], xp: 490 },
   t_run_shivs: { prof: 'tinkering', level: 47, inputs: { run_iron: 4, greyglass: 2 }, out: ['run_iron_shivs', 1], xp: 430 },
   t_sw_coat: { prof: 'tinkering', level: 40, inputs: { verdigris: 5, cinder_iron: 3, greyglass: 1 }, out: ['sumpwalker_coat', 1], xp: 340 },
   t_greyglass_coat: { prof: 'tinkering', level: 28, inputs: { greyglass: 4, beetle_shell: 2 }, out: ['greyglass_coat', 1], xp: 160 },

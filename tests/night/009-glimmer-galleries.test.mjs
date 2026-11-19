@@ -135,7 +135,7 @@ test('Forty Crates: Brack, der alte Schacht, Crawler, der Zettel, Miners, Brack'
   assert.equal(P.countItem(p, 'loaders_hood'), 1);
 });
 
-test('Deep Lode: Salvage 44 sammelt Lode Glimmer, Lampwright 48 macht daraus die Lode Lantern', () => {
+test('Deep Lode: Salvage 44 sammelt Lode Glimmer; daraus Lode Lantern, Lens, Coat und Shivs', async () => {
   const w = S.createWorld(regionFor('galleries'), 964);
   for (const m of w.mobs) { m.dead = true; m.deadUntil = 1e9; }
   const lv = NODES.deep_lode.level;
@@ -148,13 +148,19 @@ test('Deep Lode: Salvage 44 sammelt Lode Glimmer, Lampwright 48 macht daraus die
   }
   assert.ok(P.countItem(p, 'lode_glimmer') >= 4, `Lode Glimmer (${P.countItem(p, 'lode_glimmer')})`);
   // An Wrens Lampenbank in Kindle
-  const r = RECIPES.l_lode_lantern;
-  const k = S.createWorld(regionFor('kindle'), 965);
-  const bag = Object.entries(r.inputs).map(([id, n]) => ({ id, n }));
-  const q = veteran(k, 'a', { level: 55, profs: { lampwright: { level: r.level, xp: P.xpForLevel(r.level) } }, bag });
-  const bench = k.objects.find((o) => o.type === 'station' && o.station === 'lampbench');
-  actOn(k, 'a', bench, 'use');
-  applyIntent(k, 'a', { t: 'craft', obj: bench.id, recipe: 'l_lode_lantern', n: 1 });
-  run(k, 30);
-  assert.equal(P.countItem(q, 'lode_lantern'), 1, 'Lode Lantern hergestellt');
+  // An den Stationen in Kindle: Lode Lantern und Lode Lens (Lampwright), Lode Coat und Lode Shivs (Tinkering)
+  const { PROFESSIONS } = await import('../../content/professions.js');
+  for (const rid of ['l_lode_lantern', 'l_lode_lens', 't_lode_coat', 't_lode_shivs']) {
+    const r = RECIPES[rid];
+    const k = S.createWorld(regionFor('kindle'), 965);
+    const bag = Object.entries(r.inputs).map(([id, n]) => ({ id, n }));
+    const q = veteran(k, 'a', { level: 55, profs: { [r.prof]: { level: r.level, xp: P.xpForLevel(r.level) } }, bag });
+    const bench = k.objects.find((o) => o.type === 'station' && o.station === PROFESSIONS[r.prof].station);
+    actOn(k, 'a', bench, 'use');
+    applyIntent(k, 'a', { t: 'craft', obj: bench.id, recipe: rid, n: 1 });
+    run(k, 30);
+    assert.equal(P.countItem(q, r.out[0]), 1, `${r.out[0]} hergestellt`);
+  }
+  assert.ok(ITEMS.lode_coat.defence > ITEMS.culvert_coat.defence);
+  assert.ok(ITEMS.lode_shivs.power > ITEMS.run_iron_shivs.power && ITEMS.lode_lens.power > ITEMS.run_iron_lens.power);
 });
