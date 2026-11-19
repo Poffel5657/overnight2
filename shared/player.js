@@ -338,6 +338,8 @@ export function loadInto(p, raw) {
   p.stacked = clampInt(save.stacked, 0, 1e9, 0);
   // Tag 7: was man insgesamt am ersten Stein für die Träger hinterlegt hat (Punkte, content/cache.js)
   p.sentNorth = clampInt(save.sentNorth, 0, 1e9, 0);
+  // Tag 9: Punkte am Unterstand der Träger (content/leanto.js)
+  p.mended = clampInt(save.mended, 0, 1e9, 0);
   // Anteile im Counting House (Tag 3): nur bekannte Geschäfte, höchstens SHARE_MAX
   p.shares = {};
   for (const [id, n] of Object.entries(save.shares || {})) {
@@ -356,7 +358,7 @@ export function saveOf(p) {
     cls: p.cls, classes: p.classes, specs: p.specs ?? {}, bag: p.bag.filter(Boolean), equip: p.equip,
     profs: p.profs, quests: p.quests, bars: p.bars, barSeen: p.barSeen ?? {}, daily: p.daily ?? null,
     stash: p.stash ?? [], rested: p.rested ?? 0, mazeDeep: p.mazeDeep ?? 1,
-    shares: p.shares ?? {}, dividendDay: p.dividendDay ?? null, stacked: p.stacked ?? 0, sentNorth: p.sentNorth ?? 0,
+    shares: p.shares ?? {}, dividendDay: p.dividendDay ?? null, stacked: p.stacked ?? 0, sentNorth: p.sentNorth ?? 0, mended: p.mended ?? 0,
   };
 }
 
@@ -366,6 +368,6 @@ export function stateOf(p) {
     cls: p.cls, classes: p.classes, specs: p.specs ?? {}, bag: p.bag, equip: p.equip, gold: p.gold,
     profs: p.profs, quests: p.quests, bar: barOf(p), defence: defenceOf(p), power: weaponPower(p),
     daily: p.daily ?? null, stash: p.stash ?? [], rested: p.rested ?? 0, mazeDeep: p.mazeDeep ?? 1,
-    shares: p.shares ?? {}, stacked: p.stacked ?? 0, sentNorth: p.sentNorth ?? 0,
+    shares: p.shares ?? {}, stacked: p.stacked ?? 0, sentNorth: p.sentNorth ?? 0, mended: p.mended ?? 0,
   };
 }

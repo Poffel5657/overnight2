@@ -22,8 +22,8 @@ export const CLASSES = {
     abilities: [['bash', 1], ['brace', 2], ['taunt', 4], ['lantern_ward', 6], ['shield_slam', 8], ['stand_fast', 12], ['beacon_slam', 16], ['bulwark', 20], ['last_light', 24], ['lantern_hook', 28], ['shield_wall', 32], ['anvil_blow', 36], ['hold_the_line', 40], ['hallowed_ground', 44], ['lamp_and_anvil', 48]],
     specs: {
       // Tag 6: gewählt bei Ama ab Stufe 50. Lightsworn aus Gebet 9 (ein Lichtweg für Wardens).
-      lightsworn: { name: 'Lightsworn', text: 'Shield, lamp and a vow. When you strike, the light heals the people behind you.', abilities: [['oath_of_embers', 50], ['lantern_oath', 54], ['dawn_vow', 58], ['sunward_oath', 62], ['beacon_vow', 66], ['morning_vow', 70]] },
-      ironwall: { name: 'Ironwall', text: 'Cinder iron and stubbornness. Nothing gets past you, and nothing gets in.', abilities: [['cinder_bastion', 50], ['anvil_stance', 54], ['anvil_fall', 58], ['cinder_chain', 62], ['cinder_keep', 66], ['iron_hour', 70]] },
+      lightsworn: { name: 'Lightsworn', text: 'Shield, lamp and a vow. When you strike, the light heals the people behind you.', abilities: [['oath_of_embers', 50], ['lantern_oath', 54], ['dawn_vow', 58], ['sunward_oath', 62], ['beacon_vow', 66], ['morning_vow', 70], ['open_door', 74]] },
+      ironwall: { name: 'Ironwall', text: 'Cinder iron and stubbornness. Nothing gets past you, and nothing gets in.', abilities: [['cinder_bastion', 50], ['anvil_stance', 54], ['anvil_fall', 58], ['cinder_chain', 62], ['cinder_keep', 66], ['iron_hour', 70], ['shut_gate', 74]] },
     },
   },
   mender: {
@@ -33,8 +33,8 @@ export const CLASSES = {
     abilities: [['ember_touch', 1], ['staff_rap', 1], ['warmth', 3], ['glow', 6], ['kindle_burst', 9], ['cinder_flick', 11], ['hearth_song', 13], ['rekindle', 16], ['smoulder', 20], ['kindred_glow', 24], ['ember_mend', 28], ['sanctuary', 32], ['cinder_bloom', 36], ['banked_hearth', 40], ['vesper_bell', 44], ['second_dawn', 48]],
     specs: {
       // Tag 6: gewählt bei Tallow ab Stufe 50.
-      hearthkeeper: { name: 'Hearthkeeper', text: 'You keep the hearth. Nobody near you is allowed to fall over.', abilities: [['hearthfire', 50], ['hearthstone', 54], ['ember_vigil', 58], ['kindred_hearth', 62], ['hearth_ward', 66], ['hearth_and_home', 70]] },
-      ashbinder: { name: 'Ashbinder', text: 'Embers are for warmth. Ashes are for everything else.', abilities: [['ash_bloom', 50], ['cinder_lash', 54], ['pyre_ring', 58], ['ashfall', 62], ['cinder_storm', 66], ['pyre_lash', 70]] },
+      hearthkeeper: { name: 'Hearthkeeper', text: 'You keep the hearth. Nobody near you is allowed to fall over.', abilities: [['hearthfire', 50], ['hearthstone', 54], ['ember_vigil', 58], ['kindred_hearth', 62], ['hearth_ward', 66], ['hearth_and_home', 70], ['warm_threshold', 74]] },
+      ashbinder: { name: 'Ashbinder', text: 'Embers are for warmth. Ashes are for everything else.', abilities: [['ash_bloom', 50], ['cinder_lash', 54], ['pyre_ring', 58], ['ashfall', 62], ['cinder_storm', 66], ['pyre_lash', 70], ['banked_pyre', 74]] },
     },
   },
   flarecaster: {
@@ -44,8 +44,8 @@ export const CLASSES = {
     abilities: [['flare_bolt', 1], ['flare', 2], ['sear', 4], ['sunspot', 7], ['glare', 10], ['cinder_brand', 13], ['starfall', 16], ['sunlance', 20], ['prism_ward', 24], ['noonbrand', 28], ['corona', 32], ['flashpoint', 36], ['daybreak', 40], ['lanternfall', 44], ['solar_lance', 48]],
     specs: {
       // Tag 6: gewählt bei Wren ab Stufe 50.
-      sunwright: { name: 'Sunwright', text: 'One target, and all the light you have.', abilities: [['zenith', 50], ['meridian', 54], ['high_noon', 58], ['solstice', 62], ['sunstrike', 66], ['noonfall', 70]] },
-      prismist: { name: 'Prismist', text: 'Split the light, and blind them all at once.', abilities: [['prism_storm', 50], ['refraction', 54], ['spectrum', 58], ['kaleidoscope', 62], ['prism_cage', 66], ['prism_burst', 70]] },
+      sunwright: { name: 'Sunwright', text: 'One target, and all the light you have.', abilities: [['zenith', 50], ['meridian', 54], ['high_noon', 58], ['solstice', 62], ['sunstrike', 66], ['noonfall', 70], ['long_noon', 74]] },
+      prismist: { name: 'Prismist', text: 'Split the light, and blind them all at once.', abilities: [['prism_storm', 50], ['refraction', 54], ['spectrum', 58], ['kaleidoscope', 62], ['prism_cage', 66], ['prism_burst', 70], ['split_dawn', 74]] },
     },
   },
   drifter: {
@@ -55,8 +55,8 @@ export const CLASSES = {
     abilities: [['slash', 1], ['dusk_step', 2], ['snare', 4], ['fade', 6], ['twin_cut', 8], ['cheap_shot', 10], ['night_edge', 13], ['caltrops', 16], ['smoke_bomb', 20], ['gutter_strike', 24], ['lampblack_cut', 28], ['vanishing_cut', 32], ['hamstring', 36], ['nightfall', 40], ['gloaming', 44], ['last_shadow', 48]],
     specs: {
       // Tag 6: gewählt beim Stranger ab Stufe 50.
-      nightblade: { name: 'Nightblade', text: 'The dark is a blade, if you hold it the right way round.', abilities: [['moonless_cut', 50], ['umbral_cut', 54], ['eclipse_cut', 58], ['new_moon', 62], ['starless_cut', 66], ['midnight_cut', 70]] },
-      snarewright: { name: 'Snarewright', text: 'Wire, soot and patience. They walk into it.', abilities: [['tangle_wire', 50], ['wire_ring', 54], ['wire_lash', 58], ['snare_web', 62], ['tripwire_ring', 66], ['wire_crown', 70]] },
+      nightblade: { name: 'Nightblade', text: 'The dark is a blade, if you hold it the right way round.', abilities: [['moonless_cut', 50], ['umbral_cut', 54], ['eclipse_cut', 58], ['new_moon', 62], ['starless_cut', 66], ['midnight_cut', 70], ['moonset_cut', 74]] },
+      snarewright: { name: 'Snarewright', text: 'Wire, soot and patience. They walk into it.', abilities: [['tangle_wire', 50], ['wire_ring', 54], ['wire_lash', 58], ['snare_web', 62], ['tripwire_ring', 66], ['wire_crown', 70], ['peg_line', 74]] },
     },
   },
 };

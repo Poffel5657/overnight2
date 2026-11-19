@@ -27,8 +27,22 @@ export const REGION = {
     { type: 'brazier', x: 27, y: 7, light: 4, name: 'a nave brazier' },
     { type: 'brazier', x: 13, y: 11, light: 4, name: 'a nave brazier' },
     { type: 'brazier', x: 23, y: 11, light: 4, name: 'a nave brazier' },
+    // Nachschlag Tag 9 (aus Gebet 8, Zettel „chapel-riddle-room“): die Tür unter der Chortreppe öffnet nur, wer die
+    // Antwort der drei Stimmen kennt (der Cantor fragt, Quest „The Choir Door“). Dahinter die Sakristei des Chors.
+    { type: 'door', to: 'drowned_chapel', tx: 6, ty: 35, x: 6, y: 28, name: 'a low door under the choir stair', look: 'door', needs: { questAtLeast: { the_choir_door: 1 } }, locked: 'A low door with no handle and no keyhole, only a carved bell where the latch should be. It does not open for pushing. Above it, a stone face with an open mouth waits to hear something.' },
+    { type: 'plaque', x: 4, y: 21, name: 'a hymn plaque with a bell', text: 'A slate plaque, half under water, with a bell carved in the corner. Under the bell: WHO HOLDS THE LAMP WHEN THE LAMP IS LOW? THE ONES WHO KNEEL.' },
+    { type: 'plaque', x: 32, y: 19, name: 'a hymn plaque with a fish', text: 'A slate plaque green with weed, a fish carved in the corner. Under the fish: WHO HOLDS THE LAMP WHEN THE LAMP IS LOW? THE ONES WHO CARRY.' },
+    { type: 'plaque', x: 14, y: 30, name: 'a hymn plaque with a lamp', text: 'A slate plaque by the stairs, dry, with a lamp carved in the corner: WHO HOLDS THE LAMP WHEN THE LAMP IS LOW? THE ONE WHO DOES NOT SLEEP.' },
+    { type: 'plaque', x: 22, y: 30, name: 'the cantor\'s rule', text: 'Scratched into the wall by the stairs, small, the way a teacher writes for children: THE BELL SINGS LOW. THE FISH SWIMS BETWEEN. THE LAMP IS HELD ABOVE. NEVER OUT OF ORDER.' },
+    // Die Sakristei hinter der Tür
+    { type: 'door', to: 'drowned_chapel', tx: 8, ty: 27, x: 6, y: 36, name: 'the low door back to the aisle', look: 'door' },
+    { type: 'chest', chest: 'choir_vault', x: 3, y: 31, name: 'the choir\'s strongbox' },
+    { type: 'shrine', look: 'niche', x: 9, y: 31, name: 'a niche with a tuning fork', gives: 'fortieth_voice', quest: 'the_choir_door', step: 1, text: 'A niche in the wall, lined with lead. Something small lies on a folded cloth.', found: 'You lift the cloth. Under it, a tuning fork of dark brass. When you touch it, it hums, very softly, the note the whole chapel was built around.', empty: 'An empty niche lined with lead, and a folded cloth. Forty hooks on the wall above it, for forty robes. One hook has a name scratched over it, and the name has been scratched out.' },
   ],
-  npcs: [],
+  npcs: [
+    // Nachschlag Tag 9: der Cantor, ein Steingesicht über der Tür unter der Chortreppe (fragt nach den drei Stimmen)
+    { id: 'cantor', name: 'The Cantor', sprite: 'cantor', x: 7, y: 27 },
+  ],
   mobs: [
     { type: 'drowned_pilgrim', x: 8, y: 22 },
     { type: 'drowned_pilgrim', x: 10, y: 26 },

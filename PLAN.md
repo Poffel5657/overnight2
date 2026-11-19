@@ -8,25 +8,25 @@ Der Nightwright pflegt diese Datei jede Nacht (Regeln in `CLAUDE.md`).
 
 ## Heute in Arbeit
 
-Tag 8 (Nacht zum 2026-11-19). **Inbox fehlte zum dritten Mal** (keine Datei nach `2026-11-15.json`): keine neuen Gebete, Zettel 7 ohne Stimmen. Der Nightwright wählt `north-road-fires` (Bogen-Haken, Weltproblem 2 „The Northern Road“).
+Tag 9 (Nacht zum 2026-11-20). **Inbox fehlte zum vierten Mal** (keine Datei nach `2026-11-15.json`): keine neuen Gebete, Zettel 8 ohne Stimmen. Der Nightwright wählt `carriers-rest` (Bogen-Haken; passt zur Nacht mit Sedge).
 
-**Teil 1, aus den Gebeten:** entfällt (keine neuen Gebete). Teil 3 und der Nachschlag werden größer (neues Gebiet, alle Wege auf 66).
+**Teil 1, aus den Gebeten:** entfällt (keine neuen Gebete). Ersatz im Nachschlag: der Rätselraum in der Drowned Chapel (aus Gebet 8, letzte Nacht auf dem Zettel).
 
-**Teil 2, aus der Abstimmung: Signalfeuer an der Nordstraße (north-road-fires) → neues Gebiet „The Stone Road“**
-1. *Was der Spieler will:* Dass der Weg nach Norden, über den alle reden, endlich begehbar wird, und dass sein Licht etwas für andere bewirkt (die Träger finden den Weg).
-2. *Woran er es merkt:* Hinter der Kiste am ersten Stein führt ein Pfad in die Steinstraße (eigenes Gebiet, Stufe 26–34). Sechs Steinmänner mit Signalfeuern (je 15 Öl, brennen für alle, bis die Welt sich nachts erneuert); Quest „Stone by Stone“ bei Brindle (ab 26): Öl mitnehmen, den dritten, fünften und siebten Stein anzünden, zurück zu Brindle (Lohn: Cairnwalker Cloak). Meldung für alle, wenn alle sechs brennen. Neue Wesen (Cairn Creeper 27, Ash Moth 30, die Öl trinken), Torf zum Stechen (Foraging), Totholz. Pell ruft es aus, Haskel und Brindle reden darüber.
-3. *Woran es anschließt:* Licht/Öl (Signalfeuer, Ölvorrat), Berufe (Foraging: Torf, Alchemie: Torföl, Lampwright: Road Lamp aus Mottenstaub), Leuchtfeuer (Torf ist Brennstoff), Bogen (Träger, Kiste), Quests.
-4. *Weg dorthin:* Brindle am Ausguck (ab Stufe 26), Tür „the stones that point north“ neben der Kiste am Ende der Nordstraße.
+**Teil 2, aus der Abstimmung: Der Unterstand am Rastplatz (carriers-rest)**
+1. *Was der Spieler will:* Oben an der Steinstraße einen Ort, der nicht nur Kampfplatz ist: wo man rasten kann und wo Kindle und die Leute aus dem Norden am selben Feuer sitzen.
+2. *Woran er es merkt:* Der Unterstand am Rastplatz hat die Aktion „Mend“: Scheite, Torf und Birkenrinde hineinlegen (alle zusammen, Tageszähler). Steht er, leuchtet eine Lampe darin, alle im Gebiet lesen es, die Hollow Wardens greifen niemanden mehr von selbst an (Waffenruhe bis Mitternacht), und am Herd der Träger ruht man „ausgeruht“ (Bonus-Erfahrung wie im Gasthaus). Quest „A Roof at the Rest“ bei Brindle (ab 28): Rinde sammeln, Unterstand flicken, am Herd rasten. Neue Fundstelle Birkenrinde (Foraging) und Totholz.
+3. *Woran es anschließt:* Amas Holzstapel (Scheite), Foraging (Torf, Birkenrinde), Gasthaus-Ruhe (`rested`), Gruppen-Wesen (Wardens), Bogen.
+4. *Weg dorthin:* Brindle am Ausguck, nach „Stone by Stone“; die Steinstraße hinauf.
 
-**Teil 3, vom Nightwright: „Not Thieves“ (Bogen, Akt 2: Hollow Wardens)**
-1. *Was der Spieler will:* Erfahren, was am Ende der Straße ist und wer die Leute aus dem Norden sind; eine Gruppe, für die man Freunde braucht.
-2. *Woran er es merkt:* Ama fehlen Scheite (Rinde nach oben). Am Ende der Steinstraße liegt ein verlassener Rastplatz der Träger mit einer Feuerstelle, einer Namenstafel und Kindles Holz; drei Hollow Wardens (Gruppen-Wesen, Stufe 34) bewachen ihn. Wer einen besiegt und das gezeichnete Scheit findet, hört vom Stranger: „not thieves, they are cold“, und Ama zieht ihren Schluss. Holzperlen der Wardens („Hollow beads“) bringt man dem Stranger.
-3. *Woran es anschließt:* Gruppen (Wesen für vier), Amas Holzstapel, Stranger (Bogen), Klassen (Tank/Heiler zahlen sich aus).
-4. *Weg dorthin:* Ama ab Stufe 28 („Somebody took from the pile“), nach oder neben „Stone by Stone“; die Straße führt hin.
+**Teil 3, vom Nightwright: „A Peg Still Hanging“ (Bogen, Akt 2: Sedge)**
+1. *Was der Spieler will:* Einen Hollow Warden kennenlernen, der redet; erfahren, was Wenna bevorsteht.
+2. *Woran er es merkt:* Unter dem geflickten Unterstand sitzt **Sedge**, ein alter Warden, der nicht aufsteht. Wer mitgeflickt hat, dem erzählt er: Wennas Pflock hängt noch (sie ist im Süden und lebt), er kannte ihre Mutter. Quest: Asche vom Herd zu Wenna, Wennas Zettel für Marrow („Barley, fair price“), Marrows Zusage, zurück zu Sedge („one night, when the moon is down“). Lohn: Warden's Birch Wrap.
+3. *Woran es anschließt:* Wenna (Mühle), Marrow (Händler), Unterstand (Teil 2), Bogen (Wennas Aufbruch morgen).
+4. *Weg dorthin:* Teil 2 (wer am Unterstand geflickt hat), Wenna nennt Sedge auch.
 
-**Dauerauftrag Klassen:** Warden auf 66 (Lightsworn: Beacon Vow, neue Wirkung `fuel` = Öl für die Gruppe; Ironwall: Cinder Keep).
+**Dauerauftrag Klassen:** Warden auf 74 (Lightsworn und Ironwall).
 
-**Nachschlag:** alle anderen Wege auf 66; Rezepte (Torföl, Road Lamp), Fundstelle Torf; „Beads for Home“ beim Stranger; „Seven Fires for Fen“ (niedrige Stufen); Alchemie 40–48; zwei Gefallen; „The Heron at the Ford“ (Boss 36, Heron Hood); Tallow, Mothwick, Wren; Rufe, Pell, Ausguck, Drift-Funde.
+**Nachschlag:** Mender, Flarecaster, Drifter auf 74; Rätselraum in der Drowned Chapel (aus Gebet 8); Rufe, Pell, Ausguck, Gespräche.
 
 ## Ausbau läuft
 

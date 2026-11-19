@@ -207,6 +207,10 @@ const tallow = (() => {
         { text: 'Three hymnals, very wet.', to: 'dc_books', if: { quest: { drowned_choir: 1 }, has: { sodden_hymnal: 3 } }, do: [{ take: { sodden_hymnal: 3 } }, { advance: 'drowned_choir' }] },
         { text: 'The choir is quiet.', to: 'dc_done', if: { quest: { drowned_choir: 4 } }, do: [{ take: { choir_bell: 1 } }, { advance: 'drowned_choir' }] },
         { text: 'Is the choir really quiet?', to: 'wraiths', if: { quest: { drowned_choir: 'done' } } },
+        // Nachschlag Tag 9: die Tür unter der Chortreppe
+        { text: 'Did the hymnals say anything about a door?', to: 'cd_offer', if: { quest: { drowned_choir: 'done', the_choir_door: 'none' }, classLevel: 36 }, do: [{ start: 'the_choir_door' }] },
+        { text: 'Did the hymnals say anything about a door?', to: 'cd_early', if: { quest: { drowned_choir: 'done', the_choir_door: 'none' }, below: 36 } },
+        { text: 'This was behind the choir door.', to: 'cd_done', if: { quest: { the_choir_door: 2 }, has: { fortieth_voice: 1 } }, do: [{ take: { fortieth_voice: 1 } }, { advance: 'the_choir_door' }] },
         { text: 'Wenna asks about a prayer under a white stone.', to: 'ls_tallow', if: { quest: { the_last_sack: 3 } }, do: [{ advance: 'the_last_sack' }] },
         { text: 'Do you know of a lamp under the hill?', to: 'lh_tallow', if: { quest: { lamp_under_the_hill: 2 } }, do: [{ advance: 'lamp_under_the_hill' }] },
         { text: 'Anything new at the altar?', to: 'po_offer', if: { quest: { kindling: 'done', prayer_not_ours: 'none' } }, do: [{ start: 'prayer_not_ours' }] },
@@ -236,6 +240,9 @@ const tallow = (() => {
     lh_tallow: { text: 'Tallow sits down on the altar step, which he never does. "A lamp, held by somebody, that keeps the Grey out." He looks up at the chapel roof. "The drowned chapel sang to the one who holds the lamp. The quarrymen lit niches for the lamp under the hill. We pray to the Nightwright, who pushes the Grey back every night." He is quiet for a while. "Tell Hesk the chapel thinks it is the same light, seen through different doors. Tell him the chapel is not sure. Tell him I would like to see a niche."', options: [{ text: 'I will tell him.' }] },
     po_offer: { text: '"There is a prayer in the offering box that is not ours. I know every hand in Kindle. Ama writes like she is chopping wood, Fen draws geese in the margins. This one is neat and brown and folded very small." He frowns. "It says: to the hearth that feeds us, we are feeding you what we have left. Go and look. Then show it to Pell. Pell reads everything in this village."', options: [{ text: 'I will look.' }] },
     po_done: { text: 'He listens, then folds the prayer up again. "Bark paper from the north, in a hand nobody here knows. Somebody out there prays to a fire, and the fire is still hungry." He sets it on the altar under a white stone. "The Nightwright can read it there. It is not ours to keep."', options: [{ text: 'Thank you, Brother.' }] },
+    cd_offer: { text: 'Tallow turns the pages of a dried hymnal very carefully. "Here. A door under the choir stair. It opened for the choir and nobody else, and they never wrote down how." He taps a line. "But every hymn is a question and an answer, sung in three parts. Low, middle, high. If the door asks, I would bet it wants the choir\'s answer, in the choir\'s order." He looks up. "Go with friends. The singers in the aisles do not like readers."', options: [{ text: 'A question and an answer.' }] },
+    cd_early: { text: '"A door, yes. Under the choir stair, where the singers in the aisles are thickest." He closes the hymnal. "Not yet. (Level 36)"', options: [BYE] },
+    cd_done: { text: 'Tallow takes the tuning fork and it hums in his hand, low, and the candles on the altar lean toward it. He holds it until it stops. "The note they built the chapel round." He sits on the altar step. "Forty hooks, you said, and one name scratched out." He is quiet for a long time. "Somebody sang for them who was not one of them. Or one of them stopped singing." He gives you a stole from the box behind the altar. "Keep the hum. I will keep the fork. And I will not strike it."', options: [{ text: 'Thank you, Brother.' }] },
     answer: { text: 'Every morning. Not in words. In forests and doors and the odd surprised goose.', options: [BYE] },
     pl_tallow: { text: 'Tallow holds the Pump Lamp in both hands and watches the flame lean, always the same way, however he turns it. "The quarrymen said someone held a lamp under the hill to keep the Grey out of Cinderford." He gives it back very gently. "This one was held by a pump. Pushing water north for years after everyone stopped asking." He smiles, a little sadly. "That is not nothing. That might be what holding a lamp means."', options: [BYE] },
     lg_tallow: { text: 'Tallow sets down his candle very carefully. "A shadow. In our light." He is quiet for a while. "I asked once whether the Nightwright has a shadow. Perhaps the question was the wrong way round. Perhaps it is about whose light you stand in." He picks the candle up again. "Do not tell Ama I said that. She will want it in writing."', options: [BYE] },
@@ -558,6 +565,10 @@ const brindle = {
       { text: 'Could we put fires on the stones?', to: 'sb_early', if: { quest: { kindling: 'done', stone_by_stone: 'none' }, below: 26 } },
       { text: 'The seventh stone is burning.', to: 'sb_done', if: { quest: { stone_by_stone: 4 } }, do: [{ advance: 'stone_by_stone' }] },
       { text: 'How far can you see the fires?', to: 'sb_after', if: { quest: { stone_by_stone: 'done' } } },
+      // Tag 9 (Abstimmung „carriers-rest“): den Unterstand am Rastplatz flicken
+      { text: 'The village voted to mend the lean-to at the top.', to: 'rr_offer', if: { quest: { stone_by_stone: 'done', a_roof_at_the_rest: 'none' }, classLevel: 28 }, do: [{ start: 'a_roof_at_the_rest' }] },
+      { text: 'The village voted to mend the lean-to at the top.', to: 'rr_early', if: { quest: { stone_by_stone: 'done', a_roof_at_the_rest: 'none' }, below: 28 } },
+      { text: 'I slept under the lean-to.', to: 'rr_done', if: { quest: { a_roof_at_the_rest: 3 } }, do: [{ advance: 'a_roof_at_the_rest' }] },
       { text: 'Fen wants to know how many fires there are.', to: 'ff_brindle', if: { quest: { fens_fires: 1 } }, do: [{ advance: 'fens_fires' }] },
       { text: 'What do you see up there?', to: 'see' },
       { text: 'Can I read your book?', to: 'book', if: { quest: { eyes_north: 'done' } } },
@@ -569,6 +580,9 @@ const brindle = {
   cd_early: { text: '"Lights on the edge of the trees, walking. I want somebody to go and look, but the things that came after them would eat you. Come back with a few more levels. (Level 16)"', options: [BYE] },
   cd_done: { text: 'She writes it all down: the frame, the tally, the bread, what Wren said, what the Stranger said, and underlines "the old way south" three times. "So the glow up north has people under it. Hungry people, walking." She closes the book. "Here: the wraps one of them dropped, and Haskel\'s salve. I will keep counting. Tell Ama. No, I will tell Ama. She listens to me when I shout."', options: [{ text: 'Thanks, Brindle.' }] },
   cd_after: { text: '"Twice more. Always at night, always heading east along the trees, always fewer lamps than the time before. Last night, three." She does not look up from her book.', options: [BYE] },
+  rr_offer: { text: 'Brindle licks her pencil. "The vote was for a roof at the top. Ama says Kindle does not build things for people who steal its wood. Then she gave me an axe." She points at the woods. "Deadfall. Logs for the poles, peat for the hearth, a flask of oil for the lamp hook. One pair of hands will not do it, so bring friends or go twice." She taps the book. "And sleep there one night. I want to write down that it is dry."', options: [{ text: 'Logs, peat, oil. Then sleep.' }] },
+  rr_early: { text: '"A roof at the top of the Stone Road, past the ford, where the Wardens stand." She looks you up and down. "No. Come back when you can walk past a Warden without being folded in half. (Level 28)"', options: [BYE] },
+  rr_done: { text: 'Brindle writes for a long time. "Dry. Peat fire. A lamp on the hook." She stops. "And the Wardens did not fight?" You tell her. She underlines it so hard the pencil goes through. "That is the first night in this book anybody from up there and anybody from down here sat at the same fire." She digs in her bag. "Peat oil, from Wren. And Haskel\'s salve, before you ask."', options: [{ text: 'Thanks, Brindle.' }] },
   br_wenna: { text: 'Brindle\'s pencil stops. "One of the lamps." She flips back through her book. "Five, four, three, two. I thought the missing ones had gone home." She writes something and underlines it. "They did not go home. They got lost, or they stopped." She closes the book hard. "Feed her. And ask her, gently, how many there were when they set out."', options: [BYE] },
   bn_offer: { text: 'Brindle points down at the first cairn with her pencil. "The village voted to send bread north. Ama made a face like a stepped-on cat, and then she gave me a box." It is oak, with a loaf painted on the lid and an arrow pointing north. "Millbread keeps best. Oil too, for their lamps. Not wood. Ama was very clear about the wood." She taps her book. "Fill it, and I will write down who did."', options: [BYE] },
   sl_offer: { text: '"It comes back." Brindle taps her book: three nights marked with a little circle. "I take it in, and the next night there is another one by the box. Flat, grey, wet underneath." She lowers her voice. "Get me one, after dark, and show it to Wren. Wren knows stone. I only know where things are, not where they come from."', options: [BYE] },
@@ -1052,6 +1066,9 @@ const wenna = {
       { text: 'There is bread for you at the first stone.', to: 'bn_wenna', if: { night: true, quest: { bread_north: 4 } }, do: [{ advance: 'bread_north' }] },
       { text: 'How much is a carrier\'s load?', to: 'wb_offer', if: { night: true, quest: { bread_north: 'done', week_of_bread: 'none' } }, do: [{ start: 'week_of_bread' }] },
       { text: 'The box at the first stone is heavy now.', to: 'wb_done', if: { night: true, quest: { week_of_bread: 0 }, sentNorth: CACHE.week }, do: [{ advance: 'week_of_bread' }] },
+      // Tag 9 (Bogen): Sedge am Rastplatz schickt ihr warme Asche
+      { text: 'A Warden called Sedge sent you this.', to: 'ps_wenna', if: { night: true, quest: { a_peg_still_hanging: 0 }, has: { hearth_ash: 1 } }, do: [{ take: { hearth_ash: 1 } }, { give: { wennas_note: 1 } }, { advance: 'a_peg_still_hanging' }] },
+      { text: 'Sedge is waiting at the rest.', to: 'ps_after', if: { night: true, quest: { a_peg_still_hanging: 'done' } } },
       { text: 'Fen drew you a map.', to: 'fm_wenna', if: { night: true, quest: { fens_map: 3 } }, do: [{ advance: 'fens_map' }] },
       { text: 'Could you bake with this barley?', to: 'w_bake', if: { night: true, quest: { the_last_sack: 'done' }, has: { barley: 3 } }, do: [{ take: { barley: 3 } }, { give: { hollow_ration: 1 } }] },
       { text: 'Brindle asks how many of you set out.', to: 'w_count', if: { night: true, quest: { the_last_sack: 'active' } } },
@@ -1077,12 +1094,68 @@ const wenna = {
   or_done: { text: 'You tell her what Brindle saw: the stones clear to the third cairn, no lamps coming south, and a glow that ate two lamps last week and wants more. Wenna listens without moving. "Clear to the third cairn. That is two nights." She turns her green lamp in her hands. "Then I go tomorrow night, when the moon is down. Before I lose my nerve." She presses something into your hands: a small lamp of green glass with a birch-bark grip. "A carrier\'s lamp. Mine is the one your fire lit. This one is for you. It lasts a whole road on one filling. Use it to come and find us, one day."', options: [{ text: 'Keep your wick trimmed, Wenna.' }] },
   or_after: { text: '"Tomorrow night, when the moon is down." She has folded the empty sacks into a neat pile by the door, the way you leave a room you are not coming back to. "Tell your Warden the pile is a good idea. Ours used to be taller than the houses."', options: [BYE] },
   sb_wenna: { text: 'Wenna goes to the mill door and looks north for a long time, where a line of small lights climbs the dark. "Seven," she says. "My mother told me there were seven before the clearing. I never saw them lit." She is smiling, and trying not to. "The rest is a carrier\'s road. Four nights, if the stones stand." She sits back down on her sack. "When the box is a load, I go. And now I will see my way to the top."', options: [BYE] },
+  ps_wenna: { text: 'Wenna unfolds the bark and goes very still. She touches the ash with one finger. "Sedge." She laughs and wipes her eyes at the same time. "He used to sit on my mother\'s step and tell us the stones would burn again one day. Nobody believed him." She writes something on a scrap of birch paper in brown ink, fast. "Give this to the man on your market who sells barley. And tell Sedge I asked about his knees. He will pretend that is all I said."', options: [{ text: 'I will.' }] },
+  ps_after: { text: 'Wenna is folding the empty sacks, one by one, into a neat pile by the millstones. "When the moon is down." She does not stop folding. "I have walked south in the dark with nobody. I can walk north in the dark with somebody." She looks round the mill as if she is counting it. "Not tonight. Soon."', options: [BYE] },
   fm_wenna: { text: 'Wenna unrolls it by the mill lamp: three cairns, a dotted line, wolves in a very straight row, and at the top a goose pointing north. She looks at it for a long time. "At home, the children draw the road to you," she says. "With the big fire at the end. We pin them up by the door." She rolls it carefully and puts it inside her coat, next to the oil. "Tell your Fen the goose is right. North is that way."', options: [{ text: 'I will tell Fen.' }] },
+};
+
+// Nachschlag Tag 9 (aus Gebet 8): der Cantor, ein Steingesicht über der Tür unter der Chortreppe der Drowned Chapel.
+// Er fragt dreimal dieselbe Frage, für die tiefen, mittleren und hohen Stimmen. Die Antworten stehen auf drei Tafeln
+// (Glocke, Fisch, Lampe), die Reihenfolge an der Wand bei der Treppe. Wer falsch antwortet, fängt von vorn an.
+const CANTOR_ANSWERS = ['The ones who kneel.', 'The ones who carry.', 'The one who does not sleep.'];
+const cantorAsk = (right, next, doIt) => CANTOR_ANSWERS.map((text) => (text === right ? { text, to: next, ...(doIt ? { do: doIt } : {}) } : { text, to: 'c_wrong' }));
+const cantor = {
+  start: {
+    text: 'A stone face in the wall above the low door, mouth open as if it is about to sing. Water drips from its chin. When you come close, the mouth moves.',
+    options: [
+      { text: 'Listen.', to: 'c_low', if: { quest: { the_choir_door: 0 } } },
+      { text: 'Listen.', to: 'c_open', if: { questAtLeast: { the_choir_door: 1 } } },
+      { text: 'Listen.', to: 'c_idle', if: { quest: { the_choir_door: 'none' } } },
+      BYE,
+    ],
+  },
+  c_idle: { text: 'The stone mouth breathes out cold air that smells of candle smoke. "Who holds the lamp?" it sings, very low, and does not wait for an answer from you. Maybe Brother Tallow knows what it wants.', options: [BYE] },
+  c_low: { text: 'The stone face sings, low enough to feel in your teeth: "Who holds the lamp when the lamp is low?" Then it waits, the way a choir master waits for the low voices.', options: cantorAsk('The ones who kneel.', 'c_mid') },
+  c_mid: { text: 'The face nods, stone grinding on stone, and sings the question again, a little higher, for the middle voices: "Who holds the lamp when the lamp is low?"', options: cantorAsk('The ones who carry.', 'c_high') },
+  c_high: { text: 'Higher still, thin as a candle flame, for the high voices: "Who holds the lamp when the lamp is low?"', options: cantorAsk('The one who does not sleep.', 'c_right', [{ advance: 'the_choir_door' }]) },
+  c_wrong: { text: 'The stone mouth closes with a sound like a lid. The water stops dripping for a moment, then starts again. The choir master is not angry. It is just waiting for the choir to begin again, properly.', options: [{ text: 'Start again.', to: 'start' }, BYE] },
+  c_right: { text: 'Somewhere under your feet a bell rings, once, small. The carved latch on the door turns by itself, and the low door swings inward on a dry room that has been waiting a long time for the choir to come back.', options: [BYE] },
+  c_open: { text: 'The stone face hums the last note of the hymn, contented, and the low door stands open.', options: [BYE] },
+};
+
+// Tag 9 (Bogen „The Second Light“, Akt 2): Sedge, ein alter Hollow Warden, sitzt am Herd der Träger.
+// Er redet nur mit denen, die am Unterstand mitgeflickt haben (mended). Quest „A Peg Still Hanging“.
+const sedge = {
+  start: {
+    text: 'An old man in a peat-brown coat sits by the carriers\' hearth with a hooked pole across his knees. Birch bark on his shoulders, white in his beard. He does not get up.',
+    options: [
+      { text: 'Who are you?', to: 's_cold', if: { mendedBelow: 1 } },
+      { text: 'Who are you?', to: 's_name', if: { mended: 1 } },
+      { text: 'Whose peg is that, with the beads still on it?', to: 's_offer', if: { mended: 1, classLevel: 28, quest: { a_peg_still_hanging: 'none' } }, do: [{ start: 'a_peg_still_hanging' }, { give: { hearth_ash: 1 } }] },
+      { text: 'Whose peg is that, with the beads still on it?', to: 's_early', if: { mended: 1, below: 28, quest: { a_peg_still_hanging: 'none' } } },
+      { text: 'Wenna got your ash. She sent word to Kindle.', to: 's_done', if: { quest: { a_peg_still_hanging: 2 } }, do: [{ advance: 'a_peg_still_hanging' }] },
+      { text: 'Will you walk her home?', to: 's_after', if: { quest: { a_peg_still_hanging: 'done' } } },
+      { text: 'Why did your people take Kindle\'s wood?', to: 's_wood', if: { mended: 1 } },
+      { text: 'Where do you come from?', to: 's_from', if: { mended: 1 } },
+      { text: 'The others do not fight tonight.', to: 's_truce', if: { mended: 1 } },
+      BYE,
+    ],
+  },
+  s_cold: { text: 'He looks at the half-fallen lean-to, then at you, then at the lean-to again. "Hm." That seems to be all, for people who stand about in the cold while there is a roof on the ground.', options: [BYE] },
+  s_name: { text: '"Sedge." He says it like a man putting down something heavy. "I walk the last stone. Did, every night, for forty years, with a lamp, so the carriers could see where home was. Now the others walk it. My knees stay here." He pats the pole. "You put the roof back. Nobody from down there has done that since I was a boy."', options: [{ text: 'Nobody from down there knew it was here.', to: 's_forgot' }, BYE] },
+  s_forgot: { text: '"No." He looks south, down the line of fires. "We remember you. Every child up there can draw the road to your big fire. You forgot us in one winter." He shrugs, which takes a while. "Not your fault, maybe. Fog does things. But it is a strange thing to be forgotten by somebody you were feeding."', options: [BYE] },
+  s_early: { text: 'He looks at the board, and then at you, for a long time. "Ask me again when you have walked a little further in your life." (Level 28)', options: [BYE] },
+  s_offer: { text: 'He points with the pole. One peg, near the bottom, still carries a short string of green beads. "Wenna. We hang the beads when we come south and take them when we go home. Hers is still here. So she is down there, and she is breathing." He takes a pinch of ash from the edge of the hearth, still warm, and folds it into a square of bark. "I knew her mother. Counted pegs, like me. Give her this. She will know it means the fire up here is lit and somebody is sitting by it."', options: [{ text: 'I will take it to her.' }] },
+  s_done: { text: 'You tell him: the note, the barley, Marrow\'s fair price, and that she asked how his knees are. Sedge laughs once, a sound like a log settling. "She would." He looks at her peg for a long time. "One night, then. When the moon is down, I wait here with the lamp lit, and she walks up, and we go home together. Two old legs and two young ones." He unhooks a lamp from the lean-to pole. "Take my spare. I will not carry two."', options: [{ text: 'Thank you, Sedge.' }] },
+  s_after: { text: '"If she comes." He keeps one eye on the road down. "She will. Her mother always came." He rubs his knees. "Tell Kindle to keep the stones lit. Old men walk slower in the dark."', options: [BYE] },
+  s_wood: { text: '"Because it was cold, and your pile was big." He does not look ashamed, but he does not look proud either. "We turned the bark up. That means sorry, where I come from. It also means we will pay it back." He nods at the peat by the hearth. "We will. Not this winter."', options: [BYE] },
+  s_from: { text: '"Up the road. Past the stone that fell over. Four nights, if the stones stand. A hollow in the hills with a fire in it, like yours, only hungrier." He does not say its name, and from the set of his mouth, he is not going to.', options: [BYE] },
+  s_truce: { text: '"While there is a roof and a lamp here, it is a rest, not a road. Nobody fights at a rest. That is older than both our villages." He taps the pole on the ground. "Hit one of them, and you will find out they remember how. Do not hit them."', options: [BYE] },
 };
 
 export const TALK = {
   ama, tallow, rook, fen, wren, stranger, haskel, brack, brindle, mabb, mothwick, hollis, band_corra, band_oswin, band_pip,
-  sorrel, hesk, ivy, coyne, tansy, flint, wenna,
+  sorrel, hesk, ivy, coyne, tansy, flint, wenna, sedge, cantor,
   snail_bramble: snail('bramble'), snail_pebble: snail('pebble'), snail_tom: snail('tom'),
   snail_duchess: snail('duchess'), snail_thistle: snail('thistle'),
   pell: {
@@ -1107,6 +1180,8 @@ export const TALK = {
         { text: 'About the goods under the counter...', to: 'partner_marrow', if: { partner: 'marrow' } },
         { text: 'Flour on doorsteps?', to: 'wg_offer', if: { quest: { kindling: 'done', who_grinds: 'none' } }, do: [{ start: 'who_grinds' }] },
         { text: 'This was in the mill hopper.', to: 'wg_done', if: { quest: { who_grinds: 4 }, has: { hollow_barley: 1 } }, do: [{ take: { hollow_barley: 1 } }, { advance: 'who_grinds' }] },
+        // Tag 9 (Bogen): Wennas Zettel
+        { text: 'Wenna, from the mill, left you a note.', to: 'ps_marrow', if: { quest: { a_peg_still_hanging: 1 }, has: { wennas_note: 1 } }, do: [{ take: { wennas_note: 1 } }, { advance: 'a_peg_still_hanging' }] },
         { text: 'Bulbs, and fewer toads.', to: 'oil_done', if: { quest: { oil_rush: 2 }, has: { lily_bulb: 3 } }, do: [{ take: { lily_bulb: 3 } }, { advance: 'oil_rush' }] },
         BYE,
       ],
@@ -1117,6 +1192,7 @@ export const TALK = {
     partner_news: { text: '"A partner." He says it the way other people say "a toothache". Then he grins. "Fine. Good. Coyne has been talking about roofs all week, and now somebody is paying for them. If it is my stall, partners get the salves and draughts I keep under the counter. If it is not my stall, I will be sulking. Here. It is bread. It is not a bribe. It is a bit of a bribe."', options: [BYE] },
     oil_offer: { text: 'Too good. Everybody wants oil since that glow showed up in the north. They buy it, they hide it under the bed, they come back for more. I am out of tallow. Lily bulbs from the Sinkmarsh press into good oil, but the bog toads sit on every patch. Four fewer toads and three bulbs, and I can keep the lamps of Kindle lit another week.', options: [{ text: 'Toads and bulbs.' }] },
     oil_early: { text: 'Busy. Everyone wants oil all of a sudden. I need somebody who can push bog toads around, and that is not you yet. (Level 26)', options: [BYE] },
+    ps_marrow: { text: 'Marrow reads it, turns it over, and reads the empty back. "Barley. Fair price." He breathes out through his nose. "That is the whole letter? No number?" He folds it into his apron, very carefully for a man who folds nothing carefully. "Tell her yes. Tell her fair to her. And tell her if her people want to sell barley down this road, my stall is right here." He looks at the note again. "First time anybody has trusted me with fair."', options: [{ text: 'I will tell her.' }] },
     oil_done: { text: 'He squeezes a bulb and sniffs. "Good. Smells like next week." He counts coins into your hand, slowly, as if each one hurts. "If that light up north gets any brighter, I am raising prices. Do not tell Ama."', options: [{ text: 'My lips are sealed.' }] },
   },
 };
