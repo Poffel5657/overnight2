@@ -33,6 +33,7 @@ export const REGION = {
     { type: 'table', x: 30, y: 17, name: 'a stack of empty crates', text: 'Glimmer crates, iron-banded, each stamped with a lamp and an arrow pointing north. All empty. Somebody stacked them very neatly before they left, as if they expected to come back on Monday.' },
     { type: 'shrine', look: 'niche', x: 33, y: 21, name: 'the loaders\' niche', gives: 'hollow_tag', quest: 'forty_crates', step: 1, text: 'A niche in the wall of the loading bay, full of little wooden tags on strings.', found: 'You go through the tags. Most are blank. One, on top, has been filled in and never tied to a crate: forty, glimmer, for the Hollow fire, and a name you do not know, and a date that nobody in Kindle will remember.', empty: 'A niche full of blank wooden tags on strings, ready for crates that never came.' },
     { type: 'chest', chest: 'galleries', x: 35, y: 27, name: 'a miner\'s strongbox' },
+    { type: 'plaque', x: 28, y: 25, name: 'a slate at the last face', text: 'A slate hung on a nail at the end of the gallery, where the last shift stopped digging. In chalk, in a big careful hand: LODE STILL GOOD. LAMPS LOW. GONE UP FOR OIL. BACK MONDAY. Under it, in a smaller hand, much later: nobody came back on monday, so we kept digging.' },
     // Fundstellen: Lode-Glimmer (Salvage 44)
     { type: 'node', node: 'deep_lode', x: 29, y: 3 },
     { type: 'node', node: 'deep_lode', x: 3, y: 26 },

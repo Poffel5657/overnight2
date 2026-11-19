@@ -66,6 +66,7 @@ test('Die Galleries: eigenes Gebiet, Stufe 55 bis 60, faire Angriffe, Erfahrung 
   assert.equal(NODES.deep_lode.level, 44);
   assert.ok(ITEMS.lode_lantern.light > ITEMS.pump_lamp.light, 'die Lode Lantern lohnt sich');
   assert.equal(RECIPES.l_lode_lantern.out[0], 'lode_lantern');
+  assert.ok(r.objects.some((o) => o.type === 'plaque' && /BACK MONDAY/.test(o.text)), 'die Tafel an der letzten Wand');
 });
 
 test('Forty Crates: Brack, der alte Schacht, Crawler, der Zettel, Miners, Brack', () => {
