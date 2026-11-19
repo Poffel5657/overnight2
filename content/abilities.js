@@ -200,4 +200,7 @@ export const ABILITIES = {
   // Nachschlag Tag 9: der Warden schon auf 78
   lamp_on_the_hook: { name: 'Lamp on the Hook', desc: "Hang your lamp where everybody can see it. Everything near you comes to you, and the people behind you take much less for a long breath.", glyph: 'A', kind: 'taunt', radius: 4, brace: 26, oil: 14, cd: 50, text: 'You hang the lamp high. Every eye in the dark turns to it, and to you.' },
   last_stone: { name: 'Last Stone', desc: "Stand like the last stone on the road, the one everybody walks to. You heal a great deal, and nothing you take matters much for a long time.", glyph: 'T', kind: 'self', heal: 120, brace: 36, oil: 14, cd: 80, text: 'You become the place where the road ends. Roads do not fall over.' },
+  // Nachschlag Tag 9: der Mender auch auf 78
+  open_hearth: { name: 'Open Hearth', desc: "Open the hearth to everybody at once. Everyone near you heals a great deal, right now.", glyph: '+', kind: 'aura', radius: 5, heal: 70, oil: 18, cd: 50, text: 'The ember in the staff opens like a door in winter.' },
+  cinder_wake: { name: 'Cinder Wake', desc: "Throw a long tail of burning ash. It burns for a long time, and what was already burning burns worse.", glyph: '/', kind: 'ranged', range: 7, hit: [60, 68], burn: { dmg: 13, ticks: 12 }, exploit: { burn: 1.3 }, oil: 16, cd: 32, power: true, text: 'The ash follows its target like a wake behind a boat.' },
 };

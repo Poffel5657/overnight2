@@ -155,3 +155,24 @@ test('Warden schon auf 78: Lamp on the Hook bindet alles und schützt die Leute 
     assert.ok(p.hp >= 50 + ABILITIES.last_stone.heal - 1, `heilt (${p.hp})`);
   }
 });
+
+test('Mender schon auf 78: Open Hearth heilt alle in der Nähe sofort, Cinder Wake brennt lange', () => {
+  assert.deepEqual(CLASSES.mender.specs.hearthkeeper.abilities.find(([a]) => a === 'open_hearth'), ['open_hearth', 78]);
+  assert.deepEqual(CLASSES.mender.specs.ashbinder.abilities.find(([a]) => a === 'cinder_wake'), ['cinder_wake', 78]);
+  {
+    const { w, p } = setup(912, 'mender', 'hearthkeeper');
+    p.classes.mender.level = 78;
+    const f = veteran(w, 'f', { cls: 'warden', level: 60 });
+    f.x = p.x; f.y = p.y; f.hp = 40;
+    applyIntent(w, 'a', { t: 'ability', id: 'open_hearth' });
+    run(w, 1);
+    assert.ok(f.hp >= 40 + ABILITIES.open_hearth.heal - 1, `Freund heilt (${f.hp})`);
+  }
+  {
+    const { w, p, m } = setup(913, 'mender', 'ashbinder');
+    p.classes.mender.level = 78;
+    beside(w, p, m, 4);
+    cast(w, 'a', 'cinder_wake', m);
+    assert.ok(m.burn && m.burn.left > 0, 'brennt');
+  }
+});
