@@ -1196,7 +1196,7 @@ export const TALK = {
   snail_bramble: snail('bramble'), snail_pebble: snail('pebble'), snail_tom: snail('tom'),
   snail_duchess: snail('duchess'), snail_thistle: snail('thistle'),
   pell: {
-    start: { text: 'HEAR YE! Kindle has VOTED, and there is a ROOF at the top of the Stone Road! Bring logs and peat and a flask of oil, mend the carriers\' lean-to, and while its lamp burns, NOBODY fights at the rest! An old Warden called SEDGE sits by that fire and talks to anybody who helped! Under the Drowned Chapel a stone face asks a riddle, and under COPPERDEEP the old glimmer galleries are open, for the strong only! And every path learned something at SEVENTY-FOUR! Bring wood! Bring friends! Answer the door!', options: [
+    start: { text: 'HEAR YE! Kindle has VOTED, and there is a ROOF at the top of the Stone Road! Bring logs and peat and a flask of oil, mend the carriers\' lean-to, and while its lamp burns, NOBODY fights at the rest! An old Warden called SEDGE sits by that fire and talks to anybody who helped! Under the Drowned Chapel a stone face asks a riddle, and under COPPERDEEP the old glimmer galleries are open, for the strong only! And every path learned something at SEVENTY-FOUR and again at SEVENTY-EIGHT! Bring wood! Bring friends! Answer the door!', options: [
       { text: 'What was the news yesterday?', to: 'yesterday' },
       { text: 'Whose hand is this?', to: 'po_pell', if: { quest: { prayer_not_ours: 1 }, has: { prayer_slip: 1 } }, do: [{ advance: 'prayer_not_ours' }] },
       { text: 'Anything I can help with?', to: 'ul_offer', if: { quest: { kindling: 'done', unsent_letter: 'none' } }, do: [{ start: 'unsent_letter' }] },
