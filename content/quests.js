@@ -729,6 +729,18 @@ export const QUESTS = {
     ],
     reward: { xp: 160, gold: 10, items: { bread: 2, lamp_oil: 2 } },
   },
+  // Nachschlag Tag 9 (für niedrige Stufen): Fen will einen eigenen Pflock, wie die Träger.
+  a_peg_for_fen: {
+    name: 'A Peg for Fen', giver: 'fen',
+    text: 'Fen has heard there is a board at the top of the Stone Road with a peg for every carrier, and wants one. With a name on it. Fen\'s name.',
+    steps: [
+      { type: 'have', item: 'split_log', n: 1, text: 'Split some deadfall at the edge of the woods (anybody can, with a boot) and bring a log.' },
+      { type: 'talk', npc: 'rook', text: 'Ask Old Rook to burn Fen\'s name into the log. He has a hot iron and no patience.' },
+      { type: 'talk', npc: 'brindle', text: 'Take the peg up to Brindle at the North Watch. She knows where the stones start.' },
+      { type: 'talk', npc: 'fen', text: 'Tell Fen where the peg is.' },
+    ],
+    reward: { xp: 220, gold: 12, items: { bread: 2, lamp_oil: 1 } },
+  },
   // Tag 6, Nachschlag (Bogen, für niedrige Stufen): Fen will Wenna eine Karte mitgeben.
   fens_map: {
     name: 'Fen\'s Map', giver: 'fen',
