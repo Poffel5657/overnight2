@@ -72,6 +72,9 @@ test('A Peg Still Hanging: flicken, Sedge, Asche zu Wenna, Zettel zu Marrow, zur
   talk(w, 'a', 'ama');
   choose(w, 'a', 'mended the lean-to');
   assert.equal(p.dialog.page, 'rr_ama');
+  talk(w, 'a', 'haskel');
+  choose(w, 'a', 'old man at the top');
+  assert.equal(p.dialog.page, 'sg_haskel');
   // Zu Marrow
   talk(w, 'a', 'marrow');
   choose(w, 'a', 'left you a note');
@@ -88,6 +91,9 @@ test('A Peg Still Hanging: flicken, Sedge, Asche zu Wenna, Zettel zu Marrow, zur
   assert.equal(P.countItem(p, 'wardens_lamp') + (p.equip.lantern === 'wardens_lamp' ? 1 : 0), 1, 'Sedges Ersatzlampe');
   assert.ok(ITEMS.wardens_lamp.light > ITEMS.greyglass_lantern.light, 'besser als, was man um 34 trägt');
   assert.ok(QUESTS.a_peg_still_hanging.reward.xp > 2000);
+  talk(w, 'a', 'sedge');
+  choose(w, 'a', 'fell over');
+  assert.equal(p.dialog.page, 's_eighth');
   // Danach: Wenna packt
   ({ w, p } = hop(w, 'kindle', 'a', 944));
   w.daylight = 0;
