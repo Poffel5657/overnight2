@@ -38,6 +38,9 @@ export const FAVOURS = {
   // Tag 8: die Steinstraße (Torf für das Leuchtfeuer, Motten an den Feuern)
   peat_for_ama: { from: 'ama', type: 'bring', item: 'peat_brick', n: 3, text: 'Ama wants three bricks of peat from the Stone Road. "If they burn it up north, we can burn it here."', reward: { gold: 22, xp: 300 } },
   moths_for_brindle: { from: 'brindle', type: 'kill', mob: 'ash_moth', n: 3, text: 'Ash moths are drinking the fire bowls on the Stone Road dry. Brindle wants three fewer.', reward: { gold: 32, xp: 520 } },
+  // Nachschlag Tag 9: die Glimmer Galleries (55 bis 60)
+  lode_for_brack: { from: 'brack', type: 'bring', item: 'lode_glimmer', n: 3, text: 'Brack wants three flakes of lode glimmer, to see if the deep lode is still worth digging.', reward: { gold: 70, xp: 1500 } },
+  crawlers_off_the_lode: { from: 'brack', type: 'kill', mob: 'lode_crawler', n: 4, text: 'Lode Crawlers are eating Brack\'s grandfather\'s lode. Four fewer, please.', reward: { gold: 75, xp: 1700 } },
   shoo_crows: { from: 'fen', type: 'kill', mob: 'crow', n: 3, text: 'The crows are judging the vegetable patch. Shoo them.', reward: { gold: 8, xp: 20 } },
 };
 

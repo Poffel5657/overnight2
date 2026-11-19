@@ -164,3 +164,29 @@ test('Deep Lode: Salvage 44 sammelt Lode Glimmer; daraus Lode Lantern, Lens, Coa
   assert.ok(ITEMS.lode_coat.defence > ITEMS.culvert_coat.defence);
   assert.ok(ITEMS.lode_shivs.power > ITEMS.run_iron_shivs.power && ITEMS.lode_lens.power > ITEMS.run_iron_lens.power);
 });
+
+test('Gefallen für die Galleries: vier Lode Crawler für Brack zählen am Tag, an dem er am Brett hängt', async () => {
+  const { favoursFor } = await import('../../shared/community.js');
+  const { FAVOURS } = await import('../../content/dailies.js');
+  assert.ok(FAVOURS.lode_for_brack && FAVOURS.crawlers_off_the_lode);
+  // Der erste Tag ab dem 20.11., an dem der Kampf-Gefallen gezogen wird
+  let date = null;
+  for (let d = 0; d < 400 && !date; d++) {
+    const day = new Date(Date.UTC(2026, 10, 20 + d)).toISOString().slice(0, 10);
+    if (favoursFor(day).includes('crawlers_off_the_lode')) date = day;
+  }
+  assert.ok(date, 'hängt irgendwann am Brett');
+  const w = S.createWorld(regionFor('galleries'), 966);
+  w.date = date;
+  const p = veteran(w, 'a', { level: 58, equip: GEAR, bag: [{ id: 'culvert_draught', n: 10 }, { id: 'lamp_oil', n: 4 }] });
+  p.specs = { warden: 'lightsworn' };
+  const gold0 = p.gold;
+  for (let n = 0; n < FAVOURS.crawlers_off_the_lode.n; n++) {
+    const m = w.mobs.filter((x) => x.type === 'lode_crawler' && !x.dead).sort((a, b) => Math.hypot(a.x - p.x, a.y - p.y) - Math.hypot(b.x - p.x, b.y - p.y))[0];
+    if (!m) { run(w, MOBS.lode_crawler.respawn + 2); n--; continue; }
+    fight(w, 'a', m);
+    assert.ok(m.dead);
+  }
+  assert.ok(p.daily.done.includes('crawlers_off_the_lode'), 'Gefallen erledigt');
+  assert.ok(p.gold >= gold0 + FAVOURS.crawlers_off_the_lode.reward.gold, 'Lohn');
+});
