@@ -4,7 +4,7 @@ Der Nightwright pflegt diese Datei jede Nacht (Regeln in `CLAUDE.md`).
 
 ## Inbox gelesen bis
 
-`v2/inbox/2026-11-15.json` (Tag 5). **Tag 6, 7 und 8 fanden keine neuere Datei** (`2026-11-16.json` bis `2026-11-18.json` fehlten um 23 Uhr; Ursache unter „Bekannte Probleme“). Die nächste Nacht liest alle Dateien nach `2026-11-15.json`, auch nachträglich angekommene (Gebete darin sind noch offen; Stimmen für Zettel 5 bis 7 sind schon entschieden).
+`v2/inbox/2026-11-15.json` (Tag 5). **Tag 6, 7, 8 und 9 fanden keine neuere Datei** (`2026-11-16.json` bis `2026-11-19.json` fehlten um 23 Uhr; Ursache unter „Bekannte Probleme“). Die nächste Nacht liest alle Dateien nach `2026-11-15.json`, auch nachträglich angekommene (Gebete darin sind noch offen; Stimmen für Zettel 5 bis 8 sind schon entschieden).
 
 ## Heute in Arbeit
 
@@ -26,17 +26,19 @@ Tag 9 (Nacht zum 2026-11-20). **Inbox fehlte zum vierten Mal** (keine Datei nach
 
 **Dauerauftrag Klassen:** Warden auf 74 (Lightsworn und Ironwall).
 
-**Nachschlag:** Mender, Flarecaster, Drifter auf 74; Rätselraum in der Drowned Chapel (aus Gebet 8); Rufe, Pell, Ausguck, Gespräche.
+**Nachschlag:** Mender, Flarecaster, Drifter auf 74; Rätselraum in der Drowned Chapel (aus Gebet 8, „The Choir Door“); The Glimmer Galleries unter Copperdeep (Stufe 55–60, „Forty Crates“, Deep Lode, Lode Lantern); Rufe, Pell, Ausguck, Gespräche (Ama und der Stranger zu Sedge).
 
 ## Ausbau läuft
 
 - **The Unending Maze** (seit 2026-11-13, von Chris gebaut aus Gebet 4): Stockwerke 1 bis 99 unter Cinderford, jeden Tag neu gewürfelt, Stufe = 3 + 2 × Stockwerk. Ausbau möglich: Rangliste auf dem Turn Board (braucht Chris: D1-Abfrage), weitere Keeper-Körper und -Eigenschaften (`BODIES`, `AFFIXES` in `content/regions/maze.js`), Rezepte aus Turnstones, mehr Gegenstände ab Stockwerk 25, Quests für tiefere Stockwerke (`keeper_10`, `keeper_20` gibt es schon).
-- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag): Stand in `ROADMAP.md`: alle acht Wege haben Fähigkeiten auf 50, 54 und 58 (Tag 7). Nächste Nächte: Warden 62, dann die anderen. Seit Tag 7 können Nahschläge `mend` (Gruppe heilt). Seit Tag 6 kann `zone` dazzle, root und burn. Seit Tag 5 kann `burst` auch `mend` (Gruppe heilt). Seit Tag 4 gibt es `exploit` (Schaden gegen brennende/geblendete/festsitzende Ziele): gut für weitere Stufen, auch kleinere exploit-Fähigkeiten für 12–30 wären schön (Gebet 8).
-- **Der Bogen „The Second Light“**: Tag 7: Zettel 6 → bread-north (Kiste am ersten Stein), Wenna bleibt, bis die Kiste eine Last ist; der Stranger hat einen Schatten und gibt zu, aus dem Norden zu kommen. Tag 8: Zettel 7 → north-road-fires (die Steinstraße mit Feuern), Hollow Wardens am Rastplatz der Träger („Not Thieves“, „Beads for Home“). Nächste: Wennas Aufbruch, Vorstufe der großen Wahl.
-- **The Stone Road** (seit Tag 8, Stufe 26–34): sechs Feuer, Rastplatz der Träger, drei Hollow Wardens (Gruppe). Seit dem Nachschlag: the Grey Heron an der Furt (Boss 36), Gefallen für Torf und Motten. Ausbau: Zettel 8 `carriers-rest` (Unterstand wieder aufbauen, gemeinsam), ein benannter Warden am Rastplatz, was hinter dem achten Stein liegt (Bogen, nicht vor Akt 3).
+- **Klassen bis 99 mit Spezialisierungen ab 50** (Dauerauftrag): Stand in `ROADMAP.md`: alle acht Wege haben Fähigkeiten auf 50, 54 und 58 (Tag 7). Stand Tag 9: alle acht Wege bis 74. Nächste Nächte: Warden 78, dann die anderen. Seit Tag 7 können Nahschläge `mend` (Gruppe heilt). Seit Tag 6 kann `zone` dazzle, root und burn. Seit Tag 5 kann `burst` auch `mend` (Gruppe heilt). Seit Tag 4 gibt es `exploit` (Schaden gegen brennende/geblendete/festsitzende Ziele): gut für weitere Stufen, auch kleinere exploit-Fähigkeiten für 12–30 wären schön (Gebet 8).
+- **Der Bogen „The Second Light“**: Tag 7: Zettel 6 → bread-north (Kiste am ersten Stein), Wenna bleibt, bis die Kiste eine Last ist; der Stranger hat einen Schatten und gibt zu, aus dem Norden zu kommen. Tag 8: Zettel 7 → north-road-fires (die Steinstraße mit Feuern), Hollow Wardens am Rastplatz der Träger („Not Thieves“, „Beads for Home“). Tag 9: Zettel 8 → carriers-rest (Unterstand, Waffenruhe), Sedge am Herd, Wennas Pflock, Wenna packt. Nächste: Wennas Aufbruch (Tag 10, Zettel 9 walk-her-home), Vorstufe der großen Wahl.
+- **The Stone Road** (seit Tag 8, Stufe 26–34): sechs Feuer, Rastplatz der Träger, drei Hollow Wardens (Gruppe). Seit dem Nachschlag: the Grey Heron an der Furt (Boss 36), Gefallen für Torf und Motten. Seit Tag 9: der Unterstand (`leanto`, Tageszähler, Waffenruhe `truce`, ausgeruht am Herd) und Sedge. Ausbau: was hinter dem achten Stein liegt (Bogen, nicht vor Akt 3), ein dauerhafter Unterstand (Weltzähler, nur mit Chris), Gefallen für Torf und Scheite am Unterstand.
 - **Ama's Woodpile** (seit Tag 6): Stapel wächst mit dem Tageszähler. Ausbau: ein Vorrat über mehrere Tage (Weltzähler im Worker, nur mit Chris), Belohnung für die Gemeinschaft, wenn der Stapel voll ist, mehr Totholz in Copperdeep/Sinkmarsh.
 - **The Spillway** (seit Tag 6, 46–50) und **The Overflow Run** (seit Tag 7, 50–54): Ausbau: ein Gruppen-Wesen, das Tor nach Norden (Bogen), Rezepte bis Tinkering 50.
 - **Die Kiste am ersten Stein** (seit Tag 7): zählt pro Spieler (`sentNorth`). Ausbau: gemeinsamer Stand (Weltzähler, nur mit Chris), Antwort aus dem Norden (ein Geschenk in der Kiste?).
+- **The Glimmer Galleries** (seit Tag 9, 55–60): Lode Crawler, Lampless Miners, „Forty Crates“, Deep Lode (Salvage 44), Lode Lantern (Lampwright 48). Ausbau: ein Boss an der letzten Wand (Zettel 9 `gallery-boss`), Ausrüstung über 60, Tinkering-Rezepte aus Lode Glimmer, der Name auf dem Zettel (Bogen).
+- **Die Drowned Chapel** (seit Tag 9 die Chortür und die Sakristei): Ausbau: der ausgekratzte Name über dem vierzigsten Haken (Faden für Bogen 2), weitere Rätsel (Zettel 9 `maze-riddles`).
 - **The North Watch:** Text in `content/lookout.js` wächst mit dem Bogen (Tag 4: Schein so breit wie zwei Daumen).
 - **Counting House:** fünf Geschäfte seit Tag 4 (Flint mit Nachlass `discount`). Weitere (Wren, Sorrel, Rook), Ausschüttung in Waren, gemeinsames Ziel pro Geschäft (bräuchte einen dauerhaften Weltzähler, nur mit Chris).
 - **The Sumps** (seit Tag 5, Gebet 9): Stufe 40–46, seit Tag 6 der Spillway (46–50). Ausbau: Gruppen-Wesen, eine Leiter zur Burg der Quarrymen (Gebet 9: Burg und Markt).
@@ -45,16 +47,16 @@ Tag 9 (Nacht zum 2026-11-20). **Inbox fehlte zum vierten Mal** (keine Datei nach
 
 ## Nächste Nächte
 
-- Inbox: prüfen, ob `2026-11-16.json`/`2026-11-17.json` nachträglich kamen (Gebete nachholen). Fehlt wieder eine Datei, steht es unter „Bekannte Probleme“ für Chris.
-- Klassen: alle acht Wege haben 70 (Tag 8). Nächste: Warden 74, dann die anderen. Inhalt für 55 bis 70 muss dringend mitwachsen (ein Gebiet für 55–60). Inhalt für 55 bis 66 muss mitwachsen (dringend: ein Gebiet für 55–60).
-- Inhalt für 54+: der Overflow Run reicht bis 54; dahinter das Tor nach Norden (bleibt zu, bis der Bogen es öffnet).
-- Bogen: Zettel 8 auswerten (carriers-rest ist ein kleiner Bogen-Haken). Wennas Aufbruch (spätestens Tag 10), danach die Vorstufe der großen Wahl auf den Zettel.
-- Mehr Gefallen, die Gruppen belohnen.
+- Inbox: prüfen, ob `2026-11-16.json` bis `2026-11-19.json` nachträglich kamen (Gebete nachholen). Fehlt wieder eine Datei, steht es unter „Bekannte Probleme“ für Chris.
+- Klassen: alle acht Wege haben 74 (Tag 9). Nächste: Warden 78, dann die anderen. Ausrüstung über 60 fehlt noch.
+- Inhalt für 60+: ein Boss in den Glimmer Galleries (Zettel 9 `gallery-boss`), danach ein Gebiet für 60–66.
+- Bogen: Zettel 9 auswerten. Wennas Aufbruch an Tag 10 (Sedge wartet eine Nacht am Unterstand; gewinnt `walk-her-home`, begleiten Spieler sie mit Lampen). Ihre Neulings-Quests brauchen danach ein Ersatz-Gespräch an der Mühle. Dann die Vorstufe der großen Wahl auf den Zettel.
+- Mehr Gefallen, die Gruppen belohnen (Vorsicht mit dem Kern-Test „Gefallen erledigen“).
 
 ## Ideen für später
 
 - Cooking bei Hollis (Zettel 3–5, seit Zettel 7 als hollis-kitchen wieder drauf).
-- Unterstand der Träger wieder aufbauen (seit Zettel 8 als carriers-rest).
+- Rangliste der Cup-Sieger bei Mabb (Zettel 6 bis 8 ohne Stimme, vorerst herunter).
 
 - Angeln im Bach (drei Nächte auf dem Zettel ohne Stimme, vorerst herunter).
 - Ein Imker zieht nach Kindle (drei Nächte auf Zettel 1–3, ohne Stimme, vorerst herunter).
@@ -64,7 +66,7 @@ Tag 9 (Nacht zum 2026-11-20). **Inbox fehlte zum vierten Mal** (keine Datei nach
 - Aus Gebet 7: Material bei Ama abgeben, bis sie eine Mauer baut. Passt zu einer großen Bogen-Entscheidung, die noch kommt; bis dahin steht ein gemeinsamer Vorrat für das Leuchtfeuer auf dem Zettel.
 - Aus Gebet 9: eine Burg und ein belebter Markt in einer großen Stadt, ein neuer Beruf, eine Paladin-Klasse (als „Lightsworn“-Weg des Wardens auf Zettel 5). Die Sumps sind das erste Stück.
 - Aus Gebet 10: ein feindliches Lager, dem Spieler beitreten und das Kindle angreift. Kampf zwischen Spielern ändert die Kampfregeln (nur mit Chris). Ohne Spielerkampf denkbar: ein Lager der Hollow Wardens (Bogen, Akt 2), das nachts Brennstoff stiehlt.
-- Aus Gebet 8: abgeschlossene Abenteuer für eine Gruppe mit Rätseln, Beute und Boss (eigene Instanz pro Gruppe wäre ein großer Umbau; mit Chris). Kleiner Schritt: ein Rätselraum in der Drowned Chapel oder im Maze.
+- Aus Gebet 8: abgeschlossene Abenteuer für eine Gruppe mit Rätseln, Beute und Boss (eigene Instanz pro Gruppe wäre ein großer Umbau; mit Chris). Erster Schritt seit Tag 9: die Chortür in der Drowned Chapel; als Nächstes Rätselräume im Maze (Zettel 9 `maze-riddles`).
 
 ## Was ankommt
 
@@ -75,7 +77,7 @@ Tag 9 (Nacht zum 2026-11-20). **Inbox fehlte zum vierten Mal** (keine Datei nach
 
 ## Bekannte Probleme
 
-- Tag 7/8: **Die Inbox-Dateien `2026-11-16.json` bis `2026-11-18.json` fehlen** (drei Nächte ohne Gebete und Stimmen). Ursache (Tag 8 nachgesehen): GitHub startet `inbox-export.yml` nur noch einmal am Tag, und zwar nach Mitternacht (Läufe 2026-11-16 01:05, 2026-11-17 00:17, 2026-11-18 00:32 Berlin). Das Skript arbeitet nur zwischen 17 und 22:59 Uhr und beendet sich sonst grün mit „nichts zu tun“. Vorschlag an Chris: den Export zusätzlich vom Nachtlauf-Start aus anstoßen (workflow_dispatch mit force) oder das Fenster bis 2 Uhr öffnen und die Datei dann für den Vortag schreiben; `.github/` ist geschützt.
+- Tag 7/8/9: **Die Inbox-Dateien `2026-11-16.json` bis `2026-11-19.json` fehlen** (vier Nächte ohne Gebete und Stimmen). Ursache (Tag 8 nachgesehen): GitHub startet `inbox-export.yml` nur noch einmal am Tag, und zwar nach Mitternacht (Läufe 2026-11-16 01:05, 2026-11-17 00:17, 2026-11-18 00:32 Berlin). Das Skript arbeitet nur zwischen 17 und 22:59 Uhr und beendet sich sonst grün mit „nichts zu tun“. Vorschlag an Chris: den Export zusätzlich vom Nachtlauf-Start aus anstoßen (workflow_dispatch mit force) oder das Fenster bis 2 Uhr öffnen und die Datei dann für den Vortag schreiben; `.github/` ist geschützt.
 - Tag 7: Ein Abgabe-Gefallen „Brot für die Kiste“ (Brindle, zwei Millbread) ließ den Kern-Test „Gefallen erledigen“ mit jeder ausprobierten ID scheitern (er zieht dann einen Gefallen, den ein Neuling nicht schafft) und wurde weggelassen. Der Vorschlag an Chris von oben (Test sucht einen leichten Kampf-Gefallen gezielt) würde das lösen.
 - Tag 7 (Review): Die Wegfindung (`pathFor` in `shared/sim.js`) läuft für jeden Spieler mit Ziel in jedem Takt. Zwischenspeichern brach den Kern-Test „Sammeln, Herstellen, …“ und wurde zurückgenommen; braucht einen sorgfältigeren Versuch.
 - Tag 7 (Review): Offline setzt `src/net.js` den Leuchtfeuer-Zähler um Mitternacht nicht zurück (nur Anzeige, Stapel bleibt hoch). `src/net.js` ist geschützt; Vorschlag an Chris: in `tick` bei Datumswechsel `w.community.beacon = 0`.

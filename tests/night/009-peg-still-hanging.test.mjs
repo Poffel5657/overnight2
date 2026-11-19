@@ -65,6 +65,13 @@ test('A Peg Still Hanging: flicken, Sedge, Asche zu Wenna, Zettel zu Marrow, zur
   assert.equal(p.quests.a_peg_still_hanging.step, 1);
   assert.equal(P.countItem(p, 'wennas_note'), 1);
   assert.equal(P.countItem(p, 'hearth_ash'), 0);
+  // Der Stranger kennt Sedge, und Ama zählt den Unterstand
+  talk(w, 'a', 'stranger');
+  choose(w, 'a', 'Warden called Sedge');
+  assert.equal(p.dialog.page, 'ps_stranger');
+  talk(w, 'a', 'ama');
+  choose(w, 'a', 'mended the lean-to');
+  assert.equal(p.dialog.page, 'rr_ama');
   // Zu Marrow
   talk(w, 'a', 'marrow');
   choose(w, 'a', 'left you a note');
