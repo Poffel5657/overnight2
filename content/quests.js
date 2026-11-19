@@ -673,6 +673,17 @@ export const QUESTS = {
     ],
     reward: { xp: 11500, gold: 220, items: { loaders_hood: 1, culvert_draught: 2 } },
   },
+  // Nachschlag Tag 9: nach „Forty Crates“ die Schicht der Lampless Miners beenden
+  back_monday: {
+    name: 'Back Monday', giver: 'brack',
+    text: 'The slate at the last face says the miners went up for oil and would be back on Monday. Brack wants the shift to end, properly, and the lode brought up for once.',
+    steps: [
+      { type: 'kill', mob: 'lampless_miner', n: 5, text: 'Put five Lampless Miners in the Glimmer Galleries to rest. Bring oil: they drink from your lantern.' },
+      { type: 'have', item: 'lode_glimmer', n: 4, text: 'Bring up four flakes of lode glimmer (the Miners and Crawlers carry it, or salvage it from the deep lode).' },
+      { type: 'talk', npc: 'brack', text: 'Give the lode glimmer to Brack and tell him the shift is over.' },
+    ],
+    reward: { xp: 9000, gold: 180, items: { lode_lantern: 1 } },
+  },
   // Nachschlag Tag 9 (aus Gebet 8, Zettel „chapel-riddle-room“): ein Rätsel in der Drowned Chapel
   the_choir_door: {
     name: 'The Choir Door', giver: 'tallow',

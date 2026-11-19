@@ -134,6 +134,32 @@ test('Forty Crates: Brack, der alte Schacht, Crawler, der Zettel, Miners, Brack'
   choose(k2, 'a', 'crate tag');
   assert.ok(p.quests.forty_crates.done);
   assert.equal(P.countItem(p, 'loaders_hood'), 1);
+  // Back Monday: fünf Miners, vier Lode Glimmer
+  talk(k2, 'a', 'brack');
+  choose(k2, 'a', 'back Monday');
+  assert.equal(p.quests.back_monday.step, 0);
+  actOn(k2, 'a', k2.objects.find((o) => o.type === 'door' && o.to === 'galleries'), 'enter');
+  const w3 = S.createWorld(regionFor('galleries'), 967);
+  p = S.addPlayer(w3, 'a', 'a', S.removePlayer(k2, 'a'));
+  // Vorher eingekauft (Öl bei Marrow, Tränke aus der Alchemie): wieder voll ausgerüstet hinab
+  P.addItem(p, 'lamp_oil', 10 - P.countItem(p, 'lamp_oil'));
+  P.addItem(p, 'culvert_draught', 16 - P.countItem(p, 'culvert_draught'));
+  for (let n = 0; n < 5 || P.countItem(p, 'lode_glimmer') < 4; n++) {
+    assert.ok(n < 30, 'genug Lode Glimmer nach einer Weile');
+    const m = w3.mobs.filter((x) => x.type === 'lampless_miner' && !x.dead).sort((a, b) => Math.hypot(a.x - p.x, a.y - p.y) - Math.hypot(b.x - p.x, b.y - p.y))[0];
+    if (!m) { run(w3, MOBS.lampless_miner.respawn + 2); continue; }
+    fight(w3, 'a', m);
+    assert.ok(m.dead && !p.travel, `Miner fällt (Spieler ${p.hp}, Öl ${p.oil}, Tränke ${P.countItem(p, 'culvert_draught')}, Ölflaschen ${P.countItem(p, 'lamp_oil')}, n ${n}, Miner ${m.hp} bei ${m.x},${m.y}, wütend ${w3.mobs.filter((x) => !x.dead && x.angryAt).map((x) => x.type).join(' ')})`);
+    for (const foe of w3.mobs.filter((x) => !x.dead && x.angryAt === 'a')) fight(w3, 'a', foe);
+  }
+  assert.equal(p.quests.back_monday.step, 2, 'fünf Miners und vier Lode Glimmer');
+  actOn(w3, 'a', w3.objects.find((o) => o.type === 'door' && o.to === 'kindle'), 'enter');
+  const k3 = S.createWorld(regionFor('kindle'), 968);
+  p = S.addPlayer(k3, 'a', 'a', S.removePlayer(w3, 'a'));
+  talk(k3, 'a', 'brack');
+  choose(k3, 'a', 'shift is over');
+  assert.ok(p.quests.back_monday.done);
+  assert.equal(P.countItem(p, 'lode_lantern'), 1);
 });
 
 test('Deep Lode: Salvage 44 sammelt Lode Glimmer; daraus Lode Lantern, Lens, Coat und Shivs', async () => {
