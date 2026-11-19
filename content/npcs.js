@@ -490,6 +490,8 @@ const haskel = {
       { text: 'Seen anything odd lately?', to: 'h_light' },
       { text: 'A carrier from the north is in the old mill.', to: 'h_wenna', if: { quest: { the_last_sack: 'active' } } },
       { text: 'Ama wants dry wood for the Beacon.', to: 'wp_haskel', if: { quest: { kindling: 'done' } } },
+      // Tag 9: Sedge
+      { text: 'There is an old man at the top of the Stone Road.', to: 'sg_haskel', if: { mended: 1 } },
       { text: 'Anything else up the Stone Road?', to: 'hf_offer', if: { quest: { stone_by_stone: 'done', heron_at_the_ford: 'none' }, classLevel: 33 }, do: [{ start: 'heron_at_the_ford' }] },
       { text: 'Anything else up the Stone Road?', to: 'hf_early', if: { quest: { stone_by_stone: 'done', heron_at_the_ford: 'none' }, below: 33 } },
       { text: 'A heron plume.', to: 'hf_done', if: { quest: { heron_at_the_ford: 2 }, has: { heron_plume: 1 } }, do: [{ take: { heron_plume: 1 } }, { advance: 'heron_at_the_ford' }] },
@@ -509,6 +511,7 @@ const haskel = {
   h_pack: { text: 'More every night. They come through the camp at a run and do not even look at my lunch. A wolf that ignores lunch is a frightened wolf.', options: [BYE] },
   h_wenna: { text: 'Haskel puts down his axe. "In the mill? Then the smoke I smelled on the wolves was hers. Peat." He scratches his head. "Tell her the wolves are scared of her people, not the other way round. And tell her the north road is still there. Overgrown, but there. I cut it back as far as the stones, every spring. Nobody asked me to. Seemed rude not to."', options: [BYE] },
   wp_haskel: { text: 'Haskel points with his axe, which is how he points at everything. "Deadfall. Not the standing trees, they bite back. There is a dry pine by the camp, a bough up the west path, a couple along the edge east of the road, and two at the bottom of the woods west of the fields, close to the village. Break them with your boot, it is old wood." He spits on his hands. "Take what is dry. The wet stays till tomorrow. And tell Ama I want my name on her board too."', options: [BYE] },
+  sg_haskel: { text: 'Haskel leans on his axe. "With a hooked pole? Bad knees?" He laughs. "I saw him once, years back, when I was cutting the road clear. Up past the third stone, in the fog, just standing there with a lamp. I waved. He waved. Neither of us said anything. I thought he was a tree with manners." He scratches his beard. "Tell him the road is clear to the stones every spring. Tell him that was me."', options: [BYE] },
   hf_offer: { text: 'Haskel scratches his beard with the axe handle, which should not be possible. "My gran said the carriers lost lamps at the ford. Fast water, slippy stones, down goes the lamp. And something used to fish them out." He holds his hand far above his head. "Grey bird. This tall. Stands on the west bank below the crossing, still as a post. If it is still there, it has had a lot of lamps." He hands you a salve. "Send it off. Bring me a feather. I want to see what eats lamps."', options: [{ text: 'A grey bird. Got it.' }] },
   hf_early: { text: '"There is a bird at the ford, my gran said. A big one. It eats lamps, and probably the people holding them." He looks you up and down. "Come back with a few more levels." (Level 33)', options: [BYE] },
   hf_done: { text: 'Haskel holds a plume up to the light. It is mostly fog, and it does not drip. "Huh." He tucks one behind his ear, very seriously. "Rook could line a hood with these. A hood that does not get wet. In Hushwood." He looks as if he might cry. He does not. "Keep any others for Rook. And take these. Gran would have liked you."', options: [BYE] },
@@ -1164,6 +1167,7 @@ const sedge = {
       { text: 'Why did your people take Kindle\'s wood?', to: 's_wood', if: { mended: 1 } },
       { text: 'Where do you come from?', to: 's_from', if: { mended: 1 } },
       { text: 'The others do not fight tonight.', to: 's_truce', if: { mended: 1 } },
+      { text: 'What is past the stone that fell over?', to: 's_eighth', if: { quest: { a_peg_still_hanging: 'done' } } },
       BYE,
     ],
   },
@@ -1176,6 +1180,7 @@ const sedge = {
   s_after: { text: '"If she comes." He keeps one eye on the road down. "She will. Her mother always came." He rubs his knees. "Tell Kindle to keep the stones lit. Old men walk slower in the dark."', options: [BYE] },
   s_wood: { text: '"Because it was cold, and your pile was big." He does not look ashamed, but he does not look proud either. "We turned the bark up. That means sorry, where I come from. It also means we will pay it back." He nods at the peat by the hearth. "We will. Not this winter."', options: [BYE] },
   s_from: { text: '"Up the road. Past the stone that fell over. Four nights, if the stones stand. A hollow in the hills with a fire in it, like yours, only hungrier." He does not say its name, and from the set of his mouth, he is not going to.', options: [BYE] },
+  s_eighth: { text: 'Sedge looks at the fallen stone for a long time. "More road. Colder than this. The stones there were never lit in my time, only walked past." He taps the pole on the ground twice, which seems to mean something to him. "When I was young we said: the eighth stone fell so nobody from down there would follow us by accident. My mother said: it fell because it was old." He shrugs. "Both, maybe. Things are usually both."', options: [BYE] },
   s_truce: { text: '"While there is a roof and a lamp here, it is a rest, not a road. Nobody fights at a rest. That is older than both our villages." He taps the pole on the ground. "Hit one of them, and you will find out they remember how. Do not hit them."', options: [BYE] },
 };
 
