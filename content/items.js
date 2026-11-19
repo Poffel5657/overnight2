@@ -200,6 +200,13 @@ export const ITEMS = {
   heron_plume: { name: 'Heron Plume', stack: true, value: 20, glyph: '/', text: 'A long grey feather that is mostly fog. It stays dry in the rain and cold in the hand.' },
   heron_hood: { name: 'Heron Hood', slot: 'head', defence: 6, light: 1, value: 320, glyph: '^', text: 'A hood lined with heron plumes, fog-grey and very light. Rain runs off it, and so do most other things.' },
   hollow_lens: { name: 'Hollow Lens', slot: 'main', cls: 'flarecaster', delay: 10, power: 15, value: 500, glyph: 'o', text: 'Three green beads melted down and ground into one lens. The light it throws is green and very patient, like somebody walking a road every night.' },
+  // Nachschlag Tag 9: hinter der Chortür der Drowned Chapel
+  fortieth_voice: { name: 'The Fortieth Voice', stack: true, value: 0, glyph: '/', text: 'A tuning fork of dark brass from behind the choir door. It hums one note when you touch it, the one the whole drowned chapel was built around.' },
+  cantor_stole: { name: 'Cantor\'s Stole', slot: 'head', defence: 6, light: 1.5, value: 340, glyph: '^', text: 'A long band of black cloth from the choir\'s strongbox, embroidered with forty small bells. It never quite dries. Worn over the head, it keeps the hum in your ears and the Grey out of them.' },
+  // Tag 9: der Unterstand am Rastplatz und Sedge
+  hearth_ash: { name: 'Hearth Ash', stack: true, value: 0, glyph: '*', text: 'A pinch of peat ash from the carriers\' hearth, still warm, folded into a square of birch bark. Sedge said Wenna would know what it means.' },
+  wennas_note: { name: 'Wenna\'s Note', stack: true, value: 0, glyph: '?', text: 'A scrap of birch paper in tidy brown ink: "Barley. Fair price. W." The fair price is not written down.' },
+  wardens_lamp: { name: 'Warden\'s Lamp', slot: 'lantern', light: 3.6, burn: 0.35, value: 420, glyph: 'i', text: 'Sedge\'s spare walking lamp: thick green glass, a long iron bail for a hooked pole, birch bark on the grip. Made to be carried to the last stone and back, every night.' },
   hollow_string: { name: 'Hollow String', slot: 'head', defence: 5, light: 1, value: 240, glyph: '^', text: 'The Stranger tied three green beads onto a band of birch twine. "One for each house that still has its fire," he said. Wear it on your brow; it catches the lamplight.' },
 };
 

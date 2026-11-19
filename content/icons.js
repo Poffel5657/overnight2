@@ -585,7 +585,7 @@ export const ITEM_ICONS = {
   verdigris_staff: ['staff', 'moss'], verdigris_lens: ['lens', 'moss'], sluice_draught: ['potion', 'moss'],
   glass_grit: ['pile', 'moss'], hollow_glass_lantern: ['lantern', 'moss'],
   millers_ledger: ['notes', 'paper'], tin_face: ['ring', 'tin'],
-  barley: ['leaf', 'wax'], mill_flour: ['pile', 'pale'], millbread: ['bread', 'bread'], hollow_barley: ['leaf', 'stone'], wennas_lantern: ['lantern', 'green'],
+  barley: ['leaf', 'wax'], mill_flour: ['pile', 'pale'], millbread: ['bread', 'bread'], hollow_barley: ['leaf', 'stone'], wennas_lantern: ['lantern', 'green'], hearth_ash: ['pile', 'stone'], wennas_note: ['notes', 'pale'], wardens_lamp: ['lantern', 'green'], fortieth_voice: ['root', 'brass'], cantor_stole: ['hood', 'black'],
   // Tag 7
   run_iron_shield: ['shield', 'moss'], run_iron_shivs: ['shivs', 'moss'], run_iron_staff: ['staff', 'moss'], run_iron_lens: ['lens', 'moss'],
   strangers_lamp: ['lantern', 'green'], fens_drawing: ['notes', 'paper'], river_stone: ['gem', 'stone'], run_iron: ['pile', 'moss'], pump_lamp: ['lantern', 'warm'], gate_rubbing: ['notes', 'paper'], culvert_hood: ['hood', 'moss'], culvert_coat: ['coat', 'moss'], culvert_boots: ['boots', 'moss'], sackcloth_mantle: ['coat', 'scrap'],
@@ -615,6 +615,7 @@ export const ABILITY_ICONS = {
   kindred_hearth: ['flame', 'warm'], ashfall: ['flame', 'black'], solstice: ['beam', 'light'], kaleidoscope: ['star', 'glim'], new_moon: ['slash', 'purple'], snare_web: ['trap', 'dark'],
   sunward_oath: ['sun', 'warm'], cinder_chain: ['ring', 'black'],
   // Tag 8: alle Wege auf 66
+  open_door: ['shield', 'warm'], shut_gate: ['shield', 'black'], warm_threshold: ['waves', 'light'], banked_pyre: ['flame', 'red'], long_noon: ['beam', 'warm'], split_dawn: ['star', 'light'], moonset_cut: ['slash', 'black'], peg_line: ['trap', 'scrap'],
   noonfall: ['beam', 'light'], prism_burst: ['star', 'glim'], midnight_cut: ['slash', 'purple'], wire_crown: ['trap', 'black'], hearth_and_home: ['waves', 'warm'], pyre_lash: ['bolt', 'red'], morning_vow: ['shield', 'light'], iron_hour: ['shield', 'stone'], beacon_vow: ['lantern', 'warm'], cinder_keep: ['shield', 'black'], hearth_ward: ['star', 'ember'], cinder_storm: ['flame', 'red'], sunstrike: ['beam', 'warm'], prism_cage: ['star', 'purple'], starless_cut: ['slash', 'dark'], tripwire_ring: ['trap', 'steel'],
   dawn_vow: ['sun', 'amber'], anvil_fall: ['shield', 'stone'], ember_vigil: ['waves', 'warm'], pyre_ring: ['ring', 'ember'],
   hearthstone: ['ring', 'warm'], cinder_lash: ['bolt', 'red'], meridian: ['beam', 'light'], refraction: ['star', 'pale'], umbral_cut: ['slash', 'purple'], wire_ring: ['trap', 'dark'],

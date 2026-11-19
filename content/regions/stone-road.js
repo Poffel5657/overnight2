@@ -42,14 +42,18 @@ export const REGION = {
     { type: 'deadfall', x: 14, y: 47, name: 'deadfall', text: 'A birch the Grey pushed over, grey as the fog. Dry right through.' },
     { type: 'deadfall', x: 25, y: 31, name: 'deadfall', text: 'A pine across the ditch beside the road. Somebody has already taken the top half, neatly.' },
     // Der Rastplatz der Träger oben auf der Lichtung
-    { type: 'campfire', x: 14, y: 6, light: 3.5, name: 'the carriers\' hearth', text: 'A ring of flat stones round a bed of peat ash, still warm underneath. Somebody kept a fire here very recently, small and careful.' },
-    { type: 'house', x: 9, y: 3, w: 3, d: 2, roof: '#4a3a2a', name: 'the carriers\' lean-to', text: 'A lean-to of poles and birch bark against the wind from the north. Inside: dry bracken, a folded blanket, and nobody.' },
+    { type: 'campfire', hearth: true, x: 14, y: 6, light: 3.5, name: 'the carriers\' hearth', text: 'A ring of flat stones round a bed of peat ash, still warm underneath. Somebody kept a fire here very recently, small and careful.' },
+    // Tag 9 (Abstimmung „carriers-rest“): der Unterstand lässt sich flicken (content/leanto.js); steht er, brennt eine Lampe darin
+    { type: 'leanto', x: 9, y: 3, w: 3, d: 2, name: 'the carriers\' lean-to', text: 'A lean-to of poles and birch bark against the wind from the north. Inside: dry bracken, a folded blanket. Half the bark is on the ground, and the lamp hook is empty.' },
     { type: 'peg_board', x: 17, y: 3, name: 'the peg board', text: 'A board on two posts with rows of wooden pegs, a name burnt into each. Most pegs are empty. On the ones that are not hang little strings of green beads. Somebody has carved at the top: TAKE YOUR PEG WHEN YOU GO NORTH. LEAVE IT WHEN YOU GO SOUTH.' },
     { type: 'shrine', look: 'log_stack', x: 18, y: 7, name: 'a stack of logs', gives: 'chalked_log', quest: 'not_thieves', step: 1, text: 'A stack of split logs at the edge of the clearing, bark up, the way Ama stacks them. Too neat for the Grey.', found: 'You pull a log off the stack and turn it over. On the end, in white chalk, a single tally line. Ama\'s chalk. Ama\'s line.', empty: 'Kindle wood, bark up, stacked by somebody who knew how. Most of it has Ama\'s chalk on the end.' },
     { type: 'chest', chest: 'carriers_box', x: 26, y: 7, name: 'a carrier\'s box' },
     { type: 'fallen_stone', x: 17, y: 2, name: 'the eighth stone', text: 'The eighth stone has fallen over, and the road goes on past it into the Grey, thicker here than anywhere you have been. Somebody has set the top stone back on the pile so that it still points north.' },
   ],
-  npcs: [],
+  npcs: [
+    // Tag 9 (Bogen): Sedge, ein alter Hollow Warden, sitzt am Herd der Träger und steht nicht auf
+    { id: 'sedge', name: 'Sedge', sprite: 'sedge', x: 12, y: 7 },
+  ],
   mobs: [
     // Cairn Creeper zwischen dem zweiten und dem vierten Stein
     { type: 'cairn_creeper', x: 14, y: 51 },

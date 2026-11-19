@@ -475,6 +475,28 @@ const BUILDERS = {
       if (hash(o.x + i, o.y + r) < 0.55) g.add(box(0.05, 0.05, 0.12, '#c8b48a', -0.36 + i * 0.18, 0.8 + r * 0.2, 0.06));
     }
   },
+  leanto(o, g, ctx) {
+    // Tag 9: der Unterstand der Träger. Pfosten, ein schräges Dach aus Birkenrinde zur Nordseite, Farn am Boden,
+    // ein Lampenhaken. Steht er (lit), brennt eine kleine Flamme am Haken.
+    for (const sx of [-1, 1]) {
+      g.add(box(0.12, 1.5, 0.12, '#5a4028', sx * (o.w / 2 - 0.2), 0.75, o.d / 2 - 0.25));
+      g.add(box(0.12, 0.5, 0.12, '#5a4028', sx * (o.w / 2 - 0.2), 0.25, -o.d / 2 + 0.2));
+    }
+    const r = box(o.w - 0.1, 0.08, o.d + 0.3, '#d8d0b8', 0, 1.05, 0.05);
+    r.rotation.x = 0.55;
+    g.add(r);
+    for (let i = 0; i < 4; i++) g.add(box(0.36, 0.03, 0.5, i % 2 ? '#c8c0a8' : '#e0d8c0', -o.w / 2 + 0.6 + i * 0.6, 0.3 + hash(o.x, i, 21) * 0.02, o.d / 2 + 0.3).rotateY(hash(o.y, i, 22) * 1.2));
+    g.add(box(o.w - 0.6, 0.12, o.d - 0.6, '#5a6a3a', 0, 0.06, -0.1));
+    g.add(box(0.06, 0.25, 0.06, '#3a3028', 0.4, 1.2, o.d / 2 - 0.3));
+    ctx.flame(g, 0.55, 1.0, !o.lit);
+  },
+  plaque(o, g) {
+    // Tag 9: eine Schiefertafel des ertrunkenen Chors auf einem Steinfuß, mit hellen Kerben (nur Untersuchen)
+    g.add(box(0.5, 0.5, 0.3, '#4a4a46', 0, 0.25, 0));
+    g.add(box(0.8, 0.7, 0.08, '#3a3e44', 0, 0.85, 0));
+    for (let i = 0; i < 4; i++) g.add(box(0.5 - (i % 2) * 0.15, 0.03, 0.02, '#c8c8c0', 0, 0.7 + i * 0.1, 0.05));
+    g.add(box(0.1, 0.1, 0.02, '#c8a040', 0.28, 1.08, 0.05));
+  },
   fallen_stone(o, g) {
     for (let i = 0; i < 4; i++) g.add(box(0.5 - i * 0.06, 0.26, 0.45, i % 2 ? '#7a7268' : '#8a8278', -0.5 + i * 0.36, 0.13, (hash(o.x, i) - 0.5) * 0.3));
     g.add(box(0.12, 0.12, 0.3, '#6a6460', 0.9, 0.06, -0.1));

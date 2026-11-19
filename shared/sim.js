@@ -28,6 +28,7 @@ import { grindAtMill } from './mill.js';
 import { splitDeadfall, stackWoodpile } from './woodpile.js';
 import { leaveAtCache } from './cache.js';
 import { stoneFire } from './road.js';
+import { mendLeanto, restAtHearth, truceHolds } from './leanto.js';
 
 export { saveOf, xpForLevel, MAX_LEVEL } from './player.js';
 
@@ -67,7 +68,7 @@ function smoothstep(a, b, x) {
 // Objekte eines Gebiets mit ihren IDs (o0, o1, …). Auch der Browser nutzt das, damit IDs übereinstimmen.
 export function regionObjects(region) {
   return region.objects.map((o, i) => {
-    const obj = { ...o, id: 'o' + i, w: o.w || 1, d: o.d || 1, lit: o.type !== 'signal' };
+    const obj = { ...o, id: 'o' + i, w: o.w || 1, d: o.d || 1, lit: o.type !== 'signal' && o.type !== 'leanto' };
     if (o.type === 'node') {
       obj.name = NODES[o.node].name;
       obj.left = NODES[o.node].yields;
@@ -268,6 +269,8 @@ export function objectActions(o) {
     case 'deadfall': return [['use', 'Split'], ['examine', 'Examine']];
     // Tag 7 (Abstimmung „bread-north“): die Vorratskiste am ersten Stein für die Träger (content/cache.js)
     case 'cache': return [['use', 'Leave supplies'], ['examine', 'Examine']];
+    // Tag 9 (Abstimmung „carriers-rest“): der Unterstand am Rastplatz der Träger (content/leanto.js)
+    case 'leanto': return [['use', 'Mend'], ['examine', 'Examine']];
     case 'node': return [['gather', NODES[o.node].verb], ['examine', 'Examine']];
     default: return [['examine', 'Examine']];
   }
@@ -570,7 +573,8 @@ function doAction(world, p, goal) {
     sleepAtInn(world, p);
   } else if (goal.action === 'rest' && t.type === 'campfire') {
     p.hp = p.maxHp;
-    tell(world, p.id, 'You warm your hands. Much better.', 'good');
+    // Tag 9: am Herd der Träger, wenn der Unterstand steht (shared/leanto.js)
+    if (!(t.hearth && restAtHearth(world, p))) tell(world, p.id, 'You warm your hands. Much better.', 'good');
     questEvent(world, p, 'action', { action: 'rest' });
   } else if (goal.action === 'gather' && t.type === 'node') {
     startGather(world, p, t);
@@ -584,6 +588,8 @@ function doAction(world, p, goal) {
     splitDeadfall(world, p, t);
   } else if (goal.action === 'use' && t.type === 'cache') {
     leaveAtCache(world, p);
+  } else if (goal.action === 'use' && t.type === 'leanto') {
+    mendLeanto(world, p, t);
   } else if (goal.action === 'use' && t.type === 'station') {
     emit(world, { to: p.id, type: 'craft', obj: t.id, station: t.station });
   } else if (goal.action === 'enter' && t.inside) {
@@ -1021,6 +1027,8 @@ function pickVictim(world, m, aggro) {
     m.angryAt = null;
   }
   if (m.def.ai === 'animal') return null;
+  // Tag 9: Waffenruhe am Rastplatz, solange der Unterstand steht (nur wer zuschlägt, wird bekämpft)
+  if (truceHolds(world, m)) return null;
   let best = null;
   let bestD = Infinity;
   for (const p of world.players.values()) {

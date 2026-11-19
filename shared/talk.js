@@ -35,6 +35,8 @@ function questMatches(p, want) {
 // world ist optional: Der Browser prüft ohne Welt (für ! und ?), dann zählen night/day nicht.
 export function conditionHolds(p, cond = {}, world = null) {
   if (cond.quest && !questMatches(p, cond.quest)) return false;
+  // Tag 9: questAtLeast: { id: n } = Quest ist mindestens bei Schritt n oder fertig (z. B. für Türen, die offen bleiben)
+  if (cond.questAtLeast && Object.entries(cond.questAtLeast).some(([id, n]) => { const st = questState(p, id); return st !== 'done' && !(typeof st === 'number' && st >= n); })) return false;
   if (cond.noClass && p.cls) return false;
   if (cond.hasClass && !p.cls) return false;
   // Tag 6: cls = die aktive Klasse (Hauptwaffe in der Hand) ist genau diese (für Spezialisierungen beim Lehrer)
@@ -57,6 +59,9 @@ export function conditionHolds(p, cond = {}, world = null) {
   if (cond.stacked && (p.stacked ?? 0) < cond.stacked) return false;
   // Tag 7: sentNorth = so viel insgesamt am ersten Stein für die Träger hinterlegt (content/cache.js)
   if (cond.sentNorth && (p.sentNorth ?? 0) < cond.sentNorth) return false;
+  // Tag 9: Punkte am Unterstand der Träger insgesamt
+  if (cond.mended && (p.mended ?? 0) < cond.mended) return false;
+  if (cond.mendedBelow && (p.mended ?? 0) >= cond.mendedBelow) return false;
   // Tageszeit: night = nach Einbruch der Dunkelheit (wie bei Quest-Schritten mit night)
   if (world && cond.night && world.daylight >= 0.5) return false;
   if (world && cond.day && world.daylight < 0.5) return false;

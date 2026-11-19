@@ -661,6 +661,40 @@ export const QUESTS = {
     ],
     reward: { xp: 1600, gold: 40, items: { hollow_string: 1 } },
   },
+  // Nachschlag Tag 9 (aus Gebet 8, Zettel „chapel-riddle-room“): ein Rätsel in der Drowned Chapel
+  the_choir_door: {
+    name: 'The Choir Door', giver: 'tallow',
+    text: 'The drowned hymnals mention a door under the choir stair that only opens for the choir. Tallow thinks it opens for anybody who knows how the choir answered.',
+    steps: [
+      { type: 'talk', npc: 'cantor', text: 'Find the low door under the choir stair in the west aisle of the Drowned Chapel. The stone face above it asks a question; the hymn plaques around the chapel hold the answers. Four people reading at once is faster than one.' },
+      { type: 'have', item: 'fortieth_voice', n: 1, text: 'Go through the low door and search the room behind it.' },
+      { type: 'talk', npc: 'tallow', text: 'Bring what you found to Brother Tallow.' },
+    ],
+    reward: { xp: 4200, gold: 110, items: { cantor_stole: 1 } },
+  },
+  // Tag 9 (Abstimmung „carriers-rest“): Brindle will, dass der Unterstand am Rastplatz wieder steht (content/leanto.js).
+  a_roof_at_the_rest: {
+    name: 'A Roof at the Rest', giver: 'brindle',
+    text: 'The village voted to mend the carriers\' lean-to at the top of the Stone Road. Brindle wants somebody to go up with wood, and to sleep there one night, so she can write down that it works.',
+    steps: [
+      { type: 'have', item: 'split_log', n: 4, text: 'Split deadfall (at the edge of the woods, or along the Stone Road) until you carry four split logs.' },
+      { type: 'action', action: 'mend', text: 'Climb the Stone Road to the carriers\' rest and mend the lean-to: logs for the poles, peat for the hearth bed, a flask of oil for the lamp.' },
+      { type: 'action', action: 'rest_road', text: 'Once the lean-to stands, rest at the carriers\' hearth. It takes more than one pair of hands: keep mending, or bring friends.' },
+      { type: 'talk', npc: 'brindle', text: 'Go back down to Brindle at the North Watch and tell her how the night was.' },
+    ],
+    reward: { xp: 2800, gold: 70, items: { peat_oil: 1, hearth_salve: 2 } },
+  },
+  // Tag 9, vom Nightwright (Bogen „The Second Light“, Akt 2): Sedge, ein alter Hollow Warden, sieht Wennas Pflock.
+  a_peg_still_hanging: {
+    name: 'A Peg Still Hanging', giver: 'sedge',
+    text: 'Under the mended lean-to sits an old Hollow Warden called Sedge. One peg on the board still has a string of beads on it, which means somebody who came south has not gone home.',
+    steps: [
+      { type: 'talk', npc: 'wenna', text: 'Take the warm ash from Sedge\'s hearth down to Wenna at the old mill, after dark.' },
+      { type: 'talk', npc: 'marrow', text: 'Wenna wrote a note for Marrow. Take it to his stall on the market.' },
+      { type: 'talk', npc: 'sedge', text: 'Climb back up to Sedge at the carriers\' rest and tell him what Wenna said.' },
+    ],
+    reward: { xp: 3400, gold: 80, items: { wardens_lamp: 1, hollow_ration: 2 } },
+  },
   // Tag 8, Nachschlag: Haskel und der Reiher an der Furt (ab 33)
   heron_at_the_ford: {
     name: 'The Heron at the Ford', giver: 'haskel',

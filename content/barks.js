@@ -59,6 +59,11 @@ export const BARKS = {
     lines: ['*counts loaves on her fingers*', 'One carrier with nothing is a waste of a carrier.', '*grinds, slowly*', 'Less to carry. Less to carry.', '*holds her cold lantern close*', 'Your bread tastes of sun.', '*laces her boots, unlaces them, laces them again*', 'Four nights if the stones are where I left them.', '*looks north, counting under her breath: five, six, seven*'],
     dayLines: ['*snores, very quietly, under the sacks*', '*mumbles in her sleep: forty... twenty... twelve...*'],
   },
+  // Tag 9 (Bogen): Sedge am Herd der Träger
+  sedge: {
+    range: 6, every: 45,
+    lines: ['*pokes the peat with the end of his pole*', 'Hm.', 'Roof first. Talk after.', '*counts the pegs on the board, slowly, twice*', 'Old knees, old road.', '*watches the line of fires down the hill*', 'Four nights, if the stones stand.'],
+  },
   band_oswin: {
     range: 9, every: 26,
     lines: ['*drums on whatever is nearest*', 'Ba-dum, tss.', 'Everybody clap! No? Fine.'],

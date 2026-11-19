@@ -257,7 +257,8 @@ export const MOBS = {
     // Rolle Gruppe, Stufe 34: allein kaum, zu viert gut. Wächter aus dem Hollow in torfbraunen Mänteln, mit Hakenstange und
     // grüner Laterne. Sie bewachen den Rastplatz der Träger und das Holz, das sie von Amas Stapel geholt haben.
     // Sie sterben nicht: Sie gehen in die Knie und weichen in den Grey zurück (fallText).
-    name: 'Hollow Warden', sprite: 'hollow_warden', level: 34, ai: 'beast', moveEvery: 2,
+    // Tag 9: truce = greift niemanden von selbst an, solange der Unterstand am Rastplatz steht (content/leanto.js)
+    name: 'Hollow Warden', sprite: 'hollow_warden', level: 34, ai: 'beast', moveEvery: 2, truce: true,
     hp: 3400, hit: [27, 32], attackEvery: 4, aggro: 3, leash: 6, respawn: 300, xp: 700,
     drops: [['hollow_bead', 0.8, 1, 1], ['peat_brick', 0.6, 1, 2], ['hollow_ration', 0.3, 1, 1]], gold: [30, 55],
     specials: [
